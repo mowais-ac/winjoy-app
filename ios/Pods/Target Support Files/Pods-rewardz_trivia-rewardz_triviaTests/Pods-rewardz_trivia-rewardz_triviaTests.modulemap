@@ -1,0 +1,6 @@
+module Pods_rewardz_trivia_rewardz_triviaTests {
+  umbrella header "Pods-rewardz_trivia-rewardz_triviaTests-umbrella.h"
+
+  export *
+  module * { export * }
+}
