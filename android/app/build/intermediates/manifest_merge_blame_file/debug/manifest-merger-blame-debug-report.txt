@@ -1,6 +1,6 @@
 1<?xml version="1.0" encoding="utf-8"?>
 2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-3    package="com.rewardz_trivia"
+3    package="com.winjoy"
 4    android:versionCode="1004"
 5    android:versionName="1.0" >
 6
@@ -63,7 +63,7 @@
 37
 38    <application
 38-->/Volumes/MaheshWork/Joyeco/winjoy/android/app/src/main/AndroidManifest.xml:6:5-24:19
-39        android:name="com.rewardz_trivia.MainApplication"
+39        android:name="com.winjoy.MainApplication"
 39-->/Volumes/MaheshWork/Joyeco/winjoy/android/app/src/main/AndroidManifest.xml:7:7-38
 40        android:allowBackup="false"
 40-->/Volumes/MaheshWork/Joyeco/winjoy/android/app/src/main/AndroidManifest.xml:11:7-34
@@ -85,7 +85,7 @@
 48-->/Volumes/MaheshWork/Joyeco/winjoy/android/app/src/debug/AndroidManifest.xml:11:19-83
 49        <activity
 49-->/Volumes/MaheshWork/Joyeco/winjoy/android/app/src/main/AndroidManifest.xml:13:7-23:18
-50            android:name="com.rewardz_trivia.MainActivity"
+50            android:name="com.winjoy.MainActivity"
 50-->/Volumes/MaheshWork/Joyeco/winjoy/android/app/src/main/AndroidManifest.xml:14:9-37
 51            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|uiMode"
 51-->/Volumes/MaheshWork/Joyeco/winjoy/android/app/src/main/AndroidManifest.xml:16:9-86
@@ -117,7 +117,7 @@
 65-->[:react-native-firebase_crashlytics] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/@react-native-firebase/crashlytics/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:18:9-22:38
 66            android:name="io.invertase.firebase.crashlytics.ReactNativeFirebaseCrashlyticsInitProvider"
 66-->[:react-native-firebase_crashlytics] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/@react-native-firebase/crashlytics/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:19:13-104
-67            android:authorities="com.rewardz_trivia.reactnativefirebasecrashlyticsinitprovider"
+67            android:authorities="com.winjoy.reactnativefirebasecrashlyticsinitprovider"
 67-->[:react-native-firebase_crashlytics] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/@react-native-firebase/crashlytics/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:20:13-94
 68            android:exported="false"
 68-->[:react-native-firebase_crashlytics] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/@react-native-firebase/crashlytics/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:21:13-37
@@ -175,7 +175,7 @@
 96-->[:react-native-firebase_app] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/@react-native-firebase/app/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:22:9-26:38
 97            android:name="io.invertase.firebase.app.ReactNativeFirebaseAppInitProvider"
 97-->[:react-native-firebase_app] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/@react-native-firebase/app/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:23:13-88
-98            android:authorities="com.rewardz_trivia.reactnativefirebaseappinitprovider"
+98            android:authorities="com.winjoy.reactnativefirebaseappinitprovider"
 98-->[:react-native-firebase_app] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/@react-native-firebase/app/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:24:13-86
 99            android:exported="false"
 99-->[:react-native-firebase_app] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/@react-native-firebase/app/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:25:13-37
@@ -185,7 +185,7 @@
 101-->[:react-native-image-crop-picker] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/react-native-image-crop-picker/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:19:9-27:20
 102            android:name="androidx.core.content.FileProvider"
 102-->[:react-native-image-crop-picker] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/react-native-image-crop-picker/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:20:13-62
-103            android:authorities="com.rewardz_trivia.provider"
+103            android:authorities="com.winjoy.provider"
 103-->[:react-native-image-crop-picker] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/react-native-image-crop-picker/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:21:13-60
 104            android:exported="false"
 104-->[:react-native-image-crop-picker] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/react-native-image-crop-picker/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:22:13-37
@@ -210,7 +210,7 @@
 115-->[:rn-fetch-blob] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/rn-fetch-blob/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:36:9-44:20
 116            android:name="com.RNFetchBlob.Utils.FileProvider"
 116-->[:rn-fetch-blob] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/rn-fetch-blob/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:37:13-62
-117            android:authorities="com.rewardz_trivia.provider"
+117            android:authorities="com.winjoy.provider"
 117-->[:rn-fetch-blob] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/rn-fetch-blob/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:38:13-60
 118            android:exported="false"
 118-->[:rn-fetch-blob] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/rn-fetch-blob/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:39:13-37
@@ -242,7 +242,7 @@
 133-->[com.google.firebase:firebase-common:20.0.0] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/955ab0dd6886a0f6e9d6db48779c503f/jetified-firebase-common-20.0.0/AndroidManifest.xml:26:9-31:39
 134            android:name="com.google.firebase.provider.FirebaseInitProvider"
 134-->[com.google.firebase:firebase-common:20.0.0] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/955ab0dd6886a0f6e9d6db48779c503f/jetified-firebase-common-20.0.0/AndroidManifest.xml:27:13-77
-135            android:authorities="com.rewardz_trivia.firebaseinitprovider"
+135            android:authorities="com.winjoy.firebaseinitprovider"
 135-->[com.google.firebase:firebase-common:20.0.0] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/955ab0dd6886a0f6e9d6db48779c503f/jetified-firebase-common-20.0.0/AndroidManifest.xml:28:13-72
 136            android:directBootAware="true"
 136-->[com.google.firebase:firebase-common:20.0.0] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/955ab0dd6886a0f6e9d6db48779c503f/jetified-firebase-common-20.0.0/AndroidManifest.xml:29:13-43

@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:816761135072:android:bc451f0f9c1b391c211585",
         "android_client_info": {
-          "package_name": "com.RewardzTrivia"
+          "package_name": "com.winjoy"
         }
       },
       "oauth_client": [
@@ -34,7 +34,7 @@
               "client_id": "816761135072-ogo5sqcn08988pchudpepg6g3uvehbdt.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.RewardzTrivia"
+                "bundle_id": "com.winjoy"
               }
             }
           ]
@@ -45,7 +45,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:816761135072:android:999ed7bae25c1348211585",
         "android_client_info": {
-          "package_name": "com.rewardz_trivia"
+          "package_name": "com.winjoy"
         }
       },
       "oauth_client": [
@@ -70,7 +70,7 @@
               "client_id": "816761135072-ogo5sqcn08988pchudpepg6g3uvehbdt.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.RewardzTrivia"
+                "bundle_id": "com.winjoy"
               }
             }
           ]

@@ -764,7 +764,7 @@
     <string name="abc_toolbar_collapse_description">Collapse</string>
     <string name="accessibility_fingerprint_dialog_help_area">Help message area</string>
     <string name="alert_description" translatable="false">Alert</string>
-    <string name="app_name">rewardz_trivia</string>
+    <string name="app_name">WinJoy</string>
     <string name="appbar_scrolling_view_behavior" translatable="false">com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior</string>
     <string name="bottom_sheet_behavior" translatable="false">com.google.android.material.bottomsheet.BottomSheetBehavior</string>
     <string name="button_description" translatable="false">Button</string>
@@ -844,7 +844,7 @@
     <string name="gcm_defaultSenderId" translatable="false">816761135072</string>
     <string name="generic_error_user_canceled">Authentication canceled by user.</string>
     <string name="google_api_key" translatable="false">AIzaSyCB48x7E8v4Sjyl3pcyyqoprXKuqRsNGSQ</string>
-    <string name="google_app_id" translatable="false">1:816761135072:android:999ed7bae25c1348211585</string>
+    <string name="google_app_id" translatable="false">1:816761135072:android:bc451f0f9c1b391c211585</string>
     <string name="google_crash_reporting_api_key" translatable="false">AIzaSyCB48x7E8v4Sjyl3pcyyqoprXKuqRsNGSQ</string>
     <string name="google_storage_bucket" translatable="false">rewardztrivia.appspot.com</string>
     <string name="header">Sign in</string>
