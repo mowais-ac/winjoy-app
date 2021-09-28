@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "/Volumes/MaheshWork/Joyeco/winjoy/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-small-v4/values-small-v4.xml",
+            "outputFile": "C:\\Users\\Waqar\\Desktop\\Projects\\winjoy\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-small-v4\\values-small-v4.xml",
             "map": [
                 {
-                    "source": "/Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/28b3af1638468a8d84b409991eeb57ed/material-1.1.0/res/values-small-v4/values-small-v4.xml",
+                    "source": "C:\\Users\\Waqar\\.gradle\\caches\\transforms-2\\files-2.1\\28b3af1638468a8d84b409991eeb57ed\\material-1.1.0\\res\\values-small-v4\\values-small-v4.xml",
                     "from": {
                         "startLines": "2,3,4,5",
                         "startColumns": "4,4,4,4",

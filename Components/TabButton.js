@@ -9,10 +9,10 @@ const TabButton = (props) => {
     switch (name) {
       case "Home":
         return Images.Home;
-      case "Transactions":
-        return Images.Transaction;
-      case "Activity":
-        return Images.Activity;
+      case "Product":
+        return Images.Product;
+      case "WishList":
+        return Images.WishList;
       case "Profile":
         return Images.Profile;
     }

@@ -4,7 +4,7 @@ import {
   StyleSheet,
   Image,
   Dimensions,
-  ScrollView,
+  ScrollView, 
   TouchableOpacity,
   RefreshControl,
   ActivityIndicator,
@@ -16,8 +16,10 @@ const { width, height } = Dimensions.get("window");
 import LinearGradient from "react-native-linear-gradient";
 import HomeBottomList from "../../../Components/HomeBottomList";
 import { heightConverter, heightPercentageToDP, widthConverter } from "../../../Components/Helpers/Responsive";
-const LiveGameShows = ({ props, navigation }) => {
 
+const LiveGameShows = ({ props, navigation }) => {
+ 
+ 
   return (
     <ScrollView>
       <LinearGradient
@@ -25,7 +27,7 @@ const LiveGameShows = ({ props, navigation }) => {
         style={styles.mainView}
       >
        
-        <Text style={styles.heading}>
+        <Text style={styles.heading}> 
           Daily Challenge & Win
         </Text>
         <Label primary font={16} bold dark style={{ color: "#ffff", lineHeight: 27 }}>
@@ -36,7 +38,7 @@ const LiveGameShows = ({ props, navigation }) => {
             {" "}amazing prizes
           </Label>
         </Label>
-        <TouchableOpacity onPress={() => navigation.navigate("SimpeStackScreen")}>
+        <TouchableOpacity onPress={() => navigation.navigate("SimpeStackScreen")}> 
           <View style={styles.btnView}>
             <Label primary font={16} bold dark style={{ color: "#EA245A", }}>
               Let's Begin

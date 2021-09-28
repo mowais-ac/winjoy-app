@@ -6,8 +6,8 @@ import {
 } from '../Helpers/Responsive';
 import { RFValue } from 'react-native-responsive-fontsize';
 
-const { StyleSheet } = require('react-native');
-
+const { StyleSheet, Dimensions } = require('react-native');
+const { width, height } = Dimensions.get("window");
 export default StyleSheet.create({
   optionsViewMain: {
     position: 'absolute',
@@ -32,4 +32,10 @@ export default StyleSheet.create({
     textAlign: 'left',
     fontFamily: "Axiforma-Regular",
   }, 
+  Margin: {
+    marginTop: height * 0.85,
+    width: width * 0.85,
+    backgroundColor: '#2B1751',
+
+},
 });

@@ -65,10 +65,10 @@ const Register = ({ navigation }) => {
       const password = passref.current.getText();
       const password_confirmation = cpassref.current.getText();
 
-      if (user_name.length < 6) {
+      if (user_name.length < 10) {
         ModalState.current(true, {
           heading: "Error",
-          Error: "Username must have atleast 6 characters",
+          Error: "Username must have atleast 10 characters",
         });
         return;
       }

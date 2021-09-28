@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "/Volumes/MaheshWork/Joyeco/winjoy/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-v11/values-v11.xml",
+            "outputFile": "C:\\Users\\Waqar\\Desktop\\Projects\\winjoy\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-v11\\values-v11.xml",
             "map": [
                 {
-                    "source": "/Volumes/MaheshWork/Joyeco/winjoy/node_modules/react-native-sensitive-info/android/build/intermediates/packaged_res/debug/values-v11/values-v11.xml",
+                    "source": "C:\\Users\\Waqar\\Desktop\\Projects\\winjoy\\node_modules\\react-native-sensitive-info\\android\\build\\intermediates\\packaged_res\\debug\\values-v11\\values-v11.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

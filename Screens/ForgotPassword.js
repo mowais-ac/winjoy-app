@@ -59,15 +59,19 @@ const ForgotPassword = ({ navigation }) => {
             Buttonref.current.SetActivity(false);
           }
         })
-
+ 
         .catch((e) => console.log(e));
     }
   };
   return (
+    
+   <>
+    <Background height={1} design />
     <ScrollView>
+     
       <KeyboardAwareScrollView keyboardDismissMode="interactive">
         <View style={styles.MainTop}>
-          <Background height={0.8} design />
+          
           <Image source={Images.Logo} style={styles.Logo} />
           <Modals ModalRef={ModalRef} Error />
           <Label bold headingtype="h1" style={styles.Heading}>
@@ -103,9 +107,9 @@ const ForgotPassword = ({ navigation }) => {
             ref={Buttonref}
           />
         </View>
-        <GoBack style={styles.MarginLarge} />
+        {/* <GoBack style={styles.MarginLarge} /> */}
       </KeyboardAwareScrollView>
-    </ScrollView>
+    </ScrollView></>
   );
 };
 

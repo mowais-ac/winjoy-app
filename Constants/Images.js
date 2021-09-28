@@ -39,8 +39,10 @@ const ProcessBG = require("../assets/imgs/ProcessBG.png");
 const RequestBG = require("../assets/imgs/RequestBG.png");
 
 const Home = require("../assets/imgs/Home.png");
-const Transaction = require("../assets/imgs/Transaction.png");
-const Activity = require("../assets/imgs/Activity.png");
+// const Transaction = require("../assets/imgs/Transaction.png");
+const Product = require("../assets/imgs/Product.png");
+//const Activity = require("../assets/imgs/Activity.png");
+const WishList = require("../assets/imgs/WishList.png");
 const Profile = require("../assets/imgs/Profile.png");
 
 const PlusIcon = require("../assets/imgs/PlusIcon.png");
@@ -97,8 +99,10 @@ export default {
   RequestBG,
 
   Home,
-  Transaction,
-  Activity,
+  // Transaction,
+  Product,
+ // Activity,
+ WishList,
   Profile,
 
   PlusIcon,

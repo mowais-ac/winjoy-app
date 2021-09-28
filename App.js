@@ -16,6 +16,7 @@ import Login from "./Screens/Login";
 import Register from "./Screens/Register";
 import Verify from "./Screens/VerifyNum";
 import ForgotPassword from "./Screens/ForgotPassword";
+import WishList from "./Screens/WishList/index";
 
 // LandingStack
 import Landing from "./Screens/Landing/Landing";
@@ -106,7 +107,7 @@ const SimpleScreenStack = createStackNavigator();
 
 const SimpeStackScreen = () => (
   <SimpleScreenStack.Navigator
-  initialRouteName={'LastGameWinner'}
+ // initialRouteName={'LastGameWinner'}
   >
     <SimpleScreenStack.Screen
       key={1}
@@ -120,12 +121,7 @@ const SimpeStackScreen = () => (
       component={QuizAnswer}
       options={{ headerShown: false }}
     />
-       <SimpleScreenStack.Screen
-      key={3}
-      name="PrizeList"
-      component={PrizeList}
-      options={{ headerShown: false }}
-    />
+     
        <SimpleScreenStack.Screen
       key={4}
       name="LastGameWinner"
@@ -339,49 +335,77 @@ const ProfileScreen = () => {
   );
 };
 
-const ActivityStack = createStackNavigator();
-const ActivityStackScreen = () => {
+// const ActivityStack = createStackNavigator();
+// const ActivityStackScreen = () => {
+//   return (
+//     <ActivityStack.Navigator>
+//       <ActivityStack.Screen
+//         key={0}
+//         name="ActivityScreen"
+//         component={Activity}
+//         options={{ headerShown: false }}
+//       />
+//       <ActivityStack.Screen
+//         key={12}
+//         name="Notifications"
+//         component={Notifications}
+//         options={{ headerShown: false }}
+//       />
+//       <ActivityStack.Screen
+//         key={2}
+//         name="TransactionDetails"
+//         component={TransactionDetails}
+//         options={{ headerShown: false }}
+//       />
+//     </ActivityStack.Navigator>
+//   );
+// };
+const WishListStack = createStackNavigator();
+const WishListStackScreen = () => {
   return (
-    <ActivityStack.Navigator>
-      <ActivityStack.Screen
+    <WishListStack.Navigator>
+      <WishListStack.Screen
         key={0}
-        name="ActivityScreen"
-        component={Activity}
+        name="WishList"
+        component={WishList}
         options={{ headerShown: false }}
       />
-      <ActivityStack.Screen
-        key={12}
-        name="Notifications"
-        component={Notifications}
-        options={{ headerShown: false }}
-      />
-      <ActivityStack.Screen
-        key={2}
-        name="TransactionDetails"
-        component={TransactionDetails}
-        options={{ headerShown: false }}
-      />
-    </ActivityStack.Navigator>
+     
+    </WishListStack.Navigator>
   );
 };
-const TransactionsStack = createStackNavigator();
-const TransactionsStackScreen = () => {
-  return (
-    <TransactionsStack.Navigator>
-      <TransactionsStack.Screen
-        key={0}
-        name="TransactionsScreen"
-        component={Transactions}
-        options={{ headerShown: false }}
-      />
+//const TransactionsStack = createStackNavigator();
+// const TransactionsStackScreen = () => {
+//   return (
+//     <TransactionsStack.Navigator>
+//       <TransactionsStack.Screen
+//         key={0}
+//         name="TransactionsScreen"
+//         component={Transactions}
+//         options={{ headerShown: false }}
+//       />
 
-      <TransactionsStack.Screen
-        key={2}
-        name="TransactionDetails"
-        component={TransactionDetails}
+//       <TransactionsStack.Screen
+//         key={2}
+//         name="TransactionDetails"
+//         component={TransactionDetails}
+//         options={{ headerShown: false }}
+//       />
+//     </TransactionsStack.Navigator>
+//   );
+// };
+const ProductsStack = createStackNavigator();
+const ProductsStackStackScreen = () => {
+  return (
+    <ProductsStack.Navigator>
+      <ProductsStack.Screen
+        key={0}
+        name="PrizeList"
+        component={PrizeList}
         options={{ headerShown: false }}
       />
-    </TransactionsStack.Navigator>
+      
+    </ProductsStack.Navigator>
   );
 };
 
@@ -410,10 +434,10 @@ const TabsStackScreen = () => (
     <TabsStack.Screen key={1} name="Home" component={HomeStackScreen} />
     <TabsStack.Screen
       key={2}
-      name="Transactions"
-      component={TransactionsStackScreen}
+      name="Product"
+      component={ProductsStackStackScreen}
     />
-    <TabsStack.Screen key={3} name="Activity" component={ActivityStackScreen} />
+    <TabsStack.Screen key={3} name="WishList" component={WishListStackScreen} />
     <TabsStack.Screen key={4} name="Profile" component={ProfileScreen} />
   </TabsStack.Navigator>
 );
@@ -429,7 +453,7 @@ function App() {
       <StatusBar hidden />
       <NavigationContainer>
         <Main.Navigator
-         initialRouteName={'SimpeStackScreen'}
+        // initialRouteName={'SimpeStackScreen'}
          >
           <Main.Screen
             key={0}

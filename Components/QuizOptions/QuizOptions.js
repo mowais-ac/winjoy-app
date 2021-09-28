@@ -1,57 +1,69 @@
 import React, { useState } from "react";
-import { View, Text, TouchableWithoutFeedback,FlatList  } from "react-native";
+import { View, Text, TouchableWithoutFeedback, FlatList } from "react-native";
+import LongButton from "../LongButton";
 import styles from "./Styles";
 
-function QuizOptions({ options, onPress,reset,result,optionDisable ,answer}) {
-  console.log("optionDisable",optionDisable);
-  const optArr = options?.split(",");
+function QuizOptions({ options, onPress, reset, result, optionDisable, onPressDone }) {
+  console.log("optionDisable", optionDisable);
+  console.log("options", options);
+
   //console.log("optArr", optArr);
-
+  const [ansId, setAnsId] = useState(null);
   const [selected, setSelected] = useState(null);
-  function ChangeColor(index){
-    setSelected(index)
-  }
+
   return (
-   <>
-    <View style={styles.optionsViewMain}>
-              <FlatList
-                data={optArr}
-                renderItem={
-                  ({ item, index }) => {
-                    return (
-                      <TouchableWithoutFeedback onPress={() =>{
-                       setSelected(index)
-                     
-                      }}
-                    
-                      disabled={optionDisable}
-                        > 
-                      {
-                        optionDisable?
-                        (
-                          <View style={[styles.optionView, { backgroundColor:'#ffffff'}]} >
-                          <Text style={[styles.optionsText, { color:'#2F2442'}]}>
-                            {item}
+    <>
+      <View style={styles.optionsViewMain}>
+        <FlatList
+          data={options}
+          renderItem={
+            ({ item, index }) => {
+              return (
+                <TouchableWithoutFeedback onPress={() => {
+                  setSelected(index)
+                  setAnsId(item.id)
+                }}
+
+                  disabled={optionDisable}
+                >
+                  {
+                    optionDisable ?
+                      (
+                        <View style={[styles.optionView, { backgroundColor: '#ffffff' }]} >
+                          <Text style={[styles.optionsText, { color: '#2F2442' }]}>
+                            {item.answer}
                           </Text>
                         </View>
-                        ):(
-                          <View style={[styles.optionView, { backgroundColor:selected===index?'#ffffff':null}]} >
+                      ) : (
+                        <View style={[styles.optionView, { backgroundColor: selected === index ? '#ffffff' : null }]} >
                           <Text style={[styles.optionsText, { color: selected === index ? '#2F2442' : '#ffffff' }]}>
-                            {item}
+                            {item.answer}
                           </Text>
                         </View>
-                        )
-                      }
-                      </TouchableWithoutFeedback>
-                    )
+                      )
                   }
-                }
+                </TouchableWithoutFeedback>
+              )
+            }
+          }
 
 
-              />
-            </View>
-            </>
-  ); 
+        />
+      </View>
+      <LongButton style={styles.Margin}
+        textstyle={{ color: '#ffffff' }}
+        text="Done"
+        font={17}
+        onPress={() => {
+          onPressDone(ansId),
+            setSelected(null)
+
+          // navigation.navigate("QuizAnswer")
+        }
+        }
+      />
+    </>
+  );
 }
 
 export { QuizOptions };

@@ -73,7 +73,6 @@ const CountryModal = (props) => {
         style={[styles.CountryView, props.phone && styles.PhoneView]}
       >
         <Label
-          dark
           text={item.name}
           notAlign={props.phone}
           style={props.phone && styles.ItemName}

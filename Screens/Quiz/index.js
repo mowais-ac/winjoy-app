@@ -8,15 +8,92 @@ import {
     ScrollView,
     SafeAreaView
 } from "react-native";
+import {
+    JSONtoForm,
+} from "../../Constants/Functions";
 import LinearGradient from "react-native-linear-gradient";
 import Background from "../../Components/Background";
 import Header from "../../Components/Header";
 import Label from "../../Components/Label";
 import LongButton from "../../Components/LongButton";
 import { QuizOptions } from "../../Components";
+import EncryptedStorage from "react-native-encrypted-storage";
+import Config from "react-native-config";
+import axios from "axios";
 const { width, height } = Dimensions.get("window");
-const index = ({props,navigation}) => {
+const index = ({ props, navigation }) => {
+    const [question, setQuestion] = useState([]);
+    const [questionIncrement, setQuestionIncrement] = useState(0);
+    const [answerId, setAnswerId] = useState();
+    const Questions = async () => {
 
+        const Token = await EncryptedStorage.getItem("Token");
+        console.log("token", Token);
+        const requestOptions = {
+            headers: {
+                "Content-Type": "multipart/form-data",
+                Accept: "application/json",
+                Authorization: `Bearer ${Token}`,
+            },
+        };
+        // alert(13123);
+        await axios.get(`${Config.API_URL}/begin/game/questions/answers/list`, requestOptions).then(response => {
+            let res = response.data;
+            setQuestion(res)
+            console.log('res', question)
+            // let arr=[];
+            // if (res.status && res.status.toLowerCase() === "success") {
+            //   res.data.map((item) => {
+            //     item.map((v, i)=>{
+            //       arr.push(v)
+            //     })
+            //   });
+
+            //  setProductList(arr);
+            // }
+
+        });
+
+    }
+    const SaveResponse = async () => {
+        const Token = await EncryptedStorage.getItem("Token");
+        const body = JSONtoForm({
+            question: question[questionIncrement]?.id,
+            answer: answerId,
+            live_gameshow_id:question[questionIncrement]?.live_gameshow_id,
+        });
+        const requestOptions = {
+            method: "POST",
+            headers: {
+                "Content-Type": "multipart/form-data",
+                Accept: "application/json",
+                Authorization: `Bearer ${Token}`,
+            },
+            body,
+        };
+
+        await fetch(`${Config.API_URL}/save/user/response`, requestOptions)
+            .then(async (response) => response.json())
+            .then(async (res) => {
+                console.log("ressave", res);
+                let inc = questionIncrement + 1;
+                setQuestionIncrement(inc)
+
+            })
+            .catch((e) => {
+                Alert.alert("Error", e);
+
+            });
+    }
+    const onPressDone = (ansId) => {
+        setAnswerId(ansId)
+        alert(ansId)
+
+        SaveResponse()
+    }
+    useEffect(async () => {
+        Questions()
+    }, []);
     return (
 
         <SafeAreaView>
@@ -44,21 +121,19 @@ const index = ({props,navigation}) => {
                             <Label primary font={16} bold dark style={{ color: "#FFFF13", }}>
                                 Question
                             </Label>
-                            <Label primary font={16} bold dark style={{ color: "#ffff",lineHeight:32 }}>
-                                Which company initially developed Android mobile OS?
+                            <Label primary font={16} bold dark style={{ color: "#ffff", lineHeight: 32 }}>
+                                {question[questionIncrement]?.question}
                             </Label>
                         </View>
                     </LinearGradient>
                 </ImageBackground>
 
-                <QuizOptions options={"Symbian Ltd,Android Inc,Google"} onPress={() => alert("hii")} />
-
-                <LongButton style={styles.Margin}
-                    textstyle={{ color: '#ffffff' }}
-                    text="Done"
-                    font={17}
-                    onPress={()=>navigation.navigate("QuizAnswer")}
+                <QuizOptions options={question[questionIncrement]?.answer} onPress={() => alert("hii")}
+                    onPressDone={onPressDone}
+                    optionDisable={false}
                 />
+
+
             </ScrollView>
         </SafeAreaView>
 

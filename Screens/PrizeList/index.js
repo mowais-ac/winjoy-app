@@ -44,7 +44,7 @@ const index = ({props,navigation}) => {
                 />
             </View>
            <TouchableWithoutFeedback 
-           onPress={()=>navigation.navigate("ProductDetail")}>
+           onPress={()=>navigation.navigate("SimpeStackScreen",{screen:"ProductDetail"})}>
            <ChanceCard/>
            <ChanceCard/>
            </TouchableWithoutFeedback>
