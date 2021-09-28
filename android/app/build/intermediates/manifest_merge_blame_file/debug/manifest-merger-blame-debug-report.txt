@@ -1,0 +1,351 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.rewardz_trivia"
+4    android:versionCode="1004"
+5    android:versionName="1.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="21"
+9        android:targetSdkVersion="29" />
+10
+11    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+11-->C:\Users\Waqar\Desktop\Projects\winjoy\android\app\src\debug\AndroidManifest.xml:5:5-77
+11-->C:\Users\Waqar\Desktop\Projects\winjoy\android\app\src\debug\AndroidManifest.xml:5:22-75
+12    <uses-permission android:name="android.permission.INTERNET" />
+12-->C:\Users\Waqar\Desktop\Projects\winjoy\android\app\src\main\AndroidManifest.xml:4:5-67
+12-->C:\Users\Waqar\Desktop\Projects\winjoy\android\app\src\main\AndroidManifest.xml:4:22-64
+13    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+13-->[com.facebook.flipper:flipper:0.75.1] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\d1d16ab058fc916024ef28b590d6882f\jetified-flipper-0.75.1\AndroidManifest.xml:16:5-76
+13-->[com.facebook.flipper:flipper:0.75.1] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\d1d16ab058fc916024ef28b590d6882f\jetified-flipper-0.75.1\AndroidManifest.xml:16:22-73
+14
+15    <queries>
+15-->[:react-native-image-crop-picker] C:\Users\Waqar\Desktop\Projects\winjoy\node_modules\react-native-image-crop-picker\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:10:5-14:15
+16        <intent>
+16-->[:react-native-image-crop-picker] C:\Users\Waqar\Desktop\Projects\winjoy\node_modules\react-native-image-crop-picker\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:11:9-13:18
+17            <action android:name="android.media.action.IMAGE_CAPTURE" />
+17-->[:react-native-image-crop-picker] C:\Users\Waqar\Desktop\Projects\winjoy\node_modules\react-native-image-crop-picker\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:12:13-73
+17-->[:react-native-image-crop-picker] C:\Users\Waqar\Desktop\Projects\winjoy\node_modules\react-native-image-crop-picker\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:12:21-70
+18        </intent>
+19    </queries>
+20
+21    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+21-->[:react-native-image-crop-picker] C:\Users\Waqar\Desktop\Projects\winjoy\node_modules\react-native-image-crop-picker\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:16:5-81
+21-->[:react-native-image-crop-picker] C:\Users\Waqar\Desktop\Projects\winjoy\node_modules\react-native-image-crop-picker\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:16:22-78
+22    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
+22-->[:react-native-sensitive-info] C:\Users\Waqar\Desktop\Projects\winjoy\node_modules\react-native-sensitive-info\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:11:5-72
+22-->[:react-native-sensitive-info] C:\Users\Waqar\Desktop\Projects\winjoy\node_modules\react-native-sensitive-info\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:11:22-69
+23    <uses-permission android:name="android.permission.USE_FINGERPRINT" /> <!-- Required to access Google Play Licensing -->
+23-->[:react-native-sensitive-info] C:\Users\Waqar\Desktop\Projects\winjoy\node_modules\react-native-sensitive-info\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:12:5-74
+23-->[:react-native-sensitive-info] C:\Users\Waqar\Desktop\Projects\winjoy\node_modules\react-native-sensitive-info\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:12:22-71
+24    <uses-permission android:name="com.android.vending.CHECK_LICENSE" />
+24-->[:rn-fetch-blob] C:\Users\Waqar\Desktop\Projects\winjoy\node_modules\rn-fetch-blob\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:12:5-73
+24-->[:rn-fetch-blob] C:\Users\Waqar\Desktop\Projects\winjoy\node_modules\rn-fetch-blob\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:12:22-70
+25    <!--
+26         Required to keep CPU alive while downloading files
+27        (NOT to keep screen awake)
+28    -->
+29    <uses-permission android:name="android.permission.WAKE_LOCK" />
+29-->[:rn-fetch-blob] C:\Users\Waqar\Desktop\Projects\winjoy\node_modules\rn-fetch-blob\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:21:5-68
+29-->[:rn-fetch-blob] C:\Users\Waqar\Desktop\Projects\winjoy\node_modules\rn-fetch-blob\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:21:22-65
+30    <!--
+31         Required to poll the state of the network connection
+32        and respond to changes
+33    -->
+34    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- Required by older versions of Google Play services to create IID tokens -->
+34-->[:rn-fetch-blob] C:\Users\Waqar\Desktop\Projects\winjoy\node_modules\rn-fetch-blob\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:27:5-79
+34-->[:rn-fetch-blob] C:\Users\Waqar\Desktop\Projects\winjoy\node_modules\rn-fetch-blob\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:27:22-76
+35    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+35-->[com.google.android.gms:play-services-iid:17.0.0] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\02b0d7642805099f1602c38577d923d8\jetified-play-services-iid-17.0.0\AndroidManifest.xml:23:5-82
+35-->[com.google.android.gms:play-services-iid:17.0.0] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\02b0d7642805099f1602c38577d923d8\jetified-play-services-iid-17.0.0\AndroidManifest.xml:23:22-79
+36    <uses-permission android:name="com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE" />
+36-->[com.google.android.gms:play-services-measurement:19.0.0] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\250511e312ac930a099c96582b949880\jetified-play-services-measurement-19.0.0\AndroidManifest.xml:26:5-110
+36-->[com.google.android.gms:play-services-measurement:19.0.0] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\250511e312ac930a099c96582b949880\jetified-play-services-measurement-19.0.0\AndroidManifest.xml:26:22-107
+37
+38    <application
+38-->C:\Users\Waqar\Desktop\Projects\winjoy\android\app\src\main\AndroidManifest.xml:6:5-24:19
+39        android:name="com.rewardz_trivia.MainApplication"
+39-->C:\Users\Waqar\Desktop\Projects\winjoy\android\app\src\main\AndroidManifest.xml:7:7-38
+40        android:allowBackup="false"
+40-->C:\Users\Waqar\Desktop\Projects\winjoy\android\app\src\main\AndroidManifest.xml:11:7-34
+41        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+41-->[androidx.core:core:1.2.0] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\9005b7ce6081a15716b176384a820a97\core-1.2.0\AndroidManifest.xml:24:18-86
+42        android:debuggable="true"
+43        android:icon="@mipmap/ic_launcher"
+43-->C:\Users\Waqar\Desktop\Projects\winjoy\android\app\src\main\AndroidManifest.xml:9:7-41
+44        android:label="@string/app_name"
+44-->C:\Users\Waqar\Desktop\Projects\winjoy\android\app\src\main\AndroidManifest.xml:8:7-39
+45        android:roundIcon="@mipmap/ic_launcher_round"
+45-->C:\Users\Waqar\Desktop\Projects\winjoy\android\app\src\main\AndroidManifest.xml:10:7-52
+46        android:theme="@style/AppTheme"
+46-->C:\Users\Waqar\Desktop\Projects\winjoy\android\app\src\main\AndroidManifest.xml:12:7-38
+47        android:usesCleartextTraffic="true" >
+47-->C:\Users\Waqar\Desktop\Projects\winjoy\android\app\src\debug\AndroidManifest.xml:8:9-44
+48        <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
+48-->C:\Users\Waqar\Desktop\Projects\winjoy\android\app\src\debug\AndroidManifest.xml:11:9-86
+48-->C:\Users\Waqar\Desktop\Projects\winjoy\android\app\src\debug\AndroidManifest.xml:11:19-83
+49        <activity
+49-->C:\Users\Waqar\Desktop\Projects\winjoy\android\app\src\main\AndroidManifest.xml:13:7-23:18
+50            android:name="com.rewardz_trivia.MainActivity"
+50-->C:\Users\Waqar\Desktop\Projects\winjoy\android\app\src\main\AndroidManifest.xml:14:9-37
+51            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|uiMode"
+51-->C:\Users\Waqar\Desktop\Projects\winjoy\android\app\src\main\AndroidManifest.xml:16:9-86
+52            android:label="@string/app_name"
+52-->C:\Users\Waqar\Desktop\Projects\winjoy\android\app\src\main\AndroidManifest.xml:15:9-41
+53            android:launchMode="singleTask"
+53-->C:\Users\Waqar\Desktop\Projects\winjoy\android\app\src\main\AndroidManifest.xml:17:9-40
+54            android:windowSoftInputMode="adjustResize" >
+54-->C:\Users\Waqar\Desktop\Projects\winjoy\android\app\src\main\AndroidManifest.xml:18:9-51
+55            <intent-filter>
+55-->C:\Users\Waqar\Desktop\Projects\winjoy\android\app\src\main\AndroidManifest.xml:19:9-22:25
+56                <action android:name="android.intent.action.MAIN" />
+56-->C:\Users\Waqar\Desktop\Projects\winjoy\android\app\src\main\AndroidManifest.xml:20:13-65
+56-->C:\Users\Waqar\Desktop\Projects\winjoy\android\app\src\main\AndroidManifest.xml:20:21-62
+57
+58                <category android:name="android.intent.category.LAUNCHER" />
+58-->C:\Users\Waqar\Desktop\Projects\winjoy\android\app\src\main\AndroidManifest.xml:21:13-73
+58-->C:\Users\Waqar\Desktop\Projects\winjoy\android\app\src\main\AndroidManifest.xml:21:23-70
+59            </intent-filter>
+60        </activity> <!-- Disable crashlytics by default so we can custom init with CrashlyticsNdk support -->
+61        <meta-data
+61-->[:react-native-firebase_crashlytics] C:\Users\Waqar\Desktop\Projects\winjoy\node_modules\@react-native-firebase\crashlytics\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:14:9-16:37
+62            android:name="firebase_crashlytics_collection_enabled"
+62-->[:react-native-firebase_crashlytics] C:\Users\Waqar\Desktop\Projects\winjoy\node_modules\@react-native-firebase\crashlytics\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:15:13-67
+63            android:value="false" />
+63-->[:react-native-firebase_crashlytics] C:\Users\Waqar\Desktop\Projects\winjoy\node_modules\@react-native-firebase\crashlytics\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:16:13-34
+64
+65        <provider
+65-->[:react-native-firebase_crashlytics] C:\Users\Waqar\Desktop\Projects\winjoy\node_modules\@react-native-firebase\crashlytics\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:18:9-22:38
+66            android:name="io.invertase.firebase.crashlytics.ReactNativeFirebaseCrashlyticsInitProvider"
+66-->[:react-native-firebase_crashlytics] C:\Users\Waqar\Desktop\Projects\winjoy\node_modules\@react-native-firebase\crashlytics\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:19:13-104
+67            android:authorities="com.rewardz_trivia.reactnativefirebasecrashlyticsinitprovider"
+67-->[:react-native-firebase_crashlytics] C:\Users\Waqar\Desktop\Projects\winjoy\node_modules\@react-native-firebase\crashlytics\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:20:13-94
+68            android:exported="false"
+68-->[:react-native-firebase_crashlytics] C:\Users\Waqar\Desktop\Projects\winjoy\node_modules\@react-native-firebase\crashlytics\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:21:13-37
+69            android:initOrder="98" />
+69-->[:react-native-firebase_crashlytics] C:\Users\Waqar\Desktop\Projects\winjoy\node_modules\@react-native-firebase\crashlytics\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:22:13-35
+70
+71        <meta-data
+71-->[:react-native-firebase_app] C:\Users\Waqar\Desktop\Projects\winjoy\node_modules\@react-native-firebase\app\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:12:9-14:36
+72            android:name="app_data_collection_default_enabled"
+72-->[:react-native-firebase_app] C:\Users\Waqar\Desktop\Projects\winjoy\node_modules\@react-native-firebase\app\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:13:13-63
+73            android:value="true" />
+73-->[:react-native-firebase_app] C:\Users\Waqar\Desktop\Projects\winjoy\node_modules\@react-native-firebase\app\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:14:13-33
+74
+75        <service
+75-->[:react-native-firebase_app] C:\Users\Waqar\Desktop\Projects\winjoy\node_modules\@react-native-firebase\app\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:16:9-20:19
+76            android:name="com.google.firebase.components.ComponentDiscoveryService"
+76-->[:react-native-firebase_app] C:\Users\Waqar\Desktop\Projects\winjoy\node_modules\@react-native-firebase\app\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:16:18-89
+77            android:directBootAware="true"
+77-->[com.google.firebase:firebase-common:20.0.0] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\955ab0dd6886a0f6e9d6db48779c503f\jetified-firebase-common-20.0.0\AndroidManifest.xml:35:13-43
+78            android:exported="false" >
+78-->[com.google.firebase:firebase-crashlytics-ndk:18.2.1] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\14df85dada2cc68cfe201d251047348c\jetified-firebase-crashlytics-ndk-18.2.1\AndroidManifest.xml:34:13-37
+79            <meta-data
+79-->[:react-native-firebase_app] C:\Users\Waqar\Desktop\Projects\winjoy\node_modules\@react-native-firebase\app\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:17:13-19:85
+80                android:name="com.google.firebase.components:io.invertase.firebase.app.ReactNativeFirebaseAppRegistrar"
+80-->[:react-native-firebase_app] C:\Users\Waqar\Desktop\Projects\winjoy\node_modules\@react-native-firebase\app\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:18:17-120
+81                android:value="com.google.firebase.components.ComponentRegistrar" />
+81-->[:react-native-firebase_app] C:\Users\Waqar\Desktop\Projects\winjoy\node_modules\@react-native-firebase\app\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:19:17-82
+82            <meta-data
+82-->[com.google.firebase:firebase-crashlytics-ndk:18.2.1] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\14df85dada2cc68cfe201d251047348c\jetified-firebase-crashlytics-ndk-18.2.1\AndroidManifest.xml:35:13-37:85
+83                android:name="com.google.firebase.components:com.google.firebase.crashlytics.ndk.CrashlyticsNdkRegistrar"
+83-->[com.google.firebase:firebase-crashlytics-ndk:18.2.1] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\14df85dada2cc68cfe201d251047348c\jetified-firebase-crashlytics-ndk-18.2.1\AndroidManifest.xml:36:17-122
+84                android:value="com.google.firebase.components.ComponentRegistrar" />
+84-->[com.google.firebase:firebase-crashlytics-ndk:18.2.1] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\14df85dada2cc68cfe201d251047348c\jetified-firebase-crashlytics-ndk-18.2.1\AndroidManifest.xml:37:17-82
+85            <meta-data
+85-->[com.google.firebase:firebase-crashlytics:18.2.1] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\5f38b90f26922127e27a711bafcefd72\jetified-firebase-crashlytics-18.2.1\AndroidManifest.xml:18:13-20:85
+86                android:name="com.google.firebase.components:com.google.firebase.crashlytics.CrashlyticsRegistrar"
+86-->[com.google.firebase:firebase-crashlytics:18.2.1] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\5f38b90f26922127e27a711bafcefd72\jetified-firebase-crashlytics-18.2.1\AndroidManifest.xml:19:17-115
+87                android:value="com.google.firebase.components.ComponentRegistrar" />
+87-->[com.google.firebase:firebase-crashlytics:18.2.1] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\5f38b90f26922127e27a711bafcefd72\jetified-firebase-crashlytics-18.2.1\AndroidManifest.xml:20:17-82
+88            <meta-data
+88-->[com.google.android.gms:play-services-measurement-api:19.0.0] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\2ef1ec247b3f4ae3d3a812871ffcec52\jetified-play-services-measurement-api-19.0.0\AndroidManifest.xml:30:13-32:85
+89                android:name="com.google.firebase.components:com.google.firebase.analytics.connector.internal.AnalyticsConnectorRegistrar"
+89-->[com.google.android.gms:play-services-measurement-api:19.0.0] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\2ef1ec247b3f4ae3d3a812871ffcec52\jetified-play-services-measurement-api-19.0.0\AndroidManifest.xml:31:17-139
+90                android:value="com.google.firebase.components.ComponentRegistrar" />
+90-->[com.google.android.gms:play-services-measurement-api:19.0.0] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\2ef1ec247b3f4ae3d3a812871ffcec52\jetified-play-services-measurement-api-19.0.0\AndroidManifest.xml:32:17-82
+91            <meta-data
+91-->[com.google.firebase:firebase-installations:17.0.0] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\abd4fc55449f92dee3fce9c773e03a22\jetified-firebase-installations-17.0.0\AndroidManifest.xml:18:13-20:85
+92                android:name="com.google.firebase.components:com.google.firebase.installations.FirebaseInstallationsRegistrar"
+92-->[com.google.firebase:firebase-installations:17.0.0] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\abd4fc55449f92dee3fce9c773e03a22\jetified-firebase-installations-17.0.0\AndroidManifest.xml:19:17-127
+93                android:value="com.google.firebase.components.ComponentRegistrar" />
+93-->[com.google.firebase:firebase-installations:17.0.0] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\abd4fc55449f92dee3fce9c773e03a22\jetified-firebase-installations-17.0.0\AndroidManifest.xml:20:17-82
+94        </service>
+95
+96        <provider
+96-->[:react-native-firebase_app] C:\Users\Waqar\Desktop\Projects\winjoy\node_modules\@react-native-firebase\app\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:22:9-26:38
+97            android:name="io.invertase.firebase.app.ReactNativeFirebaseAppInitProvider"
+97-->[:react-native-firebase_app] C:\Users\Waqar\Desktop\Projects\winjoy\node_modules\@react-native-firebase\app\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:23:13-88
+98            android:authorities="com.rewardz_trivia.reactnativefirebaseappinitprovider"
+98-->[:react-native-firebase_app] C:\Users\Waqar\Desktop\Projects\winjoy\node_modules\@react-native-firebase\app\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:24:13-86
+99            android:exported="false"
+99-->[:react-native-firebase_app] C:\Users\Waqar\Desktop\Projects\winjoy\node_modules\@react-native-firebase\app\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:25:13-37
+100            android:initOrder="99" />
+100-->[:react-native-firebase_app] C:\Users\Waqar\Desktop\Projects\winjoy\node_modules\@react-native-firebase\app\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:26:13-35
+101        <provider
+101-->[:react-native-image-crop-picker] C:\Users\Waqar\Desktop\Projects\winjoy\node_modules\react-native-image-crop-picker\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:19:9-27:20
+102            android:name="androidx.core.content.FileProvider"
+102-->[:react-native-image-crop-picker] C:\Users\Waqar\Desktop\Projects\winjoy\node_modules\react-native-image-crop-picker\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:20:13-62
+103            android:authorities="com.rewardz_trivia.provider"
+103-->[:react-native-image-crop-picker] C:\Users\Waqar\Desktop\Projects\winjoy\node_modules\react-native-image-crop-picker\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:21:13-60
+104            android:exported="false"
+104-->[:react-native-image-crop-picker] C:\Users\Waqar\Desktop\Projects\winjoy\node_modules\react-native-image-crop-picker\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:22:13-37
+105            android:grantUriPermissions="true" >
+105-->[:react-native-image-crop-picker] C:\Users\Waqar\Desktop\Projects\winjoy\node_modules\react-native-image-crop-picker\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:23:13-47
+106            <meta-data
+106-->[:react-native-image-crop-picker] C:\Users\Waqar\Desktop\Projects\winjoy\node_modules\react-native-image-crop-picker\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:24:13-26:58
+107                android:name="android.support.FILE_PROVIDER_PATHS"
+107-->[:react-native-image-crop-picker] C:\Users\Waqar\Desktop\Projects\winjoy\node_modules\react-native-image-crop-picker\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:25:17-67
+108                android:resource="@xml/provider_paths" />
+108-->[:react-native-image-crop-picker] C:\Users\Waqar\Desktop\Projects\winjoy\node_modules\react-native-image-crop-picker\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:26:17-55
+109        </provider>
+110
+111        <activity
+111-->[:react-native-image-crop-picker] C:\Users\Waqar\Desktop\Projects\winjoy\node_modules\react-native-image-crop-picker\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:29:9-31:72
+112            android:name="com.yalantis.ucrop.UCropActivity"
+112-->[:react-native-image-crop-picker] C:\Users\Waqar\Desktop\Projects\winjoy\node_modules\react-native-image-crop-picker\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:30:13-60
+113            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+113-->[:react-native-image-crop-picker] C:\Users\Waqar\Desktop\Projects\winjoy\node_modules\react-native-image-crop-picker\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:31:13-69
+114
+115        <provider
+115-->[:rn-fetch-blob] C:\Users\Waqar\Desktop\Projects\winjoy\node_modules\rn-fetch-blob\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:36:9-44:20
+116            android:name="com.RNFetchBlob.Utils.FileProvider"
+116-->[:rn-fetch-blob] C:\Users\Waqar\Desktop\Projects\winjoy\node_modules\rn-fetch-blob\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:37:13-62
+117            android:authorities="com.rewardz_trivia.provider"
+117-->[:rn-fetch-blob] C:\Users\Waqar\Desktop\Projects\winjoy\node_modules\rn-fetch-blob\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:38:13-60
+118            android:exported="false"
+118-->[:rn-fetch-blob] C:\Users\Waqar\Desktop\Projects\winjoy\node_modules\rn-fetch-blob\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:39:13-37
+119            android:grantUriPermissions="true" >
+119-->[:rn-fetch-blob] C:\Users\Waqar\Desktop\Projects\winjoy\node_modules\rn-fetch-blob\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:40:13-47
+120            <meta-data
+120-->[:react-native-image-crop-picker] C:\Users\Waqar\Desktop\Projects\winjoy\node_modules\react-native-image-crop-picker\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:24:13-26:58
+121                android:name="android.support.FILE_PROVIDER_PATHS"
+121-->[:react-native-image-crop-picker] C:\Users\Waqar\Desktop\Projects\winjoy\node_modules\react-native-image-crop-picker\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:25:17-67
+122                android:resource="@xml/provider_paths" />
+122-->[:react-native-image-crop-picker] C:\Users\Waqar\Desktop\Projects\winjoy\node_modules\react-native-image-crop-picker\android\build\intermediates\library_manifest\debug\AndroidManifest.xml:26:17-55
+123        </provider>
+124
+125        <service
+125-->[com.google.android.datatransport:transport-backend-cct:3.0.0] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\dd945a3f878d0bc7f528b7558c28c325\jetified-transport-backend-cct-3.0.0\AndroidManifest.xml:29:9-35:19
+126            android:name="com.google.android.datatransport.runtime.backends.TransportBackendDiscovery"
+126-->[com.google.android.datatransport:transport-backend-cct:3.0.0] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\dd945a3f878d0bc7f528b7558c28c325\jetified-transport-backend-cct-3.0.0\AndroidManifest.xml:30:13-103
+127            android:exported="false" >
+127-->[com.google.android.datatransport:transport-backend-cct:3.0.0] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\dd945a3f878d0bc7f528b7558c28c325\jetified-transport-backend-cct-3.0.0\AndroidManifest.xml:31:13-37
+128            <meta-data
+128-->[com.google.android.datatransport:transport-backend-cct:3.0.0] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\dd945a3f878d0bc7f528b7558c28c325\jetified-transport-backend-cct-3.0.0\AndroidManifest.xml:32:13-34:39
+129                android:name="backend:com.google.android.datatransport.cct.CctBackendFactory"
+129-->[com.google.android.datatransport:transport-backend-cct:3.0.0] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\dd945a3f878d0bc7f528b7558c28c325\jetified-transport-backend-cct-3.0.0\AndroidManifest.xml:33:17-94
+130                android:value="cct" />
+130-->[com.google.android.datatransport:transport-backend-cct:3.0.0] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\dd945a3f878d0bc7f528b7558c28c325\jetified-transport-backend-cct-3.0.0\AndroidManifest.xml:34:17-36
+131        </service>
+132
+133        <provider
+133-->[com.google.firebase:firebase-common:20.0.0] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\955ab0dd6886a0f6e9d6db48779c503f\jetified-firebase-common-20.0.0\AndroidManifest.xml:26:9-31:39
+134            android:name="com.google.firebase.provider.FirebaseInitProvider"
+134-->[com.google.firebase:firebase-common:20.0.0] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\955ab0dd6886a0f6e9d6db48779c503f\jetified-firebase-common-20.0.0\AndroidManifest.xml:27:13-77
+135            android:authorities="com.rewardz_trivia.firebaseinitprovider"
+135-->[com.google.firebase:firebase-common:20.0.0] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\955ab0dd6886a0f6e9d6db48779c503f\jetified-firebase-common-20.0.0\AndroidManifest.xml:28:13-72
+136            android:directBootAware="true"
+136-->[com.google.firebase:firebase-common:20.0.0] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\955ab0dd6886a0f6e9d6db48779c503f\jetified-firebase-common-20.0.0\AndroidManifest.xml:29:13-43
+137            android:exported="false"
+137-->[com.google.firebase:firebase-common:20.0.0] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\955ab0dd6886a0f6e9d6db48779c503f\jetified-firebase-common-20.0.0\AndroidManifest.xml:30:13-37
+138            android:initOrder="100" />
+138-->[com.google.firebase:firebase-common:20.0.0] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\955ab0dd6886a0f6e9d6db48779c503f\jetified-firebase-common-20.0.0\AndroidManifest.xml:31:13-36
+139
+140        <activity
+140-->[androidx.biometric:biometric:1.0.1] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\bf1086337d04241e3b99b3447c9cf187\biometric-1.0.1\AndroidManifest.xml:28:9-31:67
+141            android:name="androidx.biometric.DeviceCredentialHandlerActivity"
+141-->[androidx.biometric:biometric:1.0.1] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\bf1086337d04241e3b99b3447c9cf187\biometric-1.0.1\AndroidManifest.xml:29:13-78
+142            android:exported="true"
+142-->[androidx.biometric:biometric:1.0.1] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\bf1086337d04241e3b99b3447c9cf187\biometric-1.0.1\AndroidManifest.xml:30:13-36
+143            android:theme="@style/DeviceCredentialHandlerTheme" />
+143-->[androidx.biometric:biometric:1.0.1] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\bf1086337d04241e3b99b3447c9cf187\biometric-1.0.1\AndroidManifest.xml:31:13-64
+144
+145        <service
+145-->[com.google.android.datatransport:transport-runtime:3.0.0] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\09fb538d3a22495a020c79d079a41abb\jetified-transport-runtime-3.0.0\AndroidManifest.xml:26:9-30:19
+146            android:name="com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoSchedulerService"
+146-->[com.google.android.datatransport:transport-runtime:3.0.0] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\09fb538d3a22495a020c79d079a41abb\jetified-transport-runtime-3.0.0\AndroidManifest.xml:27:13-117
+147            android:exported="false"
+147-->[com.google.android.datatransport:transport-runtime:3.0.0] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\09fb538d3a22495a020c79d079a41abb\jetified-transport-runtime-3.0.0\AndroidManifest.xml:28:13-37
+148            android:permission="android.permission.BIND_JOB_SERVICE" >
+148-->[com.google.android.datatransport:transport-runtime:3.0.0] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\09fb538d3a22495a020c79d079a41abb\jetified-transport-runtime-3.0.0\AndroidManifest.xml:29:13-69
+149        </service>
+150
+151        <receiver
+151-->[com.google.android.datatransport:transport-runtime:3.0.0] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\09fb538d3a22495a020c79d079a41abb\jetified-transport-runtime-3.0.0\AndroidManifest.xml:32:9-34:40
+152            android:name="com.google.android.datatransport.runtime.scheduling.jobscheduling.AlarmManagerSchedulerBroadcastReceiver"
+152-->[com.google.android.datatransport:transport-runtime:3.0.0] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\09fb538d3a22495a020c79d079a41abb\jetified-transport-runtime-3.0.0\AndroidManifest.xml:33:13-132
+153            android:exported="false" />
+153-->[com.google.android.datatransport:transport-runtime:3.0.0] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\09fb538d3a22495a020c79d079a41abb\jetified-transport-runtime-3.0.0\AndroidManifest.xml:34:13-37
+154
+155        <activity
+155-->[com.google.android.gms:play-services-auth:19.2.0] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\ecba659987641c1a2a3d1af9bad54557\jetified-play-services-auth-19.2.0\AndroidManifest.xml:23:9-27:75
+156            android:name="com.google.android.gms.auth.api.signin.internal.SignInHubActivity"
+156-->[com.google.android.gms:play-services-auth:19.2.0] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\ecba659987641c1a2a3d1af9bad54557\jetified-play-services-auth-19.2.0\AndroidManifest.xml:24:13-93
+157            android:excludeFromRecents="true"
+157-->[com.google.android.gms:play-services-auth:19.2.0] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\ecba659987641c1a2a3d1af9bad54557\jetified-play-services-auth-19.2.0\AndroidManifest.xml:25:13-46
+158            android:exported="false"
+158-->[com.google.android.gms:play-services-auth:19.2.0] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\ecba659987641c1a2a3d1af9bad54557\jetified-play-services-auth-19.2.0\AndroidManifest.xml:26:13-37
+159            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+159-->[com.google.android.gms:play-services-auth:19.2.0] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\ecba659987641c1a2a3d1af9bad54557\jetified-play-services-auth-19.2.0\AndroidManifest.xml:27:13-72
+160        <!--
+161            Service handling Google Sign-In user revocation. For apps that do not integrate with
+162            Google Sign-In, this service will never be started.
+163        -->
+164        <service
+164-->[com.google.android.gms:play-services-auth:19.2.0] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\ecba659987641c1a2a3d1af9bad54557\jetified-play-services-auth-19.2.0\AndroidManifest.xml:33:9-37:51
+165            android:name="com.google.android.gms.auth.api.signin.RevocationBoundService"
+165-->[com.google.android.gms:play-services-auth:19.2.0] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\ecba659987641c1a2a3d1af9bad54557\jetified-play-services-auth-19.2.0\AndroidManifest.xml:34:13-89
+166            android:exported="true"
+166-->[com.google.android.gms:play-services-auth:19.2.0] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\ecba659987641c1a2a3d1af9bad54557\jetified-play-services-auth-19.2.0\AndroidManifest.xml:35:13-36
+167            android:permission="com.google.android.gms.auth.api.signin.permission.REVOCATION_NOTIFICATION"
+167-->[com.google.android.gms:play-services-auth:19.2.0] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\ecba659987641c1a2a3d1af9bad54557\jetified-play-services-auth-19.2.0\AndroidManifest.xml:36:13-107
+168            android:visibleToInstantApps="true" />
+168-->[com.google.android.gms:play-services-auth:19.2.0] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\ecba659987641c1a2a3d1af9bad54557\jetified-play-services-auth-19.2.0\AndroidManifest.xml:37:13-48
+169
+170        <activity
+170-->[com.google.android.gms:play-services-base:17.5.0] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\e3f7bab6654716081796885bd297d3d7\jetified-play-services-base-17.5.0\AndroidManifest.xml:23:9-26:75
+171            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+171-->[com.google.android.gms:play-services-base:17.5.0] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\e3f7bab6654716081796885bd297d3d7\jetified-play-services-base-17.5.0\AndroidManifest.xml:24:13-79
+172            android:exported="false"
+172-->[com.google.android.gms:play-services-base:17.5.0] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\e3f7bab6654716081796885bd297d3d7\jetified-play-services-base-17.5.0\AndroidManifest.xml:25:13-37
+173            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+173-->[com.google.android.gms:play-services-base:17.5.0] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\e3f7bab6654716081796885bd297d3d7\jetified-play-services-base-17.5.0\AndroidManifest.xml:26:13-72
+174
+175        <receiver
+175-->[com.google.android.gms:play-services-measurement:19.0.0] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\250511e312ac930a099c96582b949880\jetified-play-services-measurement-19.0.0\AndroidManifest.xml:29:9-33:20
+176            android:name="com.google.android.gms.measurement.AppMeasurementReceiver"
+176-->[com.google.android.gms:play-services-measurement:19.0.0] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\250511e312ac930a099c96582b949880\jetified-play-services-measurement-19.0.0\AndroidManifest.xml:30:13-85
+177            android:enabled="true"
+177-->[com.google.android.gms:play-services-measurement:19.0.0] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\250511e312ac930a099c96582b949880\jetified-play-services-measurement-19.0.0\AndroidManifest.xml:31:13-35
+178            android:exported="false" >
+178-->[com.google.android.gms:play-services-measurement:19.0.0] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\250511e312ac930a099c96582b949880\jetified-play-services-measurement-19.0.0\AndroidManifest.xml:32:13-37
+179        </receiver>
+180
+181        <service
+181-->[com.google.android.gms:play-services-measurement:19.0.0] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\250511e312ac930a099c96582b949880\jetified-play-services-measurement-19.0.0\AndroidManifest.xml:35:9-38:40
+182            android:name="com.google.android.gms.measurement.AppMeasurementService"
+182-->[com.google.android.gms:play-services-measurement:19.0.0] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\250511e312ac930a099c96582b949880\jetified-play-services-measurement-19.0.0\AndroidManifest.xml:36:13-84
+183            android:enabled="true"
+183-->[com.google.android.gms:play-services-measurement:19.0.0] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\250511e312ac930a099c96582b949880\jetified-play-services-measurement-19.0.0\AndroidManifest.xml:37:13-35
+184            android:exported="false" />
+184-->[com.google.android.gms:play-services-measurement:19.0.0] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\250511e312ac930a099c96582b949880\jetified-play-services-measurement-19.0.0\AndroidManifest.xml:38:13-37
+185        <service
+185-->[com.google.android.gms:play-services-measurement:19.0.0] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\250511e312ac930a099c96582b949880\jetified-play-services-measurement-19.0.0\AndroidManifest.xml:39:9-43:72
+186            android:name="com.google.android.gms.measurement.AppMeasurementJobService"
+186-->[com.google.android.gms:play-services-measurement:19.0.0] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\250511e312ac930a099c96582b949880\jetified-play-services-measurement-19.0.0\AndroidManifest.xml:40:13-87
+187            android:enabled="true"
+187-->[com.google.android.gms:play-services-measurement:19.0.0] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\250511e312ac930a099c96582b949880\jetified-play-services-measurement-19.0.0\AndroidManifest.xml:41:13-35
+188            android:exported="false"
+188-->[com.google.android.gms:play-services-measurement:19.0.0] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\250511e312ac930a099c96582b949880\jetified-play-services-measurement-19.0.0\AndroidManifest.xml:42:13-37
+189            android:permission="android.permission.BIND_JOB_SERVICE" />
+189-->[com.google.android.gms:play-services-measurement:19.0.0] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\250511e312ac930a099c96582b949880\jetified-play-services-measurement-19.0.0\AndroidManifest.xml:43:13-69
+190
+191        <meta-data
+191-->[com.google.android.gms:play-services-basement:17.5.0] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\03f57b0972126204c2c4d91fe20eb637\jetified-play-services-basement-17.5.0\AndroidManifest.xml:23:9-25:69
+192            android:name="com.google.android.gms.version"
+192-->[com.google.android.gms:play-services-basement:17.5.0] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\03f57b0972126204c2c4d91fe20eb637\jetified-play-services-basement-17.5.0\AndroidManifest.xml:24:13-58
+193            android:value="@integer/google_play_services_version" />
+193-->[com.google.android.gms:play-services-basement:17.5.0] C:\Users\Waqar\.gradle\caches\transforms-2\files-2.1\03f57b0972126204c2c4d91fe20eb637\jetified-play-services-basement-17.5.0\AndroidManifest.xml:25:13-66
+194    </application>
+195
+196</manifest>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_web_client_id" translatable="false">816761135072-2urlf15qb85tt8kpejjrlv2dnsk06n56.apps.googleusercontent.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">816761135072</string>
+    <string name="google_api_key" translatable="false">AIzaSyCB48x7E8v4Sjyl3pcyyqoprXKuqRsNGSQ</string>
+    <string name="google_app_id" translatable="false">1:816761135072:android:999ed7bae25c1348211585</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyCB48x7E8v4Sjyl3pcyyqoprXKuqRsNGSQ</string>
+    <string name="google_storage_bucket" translatable="false">rewardztrivia.appspot.com</string>
+    <string name="project_id" translatable="false">rewardztrivia</string>
+</resources>
