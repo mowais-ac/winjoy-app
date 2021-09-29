@@ -1,4 +1,4 @@
-com.rewardz_trivia
+com.winjoy
 anim abc_fade_in
 anim abc_fade_out
 anim abc_grow_fade_in_from_bottom
@@ -2113,9 +2113,6 @@ raw node_modules_reactnativevectoricons_glyphmaps_materialicons
 raw node_modules_reactnativevectoricons_glyphmaps_octicons
 raw node_modules_reactnativevectoricons_glyphmaps_simplelineicons
 raw node_modules_reactnativevectoricons_glyphmaps_zocial
-string API_URL
-string PRODUCT_IMG
-string Profile_URL
 string abc_action_bar_home_description
 string abc_action_bar_up_description
 string abc_action_menu_overflow_description

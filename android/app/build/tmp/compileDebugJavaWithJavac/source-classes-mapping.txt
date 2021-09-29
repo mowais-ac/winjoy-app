@@ -1,14 +1,14 @@
-com/rewardz_trivia/ReactNativeFlipper.java
- com.rewardz_trivia.ReactNativeFlipper
- com.rewardz_trivia.ReactNativeFlipper$1
- com.rewardz_trivia.ReactNativeFlipper$2
- com.rewardz_trivia.ReactNativeFlipper$2$1
-com/rewardz_trivia/BuildConfig.java
- com.rewardz_trivia.BuildConfig
-com/rewardz_trivia/MainActivity.java
- com.rewardz_trivia.MainActivity
+com/winjoy/BuildConfig.java
+ com.winjoy.BuildConfig
+com/winjoy/MainActivity.java
+ com.winjoy.MainActivity
+com/winjoy/MainApplication.java
+ com.winjoy.MainApplication
+ com.winjoy.MainApplication$1
+com/winjoy/ReactNativeFlipper.java
+ com.winjoy.ReactNativeFlipper
+ com.winjoy.ReactNativeFlipper$1
+ com.winjoy.ReactNativeFlipper$2
+ com.winjoy.ReactNativeFlipper$2$1
 com/facebook/react/PackageList.java
  com.facebook.react.PackageList
-com/rewardz_trivia/MainApplication.java
- com.rewardz_trivia.MainApplication
- com.rewardz_trivia.MainApplication$1
