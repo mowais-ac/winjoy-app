@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.rewardz_trivia"
+    package="com.winjoy"
     android:versionCode="1001"
     android:versionName="1.0" >
 
@@ -36,7 +36,7 @@
     <uses-permission android:name="com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE" />
 
     <application
-        android:name="com.rewardz_trivia.MainApplication"
+        android:name="com.winjoy.MainApplication"
         android:allowBackup="false"
         android:appComponentFactory="androidx.core.app.CoreComponentFactory"
         android:debuggable="true"
@@ -47,7 +47,7 @@
         android:usesCleartextTraffic="true" >
         <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
         <activity
-            android:name="com.rewardz_trivia.MainActivity"
+            android:name="com.winjoy.MainActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|uiMode"
             android:label="@string/app_name"
             android:launchMode="singleTask"
@@ -64,7 +64,7 @@
 
         <provider
             android:name="io.invertase.firebase.crashlytics.ReactNativeFirebaseCrashlyticsInitProvider"
-            android:authorities="com.rewardz_trivia.reactnativefirebasecrashlyticsinitprovider"
+            android:authorities="com.winjoy.reactnativefirebasecrashlyticsinitprovider"
             android:exported="false"
             android:initOrder="98" />
 
@@ -95,12 +95,12 @@
 
         <provider
             android:name="io.invertase.firebase.app.ReactNativeFirebaseAppInitProvider"
-            android:authorities="com.rewardz_trivia.reactnativefirebaseappinitprovider"
+            android:authorities="com.winjoy.reactnativefirebaseappinitprovider"
             android:exported="false"
             android:initOrder="99" />
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.rewardz_trivia.provider"
+            android:authorities="com.winjoy.provider"
             android:exported="false"
             android:grantUriPermissions="true" >
             <meta-data
@@ -114,7 +114,7 @@
 
         <provider
             android:name="com.RNFetchBlob.Utils.FileProvider"
-            android:authorities="com.rewardz_trivia.provider"
+            android:authorities="com.winjoy.provider"
             android:exported="false"
             android:grantUriPermissions="true" >
             <meta-data
@@ -132,7 +132,7 @@
 
         <provider
             android:name="com.google.firebase.provider.FirebaseInitProvider"
-            android:authorities="com.rewardz_trivia.firebaseinitprovider"
+            android:authorities="com.winjoy.firebaseinitprovider"
             android:directBootAware="true"
             android:exported="false"
             android:initOrder="100" />

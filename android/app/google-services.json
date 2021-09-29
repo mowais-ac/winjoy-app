@@ -1,77 +1,34 @@
 {
   "project_info": {
-    "project_number": "816761135072",
-    "project_id": "rewardztrivia",
-    "storage_bucket": "rewardztrivia.appspot.com"
+    "project_number": "389658608176",
+    "project_id": "winjoy-26230",
+    "storage_bucket": "winjoy-26230.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:816761135072:android:bc451f0f9c1b391c211585",
+        "mobilesdk_app_id": "1:389658608176:android:9c842493e2fbc3a45063f5",
         "android_client_info": {
-          "package_name": "com.RewardzTrivia"
+          "package_name": "com.winjoy"
         }
       },
       "oauth_client": [
         {
-          "client_id": "816761135072-2urlf15qb85tt8kpejjrlv2dnsk06n56.apps.googleusercontent.com",
+          "client_id": "389658608176-lv2ddmmfpnv2uoaf5nf333e5jj4oku7o.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCB48x7E8v4Sjyl3pcyyqoprXKuqRsNGSQ"
+          "current_key": "AIzaSyCu0j6uGIU59yj_xoagkc2kl-LxI3ZiLzs"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "816761135072-2urlf15qb85tt8kpejjrlv2dnsk06n56.apps.googleusercontent.com",
+              "client_id": "389658608176-lv2ddmmfpnv2uoaf5nf333e5jj4oku7o.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "816761135072-ogo5sqcn08988pchudpepg6g3uvehbdt.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.RewardzTrivia"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:816761135072:android:999ed7bae25c1348211585",
-        "android_client_info": {
-          "package_name": "com.rewardz_trivia"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "816761135072-2urlf15qb85tt8kpejjrlv2dnsk06n56.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCB48x7E8v4Sjyl3pcyyqoprXKuqRsNGSQ"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "816761135072-2urlf15qb85tt8kpejjrlv2dnsk06n56.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "816761135072-ogo5sqcn08988pchudpepg6g3uvehbdt.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.RewardzTrivia"
-              }
             }
           ]
         }
