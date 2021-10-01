@@ -17,7 +17,7 @@ export default StyleSheet.create({
     height: 13,
   },
   GreybarWidth: {
-    width: 300,
+    width: widthPercentageToDP("80"),
     height: 13,
     zIndex: -1,
     position: "absolute",

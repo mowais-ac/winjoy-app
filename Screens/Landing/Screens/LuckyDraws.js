@@ -31,8 +31,7 @@ import HomeBottomList from "../../../Components/HomeBottomList";
 import { heightConverter, heightPercentageToDP, widthConverter, widthPercentageToDP } from "../../../Components/Helpers/Responsive";
 
 function ClosingSoon({ item }) {
-console.log("itemarr",item);
-let progress=(item.updated_stocks?item?.updated_stocks:0/item?.stock)*32
+let progress=(item.updated_stocks ? (item?.updated_stocks/item?.stock)*100 : 0)
   return (
     <View style={{
       width: width * 0.38,
@@ -56,8 +55,8 @@ let progress=(item.updated_stocks?item?.updated_stocks:0/item?.stock)*32
           {" "}WIN
         </Label>
       </Label>
-      <Label  bold font={11} dark style={{ color: "#000000", }}>
-      {item.title}
+      <Label  bold font={11} dark style={{ color: "#000000", width:"110%" }}>
+      {item.luckydraw.gift_title}
       </Label>  
       {/* <Label  bold font={11} dark style={{ color: "#000000", }}>
       Edition
@@ -69,7 +68,7 @@ let progress=(item.updated_stocks?item?.updated_stocks:0/item?.stock)*32
           colors={["#E7003F", "#420E92"]}
           style={[
             styles.LinerGradientProgrees,
-            { width: widthPercentageToDP(progress) },
+            { width: `${progress}%` },
           ]}
         />
         <View style={styles.GreybarWidth} />
@@ -112,7 +111,6 @@ const LuckyDraws = (props) => {
       // alert(13123);
       await axios.get(`${Config.API_URL}/banners`, requestOptions).then(response => {
         let res = response.data;
-        console.log('res: ', res)
         if (res.status && res.status.toLowerCase() === "success") {
           setBanners(res.data);
         }
@@ -126,7 +124,6 @@ const LuckyDraws = (props) => {
   const ProductList = async() => {
 
       const Token = await EncryptedStorage.getItem("Token");
-      console.log("token",Token);
       const requestOptions = {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -137,7 +134,6 @@ const LuckyDraws = (props) => {
       // alert(13123);
       await axios.get(`${Config.API_URL}/products/list`, requestOptions).then(response => {
         let res = response.data;
-        console.log('res plist: ', res)
         let arr=[];
         if (res.status && res.status.toLowerCase() === "success") {
           res.data.map((item) => {
@@ -251,9 +247,9 @@ const styles = StyleSheet.create({
     paddingBottom:10
   },
   LinerGradientProgrees: {
+    width:25,
     alignItems: "center",
     justifyContent: "center",
-    width: 25,
     borderRadius: 9,
     height: 9,
   },
@@ -267,7 +263,7 @@ const styles = StyleSheet.create({
 
   },
   containerprogressBar: {
-    width: 100,
+   width: widthConverter(120),
     marginBottom: 2,
     marginTop: 2,
     flexDirection: "row",

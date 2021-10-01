@@ -1,13 +1,14 @@
 import React, { useState } from "react";
-import { View, Image, Dimensions } from "react-native";
+import { View, Image, Dimensions, TouchableOpacity } from "react-native";
 import styles from "./Styles";
 import Label from "../Label";
 import LinearGradient from "react-native-linear-gradient";
+import { widthPercentageToDP } from "../Helpers/Responsive";
 const { width, height } = Dimensions.get("window");
-function ChanceCard({ options, onPress, reset, result, optionDisable }) {
-
+function ChanceCard({ options, onPress, reset, result, optionDisable,data }) {
+let progress=(data.item.updated_stocks? (data.item?.updated_stocks/data.item.stock)*100:0);
   return (
-    <View style={{
+    <TouchableOpacity style={{
       width: width - 25,
       height: height * 0.28,
       backgroundColor: '#ffffff',
@@ -19,7 +20,8 @@ function ChanceCard({ options, onPress, reset, result, optionDisable }) {
       justifyContent: 'center', alignItems: 'center',
       elevation: 3,
       marginBottom:15
-    }}>
+    }}
+    onPress={onPress}>
 
       <Image
         style={{
@@ -36,7 +38,7 @@ function ChanceCard({ options, onPress, reset, result, optionDisable }) {
         </Label>
       </Label>
       <Label primary font={16} dark style={{ color: "#000000", }}>
-        test test
+        {data.item.luckydraw.gift_title}
       </Label>
       <View style={styles.containerprogressBar}>
         <LinearGradient
@@ -45,15 +47,15 @@ function ChanceCard({ options, onPress, reset, result, optionDisable }) {
           colors={["#E7003F", "#420E92"]}
           style={[
             styles.LinerGradientProgrees,
-            { width: "70%" },
+            { width: `${progress}%`},
           ]}
         />
         <View style={styles.GreybarWidth} />
       </View>
       <Label primary font={11} dark style={{ color: "#000000", top: 9 }}>
-        1320 sold out of 2700
+        {data.item.updated_stocks} sold out of {data.item.stock}
       </Label>
-    </View>
+    </TouchableOpacity>
   );
 }
 
