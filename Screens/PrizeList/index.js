@@ -40,6 +40,7 @@ const index = ({ props, navigation }) => {
       .then((response) => {
         let res = response;`  `
         setProductData(res?.data?.data[0]);
+        console.log(res.data.data[0]);
       });
   };
   return (
@@ -85,9 +86,9 @@ const index = ({ props, navigation }) => {
                 <ChanceCard data={item}
                 onPress={()=>navigation.navigate("SimpeStackScreen",{screen:"ProductDetail",params:item.item})}
                 />}
-                keyExtractor={(e) => e}
+                keyExtractor={(e) => e.id.toString()}
                 contentContainerStyle={{
-                  paddingBottom: height * 0.2,
+                  paddingBottom: height * 0.48,
                 }}
               />
       </View>
