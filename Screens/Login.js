@@ -162,11 +162,11 @@ const Login = ({ navigation }) => {
             bold
             muted
             style={[styles.ORButton, { lineHeight: height * 0.03 }]}
-            font={11}
+            font={15}
           >
             OR
           </Label>
-        <View style={{ marginTop: height * 0.066 }}>
+        <View style={{ marginTop: height * 0.052 }}>
           <LongButton
             text="Create an account"
             onPress={() => navigation.navigate("Register")}
@@ -202,7 +202,7 @@ const styles = StyleSheet.create({
   MarginSmall: { marginTop: height * 0.015 },
   ORButton: {
     position: "absolute",
-    marginTop: height * 0.665,
+    marginTop: height * 0.68,
   },
 });
 
