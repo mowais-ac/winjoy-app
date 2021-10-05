@@ -4,7 +4,7 @@ import Label from "../Components/Label";
 import { Images } from "../Constants/Index";
 import { useNavigation } from "@react-navigation/native";
 import { connect } from "react-redux";
-
+import Config from "react-native-config";
 const { width, height } = Dimensions.get("window");
 const DATA = [
   {
@@ -21,7 +21,7 @@ const DATA = [
   },
 ];
 function ClosingSoon({ item }) {
-
+console.log("item",item);
 
   return (
     <View style={{
@@ -41,7 +41,9 @@ function ClosingSoon({ item }) {
             height: 100,
           }}
           resizeMode={"contain"}
-          source={require('../assets/imgs/iphone.png')}
+          source={{
+            uri: 'https://reactnative.dev/img/tiny_logo.png',
+          }}
 
         />
         <View style={{ marginLeft: width * 0.14, }}>
@@ -49,13 +51,13 @@ function ClosingSoon({ item }) {
             Congratulations
           </Label>
           <Label notAlign bold font={12} dark style={{ color: "#000000", width: width * 0.3, }}>
-            Inaam Ali Shah
+         {item.winnerfull_name}
           </Label>
           <Label notAlign primary font={12} dark style={{ color: "#000000", width: width * 0.3, }}>
             on winning
           </Label>
           <Label notAlign bold font={12} dark style={{ color: "#000000", width: width * 0.3, }}>
-            iPhone 12 Pro 256 GB
+          {item.product_title}
           </Label>
         </View>
       </View>
@@ -66,6 +68,7 @@ function ClosingSoon({ item }) {
 const HomeBottomList = (props) => {
   const navigation = useNavigation();
   const { Bell } = props;
+  console.log("data",props.data);
   return (
     <>
       <Label primary font={16} bold style={{ color: "#E7003F", marginTop: 10 }}>
@@ -77,7 +80,7 @@ const HomeBottomList = (props) => {
         contentContainerStyle={{ alignSelf: "flex-start" }}
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
-        data={DATA}
+        data={props.data}
         renderItem={({ item }) => (
           <ClosingSoon
             props={props}

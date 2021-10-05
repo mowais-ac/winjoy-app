@@ -39,28 +39,53 @@ const index = ({ props, navigation }) => {
         // alert(13123);
         await axios.get(`${Config.API_URL}/begin/game/questions/answers/list`, requestOptions).then(response => {
             let res = response.data;
+
             setQuestion(res)
             console.log('res', question)
-            // let arr=[];
-            // if (res.status && res.status.toLowerCase() === "success") {
-            //   res.data.map((item) => {
-            //     item.map((v, i)=>{
-            //       arr.push(v)
-            //     })
-            //   });
 
-            //  setProductList(arr);
-            // }
 
         });
 
     }
+    const CheckResult = async () => {
+        ///Check Result
+        const Token = await EncryptedStorage.getItem("Token");
+        const body = JSONtoForm({
+            live_gameshow_id: question[0]?.live_gameshow_id,
+        });
+        const requestOptions = {
+            method: "POST",
+            headers: {
+                "Content-Type": "multipart/form-data",
+                Accept: "application/json",
+                Authorization: `Bearer ${Token}`,
+            },
+            body,
+        };
+
+        await fetch(`${Config.API_URL}/finish/gameshow`, requestOptions)
+            .then(async (response) => response.json())
+            .then(async (res) => {
+                if (res === "Sorry! Try Next Time") {
+                    alert("Sorry! Try Next Time")
+                }
+                else {
+                    navigation.navigate("Congrats")
+                }
+
+
+
+            });
+    }
     const SaveResponse = async () => {
+        console.log("lastindex", question[question.length - 1].id);
+
+
         const Token = await EncryptedStorage.getItem("Token");
         const body = JSONtoForm({
             question: question[questionIncrement]?.id,
             answer: answerId,
-            live_gameshow_id:question[questionIncrement]?.live_gameshow_id,
+            live_gameshow_id: question[questionIncrement]?.live_gameshow_id,
         });
         const requestOptions = {
             method: "POST",
@@ -76,18 +101,26 @@ const index = ({ props, navigation }) => {
             .then(async (response) => response.json())
             .then(async (res) => {
                 console.log("ressave", res);
-                let inc = questionIncrement + 1;
-                setQuestionIncrement(inc)
+                if (question[question.length - 1].id === question[questionIncrement]?.id) {
+                    CheckResult()
+                }
+                else {
+                    let inc = questionIncrement + 1;
+                    setQuestionIncrement(inc)
+                }
+
+
+
 
             })
             .catch((e) => {
-                Alert.alert("Error", e);
+                alert("Error", e);
 
             });
+
     }
     const onPressDone = (ansId) => {
         setAnswerId(ansId)
-        alert(ansId)
 
         SaveResponse()
     }
