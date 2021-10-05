@@ -3,7 +3,7 @@ require_relative '../node_modules/@react-native-community/cli-platform-ios/nativ
 
 platform :ios, '10.0'
 
-target 'rewardz_trivia' do
+target 'WinJoy' do
   config = use_native_modules!
 
   use_react_native!(
@@ -15,7 +15,7 @@ target 'rewardz_trivia' do
 
   pod 'BVLinearGradient', :path => '../node_modules/react-native-linear-gradient'
 
-  target 'rewardz_triviaTests' do
+  target 'WinJoyTests' do
     inherit! :complete
     # Pods for testing
   end

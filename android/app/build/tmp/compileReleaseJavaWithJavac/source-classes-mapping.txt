@@ -1,0 +1,9 @@
+com/winjoy/BuildConfig.java
+ com.winjoy.BuildConfig
+com/winjoy/MainActivity.java
+ com.winjoy.MainActivity
+com/winjoy/MainApplication.java
+ com.winjoy.MainApplication
+ com.winjoy.MainApplication$1
+com/facebook/react/PackageList.java
+ com.facebook.react.PackageList

@@ -1,34 +1,24 @@
-import React, { useState, useRef, useEffect } from "react";
+import React from "react";
 import {
     View,
     StyleSheet,
-    Image,
     Dimensions,
-    ScrollView,
-    TouchableOpacity,
-    RefreshControl,
-    ActivityIndicator,
     Text,
-    FlatList
 } from "react-native";
 import Label from "../../Components/Label";
 const { width, height } = Dimensions.get("window");
 import LinearGradient from "react-native-linear-gradient";
-import HomeBottomList from "../../Components/HomeBottomList";
 import { Card } from "../../Components";
 import {
     widthPercentageToDP,
     heightPercentageToDP,
     heightConverter,
-    widthConverter,
 } from "../../Components/Helpers/Responsive";
-import Background from "../../Components/Background";
 import Header from "../../Components/Header";
-import { Avatar } from "react-native-elements";
-let data = [1, 2, 3, 4]
-let data2 = ["DashBoard", "LeaderBoard", "played Games", "Friends", "View Profile", "My Orders", "My Address", "Logout"]
-const ProductDetail = ({ props, navigation }) => {
 
+const ProductDetail = ({ props, navigation, route }) => {
+    const item  = route.params;
+    let progress=(item.updated_stocks? (item?.updated_stocks/item.stock)*100 : 0);
     return (
 
 
@@ -44,7 +34,7 @@ const ProductDetail = ({ props, navigation }) => {
 
                 <View style={styles.bottomView}>
                     <Label primary font={13} dark style={{ color: "#ffffff", marginTop: 9, marginBottom: 9, }}>
-                        1320 sold out of 2700
+                        {item.updated_stocks || 0} sold out of {item.stock}
                     </Label>
                     <View style={styles.containerprogressBar}>
                         <LinearGradient
@@ -53,7 +43,7 @@ const ProductDetail = ({ props, navigation }) => {
                             colors={["#ff9000", "#e70100"]}
                             style={[
                                 styles.LinerGradientProgrees,
-                                { width: "70%" },
+                                { width: `${progress>99?99:progress}%` },
                             ]}
                         />
                         <View style={styles.GreybarWidth} />
@@ -64,7 +54,7 @@ const ProductDetail = ({ props, navigation }) => {
 
             </LinearGradient>
             <View style={styles.upperView}>
-                <Card />
+                <Card item={item}/>
             </View>
             <View style={styles.card}>
 
@@ -75,7 +65,7 @@ const ProductDetail = ({ props, navigation }) => {
                     </Label>
                 </Label>
                 <Label font={16} dark style={{ color: "#000000" }}>
-                    Mercedez 2021 Limited Edition
+                    {item.luckydraw.gift_title}
                 </Label>
                 <Text style={styles.closingTxt}>
                     Closing Soon
@@ -86,7 +76,7 @@ const ProductDetail = ({ props, navigation }) => {
                     Products Details
                 </Label>
                 <Label notAlign font={11} dark style={{ color: "#000000", lineHeight: 20 }}>
-                    Lorem ipsum dolor sit amet. Vel dicta molestiae ex similique nesciunt ut ducimus atque vel ipsam voluptatem. Est autem consequatur quo eligendi omnis aut reprehenderit quibusdam non dolorum voluptatum. Qui quasi libero et quasi nobis eos totam neque sit eaque exercitationem.
+                  {item.description}
                 </Label>
             </View>
             <View style={styles.card2}>
@@ -98,7 +88,7 @@ const ProductDetail = ({ props, navigation }) => {
                     width: widthPercentageToDP("83")
                 }}>
                     <Text style={styles.metaText}>To enter in the lucky draw</Text>
-                    <Text style={[styles.text, { fontWeight: 'bold' }]}>8,000</Text>
+                    <Text style={[styles.text, { fontWeight: 'bold' }]}>{item.price}</Text>
 
                 </View>
                 <View style={{
@@ -107,7 +97,7 @@ const ProductDetail = ({ props, navigation }) => {
                     alignItems: 'center',
                     width: widthPercentageToDP("83")
                 }}>
-                    <Text style={[styles.metaText, { fontWeight: 'bold' }]}>Buy a H2H Hoodie</Text>
+                    <Text style={[styles.metaText, { fontWeight: 'bold' }]}>Buy a {item.title}</Text>
                     <Text style={styles.text}>Gold Coin</Text>
 
                 </View>
@@ -152,10 +142,10 @@ const styles = StyleSheet.create({
         width: 25,
         borderRadius: 9,
         height: 14,
-        left: 2
+        left: 2,
     },
     GreybarWidth: {
-        width: 368,
+        width: widthPercentageToDP("95"),
         height: 18,
         zIndex: -1,
         position: "absolute",

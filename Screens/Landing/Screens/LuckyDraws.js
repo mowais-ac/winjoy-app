@@ -2,63 +2,78 @@ import React, { useState, useRef, useEffect } from "react";
 import {
   View,
   StyleSheet,
-  Image,
   Dimensions,
   ScrollView,
   TouchableOpacity,
   RefreshControl,
   ActivityIndicator,
-  Text,
   FlatList,
-  ImageBackground
+  ImageBackground,
 } from "react-native";
 import UpdateCoins from "../../../redux/actions/Coins-action";
 import { connect } from "react-redux";
-import { GetCoins, GetMaxCoins, wait } from "../../../Constants/Functions";
-import SafeArea from "../../../Components/SafeArea";
-import BackgroundHome from "../../../Components/BackgroundHome";
+import {  wait } from "../../../Constants/Functions";
 import LoaderImage from "../../../Components/LoaderImage";
 import Label from "../../../Components/Label";
-import Header from "../../../Components/Header";
-import { Colors, Images } from "../../../Constants/Index";
+import { Colors } from "../../../Constants/Index";
 import { useFocusEffect } from "@react-navigation/native";
 import EncryptedStorage from "react-native-encrypted-storage";
 import Config from "react-native-config";
 const { width, height } = Dimensions.get("window");
-import axios from 'axios';
+import axios from "axios";
 import LinearGradient from "react-native-linear-gradient";
 import HomeBottomList from "../../../Components/HomeBottomList";
-import { heightConverter, heightPercentageToDP, widthConverter, widthPercentageToDP } from "../../../Components/Helpers/Responsive";
+import {
+  heightConverter,
+  heightPercentageToDP,
+  widthConverter,
+} from "../../../Components/Helpers/Responsive";
 
 function ClosingSoon({ item }) {
-console.log("itemarr",item);
-let progress=(item.updated_stocks?item?.updated_stocks:0/item?.stock)*32
+  let progress = item.updated_stocks
+    ? (item?.updated_stocks / item?.stock) * 100
+    : 0;
+  const ImgUrl = `${Config.PRODUCT_IMG}/${item.id}/${
+    JSON.parse(item.image)[0]
+  }`;
   return (
-    <View style={{
-      width: width * 0.38,
-      height: heightConverter(190),
-      backgroundColor: '#ffffff',
-      marginLeft: 10,
-      borderRadius: 10,
-      padding: 10
-    }}>
-
-      <Image
-        style={{
-          width: 130,
-          height: 100,
+    <View
+      style={{
+        width: width * 0.38,
+        height: heightConverter(190),
+        backgroundColor: "#ffffff",
+        marginLeft: 10,
+        borderRadius: 10,
+        padding: 10,
+      }}
+    >
+      <LoaderImage
+        source={{
+          uri: ImgUrl.replace("http://", "https://"),
         }}
-        source={require('../../../assets/imgs/jeep.png')}
+        style={{
+          width: 120,
+          height: 90,
+        }}
+        resizeMode="contain"
       />
-      <Label  primary font={11} dark style={{ color: "#000000" }}>
+      <Label primary font={11} dark style={{ color: "#000000" }}>
         Get a chance to
-        <Label notAlign bold primary font={11} bold style={{ color: "#E7003F" }}>
-          {" "}WIN
+        <Label
+          notAlign
+          bold
+          primary
+          font={11}
+          bold
+          style={{ color: "#E7003F" }}
+        >
+          {" "}
+          WIN
         </Label>
       </Label>
-      <Label  bold font={11} dark style={{ color: "#000000", }}>
-      {item.title}
-      </Label>  
+      <Label bold font={11} dark style={{ color: "#000000", width: "110%" }}>
+        {item.luckydraw.gift_title}
+      </Label>
       {/* <Label  bold font={11} dark style={{ color: "#000000", }}>
       Edition
       </Label> */}
@@ -67,15 +82,12 @@ let progress=(item.updated_stocks?item?.updated_stocks:0/item?.stock)*32
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 0 }}
           colors={["#E7003F", "#420E92"]}
-          style={[
-            styles.LinerGradientProgrees,
-            { width: widthPercentageToDP(progress) },
-          ]}
+          style={[styles.LinerGradientProgrees, { width: `${progress}%` }]}
         />
         <View style={styles.GreybarWidth} />
       </View>
-      <Label primary font={10}  style={{ color: "#877C80",top:4 }}>
-      {item.updated_stocks?item.updated_stocks:0}  sold out of  {item.stock}
+      <Label primary font={10} style={{ color: "#877C80", top: 4 }}>
+        {item.updated_stocks ? item.updated_stocks : 0} sold out of {item.stock}
       </Label>
     </View>
   );
@@ -110,48 +122,44 @@ const LuckyDraws = (props) => {
         },
       };
       // alert(13123);
-      await axios.get(`${Config.API_URL}/banners`, requestOptions).then(response => {
-        let res = response.data;
-        console.log('res: ', res)
-        if (res.status && res.status.toLowerCase() === "success") {
-          setBanners(res.data);
-        }
-
-      });
+      await axios
+        .get(`${Config.API_URL}/banners`, requestOptions)
+        .then((response) => {
+          let res = response.data;
+          if (res.status && res.status.toLowerCase() === "success") {
+            setBanners(res.data);
+          }
+        });
     };
 
     check();
-
-  }
-  const ProductList = async() => {
-
-      const Token = await EncryptedStorage.getItem("Token");
-      console.log("token",Token);
-      const requestOptions = {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Accept: "application/json",
-          Authorization: `Bearer ${Token}`,
-        },
-      };
-      // alert(13123);
-      await axios.get(`${Config.API_URL}/products/list`, requestOptions).then(response => {
+  };
+  const ProductList = async () => {
+    const Token = await EncryptedStorage.getItem("Token");
+    const requestOptions = {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Accept: "application/json",
+        Authorization: `Bearer ${Token}`,
+      },
+    };
+    // alert(13123);
+    await axios
+      .get(`${Config.API_URL}/products/list`, requestOptions)
+      .then((response) => {
         let res = response.data;
-        console.log('res plist: ', res)
-        let arr=[];
+        let arr = [];
         if (res.status && res.status.toLowerCase() === "success") {
           res.data.map((item) => {
-            item.map((v, i)=>{
-              arr.push(v)
-            })
+            item.map((v, i) => {
+              arr.push(v);
+            });
           });
-      
-         setProductList(arr);
+
+          setProductList(arr);
         }
-
       });
-
-  }
+  };
   useFocusEffect(
     React.useCallback(() => {
       UpdateCoinsOnce();
@@ -161,19 +169,12 @@ const LuckyDraws = (props) => {
   );
   return (
     <ScrollView
-    style={{backgroundColor:'#ffffff'}}
+      style={{ backgroundColor: "#ffffff" }}
       refreshControl={
         <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
       }
     >
-
-      <LinearGradient
-        colors={["#5B0C86", "#E7003F"]}
-        style={styles.mainView}
-      >
-
-
-
+      <LinearGradient colors={["#5B0C86", "#E7003F"]} style={styles.mainView}>
         {Banners === null ? (
           <ActivityIndicator size="large" color={Colors.BLACK} />
         ) : (
@@ -184,51 +185,96 @@ const LuckyDraws = (props) => {
             /> */}
             <ImageBackground
               style={styles.ShoppingBanner}
-              source={require('../../../assets/imgs/banner.png')}
+              source={require("../../../assets/imgs/banner.png")}
             >
               <View style={styles.bgImageUpperView}>
-                <Label notAlign bold primary font={40} bold style={{ color: "#FFFF13" }}>
+                <Label
+                  notAlign
+                  bold
+                  primary
+                  font={40}
+                  bold
+                  style={{ color: "#FFFF13" }}
+                >
                   Win
                 </Label>
-                <Label primary font={16} bold notAlign dark style={{ color: "#ffffff",   }}>
-                The National Day Grand Prize
+                <Label
+                  primary
+                  font={16}
+                  bold
+                  notAlign
+                  dark
+                  style={{ color: "#ffffff" }}
+                >
+                  The National Day Grand Prize
                 </Label>
               </View>
             </ImageBackground>
           </TouchableOpacity>
         )}
 
-        <Label notAlign primary font={16} dark style={{ color: "#ffff", marginLeft: 10, marginTop: 10, marginBottom: 10 }}>
+        <Label
+          notAlign
+          primary
+          font={16}
+          dark
+          style={{
+            color: "#ffff",
+            marginLeft: 10,
+            marginTop: 10,
+            marginBottom: 10,
+          }}
+        >
           Closing Soon
         </Label>
         <FlatList
           horizontal={true}
-          style={{ marginLeft: 1, minHeight: 50, }}
-          contentContainerStyle={{ alignSelf: "flex-start" }}
+          style={{ marginLeft: 1, minHeight: 50 }}
+          contentContainerStyle={{
+            alignSelf: "flex-start",
+            paddingRight: width * 0.04,
+          }}
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
           data={productList}
           renderItem={({ item }) => (
-          <TouchableOpacity onPress={()=>navigation.navigate('SimpeStackScreen',{screen:'PrizeList'})}>
-              <ClosingSoon
-              props={props}
-              index={item.index}
-              item={item}
-
-            />
-          </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate("SimpeStackScreen", { screen: "PrizeList" })
+              }
+            >
+              <ClosingSoon props={props} index={item.index} item={item} />
+            </TouchableOpacity>
           )}
           keyExtractor={(item) => item.id}
-        //   ListEmptyComponent={this.RenderEmptyContainerOnGoing()}
+          //   ListEmptyComponent={this.RenderEmptyContainerOnGoing()}
         />
-        <View style={{ height: 1, width: width * 1, backgroundColor: '#E74F7D', marginTop: 13 }} />
-        <Label primary font={16} bold dark style={{ color: "#ffffff", marginLeft: 10, marginTop: 10, marginBottom: 10 }}>
+        <View
+          style={{
+            height: 1,
+            width: width * 1,
+            backgroundColor: "#E74F7D",
+            marginTop: 13,
+          }}
+        />
+        <Label
+          primary
+          font={16}
+          bold
+          dark
+          style={{
+            color: "#ffffff",
+            marginLeft: 10,
+            marginTop: 10,
+            marginBottom: 10,
+          }}
+        >
           View All Prizes
         </Label>
         <View style={{ marginBottom: height * 0.01 }} />
       </LinearGradient>
       <HomeBottomList />
-      <View style={{height:20}}/>
+      <View style={{ height: 20 }} />
     </ScrollView>
   );
 };
@@ -240,20 +286,19 @@ const styles = StyleSheet.create({
     marginTop: height * 0.015,
     resizeMode: "stretch",
     alignSelf: "center",
-
   },
   bgImageUpperView: {
     width: width * 1.01,
     height: height * 0.3,
-    backgroundColor: 'rgba(231,0,63,0.15)',
-    justifyContent: 'flex-end',
+    backgroundColor: "rgba(231,0,63,0.15)",
+    justifyContent: "flex-end",
     paddingLeft: 16,
-    paddingBottom:10
+    paddingBottom: 10,
   },
   LinerGradientProgrees: {
+    width: 25,
     alignItems: "center",
     justifyContent: "center",
-    width: 25,
     borderRadius: 9,
     height: 9,
   },
@@ -264,17 +309,15 @@ const styles = StyleSheet.create({
     position: "absolute",
     backgroundColor: "#EADFE3",
     borderRadius: 9,
-
   },
   containerprogressBar: {
-    width: 100,
+    width: widthConverter(120),
     marginBottom: 2,
     marginTop: 2,
     flexDirection: "row",
     alignItems: "center",
     height: 3,
     marginLeft: 2,
-
   },
   mainView: {
     height: heightPercentageToDP("70"),
@@ -284,8 +327,8 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 20,
     borderTopLeftRadius: 0,
     borderTopRightRadius: 0,
-    overflow: 'hidden',
-  }
+    overflow: "hidden",
+  },
 });
 
 const mapStateToProps = (state) => {

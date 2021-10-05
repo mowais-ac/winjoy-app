@@ -767,7 +767,7 @@
     <string name="abc_toolbar_collapse_description">Collapse</string>
     <string name="accessibility_fingerprint_dialog_help_area">Help message area</string>
     <string name="alert_description" translatable="false">Alert</string>
-    <string name="app_name">rewardz_trivia</string>
+    <string name="app_name">WinJoy</string>
     <string name="appbar_scrolling_view_behavior" translatable="false">com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior</string>
     <string name="bottom_sheet_behavior" translatable="false">com.google.android.material.bottomsheet.BottomSheetBehavior</string>
     <string name="button_description" translatable="false">Button</string>
@@ -828,7 +828,7 @@
     <string name="common_signin_button_text_long">Sign in with Google</string>
     <string name="confirm_device_credential_password">Use password</string>
     <string name="default_error_msg">Unknown error</string>
-    <string name="default_web_client_id" translatable="false">816761135072-2urlf15qb85tt8kpejjrlv2dnsk06n56.apps.googleusercontent.com</string>
+    <string name="default_web_client_id" translatable="false">389658608176-lv2ddmmfpnv2uoaf5nf333e5jj4oku7o.apps.googleusercontent.com</string>
     <string name="description_fingerprint_icon">Fingerprint icon</string>
     <string name="error_icon_content_description">Error</string>
     <string name="exposed_dropdown_menu_content_description">Show dropdown menu</string>
@@ -844,12 +844,12 @@
     <string name="fingerprint_hint">Touch sensor</string>
     <string name="fingerprint_not_recognized">Fingerprint not recognized. Try again</string>
     <string name="fingerprint_success">Fingerprint recognized</string>
-    <string name="gcm_defaultSenderId" translatable="false">816761135072</string>
+    <string name="gcm_defaultSenderId" translatable="false">389658608176</string>
     <string name="generic_error_user_canceled">Authentication canceled by user.</string>
-    <string name="google_api_key" translatable="false">AIzaSyCB48x7E8v4Sjyl3pcyyqoprXKuqRsNGSQ</string>
-    <string name="google_app_id" translatable="false">1:816761135072:android:999ed7bae25c1348211585</string>
-    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyCB48x7E8v4Sjyl3pcyyqoprXKuqRsNGSQ</string>
-    <string name="google_storage_bucket" translatable="false">rewardztrivia.appspot.com</string>
+    <string name="google_api_key" translatable="false">AIzaSyCu0j6uGIU59yj_xoagkc2kl-LxI3ZiLzs</string>
+    <string name="google_app_id" translatable="false">1:389658608176:android:9c842493e2fbc3a45063f5</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyCu0j6uGIU59yj_xoagkc2kl-LxI3ZiLzs</string>
+    <string name="google_storage_bucket" translatable="false">winjoy-26230.appspot.com</string>
     <string name="header">Sign in</string>
     <string name="header_description" translatable="false">Heading</string>
     <string name="hide_bottom_view_on_scroll_behavior" translatable="false">com.google.android.material.behavior.HideBottomViewOnScrollBehavior</string>
@@ -910,7 +910,7 @@ before proceeding some actions such as purchasing an item.
     <string name="path_password_eye_mask_visible" translatable="false">M2,4.27 L2,4.27 L4.54,1.73 L4.54,1.73 L4.54,1 L23,1 L23,23 L1,23 L1,4.27 Z</string>
     <string name="path_password_strike_through" translatable="false">M3.27,4.27 L19.74,20.74</string>
     <string name="progressbar_description" translatable="false">Progress Bar</string>
-    <string name="project_id" translatable="false">rewardztrivia</string>
+    <string name="project_id" translatable="false">winjoy-26230</string>
     <string name="radiogroup_description" translatable="false">Radio Group</string>
     <string name="rn_tab_description" translatable="false">Tab</string>
     <string name="scrollbar_description" translatable="false">Scroll Bar</string>

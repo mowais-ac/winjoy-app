@@ -25,8 +25,32 @@ import {
 import Background from "../../Components/Background";
 import Header from "../../Components/Header";
 import { Avatar } from "react-native-elements";
+import EncryptedStorage from "react-native-encrypted-storage"; 
+import Config from "react-native-config";
+import axios from 'axios';
 let data = [1, 2, 3]
 const LastGame = ({ props, navigation }) => {
+ const [userData, setUserData] = useState([]);
+    useEffect(async () => {
+      GetData()
+    },[]);
+    const GetData = async () => {
+        const Token = await EncryptedStorage.getItem("Token");
+        const requestOptions = {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Accept: "application/json",
+            Authorization: `Bearer ${Token}`,
+          },
+        }; 
+        // alert(13123);
+        
+        await axios.get(`${Config.API_URL}/livegameshow/user/game/history`, requestOptions).then(response => {
+          let res = response;
+          setUserData(res?.data)
+        });
+    
+    }
 
     return (
    
