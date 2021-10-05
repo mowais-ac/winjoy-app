@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_web_client_id" translatable="false">389658608176-lv2ddmmfpnv2uoaf5nf333e5jj4oku7o.apps.googleusercontent.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">389658608176</string>
+    <string name="google_api_key" translatable="false">AIzaSyCu0j6uGIU59yj_xoagkc2kl-LxI3ZiLzs</string>
+    <string name="google_app_id" translatable="false">1:389658608176:android:9c842493e2fbc3a45063f5</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyCu0j6uGIU59yj_xoagkc2kl-LxI3ZiLzs</string>
+    <string name="google_storage_bucket" translatable="false">winjoy-26230.appspot.com</string>
+    <string name="project_id" translatable="false">winjoy-26230</string>
+</resources>

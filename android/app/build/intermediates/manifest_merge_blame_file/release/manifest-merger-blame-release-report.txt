@@ -1,0 +1,344 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.winjoy"
+4    android:versionCode="1004"
+5    android:versionName="1.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="21"
+8-->/Volumes/MaheshWork/Joyeco/winjoy/android/app/src/main/AndroidManifest.xml
+9        android:targetSdkVersion="29" />
+9-->/Volumes/MaheshWork/Joyeco/winjoy/android/app/src/main/AndroidManifest.xml
+10
+11    <uses-permission android:name="android.permission.INTERNET" />
+11-->/Volumes/MaheshWork/Joyeco/winjoy/android/app/src/main/AndroidManifest.xml:4:5-67
+11-->/Volumes/MaheshWork/Joyeco/winjoy/android/app/src/main/AndroidManifest.xml:4:22-64
+12
+13    <queries>
+13-->[:react-native-image-crop-picker] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/react-native-image-crop-picker/android/build/intermediates/library_manifest/release/AndroidManifest.xml:10:5-14:15
+14        <intent>
+14-->[:react-native-image-crop-picker] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/react-native-image-crop-picker/android/build/intermediates/library_manifest/release/AndroidManifest.xml:11:9-13:18
+15            <action android:name="android.media.action.IMAGE_CAPTURE" />
+15-->[:react-native-image-crop-picker] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/react-native-image-crop-picker/android/build/intermediates/library_manifest/release/AndroidManifest.xml:12:13-73
+15-->[:react-native-image-crop-picker] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/react-native-image-crop-picker/android/build/intermediates/library_manifest/release/AndroidManifest.xml:12:21-70
+16        </intent>
+17    </queries>
+18
+19    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+19-->[:react-native-image-crop-picker] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/react-native-image-crop-picker/android/build/intermediates/library_manifest/release/AndroidManifest.xml:16:5-81
+19-->[:react-native-image-crop-picker] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/react-native-image-crop-picker/android/build/intermediates/library_manifest/release/AndroidManifest.xml:16:22-78
+20    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
+20-->[:react-native-sensitive-info] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/react-native-sensitive-info/android/build/intermediates/library_manifest/release/AndroidManifest.xml:11:5-72
+20-->[:react-native-sensitive-info] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/react-native-sensitive-info/android/build/intermediates/library_manifest/release/AndroidManifest.xml:11:22-69
+21    <uses-permission android:name="android.permission.USE_FINGERPRINT" /> <!-- Required to access Google Play Licensing -->
+21-->[:react-native-sensitive-info] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/react-native-sensitive-info/android/build/intermediates/library_manifest/release/AndroidManifest.xml:12:5-74
+21-->[:react-native-sensitive-info] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/react-native-sensitive-info/android/build/intermediates/library_manifest/release/AndroidManifest.xml:12:22-71
+22    <uses-permission android:name="com.android.vending.CHECK_LICENSE" />
+22-->[:rn-fetch-blob] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/rn-fetch-blob/android/build/intermediates/library_manifest/release/AndroidManifest.xml:12:5-73
+22-->[:rn-fetch-blob] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/rn-fetch-blob/android/build/intermediates/library_manifest/release/AndroidManifest.xml:12:22-70
+23    <!--
+24         Required to keep CPU alive while downloading files
+25        (NOT to keep screen awake)
+26    -->
+27    <uses-permission android:name="android.permission.WAKE_LOCK" />
+27-->[:rn-fetch-blob] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/rn-fetch-blob/android/build/intermediates/library_manifest/release/AndroidManifest.xml:21:5-68
+27-->[:rn-fetch-blob] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/rn-fetch-blob/android/build/intermediates/library_manifest/release/AndroidManifest.xml:21:22-65
+28    <!--
+29         Required to poll the state of the network connection
+30        and respond to changes
+31    -->
+32    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- Required to check whether Wi-Fi is enabled -->
+32-->[:rn-fetch-blob] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/rn-fetch-blob/android/build/intermediates/library_manifest/release/AndroidManifest.xml:27:5-79
+32-->[:rn-fetch-blob] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/rn-fetch-blob/android/build/intermediates/library_manifest/release/AndroidManifest.xml:27:22-76
+33    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /> <!-- Required by older versions of Google Play services to create IID tokens -->
+33-->[:rn-fetch-blob] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/rn-fetch-blob/android/build/intermediates/library_manifest/release/AndroidManifest.xml:30:5-76
+33-->[:rn-fetch-blob] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/rn-fetch-blob/android/build/intermediates/library_manifest/release/AndroidManifest.xml:30:22-73
+34    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+34-->[com.google.android.gms:play-services-iid:17.0.0] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/02b0d7642805099f1602c38577d923d8/jetified-play-services-iid-17.0.0/AndroidManifest.xml:23:5-82
+34-->[com.google.android.gms:play-services-iid:17.0.0] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/02b0d7642805099f1602c38577d923d8/jetified-play-services-iid-17.0.0/AndroidManifest.xml:23:22-79
+35    <uses-permission android:name="com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE" />
+35-->[com.google.android.gms:play-services-measurement:19.0.0] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/250511e312ac930a099c96582b949880/jetified-play-services-measurement-19.0.0/AndroidManifest.xml:26:5-110
+35-->[com.google.android.gms:play-services-measurement:19.0.0] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/250511e312ac930a099c96582b949880/jetified-play-services-measurement-19.0.0/AndroidManifest.xml:26:22-107
+36
+37    <application
+37-->/Volumes/MaheshWork/Joyeco/winjoy/android/app/src/main/AndroidManifest.xml:6:5-24:19
+38        android:name="com.winjoy.MainApplication"
+38-->/Volumes/MaheshWork/Joyeco/winjoy/android/app/src/main/AndroidManifest.xml:7:7-38
+39        android:allowBackup="false"
+39-->/Volumes/MaheshWork/Joyeco/winjoy/android/app/src/main/AndroidManifest.xml:11:7-34
+40        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+40-->[androidx.core:core:1.2.0] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/9005b7ce6081a15716b176384a820a97/core-1.2.0/AndroidManifest.xml:24:18-86
+41        android:icon="@mipmap/ic_launcher"
+41-->/Volumes/MaheshWork/Joyeco/winjoy/android/app/src/main/AndroidManifest.xml:9:7-41
+42        android:label="@string/app_name"
+42-->/Volumes/MaheshWork/Joyeco/winjoy/android/app/src/main/AndroidManifest.xml:8:7-39
+43        android:roundIcon="@mipmap/ic_launcher_round"
+43-->/Volumes/MaheshWork/Joyeco/winjoy/android/app/src/main/AndroidManifest.xml:10:7-52
+44        android:theme="@style/AppTheme" >
+44-->/Volumes/MaheshWork/Joyeco/winjoy/android/app/src/main/AndroidManifest.xml:12:7-38
+45        <activity
+45-->/Volumes/MaheshWork/Joyeco/winjoy/android/app/src/main/AndroidManifest.xml:13:7-23:18
+46            android:name="com.winjoy.MainActivity"
+46-->/Volumes/MaheshWork/Joyeco/winjoy/android/app/src/main/AndroidManifest.xml:14:9-37
+47            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|uiMode"
+47-->/Volumes/MaheshWork/Joyeco/winjoy/android/app/src/main/AndroidManifest.xml:16:9-86
+48            android:label="@string/app_name"
+48-->/Volumes/MaheshWork/Joyeco/winjoy/android/app/src/main/AndroidManifest.xml:15:9-41
+49            android:launchMode="singleTask"
+49-->/Volumes/MaheshWork/Joyeco/winjoy/android/app/src/main/AndroidManifest.xml:17:9-40
+50            android:windowSoftInputMode="adjustResize" >
+50-->/Volumes/MaheshWork/Joyeco/winjoy/android/app/src/main/AndroidManifest.xml:18:9-51
+51            <intent-filter>
+51-->/Volumes/MaheshWork/Joyeco/winjoy/android/app/src/main/AndroidManifest.xml:19:9-22:25
+52                <action android:name="android.intent.action.MAIN" />
+52-->/Volumes/MaheshWork/Joyeco/winjoy/android/app/src/main/AndroidManifest.xml:20:13-65
+52-->/Volumes/MaheshWork/Joyeco/winjoy/android/app/src/main/AndroidManifest.xml:20:21-62
+53
+54                <category android:name="android.intent.category.LAUNCHER" />
+54-->/Volumes/MaheshWork/Joyeco/winjoy/android/app/src/main/AndroidManifest.xml:21:13-73
+54-->/Volumes/MaheshWork/Joyeco/winjoy/android/app/src/main/AndroidManifest.xml:21:23-70
+55            </intent-filter>
+56        </activity>
+57        <!-- Disable crashlytics by default so we can custom init with CrashlyticsNdk support -->
+58        <meta-data
+58-->[:react-native-firebase_crashlytics] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/@react-native-firebase/crashlytics/android/build/intermediates/library_manifest/release/AndroidManifest.xml:14:9-16:37
+59            android:name="firebase_crashlytics_collection_enabled"
+59-->[:react-native-firebase_crashlytics] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/@react-native-firebase/crashlytics/android/build/intermediates/library_manifest/release/AndroidManifest.xml:15:13-67
+60            android:value="false" />
+60-->[:react-native-firebase_crashlytics] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/@react-native-firebase/crashlytics/android/build/intermediates/library_manifest/release/AndroidManifest.xml:16:13-34
+61
+62        <provider
+62-->[:react-native-firebase_crashlytics] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/@react-native-firebase/crashlytics/android/build/intermediates/library_manifest/release/AndroidManifest.xml:18:9-22:38
+63            android:name="io.invertase.firebase.crashlytics.ReactNativeFirebaseCrashlyticsInitProvider"
+63-->[:react-native-firebase_crashlytics] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/@react-native-firebase/crashlytics/android/build/intermediates/library_manifest/release/AndroidManifest.xml:19:13-104
+64            android:authorities="com.winjoy.reactnativefirebasecrashlyticsinitprovider"
+64-->[:react-native-firebase_crashlytics] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/@react-native-firebase/crashlytics/android/build/intermediates/library_manifest/release/AndroidManifest.xml:20:13-94
+65            android:exported="false"
+65-->[:react-native-firebase_crashlytics] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/@react-native-firebase/crashlytics/android/build/intermediates/library_manifest/release/AndroidManifest.xml:21:13-37
+66            android:initOrder="98" />
+66-->[:react-native-firebase_crashlytics] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/@react-native-firebase/crashlytics/android/build/intermediates/library_manifest/release/AndroidManifest.xml:22:13-35
+67
+68        <meta-data
+68-->[:react-native-firebase_app] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/@react-native-firebase/app/android/build/intermediates/library_manifest/release/AndroidManifest.xml:12:9-14:36
+69            android:name="app_data_collection_default_enabled"
+69-->[:react-native-firebase_app] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/@react-native-firebase/app/android/build/intermediates/library_manifest/release/AndroidManifest.xml:13:13-63
+70            android:value="true" />
+70-->[:react-native-firebase_app] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/@react-native-firebase/app/android/build/intermediates/library_manifest/release/AndroidManifest.xml:14:13-33
+71
+72        <service
+72-->[:react-native-firebase_app] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/@react-native-firebase/app/android/build/intermediates/library_manifest/release/AndroidManifest.xml:16:9-20:19
+73            android:name="com.google.firebase.components.ComponentDiscoveryService"
+73-->[:react-native-firebase_app] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/@react-native-firebase/app/android/build/intermediates/library_manifest/release/AndroidManifest.xml:16:18-89
+74            android:directBootAware="true"
+74-->[com.google.firebase:firebase-common:20.0.0] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/955ab0dd6886a0f6e9d6db48779c503f/jetified-firebase-common-20.0.0/AndroidManifest.xml:35:13-43
+75            android:exported="false" >
+75-->[com.google.firebase:firebase-crashlytics-ndk:18.2.1] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/14df85dada2cc68cfe201d251047348c/jetified-firebase-crashlytics-ndk-18.2.1/AndroidManifest.xml:34:13-37
+76            <meta-data
+76-->[:react-native-firebase_app] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/@react-native-firebase/app/android/build/intermediates/library_manifest/release/AndroidManifest.xml:17:13-19:85
+77                android:name="com.google.firebase.components:io.invertase.firebase.app.ReactNativeFirebaseAppRegistrar"
+77-->[:react-native-firebase_app] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/@react-native-firebase/app/android/build/intermediates/library_manifest/release/AndroidManifest.xml:18:17-120
+78                android:value="com.google.firebase.components.ComponentRegistrar" />
+78-->[:react-native-firebase_app] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/@react-native-firebase/app/android/build/intermediates/library_manifest/release/AndroidManifest.xml:19:17-82
+79            <meta-data
+79-->[com.google.firebase:firebase-crashlytics-ndk:18.2.1] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/14df85dada2cc68cfe201d251047348c/jetified-firebase-crashlytics-ndk-18.2.1/AndroidManifest.xml:35:13-37:85
+80                android:name="com.google.firebase.components:com.google.firebase.crashlytics.ndk.CrashlyticsNdkRegistrar"
+80-->[com.google.firebase:firebase-crashlytics-ndk:18.2.1] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/14df85dada2cc68cfe201d251047348c/jetified-firebase-crashlytics-ndk-18.2.1/AndroidManifest.xml:36:17-122
+81                android:value="com.google.firebase.components.ComponentRegistrar" />
+81-->[com.google.firebase:firebase-crashlytics-ndk:18.2.1] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/14df85dada2cc68cfe201d251047348c/jetified-firebase-crashlytics-ndk-18.2.1/AndroidManifest.xml:37:17-82
+82            <meta-data
+82-->[com.google.firebase:firebase-crashlytics:18.2.1] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/5f38b90f26922127e27a711bafcefd72/jetified-firebase-crashlytics-18.2.1/AndroidManifest.xml:18:13-20:85
+83                android:name="com.google.firebase.components:com.google.firebase.crashlytics.CrashlyticsRegistrar"
+83-->[com.google.firebase:firebase-crashlytics:18.2.1] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/5f38b90f26922127e27a711bafcefd72/jetified-firebase-crashlytics-18.2.1/AndroidManifest.xml:19:17-115
+84                android:value="com.google.firebase.components.ComponentRegistrar" />
+84-->[com.google.firebase:firebase-crashlytics:18.2.1] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/5f38b90f26922127e27a711bafcefd72/jetified-firebase-crashlytics-18.2.1/AndroidManifest.xml:20:17-82
+85            <meta-data
+85-->[com.google.android.gms:play-services-measurement-api:19.0.0] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/2ef1ec247b3f4ae3d3a812871ffcec52/jetified-play-services-measurement-api-19.0.0/AndroidManifest.xml:30:13-32:85
+86                android:name="com.google.firebase.components:com.google.firebase.analytics.connector.internal.AnalyticsConnectorRegistrar"
+86-->[com.google.android.gms:play-services-measurement-api:19.0.0] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/2ef1ec247b3f4ae3d3a812871ffcec52/jetified-play-services-measurement-api-19.0.0/AndroidManifest.xml:31:17-139
+87                android:value="com.google.firebase.components.ComponentRegistrar" />
+87-->[com.google.android.gms:play-services-measurement-api:19.0.0] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/2ef1ec247b3f4ae3d3a812871ffcec52/jetified-play-services-measurement-api-19.0.0/AndroidManifest.xml:32:17-82
+88            <meta-data
+88-->[com.google.firebase:firebase-installations:17.0.0] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/abd4fc55449f92dee3fce9c773e03a22/jetified-firebase-installations-17.0.0/AndroidManifest.xml:18:13-20:85
+89                android:name="com.google.firebase.components:com.google.firebase.installations.FirebaseInstallationsRegistrar"
+89-->[com.google.firebase:firebase-installations:17.0.0] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/abd4fc55449f92dee3fce9c773e03a22/jetified-firebase-installations-17.0.0/AndroidManifest.xml:19:17-127
+90                android:value="com.google.firebase.components.ComponentRegistrar" />
+90-->[com.google.firebase:firebase-installations:17.0.0] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/abd4fc55449f92dee3fce9c773e03a22/jetified-firebase-installations-17.0.0/AndroidManifest.xml:20:17-82
+91        </service>
+92
+93        <provider
+93-->[:react-native-firebase_app] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/@react-native-firebase/app/android/build/intermediates/library_manifest/release/AndroidManifest.xml:22:9-26:38
+94            android:name="io.invertase.firebase.app.ReactNativeFirebaseAppInitProvider"
+94-->[:react-native-firebase_app] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/@react-native-firebase/app/android/build/intermediates/library_manifest/release/AndroidManifest.xml:23:13-88
+95            android:authorities="com.winjoy.reactnativefirebaseappinitprovider"
+95-->[:react-native-firebase_app] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/@react-native-firebase/app/android/build/intermediates/library_manifest/release/AndroidManifest.xml:24:13-86
+96            android:exported="false"
+96-->[:react-native-firebase_app] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/@react-native-firebase/app/android/build/intermediates/library_manifest/release/AndroidManifest.xml:25:13-37
+97            android:initOrder="99" />
+97-->[:react-native-firebase_app] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/@react-native-firebase/app/android/build/intermediates/library_manifest/release/AndroidManifest.xml:26:13-35
+98        <provider
+98-->[:react-native-image-crop-picker] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/react-native-image-crop-picker/android/build/intermediates/library_manifest/release/AndroidManifest.xml:19:9-27:20
+99            android:name="androidx.core.content.FileProvider"
+99-->[:react-native-image-crop-picker] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/react-native-image-crop-picker/android/build/intermediates/library_manifest/release/AndroidManifest.xml:20:13-62
+100            android:authorities="com.winjoy.provider"
+100-->[:react-native-image-crop-picker] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/react-native-image-crop-picker/android/build/intermediates/library_manifest/release/AndroidManifest.xml:21:13-60
+101            android:exported="false"
+101-->[:react-native-image-crop-picker] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/react-native-image-crop-picker/android/build/intermediates/library_manifest/release/AndroidManifest.xml:22:13-37
+102            android:grantUriPermissions="true" >
+102-->[:react-native-image-crop-picker] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/react-native-image-crop-picker/android/build/intermediates/library_manifest/release/AndroidManifest.xml:23:13-47
+103            <meta-data
+103-->[:react-native-image-crop-picker] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/react-native-image-crop-picker/android/build/intermediates/library_manifest/release/AndroidManifest.xml:24:13-26:58
+104                android:name="android.support.FILE_PROVIDER_PATHS"
+104-->[:react-native-image-crop-picker] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/react-native-image-crop-picker/android/build/intermediates/library_manifest/release/AndroidManifest.xml:25:17-67
+105                android:resource="@xml/provider_paths" />
+105-->[:react-native-image-crop-picker] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/react-native-image-crop-picker/android/build/intermediates/library_manifest/release/AndroidManifest.xml:26:17-55
+106        </provider>
+107
+108        <activity
+108-->[:react-native-image-crop-picker] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/react-native-image-crop-picker/android/build/intermediates/library_manifest/release/AndroidManifest.xml:29:9-31:72
+109            android:name="com.yalantis.ucrop.UCropActivity"
+109-->[:react-native-image-crop-picker] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/react-native-image-crop-picker/android/build/intermediates/library_manifest/release/AndroidManifest.xml:30:13-60
+110            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+110-->[:react-native-image-crop-picker] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/react-native-image-crop-picker/android/build/intermediates/library_manifest/release/AndroidManifest.xml:31:13-69
+111
+112        <provider
+112-->[:rn-fetch-blob] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/rn-fetch-blob/android/build/intermediates/library_manifest/release/AndroidManifest.xml:36:9-44:20
+113            android:name="com.RNFetchBlob.Utils.FileProvider"
+113-->[:rn-fetch-blob] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/rn-fetch-blob/android/build/intermediates/library_manifest/release/AndroidManifest.xml:37:13-62
+114            android:authorities="com.winjoy.provider"
+114-->[:rn-fetch-blob] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/rn-fetch-blob/android/build/intermediates/library_manifest/release/AndroidManifest.xml:38:13-60
+115            android:exported="false"
+115-->[:rn-fetch-blob] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/rn-fetch-blob/android/build/intermediates/library_manifest/release/AndroidManifest.xml:39:13-37
+116            android:grantUriPermissions="true" >
+116-->[:rn-fetch-blob] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/rn-fetch-blob/android/build/intermediates/library_manifest/release/AndroidManifest.xml:40:13-47
+117            <meta-data
+117-->[:react-native-image-crop-picker] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/react-native-image-crop-picker/android/build/intermediates/library_manifest/release/AndroidManifest.xml:24:13-26:58
+118                android:name="android.support.FILE_PROVIDER_PATHS"
+118-->[:react-native-image-crop-picker] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/react-native-image-crop-picker/android/build/intermediates/library_manifest/release/AndroidManifest.xml:25:17-67
+119                android:resource="@xml/provider_paths" />
+119-->[:react-native-image-crop-picker] /Volumes/MaheshWork/Joyeco/winjoy/node_modules/react-native-image-crop-picker/android/build/intermediates/library_manifest/release/AndroidManifest.xml:26:17-55
+120        </provider>
+121
+122        <service
+122-->[com.google.android.datatransport:transport-backend-cct:3.0.0] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/dd945a3f878d0bc7f528b7558c28c325/jetified-transport-backend-cct-3.0.0/AndroidManifest.xml:29:9-35:19
+123            android:name="com.google.android.datatransport.runtime.backends.TransportBackendDiscovery"
+123-->[com.google.android.datatransport:transport-backend-cct:3.0.0] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/dd945a3f878d0bc7f528b7558c28c325/jetified-transport-backend-cct-3.0.0/AndroidManifest.xml:30:13-103
+124            android:exported="false" >
+124-->[com.google.android.datatransport:transport-backend-cct:3.0.0] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/dd945a3f878d0bc7f528b7558c28c325/jetified-transport-backend-cct-3.0.0/AndroidManifest.xml:31:13-37
+125            <meta-data
+125-->[com.google.android.datatransport:transport-backend-cct:3.0.0] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/dd945a3f878d0bc7f528b7558c28c325/jetified-transport-backend-cct-3.0.0/AndroidManifest.xml:32:13-34:39
+126                android:name="backend:com.google.android.datatransport.cct.CctBackendFactory"
+126-->[com.google.android.datatransport:transport-backend-cct:3.0.0] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/dd945a3f878d0bc7f528b7558c28c325/jetified-transport-backend-cct-3.0.0/AndroidManifest.xml:33:17-94
+127                android:value="cct" />
+127-->[com.google.android.datatransport:transport-backend-cct:3.0.0] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/dd945a3f878d0bc7f528b7558c28c325/jetified-transport-backend-cct-3.0.0/AndroidManifest.xml:34:17-36
+128        </service>
+129
+130        <provider
+130-->[com.google.firebase:firebase-common:20.0.0] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/955ab0dd6886a0f6e9d6db48779c503f/jetified-firebase-common-20.0.0/AndroidManifest.xml:26:9-31:39
+131            android:name="com.google.firebase.provider.FirebaseInitProvider"
+131-->[com.google.firebase:firebase-common:20.0.0] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/955ab0dd6886a0f6e9d6db48779c503f/jetified-firebase-common-20.0.0/AndroidManifest.xml:27:13-77
+132            android:authorities="com.winjoy.firebaseinitprovider"
+132-->[com.google.firebase:firebase-common:20.0.0] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/955ab0dd6886a0f6e9d6db48779c503f/jetified-firebase-common-20.0.0/AndroidManifest.xml:28:13-72
+133            android:directBootAware="true"
+133-->[com.google.firebase:firebase-common:20.0.0] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/955ab0dd6886a0f6e9d6db48779c503f/jetified-firebase-common-20.0.0/AndroidManifest.xml:29:13-43
+134            android:exported="false"
+134-->[com.google.firebase:firebase-common:20.0.0] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/955ab0dd6886a0f6e9d6db48779c503f/jetified-firebase-common-20.0.0/AndroidManifest.xml:30:13-37
+135            android:initOrder="100" />
+135-->[com.google.firebase:firebase-common:20.0.0] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/955ab0dd6886a0f6e9d6db48779c503f/jetified-firebase-common-20.0.0/AndroidManifest.xml:31:13-36
+136
+137        <service
+137-->[com.google.android.datatransport:transport-runtime:3.0.0] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/09fb538d3a22495a020c79d079a41abb/jetified-transport-runtime-3.0.0/AndroidManifest.xml:26:9-30:19
+138            android:name="com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoSchedulerService"
+138-->[com.google.android.datatransport:transport-runtime:3.0.0] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/09fb538d3a22495a020c79d079a41abb/jetified-transport-runtime-3.0.0/AndroidManifest.xml:27:13-117
+139            android:exported="false"
+139-->[com.google.android.datatransport:transport-runtime:3.0.0] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/09fb538d3a22495a020c79d079a41abb/jetified-transport-runtime-3.0.0/AndroidManifest.xml:28:13-37
+140            android:permission="android.permission.BIND_JOB_SERVICE" >
+140-->[com.google.android.datatransport:transport-runtime:3.0.0] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/09fb538d3a22495a020c79d079a41abb/jetified-transport-runtime-3.0.0/AndroidManifest.xml:29:13-69
+141        </service>
+142
+143        <receiver
+143-->[com.google.android.datatransport:transport-runtime:3.0.0] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/09fb538d3a22495a020c79d079a41abb/jetified-transport-runtime-3.0.0/AndroidManifest.xml:32:9-34:40
+144            android:name="com.google.android.datatransport.runtime.scheduling.jobscheduling.AlarmManagerSchedulerBroadcastReceiver"
+144-->[com.google.android.datatransport:transport-runtime:3.0.0] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/09fb538d3a22495a020c79d079a41abb/jetified-transport-runtime-3.0.0/AndroidManifest.xml:33:13-132
+145            android:exported="false" />
+145-->[com.google.android.datatransport:transport-runtime:3.0.0] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/09fb538d3a22495a020c79d079a41abb/jetified-transport-runtime-3.0.0/AndroidManifest.xml:34:13-37
+146
+147        <activity
+147-->[androidx.biometric:biometric:1.0.1] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/bf1086337d04241e3b99b3447c9cf187/biometric-1.0.1/AndroidManifest.xml:28:9-31:67
+148            android:name="androidx.biometric.DeviceCredentialHandlerActivity"
+148-->[androidx.biometric:biometric:1.0.1] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/bf1086337d04241e3b99b3447c9cf187/biometric-1.0.1/AndroidManifest.xml:29:13-78
+149            android:exported="true"
+149-->[androidx.biometric:biometric:1.0.1] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/bf1086337d04241e3b99b3447c9cf187/biometric-1.0.1/AndroidManifest.xml:30:13-36
+150            android:theme="@style/DeviceCredentialHandlerTheme" />
+150-->[androidx.biometric:biometric:1.0.1] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/bf1086337d04241e3b99b3447c9cf187/biometric-1.0.1/AndroidManifest.xml:31:13-64
+151        <activity
+151-->[com.google.android.gms:play-services-auth:19.2.0] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/ecba659987641c1a2a3d1af9bad54557/jetified-play-services-auth-19.2.0/AndroidManifest.xml:23:9-27:75
+152            android:name="com.google.android.gms.auth.api.signin.internal.SignInHubActivity"
+152-->[com.google.android.gms:play-services-auth:19.2.0] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/ecba659987641c1a2a3d1af9bad54557/jetified-play-services-auth-19.2.0/AndroidManifest.xml:24:13-93
+153            android:excludeFromRecents="true"
+153-->[com.google.android.gms:play-services-auth:19.2.0] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/ecba659987641c1a2a3d1af9bad54557/jetified-play-services-auth-19.2.0/AndroidManifest.xml:25:13-46
+154            android:exported="false"
+154-->[com.google.android.gms:play-services-auth:19.2.0] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/ecba659987641c1a2a3d1af9bad54557/jetified-play-services-auth-19.2.0/AndroidManifest.xml:26:13-37
+155            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+155-->[com.google.android.gms:play-services-auth:19.2.0] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/ecba659987641c1a2a3d1af9bad54557/jetified-play-services-auth-19.2.0/AndroidManifest.xml:27:13-72
+156        <!--
+157            Service handling Google Sign-In user revocation. For apps that do not integrate with
+158            Google Sign-In, this service will never be started.
+159        -->
+160        <service
+160-->[com.google.android.gms:play-services-auth:19.2.0] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/ecba659987641c1a2a3d1af9bad54557/jetified-play-services-auth-19.2.0/AndroidManifest.xml:33:9-37:51
+161            android:name="com.google.android.gms.auth.api.signin.RevocationBoundService"
+161-->[com.google.android.gms:play-services-auth:19.2.0] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/ecba659987641c1a2a3d1af9bad54557/jetified-play-services-auth-19.2.0/AndroidManifest.xml:34:13-89
+162            android:exported="true"
+162-->[com.google.android.gms:play-services-auth:19.2.0] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/ecba659987641c1a2a3d1af9bad54557/jetified-play-services-auth-19.2.0/AndroidManifest.xml:35:13-36
+163            android:permission="com.google.android.gms.auth.api.signin.permission.REVOCATION_NOTIFICATION"
+163-->[com.google.android.gms:play-services-auth:19.2.0] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/ecba659987641c1a2a3d1af9bad54557/jetified-play-services-auth-19.2.0/AndroidManifest.xml:36:13-107
+164            android:visibleToInstantApps="true" />
+164-->[com.google.android.gms:play-services-auth:19.2.0] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/ecba659987641c1a2a3d1af9bad54557/jetified-play-services-auth-19.2.0/AndroidManifest.xml:37:13-48
+165
+166        <activity
+166-->[com.google.android.gms:play-services-base:17.5.0] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/e3f7bab6654716081796885bd297d3d7/jetified-play-services-base-17.5.0/AndroidManifest.xml:23:9-26:75
+167            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+167-->[com.google.android.gms:play-services-base:17.5.0] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/e3f7bab6654716081796885bd297d3d7/jetified-play-services-base-17.5.0/AndroidManifest.xml:24:13-79
+168            android:exported="false"
+168-->[com.google.android.gms:play-services-base:17.5.0] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/e3f7bab6654716081796885bd297d3d7/jetified-play-services-base-17.5.0/AndroidManifest.xml:25:13-37
+169            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+169-->[com.google.android.gms:play-services-base:17.5.0] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/e3f7bab6654716081796885bd297d3d7/jetified-play-services-base-17.5.0/AndroidManifest.xml:26:13-72
+170
+171        <receiver
+171-->[com.google.android.gms:play-services-measurement:19.0.0] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/250511e312ac930a099c96582b949880/jetified-play-services-measurement-19.0.0/AndroidManifest.xml:29:9-33:20
+172            android:name="com.google.android.gms.measurement.AppMeasurementReceiver"
+172-->[com.google.android.gms:play-services-measurement:19.0.0] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/250511e312ac930a099c96582b949880/jetified-play-services-measurement-19.0.0/AndroidManifest.xml:30:13-85
+173            android:enabled="true"
+173-->[com.google.android.gms:play-services-measurement:19.0.0] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/250511e312ac930a099c96582b949880/jetified-play-services-measurement-19.0.0/AndroidManifest.xml:31:13-35
+174            android:exported="false" >
+174-->[com.google.android.gms:play-services-measurement:19.0.0] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/250511e312ac930a099c96582b949880/jetified-play-services-measurement-19.0.0/AndroidManifest.xml:32:13-37
+175        </receiver>
+176
+177        <service
+177-->[com.google.android.gms:play-services-measurement:19.0.0] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/250511e312ac930a099c96582b949880/jetified-play-services-measurement-19.0.0/AndroidManifest.xml:35:9-38:40
+178            android:name="com.google.android.gms.measurement.AppMeasurementService"
+178-->[com.google.android.gms:play-services-measurement:19.0.0] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/250511e312ac930a099c96582b949880/jetified-play-services-measurement-19.0.0/AndroidManifest.xml:36:13-84
+179            android:enabled="true"
+179-->[com.google.android.gms:play-services-measurement:19.0.0] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/250511e312ac930a099c96582b949880/jetified-play-services-measurement-19.0.0/AndroidManifest.xml:37:13-35
+180            android:exported="false" />
+180-->[com.google.android.gms:play-services-measurement:19.0.0] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/250511e312ac930a099c96582b949880/jetified-play-services-measurement-19.0.0/AndroidManifest.xml:38:13-37
+181        <service
+181-->[com.google.android.gms:play-services-measurement:19.0.0] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/250511e312ac930a099c96582b949880/jetified-play-services-measurement-19.0.0/AndroidManifest.xml:39:9-43:72
+182            android:name="com.google.android.gms.measurement.AppMeasurementJobService"
+182-->[com.google.android.gms:play-services-measurement:19.0.0] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/250511e312ac930a099c96582b949880/jetified-play-services-measurement-19.0.0/AndroidManifest.xml:40:13-87
+183            android:enabled="true"
+183-->[com.google.android.gms:play-services-measurement:19.0.0] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/250511e312ac930a099c96582b949880/jetified-play-services-measurement-19.0.0/AndroidManifest.xml:41:13-35
+184            android:exported="false"
+184-->[com.google.android.gms:play-services-measurement:19.0.0] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/250511e312ac930a099c96582b949880/jetified-play-services-measurement-19.0.0/AndroidManifest.xml:42:13-37
+185            android:permission="android.permission.BIND_JOB_SERVICE" />
+185-->[com.google.android.gms:play-services-measurement:19.0.0] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/250511e312ac930a099c96582b949880/jetified-play-services-measurement-19.0.0/AndroidManifest.xml:43:13-69
+186
+187        <meta-data
+187-->[com.google.android.gms:play-services-basement:17.5.0] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/03f57b0972126204c2c4d91fe20eb637/jetified-play-services-basement-17.5.0/AndroidManifest.xml:23:9-25:69
+188            android:name="com.google.android.gms.version"
+188-->[com.google.android.gms:play-services-basement:17.5.0] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/03f57b0972126204c2c4d91fe20eb637/jetified-play-services-basement-17.5.0/AndroidManifest.xml:24:13-58
+189            android:value="@integer/google_play_services_version" />
+189-->[com.google.android.gms:play-services-basement:17.5.0] /Users/maheshkumar/.gradle/caches/transforms-2/files-2.1/03f57b0972126204c2c4d91fe20eb637/jetified-play-services-basement-17.5.0/AndroidManifest.xml:25:13-66
+190    </application>
+191
+192</manifest>

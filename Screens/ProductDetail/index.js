@@ -1,32 +1,21 @@
-import React, { useState, useRef, useEffect } from "react";
+import React from "react";
 import {
     View,
     StyleSheet,
-    Image,
     Dimensions,
-    ScrollView,
-    TouchableOpacity,
-    RefreshControl,
-    ActivityIndicator,
     Text,
-    FlatList
 } from "react-native";
 import Label from "../../Components/Label";
 const { width, height } = Dimensions.get("window");
 import LinearGradient from "react-native-linear-gradient";
-import HomeBottomList from "../../Components/HomeBottomList";
 import { Card } from "../../Components";
 import {
     widthPercentageToDP,
     heightPercentageToDP,
     heightConverter,
-    widthConverter,
 } from "../../Components/Helpers/Responsive";
-import Background from "../../Components/Background";
 import Header from "../../Components/Header";
-import { Avatar } from "react-native-elements";
-let data = [1, 2, 3, 4]
-let data2 = ["DashBoard", "LeaderBoard", "played Games", "Friends", "View Profile", "My Orders", "My Address", "Logout"]
+
 const ProductDetail = ({ props, navigation, route }) => {
     const item  = route.params;
     let progress=(item.updated_stocks? (item?.updated_stocks/item.stock)*100 : 0);
@@ -45,7 +34,7 @@ const ProductDetail = ({ props, navigation, route }) => {
 
                 <View style={styles.bottomView}>
                     <Label primary font={13} dark style={{ color: "#ffffff", marginTop: 9, marginBottom: 9, }}>
-                        {item.updated_stocks} sold out of {item.stock}
+                        {item.updated_stocks || 0} sold out of {item.stock}
                     </Label>
                     <View style={styles.containerprogressBar}>
                         <LinearGradient
@@ -65,7 +54,7 @@ const ProductDetail = ({ props, navigation, route }) => {
 
             </LinearGradient>
             <View style={styles.upperView}>
-                <Card />
+                <Card item={item}/>
             </View>
             <View style={styles.card}>
 
