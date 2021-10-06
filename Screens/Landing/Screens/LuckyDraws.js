@@ -98,6 +98,7 @@ const LuckyDraws = (props) => {
   const [Banners, setBanners] = useState(null);
   const [refreshing, setRefreshing] = React.useState(false);
   const [productList, setProductList] = React.useState([]);
+  const [pastLuckyDrawWinners, setPastLuckyDrawWinners] = React.useState([]);
 
   const onRefresh = React.useCallback(() => {
     // setBanners(null);
@@ -109,7 +110,9 @@ const LuckyDraws = (props) => {
     initialLoad();
     props.UpdateCoins(UpdateCoins());
   };
-  const CoinChangeRef = useRef();
+  useEffect(async () => {
+    PastLuckyDrawWinners()
+  }, []);
 
   const initialLoad = () => {
     const check = async () => {
@@ -158,6 +161,24 @@ const LuckyDraws = (props) => {
 
           setProductList(arr);
         }
+      });
+  };
+  const PastLuckyDrawWinners = async () => {
+    const Token = await EncryptedStorage.getItem("Token");
+    const requestOptions = {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Accept: "application/json",
+        Authorization: `Bearer ${Token}`,
+      },
+    };
+    // alert(13123);
+    await axios
+      .get(`${Config.API_URL}/luckydraw/winner`, requestOptions)
+      .then((response) => {
+        let res = response.data;
+        setPastLuckyDrawWinners(res)
+     console.log("luckydrawwinner",res);
       });
   };
   useFocusEffect(
@@ -247,7 +268,9 @@ const LuckyDraws = (props) => {
         </Label>
         <View style={{ marginBottom: height * 0.01 }} />
       </LinearGradient>
-      <HomeBottomList />
+      <HomeBottomList 
+      data={pastLuckyDrawWinners}
+      />
       <View style={{ height: 20 }} />
     </ScrollView>
   );

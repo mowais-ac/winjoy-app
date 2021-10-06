@@ -29,7 +29,7 @@ function ClosingSoon({ item }) {
             height: 100,
           }}
           resizeMode={"contain"}
-          source={require('../assets/imgs/iphone.png')}
+          source={{uri:item?.product_image}}
 
         />
         <View style={{ marginLeft: width * 0.14, }}>
@@ -37,7 +37,7 @@ function ClosingSoon({ item }) {
             Congratulations
           </Label>
           <Label notAlign bold font={12} dark style={{ color: "#000000", width: width * 0.3, }}>
-           {item.winnerfull_name}
+           {item.winnerfull_name || (item?.user?.first_name + " " + item?.user?.last_name)}
           </Label>
           <Label notAlign primary font={12} dark style={{ color: "#000000", width: width * 0.3, }}>
             on winning
@@ -54,30 +54,9 @@ function ClosingSoon({ item }) {
 const HomeBottomList = (props) => {
 
   const navigation = useNavigation();
-  const { Bell } = props;
+  const { data } = props;
 
-  const [winnerData, setWinnerData] = useState([]);
-  useEffect(async () => {
-  GetData()
-},[]);
 
-const GetData = async () => {
-  const Token = await EncryptedStorage.getItem("Token");
-  const requestOptions = {
-    headers: {
-      "Content-Type": "multipart/form-data",
-      Accept: "application/json",
-      Authorization: `Bearer ${Token}`,
-    },
-  }; 
-  // alert(13123);
-  
-  await axios.get(`${Config.API_URL}/luckydraw/winner`, requestOptions).then(response => {
-    let res = response;
-    setWinnerData(res?.data)
-  });
-
-}
 
   return (
     <>
@@ -90,7 +69,7 @@ const GetData = async () => {
         contentContainerStyle={{ alignSelf: "flex-start",paddingRight: width * 0.03 }}
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
-        data={winnerData}
+        data={data}
         renderItem={({ item }) => (
           <ClosingSoon
             props={props}

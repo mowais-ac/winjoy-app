@@ -27,8 +27,9 @@ import Header from "../../Components/Header";
 import { Avatar } from "react-native-elements";
 let data = [1, 2, 3, 4]
 let data2 = ["DashBoard", "LeaderBoard", "played Games", "Friends", "View Profile", "My Orders", "My Address", "Logout"]
-const Congrats = ({ props, navigation }) => {
-
+const Congrats = ({ navigation ,route}) => {
+const { data } = route.params;
+console.log("data",data);
     return (
 
         <ScrollView>
@@ -76,7 +77,7 @@ const Congrats = ({ props, navigation }) => {
                         <Text style={[styles.yellowText, { fontWeight: 'normal' }]}>
                             AED{" "}
                         </Text>
-                        2,000
+                       {data[0].price}
                     </Text>
                     <RewardzButton
                         text={"Go to LeaderBoard"}
