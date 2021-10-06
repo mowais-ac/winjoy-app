@@ -34,6 +34,7 @@ const NotFound = (props) => {
           <AddConnectionModal ModalRef={ConModalRef} DisplayAlert />
           <LongButton
             text={props.con ? "Add connection" : "Contact Support"}
+            textstyle={{color:props.con ? undefined : "white"}}
             style={styles.Btn}
             shadowless
             onPress={() => {

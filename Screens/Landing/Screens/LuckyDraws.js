@@ -200,37 +200,11 @@ const LuckyDraws = (props) => {
           <ActivityIndicator size="large" color={Colors.BLACK} />
         ) : (
           <TouchableOpacity onPress={() => navigation.navigate("EShopping")}>
-            {/* <LoaderImage
+             <LoaderImage
               source={{ uri: Banners[1].replace('http://', 'https://') }}
               style={styles.ShoppingBanner}
-            /> */}
-            <ImageBackground
-              style={styles.ShoppingBanner}
-              source={require("../../../assets/imgs/banner.png")}
-            >
-              <View style={styles.bgImageUpperView}>
-                <Label
-                  notAlign
-                  bold
-                  primary
-                  font={40}
-                  bold
-                  style={{ color: "#FFFF13" }}
-                >
-                  Win
-                </Label>
-                <Label
-                  primary
-                  font={16}
-                  bold
-                  notAlign
-                  dark
-                  style={{ color: "#ffffff" }}
-                >
-                  The National Day Grand Prize
-                </Label>
-              </View>
-            </ImageBackground>
+              resizeMode="contain"
+            /> 
           </TouchableOpacity>
         )}
 
@@ -304,10 +278,9 @@ const LuckyDraws = (props) => {
 
 const styles = StyleSheet.create({
   ShoppingBanner: {
-    width: width * 1.01,
+    width: "100%",
     height: height * 0.3,
     marginTop: height * 0.015,
-    resizeMode: "stretch",
     alignSelf: "center",
   },
   bgImageUpperView: {
