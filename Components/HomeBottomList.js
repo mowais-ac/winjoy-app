@@ -1,27 +1,15 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Image, StyleSheet, Dimensions, TouchableOpacity, FlatList, View } from "react-native";
 import Label from "../Components/Label";
 import { Images } from "../Constants/Index";
 import { useNavigation } from "@react-navigation/native";
 import { connect } from "react-redux";
-
+import EncryptedStorage from "react-native-encrypted-storage";
+import Config from "react-native-config";
+import axios from "axios";
 const { width, height } = Dimensions.get("window");
-const DATA = [
-  {
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    title: 'First Item',
-  },
-  {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    title: 'Second Item',
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d72',
-    title: 'Third Item',
-  },
-];
-function ClosingSoon({ item }) {
 
+function ClosingSoon({ item }) {
 
   return (
     <View style={{
@@ -49,13 +37,13 @@ function ClosingSoon({ item }) {
             Congratulations
           </Label>
           <Label notAlign bold font={12} dark style={{ color: "#000000", width: width * 0.3, }}>
-            Inaam Ali Shah
+           {item.winnerfull_name}
           </Label>
           <Label notAlign primary font={12} dark style={{ color: "#000000", width: width * 0.3, }}>
             on winning
           </Label>
           <Label notAlign bold font={12} dark style={{ color: "#000000", width: width * 0.3, }}>
-            iPhone 12 Pro 256 GB
+            {item.product_title}
           </Label>
         </View>
       </View>
@@ -64,8 +52,33 @@ function ClosingSoon({ item }) {
   );
 }
 const HomeBottomList = (props) => {
+
   const navigation = useNavigation();
   const { Bell } = props;
+
+  const [winnerData, setWinnerData] = useState([]);
+  useEffect(async () => {
+  GetData()
+},[]);
+
+const GetData = async () => {
+  const Token = await EncryptedStorage.getItem("Token");
+  const requestOptions = {
+    headers: {
+      "Content-Type": "multipart/form-data",
+      Accept: "application/json",
+      Authorization: `Bearer ${Token}`,
+    },
+  }; 
+  // alert(13123);
+  
+  await axios.get(`${Config.API_URL}/luckydraw/winner`, requestOptions).then(response => {
+    let res = response;
+    setWinnerData(res?.data)
+  });
+
+}
+
   return (
     <>
       <Label primary font={16} bold style={{ color: "#E7003F", marginTop: 10 }}>
@@ -74,10 +87,10 @@ const HomeBottomList = (props) => {
       <FlatList
         horizontal={true}
         style={{ marginLeft: 1, minHeight: 50, }}
-        contentContainerStyle={{ alignSelf: "flex-start" }}
+        contentContainerStyle={{ alignSelf: "flex-start",paddingRight: width * 0.03 }}
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
-        data={DATA}
+        data={winnerData}
         renderItem={({ item }) => (
           <ClosingSoon
             props={props}
