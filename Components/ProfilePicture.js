@@ -6,7 +6,7 @@ import { Colors } from "../Constants/Index";
 import Label from "./Label";
 const { width, height } = Dimensions.get("window");
 const ProfilePicture = (props) => {
-  const { id, name, picture, style } = props;
+  const { id, name, picture, style,font } = props;
   return picture && picture !== null ? (
     <ImageBackground
       source={{ uri: `${Config.Profile_URL}/${picture}` }}
@@ -14,7 +14,7 @@ const ProfilePicture = (props) => {
     />
   ) : (
     <View style={[styles.ProfileView, styles.ProfileBG, style]}>
-      <Label adjustsFontSizeToFit={true} font={18} bold>
+      <Label adjustsFontSizeToFit={true} font={font || 18} bold>
         {name}
       </Label>
     </View>

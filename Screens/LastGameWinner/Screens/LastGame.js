@@ -1,26 +1,19 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   StyleSheet,
-  Image,
   Dimensions,
-  ScrollView,
-  TouchableOpacity,
-  RefreshControl,
-  ActivityIndicator,
-  Text,
   FlatList
 } from "react-native";
 import Label from "../../../Components/Label";
 const { width, height } = Dimensions.get("window");
 import LinearGradient from "react-native-linear-gradient";
-import HomeBottomList from "../../../Components/HomeBottomList";
 import { TriviaAvatar, TriviaCard } from "../../../Components";
 import { heightPercentageToDP } from "../../../Components/Helpers/Responsive";
 import EncryptedStorage from "react-native-encrypted-storage"; 
 import Config from "react-native-config";
 import axios from 'axios';
-let data = [1, 2, 3]
+
 const LastGame = ({ props, navigation }) => {
   const [winnerData, setWinnerData] = useState([]);
   useEffect(async () => {
@@ -36,11 +29,9 @@ const LastGame = ({ props, navigation }) => {
         Authorization: `Bearer ${Token}`,
       },
     }; 
-    // alert(13123);
     
     await axios.get(`${Config.API_URL}/luckydraw/winner`, requestOptions).then(response => {
       let res = response;
-      console.log('res: ', res.data)
       setWinnerData(res?.data)
     });
 
