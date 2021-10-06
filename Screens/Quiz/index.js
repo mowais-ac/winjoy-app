@@ -66,27 +66,29 @@ const index = ({ props, navigation }) => {
         await fetch(`${Config.API_URL}/finish/gameshow`, requestOptions)
             .then(async (response) => response.json())
             .then(async (res) => {
+                console.log("result",res);
                 if (res === "Sorry! Try Next Time") {
                     alert("Sorry! Try Next Time")
                 }
                 else {
-                    navigation.navigate("Congrats")
+                    navigation.navigate("Congrats",{data:res})
                 }
 
 
 
             });
     }
-    const SaveResponse = async () => {
+    const SaveResponse = async (ansId) => {
         console.log("lastindex", question[question.length - 1].id);
 
 
         const Token = await EncryptedStorage.getItem("Token");
         const body = JSONtoForm({
             question: question[questionIncrement]?.id,
-            answer: answerId,
+            answer:ansId ,
             live_gameshow_id: question[questionIncrement]?.live_gameshow_id,
         });
+        console.log("body",body);
         const requestOptions = {
             method: "POST",
             headers: {
@@ -122,7 +124,7 @@ const index = ({ props, navigation }) => {
     const onPressDone = (ansId) => {
         setAnswerId(ansId)
 
-        SaveResponse()
+        SaveResponse(ansId)
     }
     useEffect(async () => {
         Questions()
