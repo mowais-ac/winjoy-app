@@ -81,6 +81,7 @@ const EShopping = ({ navigation }) => {
           source={{
             uri: ImgUrl.replace('http://', 'https://'),
           }}
+          resizeMode="contain"
           style={styles.ShoppingImage}
         />
         <View>
@@ -204,7 +205,6 @@ const styles = StyleSheet.create({
   ShoppingImage: {
     width: width * 0.95,
     height: height * 0.25,
-    resizeMode: "stretch",
     borderRadius: 10,
   },
   PriceView: {
