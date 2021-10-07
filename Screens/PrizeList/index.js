@@ -40,7 +40,6 @@ const index = ({ props, navigation }) => {
       .then((response) => {
         let res = response;`  `
         setProductData(res?.data?.data[0]);
-        console.log(res.data.data[0]);
       });
   };
   return (
@@ -64,7 +63,7 @@ const index = ({ props, navigation }) => {
         <LongButton
           style={styles.Margin}
           textstyle={{ color: "#000000" }}
-          text="All"
+          text={"All "+"("+productData.length+")"}
           font={16}
         />
         <LongButton
