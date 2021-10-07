@@ -16,9 +16,31 @@ const { width, height } = Dimensions.get("window");
 import LinearGradient from "react-native-linear-gradient";
 import HomeBottomList from "../../../Components/HomeBottomList";
 import { heightConverter, heightPercentageToDP, widthConverter } from "../../../Components/Helpers/Responsive";
-
+import EncryptedStorage from "react-native-encrypted-storage";
+import Config from "react-native-config";
+import axios from "axios";
 const LiveGameShows = ({ props, navigation }) => {
- 
+  useEffect(()=>{
+PastWinner();
+  },[])
+  const [winnerData, setWinnerData] = useState([]);
+  const PastWinner = async () => {
+    const Token = await EncryptedStorage.getItem("Token");
+    const requestOptions = {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Accept: "application/json",
+        Authorization: `Bearer ${Token}`,
+      },
+    }; 
+    // alert(13123);
+    
+    await axios.get(`${Config.API_URL}/livegameshow/all/winners/list`, requestOptions).then(response => {
+      let res = response;
+      setWinnerData(res?.data)
+    });
+  
+  }
  
   return (
     <ScrollView>
@@ -58,7 +80,7 @@ const LiveGameShows = ({ props, navigation }) => {
           </Label>
         </LinearGradient>
       </LinearGradient>
-      <HomeBottomList />
+      <HomeBottomList data = {winnerData}/>
       <View style={{ marginBottom: height * 0.05 }} />
     </ScrollView>
   );

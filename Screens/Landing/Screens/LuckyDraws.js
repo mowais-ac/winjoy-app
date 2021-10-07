@@ -33,6 +33,7 @@ function ClosingSoon({ item }) {
   let progress = item.updated_stocks
     ? (item?.updated_stocks / item?.stock) * 100
     : 0;
+
   const ImgUrl = `${Config.PRODUCT_IMG}/${item.id}/${
     JSON.parse(item.image)[0]
   }`;
@@ -98,8 +99,7 @@ const LuckyDraws = (props) => {
   const [Banners, setBanners] = useState(null);
   const [refreshing, setRefreshing] = React.useState(false);
   const [productList, setProductList] = React.useState([]);
-  const [pastLuckyDrawWinners, setPastLuckyDrawWinners] = React.useState([]);
-
+  const [winnerData, setWinnerData] = useState([]);
   const onRefresh = React.useCallback(() => {
     // setBanners(null);
     setRefreshing(true);
@@ -110,10 +110,6 @@ const LuckyDraws = (props) => {
     initialLoad();
     props.UpdateCoins(UpdateCoins());
   };
-  useEffect(async () => {
-    PastLuckyDrawWinners()
-  }, []);
-
   const initialLoad = () => {
     const check = async () => {
       const Token = await EncryptedStorage.getItem("Token");
@@ -163,7 +159,7 @@ const LuckyDraws = (props) => {
         }
       });
   };
-  const PastLuckyDrawWinners = async () => {
+  const PastWinner = async () => {
     const Token = await EncryptedStorage.getItem("Token");
     const requestOptions = {
       headers: {
@@ -171,23 +167,24 @@ const LuckyDraws = (props) => {
         Accept: "application/json",
         Authorization: `Bearer ${Token}`,
       },
-    };
+    }; 
     // alert(13123);
-    await axios
-      .get(`${Config.API_URL}/luckydraw/winner`, requestOptions)
-      .then((response) => {
-        let res = response.data;
-        setPastLuckyDrawWinners(res)
-     console.log("luckydrawwinner",res);
-      });
-  };
+    
+    await axios.get(`${Config.API_URL}/luckydraw/winner`, requestOptions).then(response => {
+      let res = response;
+      setWinnerData(res?.data[0])
+    });
+  
+  }
   useFocusEffect(
     React.useCallback(() => {
       UpdateCoinsOnce();
       initialLoad();
       ProductList();
+      PastWinner();
     }, [])
   );
+ 
   return (
     <ScrollView
       style={{ backgroundColor: "#ffffff" }}
@@ -268,9 +265,7 @@ const LuckyDraws = (props) => {
         </Label>
         <View style={{ marginBottom: height * 0.01 }} />
       </LinearGradient>
-      <HomeBottomList 
-      data={pastLuckyDrawWinners}
-      />
+      <HomeBottomList data = {winnerData}/>
       <View style={{ height: 20 }} />
     </ScrollView>
   );
