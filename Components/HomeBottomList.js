@@ -21,7 +21,6 @@ const { width, height } = Dimensions.get("window");
 function ClosingSoon({ item }) {
   const ImgUrl = `${Config.PRODUCT_IMG}/${item?.product_id}/${item?.product_image}`;
   const ProfileUrl = `${Config.Profile_URL}/${item?.user?.profile_image}`;
-  console.log(ProfileUrl);
   return (
     <View
       style={{
