@@ -32,7 +32,8 @@ import ProfilePicture from "../../Components/ProfilePicture";
 import UserInfo from "../../Components/UserInfo";
 const LastGame = ({ props, navigation }) => {
   const [userData, setUserData] = useState([]);
-  const [userInfo,setUserInfo] = useState();
+  const [userInfo, setUserInfo] = useState();
+  const [selected, setSelected] = useState(1);
   useEffect(async () => {
     const userInfo = JSON.parse(await EncryptedStorage.getItem("User"));
     setUserInfo(userInfo);
@@ -68,17 +69,17 @@ const LastGame = ({ props, navigation }) => {
       <Header back={true} />
       <View style={styles.aView}>
         <View style={styles.avatarView}>
-        <ProfilePicture
-              picture={userInfo?.profile_image}
-              id={userInfo?.id}
-              name={(userInfo?.first_name.slice(0, 1) + userInfo?.last_name.slice(0, 1))}
-              style={styles.avatarView}
-              font = {28}
-            />
+          <ProfilePicture
+            picture={userInfo?.profile_image}
+            id={userInfo?.id}
+            name={(userInfo?.first_name.slice(0, 1) + userInfo?.last_name.slice(0, 1))}
+            style={styles.avatarView}
+            font={28}
+          />
         </View>
 
         <Label font={14} style={{ color: "#FFFFFF", marginTop: 8 }}>
-          {userInfo?.first_name} {userInfo?.last_name} 
+          {userInfo?.first_name} {userInfo?.last_name}
         </Label>
         <Label
           primary
@@ -91,59 +92,167 @@ const LastGame = ({ props, navigation }) => {
             {" "}
             at{" "}
           </Label>
-         {userInfo?.company_name || "MicroSoft"}
+          {userInfo?.company_name || "MicroSoft"}
         </Label>
 
         <View style={styles.flatListHeader}>
-          <Text style={[styles.text, { color: "#ffff00" }]}>Play Games</Text>
-          <Text style={styles.text}>About</Text>
-          <Text style={styles.text}>Friends</Text>
-        </View>
-        {userData?.length>0 && (
-          <Label
-            notAlign
-            style={{ top: 5, color: "#FFFFFF", marginTop: 8, fontSize: 16 }}
+          <TouchableOpacity
+            onPress={() => { setSelected(1) }}
           >
-            Played Games
-          </Label>
-        )}
-        <FlatList
-          data={userData}
-          contentContainerStyle={{
-            paddingBottom: height * 0.48,
-          }}
-          ListEmptyComponent={
-            <NotFound
-              text="Games"
-              desc="You don't have win any Games yet "
-              ConModal
+            <Text style={[styles.text, { color: selected === 1 ? "#ffff00" : "#ffffff" }]}>Play Games</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => { setSelected(2) }}
+          >
+            <Text style={[styles.text, { color: selected === 2 ? "#ffff00" : "#ffffff" }]}>About</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => { setSelected(3) }}
+          >
+            <Text style={[styles.text, { color: selected === 3 ? "#ffff00" : "#ffffff" }]}>Friends</Text>
+          </TouchableOpacity>
+        </View>
+        {selected === 1 ? (
+          <>
+            {userData?.length > 0 && (
+              <Label
+                notAlign
+                style={{ top: 5, color: "#FFFFFF", marginTop: 8, fontSize: 16 }}
+              >
+                Played Games
+              </Label>
+            )}
+            <FlatList
+              data={userData}
+              contentContainerStyle={{
+                paddingBottom: height * 0.48,
+              }}
+              ListEmptyComponent={
+                <NotFound
+                  text="Games"
+                  desc="You don't have win any Games yet "
+                  ConModal
+                />
+              }
+              ItemSeparatorComponent={() => {
+                return (
+                  <View
+                    style={{
+                      marginTop: 20,
+                      height: 1,
+                      width: "100%",
+                      backgroundColor: "#994e7c",
+                    }}
+                  />
+                );
+              }}
+              renderItem={({ item, index }) => {
+                return (
+                  <TriviaCard
+                    userInfo={userInfo}
+                    userData={item}
+                    onPress={() => navigation.navigate("LastGameWinnerProfile")}
+                  />
+                );
+              }}
             />
-          }
-          ItemSeparatorComponent={() => {
-            return (
-              <View
-                style={{
-                  marginTop: 20,
-                  height: 1,
-                  width: "100%",
-                  backgroundColor: "#994e7c",
-                }}
-              />
-            );
-          }}
-          renderItem={({ item, index }) => {
-            return (
-              <TriviaCard
-                userInfo = {userInfo}
-                userData = {item}
-                onPress={() => navigation.navigate("LastGameWinnerProfile")}
-              />
-            );
-          }}
-        />
+          </>
+        ) : (null)}
+        {selected === 2 ? (
+          <>
+            {userData?.length > 0 && (
+              <Label
+                notAlign
+                style={{ top: 5, color: "#FFFFFF", marginTop: 8, fontSize: 16 }}
+              >
+                About
+              </Label>
+            )}
+            <FlatList
+              data={userData}
+              contentContainerStyle={{
+                paddingBottom: height * 0.48,
+              }}
+              ListEmptyComponent={
+                <NotFound
+                  text="Games"
+                  desc="You don't have win any Games yet "
+                  ConModal
+                />
+              }
+              ItemSeparatorComponent={() => {
+                return (
+                  <View
+                    style={{
+                      marginTop: 20,
+                      height: 1,
+                      width: "100%",
+                      backgroundColor: "#994e7c",
+                    }}
+                  />
+                );
+              }}
+              renderItem={({ item, index }) => {
+                return (
+                  <TriviaCard
+                    userInfo={userInfo}
+                    userData={item}
+                    onPress={() => navigation.navigate("LastGameWinnerProfile")}
+                  />
+                );
+              }}
+            />
+          </>
+        ) : (null)}
+        {selected === 3 ? (
+          <>
+            {userData?.length > 0 && (
+              <Label
+                notAlign
+                style={{ top: 5, color: "#FFFFFF", marginTop: 8, fontSize: 16 }}
+              >
+                Friends
+              </Label>
+            )}
+            <FlatList
+              data={userData}
+              contentContainerStyle={{
+                paddingBottom: height * 0.48,
+              }}
+              ListEmptyComponent={
+                <NotFound
+                  text="Games"
+                  desc="You don't have win any Games yet "
+                  ConModal
+                />
+              }
+              ItemSeparatorComponent={() => {
+                return (
+                  <View
+                    style={{
+                      marginTop: 20,
+                      height: 1,
+                      width: "100%",
+                      backgroundColor: "#994e7c",
+                    }}
+                  />
+                );
+              }}
+              renderItem={({ item, index }) => {
+                return (
+                  <TriviaCard
+                    userInfo={userInfo}
+                    userData={item}
+                    onPress={() => navigation.navigate("LastGameWinnerProfile")}
+                  />
+                );
+              }}
+            />
+          </>
+        ) : (null)}
       </View>
-</>
-        
+    </>
+
   );
 };
 

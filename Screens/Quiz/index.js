@@ -73,6 +73,7 @@ const index = ({ props, navigation }) => {
             .then(async (res) => {
                 if (res === "Sorry! Try Next Time") {
                     alert("Sorry! Try Next Time")
+                    navigation.navigate("LastGameWinner")
                 }
                 else {
                     navigation.navigate("Congrats", { data: res })

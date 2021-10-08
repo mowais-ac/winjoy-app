@@ -16,7 +16,7 @@ import axios from 'axios';
 
 const LastGame = ({ props, navigation }) => {
   const [winnerData, setWinnerData] = useState([]);
-  useEffect(async () => {
+  useEffect( () => {
     GetData()
   },[]);
 
@@ -32,7 +32,7 @@ const LastGame = ({ props, navigation }) => {
     
     await axios.get(`${Config.API_URL}/luckydraw/winner`, requestOptions).then(response => {
       let res = response;
-      setWinnerData(res?.data)
+      setWinnerData(res?.data[0])
     });
 
 }
@@ -47,6 +47,7 @@ const LastGame = ({ props, navigation }) => {
           horizontal={true}
           renderItem={
             ({ item, index }) => {
+              console.log("item",item.winnerfull_name);
               return (
                 <TriviaAvatar
                   title={true}

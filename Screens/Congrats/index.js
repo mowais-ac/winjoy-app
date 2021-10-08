@@ -94,11 +94,14 @@ const Congrats = ({ navigation, route }) => {
                         text={"Go to LeaderBoard"}
                         textStyle={[styles.btnText, { color: "#E7003F", fontSize: 24 }]}
                         btnStyle={{ width: widthPercentageToDP("80%"), }}
+                        onPress={()=>navigation.navigate("LastGameWinner")}
+                      
                     />
                     <RewardzButton
                         text={"Back to Home"}
                         textStyle={[styles.btnText, { color: "#FFFFFF", fontSize: 24, }]}
                         btnStyle={{ width: widthPercentageToDP("80%"), backgroundColor: null, top: 20 }}
+                        onPress={()=>navigation.navigate("Landing")}
                     />
                 </View>
 

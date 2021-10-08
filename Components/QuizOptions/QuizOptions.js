@@ -12,6 +12,7 @@ function QuizOptions({ options, onPress, reset, result, optionDisable, onPressDo
   //console.log("optArr", optArr);
   const [ansId, setAnsId] = useState(null);
   const [selected, setSelected] = useState(null);
+  const [btnEnable, setBtnEnable] = useState(false);
 
   return (
     <>
@@ -24,6 +25,7 @@ function QuizOptions({ options, onPress, reset, result, optionDisable, onPressDo
                 <TouchableWithoutFeedback onPress={() => {
                   setSelected(index)
                   setAnsId(item.id)
+                  setBtnEnable(true)
                 }}
 
                   disabled={optionDisable}
@@ -52,28 +54,39 @@ function QuizOptions({ options, onPress, reset, result, optionDisable, onPressDo
 
         />
       </View>
-      <View style={{ marginTop: height * 0.85,}}>
-      <TouchableOpacity style={styles.Margin}
-        disabled={activity}
-        onPress={() => {
-          onPressDone(ansId),
-            setSelected(null)
+      <View style={{ marginTop: height * 0.85, }}>
+        {btnEnable ? (
+          <TouchableOpacity style={styles.Margin}
+            disabled={activity}
+            onPress={() => {
+              onPressDone(ansId),
+                setSelected(null)
+              setBtnEnable(false)
 
-          // navigation.navigate("QuizAnswer")
-        }
-        }
-      >
-
-        {activity ? <ActivityIndicator size="large" color={"#ffffff"} /> : <Text
-          style={{
-            color: '#ffffff',
-            fontSize: 17,
-            textAlign: 'center'
-          }}
-        >Done</Text>}
-
-
-      </TouchableOpacity>
+              // navigation.navigate("QuizAnswer")
+            }
+            }
+          >
+            <Text
+              style={{
+                color: '#ffffff',
+                fontSize: 17,
+                textAlign: 'center'
+              }}
+            >Done</Text>
+          </TouchableOpacity>
+        ) : (
+          <View style={styles.Margin}
+          >
+             {activity ? <ActivityIndicator size="large" color={"#ffffff"} /> : <Text
+              style={{
+                color: '#ffffff',
+                fontSize: 17,
+                textAlign: 'center'
+              }}
+            >Done</Text>}
+          </View>
+        )}
       </View>
     </>
   );
