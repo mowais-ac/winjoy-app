@@ -12,7 +12,6 @@ import {
     FlatList
 } from "react-native";
 import Label from "../../Components/Label";
-const { width, height } = Dimensions.get("window");
 import LinearGradient from "react-native-linear-gradient";
 import HomeBottomList from "../../Components/HomeBottomList";
 import { TriviaAvatar, TriviaCard, RewardzButton } from "../../Components";
@@ -25,11 +24,13 @@ import {
 import Background from "../../Components/Background";
 import Header from "../../Components/Header";
 import { Avatar } from "react-native-elements";
-let data = [1, 2, 3, 4]
-let data2 = ["DashBoard", "LeaderBoard", "played Games", "Friends", "View Profile", "My Orders", "My Address", "Logout"]
-const Congrats = ({ navigation ,route}) => {
-const { data } = route.params;
-console.log("data",data);
+import Config from "react-native-config";
+import { RFValue } from "react-native-responsive-fontsize";
+import Colors from "../../Constants/Colors";
+import BackIcon from 'react-native-vector-icons/Ionicons';
+const { width, height } = Dimensions.get("window");
+const Congrats = ({ navigation, route }) => {
+    const { data } = route.params;
     return (
 
         <ScrollView>
@@ -39,7 +40,17 @@ console.log("data",data);
 
             >
                 <View style={{ height: 20 }} />
-                <Header back={true} />
+                <View style={styles.Container}>
+
+                    <TouchableOpacity
+                        onPress={() => navigation.navigate("Landing")}
+                    >
+                        <View style={styles.containerBack}>
+                            <BackIcon name="ios-chevron-back" size={20} color="#FFFFFF" style={{ left: 5, }} />
+                            <Text style={styles.text}>Back</Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
                 <View style={styles.bottomView}>
                     <Text style={[styles.text, {
                         marginTop: 20,
@@ -55,7 +66,7 @@ console.log("data",data);
                             You're a
                         </Text>
                         <Text style={styles.yellowText}>
-                           WINNER
+                            WINNER
                         </Text>
                     </View>
                     <View style={styles.avatarView}>
@@ -66,18 +77,18 @@ console.log("data",data);
                             // title="MD"
                             source={{
                                 uri:
-                                    'https://abdulrahman.fleeti.com/save_file/uploads/provider/user/5bf637c8_60262ff8dbde39.10627959.jpg'
+                                    Config.Profile_URL + "/" + data[1].profile_image
                             }}
                         />
                     </View>
                     <Text style={[styles.text, { fontSize: 20 }]}>
                         You Won
                     </Text>
-                    <Text style={[styles.yellowText,{marginBottom:10}]}>
+                    <Text style={[styles.yellowText, { marginBottom: 10 }]}>
                         <Text style={[styles.yellowText, { fontWeight: 'normal' }]}>
                             AED{" "}
                         </Text>
-                       {data[0].price}
+                        {data[0].price}
                     </Text>
                     <RewardzButton
                         text={"Go to LeaderBoard"}
@@ -144,6 +155,21 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.43,
         shadowRadius: 9.51,
+    },
+    Container: {
+        flexDirection: "row",
+    },
+    containerBack: {
+        flexDirection: 'row',
+        width: widthConverter(90),
+        marginRight: widthConverter(-30)
+
+    },
+    text: {
+        fontFamily: "Axiforma-Regular",
+        fontSize: RFValue(14),
+        color: Colors.LABEL,
+        left: 4
     },
 });
 

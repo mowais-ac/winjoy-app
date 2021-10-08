@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import { View, Text, TouchableWithoutFeedback, FlatList } from "react-native";
+import { View, Text, TouchableWithoutFeedback, FlatList, ActivityIndicator } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 import LongButton from "../LongButton";
 import styles from "./Styles";
-
-function QuizOptions({ options, onPress, reset, result, optionDisable, onPressDone }) {
+const { StyleSheet, Dimensions } = require('react-native');
+const { width, height } = Dimensions.get("window");
+function QuizOptions({ options, onPress, reset, result, optionDisable, onPressDone, activity }) {
   console.log("optionDisable", optionDisable);
   console.log("options", options);
 
@@ -50,10 +52,9 @@ function QuizOptions({ options, onPress, reset, result, optionDisable, onPressDo
 
         />
       </View>
-      <LongButton style={styles.Margin}
-        textstyle={{ color: '#ffffff' }}
-        text="Done"
-        font={17}
+      <View style={{ marginTop: height * 0.85,}}>
+      <TouchableOpacity style={styles.Margin}
+        disabled={activity}
         onPress={() => {
           onPressDone(ansId),
             setSelected(null)
@@ -61,7 +62,19 @@ function QuizOptions({ options, onPress, reset, result, optionDisable, onPressDo
           // navigation.navigate("QuizAnswer")
         }
         }
-      />
+      >
+
+        {activity ? <ActivityIndicator size="large" color={"#ffffff"} /> : <Text
+          style={{
+            color: '#ffffff',
+            fontSize: 17,
+            textAlign: 'center'
+          }}
+        >Done</Text>}
+
+
+      </TouchableOpacity>
+      </View>
     </>
   );
 }

@@ -6,7 +6,8 @@ import {
     Image,
     ImageBackground,
     ScrollView,
-    SafeAreaView
+    SafeAreaView,
+    Text
 } from "react-native";
 import {
     JSONtoForm,
@@ -20,15 +21,20 @@ import { QuizOptions } from "../../Components";
 import EncryptedStorage from "react-native-encrypted-storage";
 import Config from "react-native-config";
 import axios from "axios";
+import BackIcon from 'react-native-vector-icons/Ionicons';
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { heightConverter, widthConverter } from "../../Components/Helpers/Responsive";
+import { RFValue } from "react-native-responsive-fontsize";
+import Colors from "../../Constants/Colors";
 const { width, height } = Dimensions.get("window");
 const index = ({ props, navigation }) => {
     const [question, setQuestion] = useState([]);
     const [questionIncrement, setQuestionIncrement] = useState(0);
     const [answerId, setAnswerId] = useState();
+    const [activity, setActivity] = useState(false);
     const Questions = async () => {
 
         const Token = await EncryptedStorage.getItem("Token");
-        console.log("token", Token);
         const requestOptions = {
             headers: {
                 "Content-Type": "multipart/form-data",
@@ -41,7 +47,6 @@ const index = ({ props, navigation }) => {
             let res = response.data;
 
             setQuestion(res)
-            console.log('res', question)
 
 
         });
@@ -66,12 +71,11 @@ const index = ({ props, navigation }) => {
         await fetch(`${Config.API_URL}/finish/gameshow`, requestOptions)
             .then(async (response) => response.json())
             .then(async (res) => {
-                console.log("result",res);
                 if (res === "Sorry! Try Next Time") {
                     alert("Sorry! Try Next Time")
                 }
                 else {
-                    navigation.navigate("Congrats",{data:res})
+                    navigation.navigate("Congrats", { data: res })
                 }
 
 
@@ -79,16 +83,12 @@ const index = ({ props, navigation }) => {
             });
     }
     const SaveResponse = async (ansId) => {
-        console.log("lastindex", question[question.length - 1].id);
-
-
         const Token = await EncryptedStorage.getItem("Token");
         const body = JSONtoForm({
             question: question[questionIncrement]?.id,
-            answer:ansId ,
+            answer: ansId,
             live_gameshow_id: question[questionIncrement]?.live_gameshow_id,
         });
-        console.log("body",body);
         const requestOptions = {
             method: "POST",
             headers: {
@@ -102,7 +102,6 @@ const index = ({ props, navigation }) => {
         await fetch(`${Config.API_URL}/save/user/response`, requestOptions)
             .then(async (response) => response.json())
             .then(async (res) => {
-                console.log("ressave", res);
                 if (question[question.length - 1].id === question[questionIncrement]?.id) {
                     CheckResult()
                 }
@@ -112,19 +111,24 @@ const index = ({ props, navigation }) => {
                 }
 
 
-
+                setActivity(false)
 
             })
             .catch((e) => {
+                setActivity(false)
                 alert("Error", e);
 
             });
 
     }
     const onPressDone = (ansId) => {
+        setActivity(true)
         setAnswerId(ansId)
 
         SaveResponse(ansId)
+
+
+
     }
     useEffect(async () => {
         Questions()
@@ -136,7 +140,17 @@ const index = ({ props, navigation }) => {
             <Background height={1} />
             <View style={{ height: 20 }} />
             <ScrollView>
-                <Header back={true} />
+                <View style={styles.Container}>
+
+                    <TouchableOpacity
+                        onPress={() => navigation.navigate("Landing")}
+                    >
+                        <View style={styles.containerBack}>
+                            <BackIcon name="ios-chevron-back" size={20} color="#FFFFFF" style={{ left: 5, }} />
+                            <Text style={styles.text}>Back</Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
 
                 <ImageBackground
                     source={require("../../assets/imgs/game.png")}
@@ -166,6 +180,7 @@ const index = ({ props, navigation }) => {
                 <QuizOptions options={question[questionIncrement]?.answer} onPress={() => alert("hii")}
                     onPressDone={onPressDone}
                     optionDisable={false}
+                    activity={activity}
                 />
 
 
@@ -206,6 +221,21 @@ const styles = StyleSheet.create({
         width: width * 0.85,
         backgroundColor: '#2B1751',
 
+    },
+    Container: {
+        flexDirection: "row",
+    },
+    containerBack: {
+        flexDirection: 'row',
+        width: widthConverter(90),
+        marginRight: widthConverter(-30)
+
+    },
+    text: {
+        fontFamily: "Axiforma-Regular",
+        fontSize: RFValue(14),
+        color: Colors.LABEL,
+        left: 4
     },
 });
 
