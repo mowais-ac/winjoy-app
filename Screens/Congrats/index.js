@@ -31,7 +31,6 @@ import BackIcon from 'react-native-vector-icons/Ionicons';
 const { width, height } = Dimensions.get("window");
 const Congrats = ({ navigation, route }) => {
     const { data } = route.params;
-    console.log("data", data);
     return (
 
         <ScrollView>

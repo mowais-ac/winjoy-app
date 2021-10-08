@@ -35,7 +35,6 @@ const index = ({ props, navigation }) => {
     const Questions = async () => {
 
         const Token = await EncryptedStorage.getItem("Token");
-        console.log("token", Token);
         const requestOptions = {
             headers: {
                 "Content-Type": "multipart/form-data",
@@ -48,7 +47,6 @@ const index = ({ props, navigation }) => {
             let res = response.data;
 
             setQuestion(res)
-            console.log('res', question)
 
 
         });
@@ -73,7 +71,6 @@ const index = ({ props, navigation }) => {
         await fetch(`${Config.API_URL}/finish/gameshow`, requestOptions)
             .then(async (response) => response.json())
             .then(async (res) => {
-                console.log("result", res);
                 if (res === "Sorry! Try Next Time") {
                     alert("Sorry! Try Next Time")
                 }
@@ -86,16 +83,12 @@ const index = ({ props, navigation }) => {
             });
     }
     const SaveResponse = async (ansId) => {
-        console.log("lastindex", question[question.length - 1].id);
-
-
         const Token = await EncryptedStorage.getItem("Token");
         const body = JSONtoForm({
             question: question[questionIncrement]?.id,
             answer: ansId,
             live_gameshow_id: question[questionIncrement]?.live_gameshow_id,
         });
-        console.log("body", body);
         const requestOptions = {
             method: "POST",
             headers: {
@@ -109,8 +102,6 @@ const index = ({ props, navigation }) => {
         await fetch(`${Config.API_URL}/save/user/response`, requestOptions)
             .then(async (response) => response.json())
             .then(async (res) => {
-                console.log("ressave", res);
-
                 if (question[question.length - 1].id === question[questionIncrement]?.id) {
                     CheckResult()
                 }

@@ -56,7 +56,6 @@ const LastGameWinnerProfile = ({ props, navigation }) => {
     const MyFriends = async () => {
 
         const Token = await EncryptedStorage.getItem("Token");
-        console.log("token", Token);
         const requestOptions = {
             headers: {
                 "Content-Type": "multipart/form-data",
@@ -75,7 +74,7 @@ const LastGameWinnerProfile = ({ props, navigation }) => {
         });
 
     }
-    useEffect(async () => {
+    useEffect(() => {
         UserInfo()
         MyFriends()
     }, []);
