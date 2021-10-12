@@ -11,6 +11,8 @@ import com.facebook.react.shell.MainReactPackage;
 import java.util.Arrays;
 import java.util.ArrayList;
 
+// @react-native-async-storage/async-storage
+import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
 // @react-native-community/art
 import com.reactnativecommunity.art.ARTPackage;
 // @react-native-community/datetimepicker
@@ -21,6 +23,8 @@ import org.reactnative.maskedview.RNCMaskedViewPackage;
 import io.invertase.firebase.app.ReactNativeFirebaseAppPackage;
 // @react-native-firebase/crashlytics
 import io.invertase.firebase.crashlytics.ReactNativeFirebaseCrashlyticsPackage;
+// react-native-aws-ivs-player-view
+import com.perrystreet.AwsIvsPlayerViewPackage;
 // react-native-config
 import com.lugg.ReactNativeConfig.ReactNativeConfigPackage;
 // react-native-device-info
@@ -96,11 +100,13 @@ public class PackageList {
   public ArrayList<ReactPackage> getPackages() {
     return new ArrayList<>(Arrays.<ReactPackage>asList(
       new MainReactPackage(mConfig),
+      new AsyncStoragePackage(),
       new ARTPackage(),
       new RNDateTimePickerPackage(),
       new RNCMaskedViewPackage(),
       new ReactNativeFirebaseAppPackage(),
       new ReactNativeFirebaseCrashlyticsPackage(),
+      new AwsIvsPlayerViewPackage(),
       new ReactNativeConfigPackage(),
       new RNDeviceInfo(),
       new RNEncryptedStoragePackage(),

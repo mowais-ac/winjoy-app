@@ -10,9 +10,9 @@ public final class BuildConfig {
   public static final int VERSION_CODE = 1004;
   public static final String VERSION_NAME = "1.0";
   // Field from default config.
-  public static final String API_URL = "https://virtualcurrency.archdubai.com/public/api";
+  public static final String API_URL = "https://windealz.live/api";
   // Field from default config.
-  public static final String PRODUCT_IMG = "https://virtualcurrency.archdubai.com/public/storage/product";
+  public static final String PRODUCT_IMG = "https://windealz.live/storage/product";
   // Field from default config.
-  public static final String Profile_URL = "https://virtualcurrency.archdubai.com/public/storage/profile_image";
+  public static final String Profile_URL = "https://windealz.live/storage/profile_image";
 }
