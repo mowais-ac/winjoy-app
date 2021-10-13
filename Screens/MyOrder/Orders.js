@@ -5,23 +5,23 @@ import {
   Dimensions,
   FlatList,
   Image,
-  TouchableWithoutFeedback,
   ActivityIndicator,
   RefreshControl,
 } from "react-native";
 
-import Background from "../Components/Background";
-import SafeArea from "../Components/SafeArea";
-import Label from "../Components/Label";
-import Header from "../Components/Header";
+import Background from "../../Components/Background";
+import SafeArea from "../../Components/SafeArea";
+import Label from "../../Components/Label";
+import Header from "../../Components/Header";
 
-import { Colors, Images } from "../Constants/Index";
-import Section from "../Components/Section";
-import UserInfo from "../Components/UserInfo";
+import { Colors, Images } from "../../Constants/Index";
+import Section from "../../Components/Section";
+import UserInfo from "../../Components/UserInfo";
 import EncryptedStorage from "react-native-encrypted-storage";
 import Config from "react-native-config";
-import NotFound from "../Components/NotFound";
-import { wait } from "../Constants/Functions";
+import NotFound from "../../Components/NotFound";
+import { wait } from "../../Constants/Functions";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const { width, height } = Dimensions.get("window");
 
@@ -67,7 +67,7 @@ const Orders = ({ navigation }) => {
       JSON.parse(item.products.image)[0]
     }`;
     return (
-      <TouchableWithoutFeedback
+      <TouchableOpacity
         onPress={() => navigation.navigate("OrderDetails", { item })}
       >
         <View>
@@ -101,7 +101,7 @@ const Orders = ({ navigation }) => {
             </View>
           </Section>
         </View>
-      </TouchableWithoutFeedback>
+      </TouchableOpacity>
     );
   };
 

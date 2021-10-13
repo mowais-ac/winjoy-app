@@ -17,7 +17,7 @@ import Register from "./Screens/Register";
 import Verify from "./Screens/VerifyNum";
 import ForgotPassword from "./Screens/ForgotPassword";
 import WishList from "./Screens/WishList/index";
-
+import WishlistDetails from "./Screens/WishList/WishlistDetails";
 // LandingStack
 import Landing from "./Screens/Landing/Landing";
 import BuyCoins from "./Screens/BuyCoins";
@@ -47,8 +47,8 @@ import ContactUs from "./Screens/ContactUs";
 import BorrowCredit from "./Screens/BorrowCredit";
 import BorrowCreditSuccess from "./Screens/BorrowCreditSuccess";
 import RequestList from "./Screens/RequestList";
-import Orders from "./Screens/Orders";
-import OrderDetails from "./Screens/OrderDetails";
+import Orders from "./Screens/MyOrder/Orders";
+import OrderDetails from "./Screens/MyOrder/OrderDetails";
 import WithdrawCoins from "./Screens/WithdrawCoins";
 import TicketList from "./Screens/TicketList";
 import Connections from "./Screens/Connections";
@@ -371,7 +371,13 @@ const WishListStackScreen = () => {
         component={WishList}
         options={{ headerShown: false }}
       />
-
+      <WishListStack.Screen
+        key={1}
+        name="WishlistDetails"
+        component={WishlistDetails}
+        options={{ headerShown: false }}
+      />
+     
     </WishListStack.Navigator>
   );
 };
