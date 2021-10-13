@@ -1,24 +1,21 @@
 import React from "react";
 import { View, StyleSheet, Dimensions, ScrollView, Image } from "react-native";
 
-import Background from "../Components/Background";
-import SafeArea from "../Components/SafeArea";
-import Header from "../Components/Header";
-import Label from "../Components/Label";
-import Section from "../Components/Section";
+import Background from "../../Components/Background";
+import SafeArea from "../../Components/SafeArea";
+import Header from "../../Components/Header";
+import Label from "../../Components/Label";
+import Section from "../../Components/Section";
+import { Colors } from "../../Constants/Index.js";
 
-import LabelButton from "../Components/LabelButton";
-
-import { Colors } from "../Constants/Index.js";
-
-import { GetDate } from "../Constants/Functions";
+import { GetDate } from "../../Constants/Functions";
 import Config from "react-native-config";
-import SmallPopup from "../Components/SmallPopup";
-import GoBack from "../Components/GoBack";
+import SmallPopup from "../../Components/SmallPopup";
+import GoBack from "../../Components/GoBackButton";
 
 const { width, height } = Dimensions.get("window");
 
-const OrderDetails = ({ route, navigation }) => {
+const WishlistDetails = ({ route, navigation }) => {
   const { item } = route.params;
 
   const GetField = (props) => {
@@ -37,8 +34,8 @@ const OrderDetails = ({ route, navigation }) => {
       </View>
     );
   };
-  const ImgUrl = `${Config.PRODUCT_IMG}/${item.products.id}/${
-    JSON.parse(item.products.image)[0]
+  const ImgUrl = `${Config.PRODUCT_IMG}/${item.product.id}/${
+    JSON.parse(item.product.image)[0]
   }`;
   return (
     <ScrollView>
@@ -56,17 +53,17 @@ const OrderDetails = ({ route, navigation }) => {
               />
             </View>
             <View style={styles.HeaderLabel}>
-              <Label notAlign bold style={styles.Info} headingtype="h1">
-                {item.order_reference}
+              <Label notAlign bold style={styles.Info} headingtype="h3">
+              {item.product.title}
               </Label>
               <Label notAlign style={styles.Info} headingtype="h5">
-                {item.products.title}
+                {item.product.description}
               </Label>
             </View>
             <View style={styles.PopupView}>
               <SmallPopup
                 item={{
-                  Text: item.status.toUpperCase(),
+                  Text: item.product.status.toUpperCase(),
                   type: "success",
                 }}
                 style={{ marginLeft: 0 }}
@@ -76,18 +73,18 @@ const OrderDetails = ({ route, navigation }) => {
         </View>
         <View style={styles.DetailsContainer}>
           <Label primary bold headingtype="h4">
-            Order Details
+            Wish List Details
           </Label>
           <Section style={styles.SectionContainer}>
             <View style={styles.SectionTop}>
-              <GetField name="Product" val={item.products.title} />
-              <GetField name="Order Reference" val={item.order_reference} />
-              <GetField name="Order Date" val={GetDate(item.created_at)} />
+              <GetField name="Product" val={item.product.title} />
+              <GetField name="Product Details" val={item.product.description} />
+              <GetField name="Order Date" val={GetDate(item.product.created_at)} />
               <GetField
                 name="Shipping date"
-                val={item.shipping_date ? GetDate(item.created_at) : "N/A"}
+                val={item.product.shipping_date ? GetDate(item.product.created_at) : "N/A"}
               />
-              <GetField name="Status" val={item.status} />
+              <GetField name="Status" val={item.product.status} />
             </View>
           </Section>
         </View>
@@ -103,7 +100,7 @@ const OrderDetails = ({ route, navigation }) => {
               bold
               dark
               font={13}
-              text={item.coupon.code}
+              text={item.product.discount_code}
             />
           </View>
         </Section>
@@ -144,6 +141,7 @@ const styles = StyleSheet.create({
   },
   Info: {
     marginLeft: width * 0.05,
+    width:"100%"
   },
   MarginLess: {
     marginTop: height * 0.02,
@@ -188,4 +186,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default OrderDetails;
+export default WishlistDetails;
