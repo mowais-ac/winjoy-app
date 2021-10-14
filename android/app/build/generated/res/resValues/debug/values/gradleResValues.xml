@@ -8,10 +8,10 @@
     <!-- Value from build type: debug -->
     <integer name="react_native_inspector_proxy_port">8081</integer>
     <!-- Value from default config. -->
-    <string name="API_URL" translatable="false">"https://windealz.live/api"</string>
+    <string name="API_URL" translatable="false">"https://virtualcurrency.archdubai.com/public/api"</string>
     <!-- Value from default config. -->
-    <string name="PRODUCT_IMG" translatable="false">"https://windealz.live/storage/product"</string>
+    <string name="PRODUCT_IMG" translatable="false">"https://virtualcurrency.archdubai.com/public/storage/product"</string>
     <!-- Value from default config. -->
-    <string name="Profile_URL" translatable="false">"https://windealz.live/storage/profile_image"</string>
+    <string name="Profile_URL" translatable="false">"https://virtualcurrency.archdubai.com/public/storage/profile_image"</string>
 
 </resources>

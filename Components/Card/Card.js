@@ -4,7 +4,6 @@ import Config from "react-native-config";
 import LoaderImage from "../LoaderImage";
 const { width, height } = Dimensions.get("window");
 function Card({ options, onPress, reset, result, optionDisable, item }) {
-  console.log(item);
   const ImgUrl = `${Config.PRODUCT_IMG}/${item.id}/${
     JSON.parse(item.image)[0]
   }`;

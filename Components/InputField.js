@@ -242,7 +242,7 @@ const InputField = React.forwardRef((props, ref) => {
   };
 
   const CheckUserName = async () => {
-    console.log("Config.API_URL", Config.API_URL);
+  
     if (!ActForCheck) {
 
       if (val !== null && val !== "") {

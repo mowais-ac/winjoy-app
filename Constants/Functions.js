@@ -97,7 +97,6 @@ export const IsVerified = async (Token) => {
       }
     })
     .catch((e) => {
-      console.log(e);
       value = false;
     });
   return value;

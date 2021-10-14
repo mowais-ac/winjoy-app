@@ -53,6 +53,8 @@ import br.com.classapp.RNSensitiveInfo.RNSensitiveInfoPackage;
 import com.horcrux.svg.SvgPackage;
 // react-native-vector-icons
 import com.oblador.vectoricons.VectorIconsPackage;
+// react-native-video
+import com.brentvatne.react.ReactVideoPackage;
 // rn-fetch-blob
 import com.RNFetchBlob.RNFetchBlobPackage;
 
@@ -121,6 +123,7 @@ public class PackageList {
       new RNSensitiveInfoPackage(),
       new SvgPackage(),
       new VectorIconsPackage(),
+      new ReactVideoPackage(),
       new RNFetchBlobPackage()
     ));
   }
