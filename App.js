@@ -39,6 +39,7 @@ import LastGameWinnerProfile from "./Screens/LastGameWinnerProfile/index";
 import Congrats from "./Screens/Congrats/index"
 import WrongAnswer from "./Screens/WrongAnswer/index"
 import ProductDetail from "./Screens/ProductDetail/index"
+import Wallet from "./Screens/Wallet/index"
 //meu stack
 import Menu from "./Screens/Menu";
 import EditProfile from "./Screens/EditProfile";
@@ -107,7 +108,7 @@ const SimpleScreenStack = createStackNavigator();
 
 const SimpeStackScreen = () => (
   <SimpleScreenStack.Navigator
-   // initialRouteName={'WrongAnswer'}
+    initialRouteName={'Wallet'}
   >
     <SimpleScreenStack.Screen
       key={1}
@@ -158,7 +159,12 @@ const SimpeStackScreen = () => (
       component={WrongAnswer}
       options={{ headerShown: false }}
     />
-
+  <SimpleScreenStack.Screen
+      key={10}
+      name="Wallet"
+      component={Wallet}
+      options={{ headerShown: false }}
+    />
   </SimpleScreenStack.Navigator>
 );
 const MenuStack = createStackNavigator();
@@ -457,7 +463,7 @@ function App() {
         <StatusBar hidden />
         <NavigationContainer>
           <Main.Navigator
-           // initialRouteName={'SimpeStackScreen'}
+            initialRouteName={'SimpeStackScreen'}
           >
             <Main.Screen
               key={0}
