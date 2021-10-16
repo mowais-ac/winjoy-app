@@ -25,18 +25,67 @@ import {
 import Background from "../../Components/Background";
 import Header from "../../Components/Header";
 import { Avatar } from "react-native-elements";
-let data = [1, 2, 3, 4]
+import EncryptedStorage from "react-native-encrypted-storage";
+import Config from "react-native-config";
+import axios from "axios";
 let data2 = ["DashBoard", "LeaderBoard", "played Games", "Friends", "View Profile", "My Orders", "My Address", "Logout"]
 const LastGameWinnerProfile = ({ props, navigation }) => {
+    const [userData, setUserData] = useState([]);
+    const [friendData, setFriendData] = useState([]);
+    const UserInfo = async () => {
 
+        const Token = await EncryptedStorage.getItem("Token");
+        console.log("token", Token);
+        const requestOptions = {
+            headers: {
+                "Content-Type": "multipart/form-data",
+                Accept: "application/json",
+                Authorization: `Bearer ${Token}`,
+            },
+        };
+        // alert(13123);
+        await axios.get(`${Config.API_URL}/user`, requestOptions).then(response => {
+            let res = response.data;
+            console.log("userinfo", res.data[0].first_name);
+            setUserData(res?.data)
+
+
+        });
+
+    }
+    const MyFriends = async () => {
+
+        const Token = await EncryptedStorage.getItem("Token");
+        const requestOptions = {
+            headers: {
+                "Content-Type": "multipart/form-data",
+                Accept: "application/json",
+                Authorization: `Bearer ${Token}`,
+            },
+        };
+        // alert(13123);
+        await axios.get(`${Config.API_URL}/accepted-connections/list`, requestOptions).then(response => {
+            let res = response.data;
+            console.log("friends", res.data[0]);
+            setFriendData( res.data[0])
+           
+
+
+        });
+
+    }
+    useEffect(() => {
+        UserInfo()
+        MyFriends()
+    }, []);
     return (
 
         <ScrollView>
             <LinearGradient
 
                 colors={["#420E92", "#E7003F"]}
-           
-             >
+
+            >
                 <View style={{ height: 20 }} />
                 <Header back={true} />
                 <View style={styles.aView}>
@@ -50,21 +99,21 @@ const LastGameWinnerProfile = ({ props, navigation }) => {
                                     // title="MD"
                                     source={{
                                         uri:
-                                            'https://abdulrahman.fleeti.com/save_file/uploads/provider/user/5bf637c8_60262ff8dbde39.10627959.jpg'
+                                            userData[1]
                                     }}
                                 />
                             </View>
 
                             <View style={{ width: widthConverter(250), marginLeft: 20 }}>
                                 <Label font={14} notAlign bold style={{ color: "#FFFFFF", marginTop: 8, }}>
-                                    Penny N. Doamin
+                                    {userData[0]?.first_name} {userData[0]?.last_name}
                                 </Label>
                                 <Label primary notAlign font={14} bold style={{ color: "#FFFFFF", marginTop: 8 }}>
-                                    Senior Product Analyst
+                                    {userData[0]?.designation}
                                     <Label primary font={14} notAlign style={{ color: "#e2acc7" }}>
-                                        {" "}at{" "}
+                                     {userData[0]?.company_name?" at ":null}
                                     </Label>
-                                    MicroSoft
+                                    {userData[0]?.company_name}
                                 </Label>
                             </View>
 
@@ -81,12 +130,13 @@ const LastGameWinnerProfile = ({ props, navigation }) => {
                             My Friends
                         </Text>
                         <FlatList
-                            data={data}
+                            data={friendData}
                             horizontal={true}
 
 
                             renderItem={
                                 ({ item, index }) => {
+                                    console.log("item",item);
                                     return (
                                         <View style={[styles.avatarView, {
                                             width: widthConverter(70),
@@ -94,16 +144,16 @@ const LastGameWinnerProfile = ({ props, navigation }) => {
                                             borderRadius: heightConverter(70),
                                             marginLeft: 15
                                         }]}>
-                                            <Avatar
+                                            {item.profile_image?<Avatar
                                                 rounded
                                                 size={70}
-
-                                                // title="MD"
                                                 source={{
                                                     uri:
-                                                        'https://abdulrahman.fleeti.com/save_file/uploads/provider/user/5bf637c8_60262ff8dbde39.10627959.jpg'
+                                                        item.profile_image
                                                 }}
-                                            />
+                                            />:
+                                            <Avatar rounded title={item.first_name.charAt(0)+item.last_name.charAt(0)} />
+                                            }
                                         </View>
                                     )
                                 }
@@ -111,7 +161,7 @@ const LastGameWinnerProfile = ({ props, navigation }) => {
                         />
                         <View style={styles.footer}>
                             <Text style={styles.text}>
-                                2,034 Friends
+                                2,034 Friends HC
                             </Text>
                             <Text style={[styles.text, { color: "#ffff00" }]}>
                                 View all Friends
@@ -121,7 +171,7 @@ const LastGameWinnerProfile = ({ props, navigation }) => {
                         </View>
                     </View>
                     <FlatList
-                        data={data2}
+                        data={data2} 
 
                         // horizontal={true}
                         ItemSeparatorComponent={() => {
@@ -147,9 +197,15 @@ const LastGameWinnerProfile = ({ props, navigation }) => {
                                         width: widthPercentageToDP("90%"),
                                         marginTop: 10, marginLeft: 15
                                     }}>
-                                        <Text style={[styles.text, { color: "#ffffff",height:heightPercentageToDP("5%"),top:10 }]}>
+                                        <TouchableOpacity onPress={()=>{
+                                            if(item==="Friends"){
+                                                navigation.navigate("LastGameWinnerDetail")
+                                            }
+                                        }}>
+                                        <Text style={[styles.text, { color: "#ffffff", height: heightPercentageToDP("5%"), top: 10 }]}>
                                             {item}
                                         </Text>
+                                        </TouchableOpacity>
                                     </View>
                                 )
                             }

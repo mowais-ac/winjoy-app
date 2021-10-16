@@ -68,7 +68,7 @@ const Login = ({ navigation }) => {
       await fetch(`${Config.API_URL}/auth/login`, requestOptions)
         .then(async (response) => response.json())
         .then(async (res) => {
-          console.log(res);
+        //  console.log(res);
           ButtonRef.current.SetActivity(false);
           if (res.status && res.status.toLowerCase() === "success") {
             await EncryptedStorage.setItem("Token", res.data.token);

@@ -1,71 +1,116 @@
-import React from "react";
-import { Image, StyleSheet, Dimensions, TouchableOpacity, FlatList, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import {
+  Image,
+  StyleSheet,
+  Dimensions,
+  TouchableOpacity,
+  FlatList,
+  View,
+} from "react-native";
 import Label from "../Components/Label";
 import { Images } from "../Constants/Index";
 import { useNavigation } from "@react-navigation/native";
 import { connect } from "react-redux";
-
+import EncryptedStorage from "react-native-encrypted-storage";
+import Config from "react-native-config";
+import axios from "axios";
+import LoaderImage from "./LoaderImage";
+import { Colors } from "../Constants/Index";
 const { width, height } = Dimensions.get("window");
-const DATA = [
-  {
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    title: 'First Item',
-  },
-  {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    title: 'Second Item',
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d72',
-    title: 'Third Item',
-  },
-];
+
 function ClosingSoon({ item }) {
-
-
+  const ImgUrl = `${Config.PRODUCT_IMG}/${item?.product_id}/${item?.product_image}`;
+  const ProfileUrl = `${Config.Profile_URL}/${item?.user?.profile_image}`;
   return (
-    <View style={{
-      width: width * 0.7,
-      height: height * 0.2,
-      backgroundColor: '#F4EDEF',
-      marginLeft: 10,
-      borderRadius: 10,
-      padding: 10,
-      justifyContent: 'center'
-    }}>
+    <View
+      style={{
+        width: width * 0.7,
+        height: height * 0.2,
+        backgroundColor: "#F4EDEF",
+        marginLeft: 10,
+        borderRadius: 10,
+        padding: 10,
+        justifyContent: "center",
+      }}
+    >
+      <View style={{ flexDirection: "row" }}>
+        {item.product_image || item.profile_image=== null ? (
+          <LoaderImage
+            source={{
+              uri: ImgUrl.replace("http://", "https://"),
+            }}
+            style={{
+              width: 100,
+              height: 120,
+            }}
+            resizeMode="cover"
+          />
+        ) : item?.user?.profile_image ? (
+          <LoaderImage
+            source={{
+              uri: ProfileUrl.replace("http://", "https://"),
+            }}
+            style={{
+              width: 100,
+              height: 120,
+            }}
+            resizeMode="cover"
+          />
+        ) : (
+          <View style={[styles.ProfileView, styles.ProfileBG]}>
+            <Label
+              adjustsFontSizeToFit={true}
+              font={28}
+              bold
+              style={{ textTransform: "uppercase" }}
+            >
+              {item?.user?.first_name.slice(0, 1) +
+                item?.user?.last_name.slice(0, 1)}
+            </Label>
+          </View>
+        )}
 
-      <View style={{ flexDirection: 'row', }}>
-        <Image
-          style={{
-            width: 60,
-            height: 100,
-          }}
-          resizeMode={"contain"}
-          source={require('../assets/imgs/iphone.png')}
-
-        />
-        <View style={{ marginLeft: width * 0.14, }}>
+        <View style={{ marginLeft: 20 }}>
           <Label notAlign primary font={12} bold style={{ color: "#E7003F" }}>
             Congratulations
           </Label>
-          <Label notAlign bold font={12} dark style={{ color: "#000000", width: width * 0.3, }}>
-            Inaam Ali Shah
+          <Label
+            notAlign
+            bold
+            font={12}
+            dark
+            style={{ color: "#000000", width: width * 0.3 }}
+          >
+            {item.winnerfull_name ||
+              item?.user?.first_name + " " + item?.user?.last_name}
           </Label>
-          <Label notAlign primary font={12} dark style={{ color: "#000000", width: width * 0.3, }}>
+          <Label
+            notAlign
+            primary
+            font={12}
+            dark
+            style={{ color: "#000000", width: width * 0.3 }}
+          >
             on winning
           </Label>
-          <Label notAlign bold font={12} dark style={{ color: "#000000", width: width * 0.3, }}>
-            iPhone 12 Pro 256 GB
+          <Label
+            notAlign
+            bold
+            font={12}
+            dark
+            style={{ color: "#000000", width: width * 0.3 }}
+          >
+            {item.product_title || (+item.price).toLocaleString()}
           </Label>
         </View>
       </View>
-
     </View>
   );
 }
 const HomeBottomList = (props) => {
   const navigation = useNavigation();
-  const { Bell } = props;
+  const { data } = props;
+
   return (
     <>
       <Label primary font={16} bold style={{ color: "#E7003F", marginTop: 10 }}>
@@ -73,21 +118,19 @@ const HomeBottomList = (props) => {
       </Label>
       <FlatList
         horizontal={true}
-        style={{ marginLeft: 1, minHeight: 50, }}
-        contentContainerStyle={{ alignSelf: "flex-start" }}
+        style={{ marginLeft: 1, minHeight: 50 }}
+        contentContainerStyle={{
+          alignSelf: "flex-start",
+          paddingRight: width * 0.03,
+        }}
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
-        data={DATA}
+        data={data}
         renderItem={({ item }) => (
-          <ClosingSoon
-            props={props}
-            index={item.index}
-            item={item}
-
-          />
+          <ClosingSoon props={props} index={item.index} item={item} />
         )}
         keyExtractor={(item) => item.id}
-      //   ListEmptyComponent={this.RenderEmptyContainerOnGoing()}
+        //   ListEmptyComponent={this.RenderEmptyContainerOnGoing()}
       />
     </>
   );
@@ -100,7 +143,6 @@ const styles = StyleSheet.create({
     marginTop: height * 0.015,
     resizeMode: "stretch",
     alignSelf: "center",
-
   },
   LinerGradientProgrees: {
     alignItems: "center",
@@ -116,7 +158,6 @@ const styles = StyleSheet.create({
     position: "absolute",
     backgroundColor: "#EADFE3",
     borderRadius: 9,
-
   },
   containerprogressBar: {
     width: 100,
@@ -126,7 +167,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     height: 3,
     marginLeft: 2,
-
   },
   mainView: {
     height: height - 250,
@@ -136,8 +176,18 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 20,
     borderTopLeftRadius: 0,
     borderTopRightRadius: 0,
-    overflow: 'hidden',
-  }
+    overflow: "hidden",
+  },
+  ProfileView: {
+    width: 100,
+    height: 120,
+    overflow: "hidden",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  ProfileBG: {
+    backgroundColor: Colors.PROFILE_BG,
+  },
 });
 const mapStateToProps = (state) => {
   const { Bell } = state;

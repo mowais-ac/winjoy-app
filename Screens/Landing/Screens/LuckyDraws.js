@@ -33,6 +33,7 @@ function ClosingSoon({ item }) {
   let progress = item.updated_stocks
     ? (item?.updated_stocks / item?.stock) * 100
     : 0;
+
   const ImgUrl = `${Config.PRODUCT_IMG}/${item.id}/${
     JSON.parse(item.image)[0]
   }`;
@@ -98,7 +99,7 @@ const LuckyDraws = (props) => {
   const [Banners, setBanners] = useState(null);
   const [refreshing, setRefreshing] = React.useState(false);
   const [productList, setProductList] = React.useState([]);
-
+  const [winnerData, setWinnerData] = useState([]);
   const onRefresh = React.useCallback(() => {
     // setBanners(null);
     setRefreshing(true);
@@ -109,8 +110,6 @@ const LuckyDraws = (props) => {
     initialLoad();
     props.UpdateCoins(UpdateCoins());
   };
-  const CoinChangeRef = useRef();
-
   const initialLoad = () => {
     const check = async () => {
       const Token = await EncryptedStorage.getItem("Token");
@@ -160,13 +159,32 @@ const LuckyDraws = (props) => {
         }
       });
   };
+  const PastWinner = async () => {
+    const Token = await EncryptedStorage.getItem("Token");
+    const requestOptions = {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Accept: "application/json",
+        Authorization: `Bearer ${Token}`,
+      },
+    }; 
+    // alert(13123);
+    
+    await axios.get(`${Config.API_URL}/luckydraw/winner`, requestOptions).then(response => {
+      let res = response;
+      setWinnerData(res?.data[0])
+    });
+  
+  }
   useFocusEffect(
     React.useCallback(() => {
       UpdateCoinsOnce();
       initialLoad();
       ProductList();
+      PastWinner();
     }, [])
   );
+ 
   return (
     <ScrollView
       style={{ backgroundColor: "#ffffff" }}
@@ -179,37 +197,11 @@ const LuckyDraws = (props) => {
           <ActivityIndicator size="large" color={Colors.BLACK} />
         ) : (
           <TouchableOpacity onPress={() => navigation.navigate("EShopping")}>
-            {/* <LoaderImage
+             <LoaderImage
               source={{ uri: Banners[1].replace('http://', 'https://') }}
               style={styles.ShoppingBanner}
-            /> */}
-            <ImageBackground
-              style={styles.ShoppingBanner}
-              source={require("../../../assets/imgs/banner.png")}
-            >
-              <View style={styles.bgImageUpperView}>
-                <Label
-                  notAlign
-                  bold
-                  primary
-                  font={40}
-                  bold
-                  style={{ color: "#FFFF13" }}
-                >
-                  Win
-                </Label>
-                <Label
-                  primary
-                  font={16}
-                  bold
-                  notAlign
-                  dark
-                  style={{ color: "#ffffff" }}
-                >
-                  The National Day Grand Prize
-                </Label>
-              </View>
-            </ImageBackground>
+              resizeMode="contain"
+            /> 
           </TouchableOpacity>
         )}
 
@@ -273,7 +265,7 @@ const LuckyDraws = (props) => {
         </Label>
         <View style={{ marginBottom: height * 0.01 }} />
       </LinearGradient>
-      <HomeBottomList />
+      <HomeBottomList data = {winnerData}/>
       <View style={{ height: 20 }} />
     </ScrollView>
   );
@@ -281,10 +273,9 @@ const LuckyDraws = (props) => {
 
 const styles = StyleSheet.create({
   ShoppingBanner: {
-    width: width * 1.01,
+    width: "100%",
     height: height * 0.3,
     marginTop: height * 0.015,
-    resizeMode: "stretch",
     alignSelf: "center",
   },
   bgImageUpperView: {

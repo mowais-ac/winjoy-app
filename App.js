@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Dimensions, StatusBar,View,StyleSheet} from "react-native";
+import { Dimensions, StatusBar, View, StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -37,8 +37,9 @@ import LastGameWinner from "./Screens/LastGameWinner/LastGameWinner";
 import LastGameWinnerDetail from "./Screens/LastGameWinnerDetail/index";
 import LastGameWinnerProfile from "./Screens/LastGameWinnerProfile/index";
 import Congrats from "./Screens/Congrats/index"
+import WrongAnswer from "./Screens/WrongAnswer/index"
 import ProductDetail from "./Screens/ProductDetail/index"
-
+import Wallet from "./Screens/Wallet/index"
 //meu stack
 import Menu from "./Screens/Menu";
 import EditProfile from "./Screens/EditProfile";
@@ -107,7 +108,7 @@ const SimpleScreenStack = createStackNavigator();
 
 const SimpeStackScreen = () => (
   <SimpleScreenStack.Navigator
- // initialRouteName={'LastGameWinner'}
+    initialRouteName={'Wallet'}
   >
     <SimpleScreenStack.Screen
       key={1}
@@ -121,20 +122,20 @@ const SimpeStackScreen = () => (
       component={QuizAnswer}
       options={{ headerShown: false }}
     />
-     
-       <SimpleScreenStack.Screen
+
+    <SimpleScreenStack.Screen
       key={4}
       name="LastGameWinner"
       component={LastGameWinner}
       options={{ headerShown: false }}
     />
-     <SimpleScreenStack.Screen
+    <SimpleScreenStack.Screen
       key={5}
       name="LastGameWinnerDetail"
       component={LastGameWinnerDetail}
       options={{ headerShown: false }}
     />
-     <SimpleScreenStack.Screen
+    <SimpleScreenStack.Screen
       key={6}
       name="LastGameWinnerProfile"
       component={LastGameWinnerProfile}
@@ -146,14 +147,24 @@ const SimpeStackScreen = () => (
       component={Congrats}
       options={{ headerShown: false }}
     />
-      <SimpleScreenStack.Screen
+    <SimpleScreenStack.Screen
       key={8}
       name="ProductDetail"
       component={ProductDetail}
       options={{ headerShown: false }}
     />
-    
-    
+    <SimpleScreenStack.Screen
+      key={9}
+      name="WrongAnswer"
+      component={WrongAnswer}
+      options={{ headerShown: false }}
+    />
+  <SimpleScreenStack.Screen
+      key={10}
+      name="Wallet"
+      component={Wallet}
+      options={{ headerShown: false }}
+    />
   </SimpleScreenStack.Navigator>
 );
 const MenuStack = createStackNavigator();
@@ -312,7 +323,7 @@ const HomeStackScreen = () => {
         component={PayCredit}
         options={{ headerShown: false }}
       />
-       <HomeStack.Screen
+      <HomeStack.Screen
         key={13}
         name="Quiz"
         component={Quiz}
@@ -370,7 +381,7 @@ const WishListStackScreen = () => {
         component={WishList}
         options={{ headerShown: false }}
       />
-     
+
     </WishListStack.Navigator>
   );
 };
@@ -404,7 +415,7 @@ const ProductsStackStackScreen = () => {
         component={PrizeList}
         options={{ headerShown: false }}
       />
-      
+
     </ProductsStack.Navigator>
   );
 };
@@ -422,12 +433,11 @@ const TabsStackScreen = () => (
     }}
     screenOptions={({ route }) => ({
       tabBarIcon: ({ focused, color, size }) => {
-        console.log("focused",focused);
-        return(
-          <View style={[styles.iconView,{backgroundColor:focused?'#F4EDEF':null}]}>
-           <TabButton name={route.name} />
-           </View>
-           );
+        return (
+          <View style={[styles.iconView, { backgroundColor: focused ? '#F4EDEF' : null }]}>
+            <TabButton name={route.name} />
+          </View>
+        );
       },
     })}
   >
@@ -450,52 +460,52 @@ function App() {
   return (
     <PersistGate loading={null} persistor={persistor}>
       <Provider store={store}>
-      <StatusBar hidden />
-      <NavigationContainer>
-        <Main.Navigator
-        // initialRouteName={'SimpeStackScreen'}
-         >
-          <Main.Screen
-            key={0}
-            name="Splash"
-            component={Splash}
-            options={{ headerShown: false }}
-          />
-          <Main.Screen
-            key={1}
-            name="TransferConfirm"
-            component={TransferConfirm}
-            options={{ headerShown: false }}
-          />
-          <Main.Screen
-            key={2}
-            name="TabsStack"
-            component={TabsStackScreen}
-            options={{ headerShown: false }}
-          />
-          <Main.Screen
-            key={3}
-            name="LoginStack"
-            component={LoginStackScreen}
-            options={{ headerShown: false }}
-          />
-           <Main.Screen
-            key={4}
-            name="SimpeStackScreen"
-            component={SimpeStackScreen}
-            options={{ headerShown: false }}
-          />
-          
-        </Main.Navigator>
-      </NavigationContainer>
+        <StatusBar hidden />
+        <NavigationContainer>
+          <Main.Navigator
+            initialRouteName={'SimpeStackScreen'}
+          >
+            <Main.Screen
+              key={0}
+              name="Splash"
+              component={Splash}
+              options={{ headerShown: false }}
+            />
+            <Main.Screen
+              key={1}
+              name="TransferConfirm"
+              component={TransferConfirm}
+              options={{ headerShown: false }}
+            />
+            <Main.Screen
+              key={2}
+              name="TabsStack"
+              component={TabsStackScreen}
+              options={{ headerShown: false }}
+            />
+            <Main.Screen
+              key={3}
+              name="LoginStack"
+              component={LoginStackScreen}
+              options={{ headerShown: false }}
+            />
+            <Main.Screen
+              key={4}
+              name="SimpeStackScreen"
+              component={SimpeStackScreen}
+              options={{ headerShown: false }}
+            />
+
+          </Main.Navigator>
+        </NavigationContainer>
       </Provider>
     </PersistGate>
   );
 }
 const styles = StyleSheet.create({
-  iconView:{borderRadius:30,width: width * 0.1, height: height * 0.05,justifyContent:'center',alignItems:'center'}
-  
-  
+  iconView: { borderRadius: 30, width: width * 0.1, height: height * 0.05, justifyContent: 'center', alignItems: 'center' }
+
+
 });
 
 export default App;

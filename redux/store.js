@@ -6,7 +6,7 @@ import ReduxThunk from 'redux-thunk';
 import reducers from '../redux/reducers/index';
 import sensitiveInfo from 'react-native-sensitive-info';
 
-console.log(sensitiveInfo)
+
 const storage = createSensitiveStorage({
   keychainService: 'myTask',
   sharedPreferencesName: 'myTask',
