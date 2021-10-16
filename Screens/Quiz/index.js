@@ -73,7 +73,7 @@
 //             .then(async (res) => {
 //                 if (res === "Sorry! Try Next Time") {
 //                     alert("Sorry! Try Next Time")
-//                     navigation.navigate("LastGameWinner")
+//                     navigation.navigate("LeaderBoard")
 //                 }
 //                 else {
 //                     navigation.navigate("Congrats", { data: res })

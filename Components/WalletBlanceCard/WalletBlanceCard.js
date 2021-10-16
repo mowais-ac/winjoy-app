@@ -46,11 +46,11 @@ function WalletBlanceCard({ options, onPress, reset, result, optionDisable, data
     >
      
     <View style={{marginLeft:30}}>
-    <Label notAlign primary font={16} bold style={{ color: "#E7003F",  }}>
+    <Label notAlign primary font={14} bold style={{ color: "#E7003F",  }}>
         Your Wallet
       </Label>
 
-      <Label notAlign primary font={20} dark style={{ color: "#000000" }}>
+      <Label notAlign primary font={14} dark style={{ color: "#000000" }}>
         AED 1,450
       </Label>
     </View>

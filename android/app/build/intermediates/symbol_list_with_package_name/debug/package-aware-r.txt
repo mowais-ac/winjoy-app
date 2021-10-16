@@ -1442,6 +1442,7 @@ drawable assets_imgs_home
 drawable assets_imgs_jacket
 drawable assets_imgs_lines
 drawable assets_imgs_logo
+drawable assets_imgs_lpgame
 drawable assets_imgs_notfound
 drawable assets_imgs_orders
 drawable assets_imgs_pencil
@@ -2105,6 +2106,7 @@ mipmap ic_launcher
 mipmap ic_launcher_round
 plurals mtrl_badge_content_description
 raw app
+raw node_modules_csscolorkeywords_colors
 raw node_modules_cssselect_lib_procedure
 raw node_modules_csstree_data_patch
 raw node_modules_csstree_package

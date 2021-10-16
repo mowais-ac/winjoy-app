@@ -151,7 +151,7 @@ const LastGame = ({ props, navigation }) => {
                   <TriviaCard
                     userInfo={userInfo}
                     userData={item}
-                    onPress={() => navigation.navigate("LastGameWinnerProfile")}
+                    onPress={() => navigation.navigate("HamburgerMenu")}
                   />
                 );
               }}
@@ -197,7 +197,7 @@ const LastGame = ({ props, navigation }) => {
                   <TriviaCard
                     userInfo={userInfo}
                     userData={item}
-                    onPress={() => navigation.navigate("LastGameWinnerProfile")}
+                    onPress={() => navigation.navigate("HamburgerMenu")}
                   />
                 );
               }}
@@ -243,7 +243,7 @@ const LastGame = ({ props, navigation }) => {
                   <TriviaCard
                     userInfo={userInfo}
                     userData={item}
-                    onPress={() => navigation.navigate("LastGameWinnerProfile")}
+                    onPress={() => navigation.navigate("HamburgerMenu")}
                   />
                 );
               }}
