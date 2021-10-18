@@ -34,14 +34,14 @@ import Quiz from "./Screens/Quiz/index";
 import QuizAnswer from "./Screens/QuizAnswer/index";
 import PrizeList from "./Screens/PrizeList/index";
 import LeaderBoard from "./Screens/LeaderBoard/LeaderBoard";
-import LastGameWinnerDetail from "./Screens/LastGameWinnerDetail/index";
 import HamburgerMenu from "./Screens/HamburgerMenu/index";
 import Congrats from "./Screens/Congrats/index"
 import WrongAnswer from "./Screens/WrongAnswer/index"
 import ProductDetail from "./Screens/ProductDetail/index"
 import DashBoard from "./Screens/DashBoard/index"
 //meu stack
-import Menu from "./Screens/Menu";
+//import Menu from "./Screens/Menu";
+import Menu from "./Screens/HamburgerMenu/index";
 import EditProfile from "./Screens/EditProfile";
 import ContactUs from "./Screens/ContactUs";
 import BorrowCredit from "./Screens/BorrowCredit";
@@ -56,7 +56,7 @@ import RequestCoins from "./Screens/RequestCoins";
 import SubmitTicketScreen from "./Screens/SubmitTicketScreen";
 
 // profile stack
-import Profile from "./Screens/Profile";
+import Profile from "./Screens/Profile/index";
 
 // tabs stack
 import Withdrawals from "./Screens/Withdrawals";
@@ -129,18 +129,8 @@ const SimpeStackScreen = () => (
       component={LeaderBoard}
       options={{ headerShown: false }}
     />
-    <SimpleScreenStack.Screen
-      key={5}
-      name="LastGameWinnerDetail"
-      component={LastGameWinnerDetail}
-      options={{ headerShown: false }}
-    />
-    <SimpleScreenStack.Screen
-      key={6}
-      name="HamburgerMenu"
-      component={HamburgerMenu}
-      options={{ headerShown: false }}
-    />
+  
+
     <SimpleScreenStack.Screen
       key={7}
       name="Congrats"
