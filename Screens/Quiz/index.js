@@ -13,7 +13,7 @@ import {
 } from "react-native";
 import styled from "styled-components/native";
 import Video from "react-native-video";
-
+let urlVid="https://eaf1583c5a6e.us-east-1.playback.live-video.net/api/video/v1/us-east-1.537378758278.channel.etQDlpRRDxfl.m3u8";
 
 // import React, { useState, useRef, useEffect } from "react";
 // import {
@@ -44,9 +44,11 @@ import { heightConverter, widthConverter } from "../../Components/Helpers/Respon
 import { RFValue } from "react-native-responsive-fontsize";
 import Colors from "../../Constants/Colors";
 import BackgroundRound from "../../Components/BackgroundRound";
+import PlayerView from "react-native-aws-ivs-player-view";
 const { width, height } = Dimensions.get("window");
 const BackgroundVideo = ({ route, navigation }) => {
-    //  const { liveGameShowId } = route.params.liveGameShowId;
+    const [buffer,setBuffer] = useState(false);
+
     const [question, setQuestion] = useState([]);
     const [questionIncrement, setQuestionIncrement] = useState(0);
     const [answerId, setAnswerId] = useState();
@@ -182,14 +184,24 @@ const BackgroundVideo = ({ route, navigation }) => {
             <Header back={true} />
 
             <Video
-                source={{ uri: "http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4" }}
-                style={styles.backgroundVideo}
-                muted={true}
-                repeat={true}
-                resizeMode={"cover"}
-                rate={1.0}
-                ignoreSilentSwitch={"obey"}
+           // key={keyS}
+            source={{
+              uri:urlVid
+            }}
+            style={styles.backgroundVideo}
+            resizeMode={"cover"}
+            minLoadRetryCount={2}
+            fullScreen={true}
+            ignoreSilentSwitch={"obey"}
+           onLoad={()=>setBuffer(false)}
+           onLoadStart={()=>setBuffer(true)}
             />
+            {/* <PlayerView
+                style={styles.backgroundVideo}
+                ref={(e) => {
+                    setPlayer(e);
+                }}
+            /> */}
 
             <Wrapper>
 
@@ -247,6 +259,7 @@ const BackgroundVideo = ({ route, navigation }) => {
 const styles = StyleSheet.create({
     backgroundVideo: {
         height: height - 70,
+        width:"100%",
         position: "absolute",
         top: 70,
         left: 0,
