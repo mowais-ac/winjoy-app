@@ -33,15 +33,15 @@ import PayCredit from "./Screens/PayCredit";
 import Quiz from "./Screens/Quiz/index";
 import QuizAnswer from "./Screens/QuizAnswer/index";
 import PrizeList from "./Screens/PrizeList/index";
-import LastGameWinner from "./Screens/LastGameWinner/LastGameWinner";
-import LastGameWinnerDetail from "./Screens/LastGameWinnerDetail/index";
-import LastGameWinnerProfile from "./Screens/LastGameWinnerProfile/index";
+import LeaderBoard from "./Screens/LeaderBoard/LeaderBoard";
+import HamburgerMenu from "./Screens/HamburgerMenu/index";
 import Congrats from "./Screens/Congrats/index"
 import WrongAnswer from "./Screens/WrongAnswer/index"
 import ProductDetail from "./Screens/ProductDetail/index"
-import Wallet from "./Screens/Wallet/index"
+import DashBoard from "./Screens/DashBoard/index"
 //meu stack
-import Menu from "./Screens/Menu";
+//import Menu from "./Screens/Menu";
+import Menu from "./Screens/HamburgerMenu/index";
 import EditProfile from "./Screens/EditProfile";
 import ContactUs from "./Screens/ContactUs";
 import BorrowCredit from "./Screens/BorrowCredit";
@@ -56,7 +56,7 @@ import RequestCoins from "./Screens/RequestCoins";
 import SubmitTicketScreen from "./Screens/SubmitTicketScreen";
 
 // profile stack
-import Profile from "./Screens/Profile";
+import Profile from "./Screens/Profile/index";
 
 // tabs stack
 import Withdrawals from "./Screens/Withdrawals";
@@ -108,7 +108,7 @@ const SimpleScreenStack = createStackNavigator();
 
 const SimpeStackScreen = () => (
   <SimpleScreenStack.Navigator
-    initialRouteName={'Wallet'}
+    //initialRouteName={'Wallet'}
   >
     <SimpleScreenStack.Screen
       key={1}
@@ -125,22 +125,12 @@ const SimpeStackScreen = () => (
 
     <SimpleScreenStack.Screen
       key={4}
-      name="LastGameWinner"
-      component={LastGameWinner}
+      name="LeaderBoard"
+      component={LeaderBoard}
       options={{ headerShown: false }}
     />
-    <SimpleScreenStack.Screen
-      key={5}
-      name="LastGameWinnerDetail"
-      component={LastGameWinnerDetail}
-      options={{ headerShown: false }}
-    />
-    <SimpleScreenStack.Screen
-      key={6}
-      name="LastGameWinnerProfile"
-      component={LastGameWinnerProfile}
-      options={{ headerShown: false }}
-    />
+  
+
     <SimpleScreenStack.Screen
       key={7}
       name="Congrats"
@@ -161,8 +151,8 @@ const SimpeStackScreen = () => (
     />
   <SimpleScreenStack.Screen
       key={10}
-      name="Wallet"
-      component={Wallet}
+      name="DashBoard"
+      component={DashBoard}
       options={{ headerShown: false }}
     />
   </SimpleScreenStack.Navigator>
@@ -463,7 +453,7 @@ function App() {
         <StatusBar hidden />
         <NavigationContainer>
           <Main.Navigator
-            initialRouteName={'SimpeStackScreen'}
+           // initialRouteName={'SimpeStackScreen'}
           >
             <Main.Screen
               key={0}

@@ -94,7 +94,7 @@ const Congrats = ({ navigation, route }) => {
                         text={"Go to LeaderBoard"}
                         textStyle={[styles.btnText, { color: "#E7003F", fontSize: 24 }]}
                         btnStyle={{ width: widthPercentageToDP("80%"), }}
-                        onPress={()=>navigation.navigate("LastGameWinner")}
+                        onPress={()=>navigation.navigate("LeaderBoard")}
                       
                     />
                     <RewardzButton
