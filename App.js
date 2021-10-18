@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Dimensions, StatusBar,View,StyleSheet} from "react-native";
+import { Dimensions, StatusBar, View, StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -33,14 +33,15 @@ import PayCredit from "./Screens/PayCredit";
 import Quiz from "./Screens/Quiz/index";
 import QuizAnswer from "./Screens/QuizAnswer/index";
 import PrizeList from "./Screens/PrizeList/index";
-import LastGameWinner from "./Screens/LastGameWinner/LastGameWinner";
-import LastGameWinnerDetail from "./Screens/LastGameWinnerDetail/index";
-import LastGameWinnerProfile from "./Screens/LastGameWinnerProfile/index";
+import LeaderBoard from "./Screens/LeaderBoard/LeaderBoard";
+import HamburgerMenu from "./Screens/HamburgerMenu/index";
 import Congrats from "./Screens/Congrats/index"
+import WrongAnswer from "./Screens/WrongAnswer/index"
 import ProductDetail from "./Screens/ProductDetail/index"
-
+import DashBoard from "./Screens/DashBoard/index"
 //meu stack
-import Menu from "./Screens/Menu";
+//import Menu from "./Screens/Menu";
+import Menu from "./Screens/HamburgerMenu/index";
 import EditProfile from "./Screens/EditProfile";
 import ContactUs from "./Screens/ContactUs";
 import BorrowCredit from "./Screens/BorrowCredit";
@@ -55,7 +56,7 @@ import RequestCoins from "./Screens/RequestCoins";
 import SubmitTicketScreen from "./Screens/SubmitTicketScreen";
 
 // profile stack
-import Profile from "./Screens/Profile";
+import Profile from "./Screens/Profile/index";
 
 // tabs stack
 import Withdrawals from "./Screens/Withdrawals";
@@ -107,7 +108,7 @@ const SimpleScreenStack = createStackNavigator();
 
 const SimpeStackScreen = () => (
   <SimpleScreenStack.Navigator
- // initialRouteName={'LastGameWinner'}
+    //initialRouteName={'Wallet'}
   >
     <SimpleScreenStack.Screen
       key={1}
@@ -121,39 +122,39 @@ const SimpeStackScreen = () => (
       component={QuizAnswer}
       options={{ headerShown: false }}
     />
-     
-       <SimpleScreenStack.Screen
+
+    <SimpleScreenStack.Screen
       key={4}
-      name="LastGameWinner"
-      component={LastGameWinner}
+      name="LeaderBoard"
+      component={LeaderBoard}
       options={{ headerShown: false }}
     />
-     <SimpleScreenStack.Screen
-      key={5}
-      name="LastGameWinnerDetail"
-      component={LastGameWinnerDetail}
-      options={{ headerShown: false }}
-    />
-     <SimpleScreenStack.Screen
-      key={6}
-      name="LastGameWinnerProfile"
-      component={LastGameWinnerProfile}
-      options={{ headerShown: false }}
-    />
+  
+
     <SimpleScreenStack.Screen
       key={7}
       name="Congrats"
       component={Congrats}
       options={{ headerShown: false }}
     />
-      <SimpleScreenStack.Screen
+    <SimpleScreenStack.Screen
       key={8}
       name="ProductDetail"
       component={ProductDetail}
       options={{ headerShown: false }}
     />
-    
-    
+    <SimpleScreenStack.Screen
+      key={9}
+      name="WrongAnswer"
+      component={WrongAnswer}
+      options={{ headerShown: false }}
+    />
+  <SimpleScreenStack.Screen
+      key={10}
+      name="DashBoard"
+      component={DashBoard}
+      options={{ headerShown: false }}
+    />
   </SimpleScreenStack.Navigator>
 );
 const MenuStack = createStackNavigator();
@@ -312,7 +313,7 @@ const HomeStackScreen = () => {
         component={PayCredit}
         options={{ headerShown: false }}
       />
-       <HomeStack.Screen
+      <HomeStack.Screen
         key={13}
         name="Quiz"
         component={Quiz}
@@ -410,7 +411,7 @@ const ProductsStackStackScreen = () => {
         component={PrizeList}
         options={{ headerShown: false }}
       />
-      
+
     </ProductsStack.Navigator>
   );
 };
@@ -428,12 +429,11 @@ const TabsStackScreen = () => (
     }}
     screenOptions={({ route }) => ({
       tabBarIcon: ({ focused, color, size }) => {
-        console.log("focused",focused);
-        return(
-          <View style={[styles.iconView,{backgroundColor:focused?'#F4EDEF':null}]}>
-           <TabButton name={route.name} />
-           </View>
-           );
+        return (
+          <View style={[styles.iconView, { backgroundColor: focused ? '#F4EDEF' : null }]}>
+            <TabButton name={route.name} />
+          </View>
+        );
       },
     })}
   >
@@ -456,52 +456,52 @@ function App() {
   return (
     <PersistGate loading={null} persistor={persistor}>
       <Provider store={store}>
-      <StatusBar hidden />
-      <NavigationContainer>
-        <Main.Navigator
-        // initialRouteName={'SimpeStackScreen'}
-         >
-          <Main.Screen
-            key={0}
-            name="Splash"
-            component={Splash}
-            options={{ headerShown: false }}
-          />
-          <Main.Screen
-            key={1}
-            name="TransferConfirm"
-            component={TransferConfirm}
-            options={{ headerShown: false }}
-          />
-          <Main.Screen
-            key={2}
-            name="TabsStack"
-            component={TabsStackScreen}
-            options={{ headerShown: false }}
-          />
-          <Main.Screen
-            key={3}
-            name="LoginStack"
-            component={LoginStackScreen}
-            options={{ headerShown: false }}
-          />
-           <Main.Screen
-            key={4}
-            name="SimpeStackScreen"
-            component={SimpeStackScreen}
-            options={{ headerShown: false }}
-          />
-          
-        </Main.Navigator>
-      </NavigationContainer>
+        <StatusBar hidden />
+        <NavigationContainer>
+          <Main.Navigator
+           // initialRouteName={'SimpeStackScreen'}
+          >
+            <Main.Screen
+              key={0}
+              name="Splash"
+              component={Splash}
+              options={{ headerShown: false }}
+            />
+            <Main.Screen
+              key={1}
+              name="TransferConfirm"
+              component={TransferConfirm}
+              options={{ headerShown: false }}
+            />
+            <Main.Screen
+              key={2}
+              name="TabsStack"
+              component={TabsStackScreen}
+              options={{ headerShown: false }}
+            />
+            <Main.Screen
+              key={3}
+              name="LoginStack"
+              component={LoginStackScreen}
+              options={{ headerShown: false }}
+            />
+            <Main.Screen
+              key={4}
+              name="SimpeStackScreen"
+              component={SimpeStackScreen}
+              options={{ headerShown: false }}
+            />
+
+          </Main.Navigator>
+        </NavigationContainer>
       </Provider>
     </PersistGate>
   );
 }
 const styles = StyleSheet.create({
-  iconView:{borderRadius:30,width: width * 0.1, height: height * 0.05,justifyContent:'center',alignItems:'center'}
-  
-  
+  iconView: { borderRadius: 30, width: width * 0.1, height: height * 0.05, justifyContent: 'center', alignItems: 'center' }
+
+
 });
 
 export default App;

@@ -12,7 +12,7 @@ const { width, height } = Dimensions.get("window");
 export default StyleSheet.create({
   optionsViewMain: {
     position: 'absolute',
-    top: heightPercentageToDP("60"),
+    top: heightPercentageToDP("50"),
     left: widthPercentageToDP("7%")
 
 
@@ -36,7 +36,7 @@ export default StyleSheet.create({
   Margin: {
    
     width: width * 0.85,
-    backgroundColor: '#2B1751',
+    backgroundColor: '#e7003f',
     height: heightPercentageToDP("7%"),
     borderRadius: 25,
     alignSelf: "center",

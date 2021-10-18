@@ -6,8 +6,6 @@ import styles from "./Styles";
 const { StyleSheet, Dimensions } = require('react-native');
 const { width, height } = Dimensions.get("window");
 function QuizOptions({ options, onPress, reset, result, optionDisable, onPressDone, activity }) {
-  console.log("optionDisable", optionDisable);
-  console.log("options", options);
 
   //console.log("optArr", optArr);
   const [ansId, setAnsId] = useState(null);
@@ -54,7 +52,7 @@ function QuizOptions({ options, onPress, reset, result, optionDisable, onPressDo
 
         />
       </View>
-      <View style={{ marginTop: height * 0.85, }}>
+      <View style={{ marginTop: height * 0.79, }}>
         {btnEnable ? (
           <TouchableOpacity style={styles.Margin}
             disabled={activity}
@@ -73,7 +71,7 @@ function QuizOptions({ options, onPress, reset, result, optionDisable, onPressDo
                 fontSize: 17,
                 textAlign: 'center'
               }}
-            >Done</Text>
+            >Next</Text>
           </TouchableOpacity>
         ) : (
           <View style={styles.Margin}
@@ -84,7 +82,7 @@ function QuizOptions({ options, onPress, reset, result, optionDisable, onPressDo
                 fontSize: 17,
                 textAlign: 'center'
               }}
-            >Done</Text>}
+            >Next</Text>}
           </View>
         )}
       </View>

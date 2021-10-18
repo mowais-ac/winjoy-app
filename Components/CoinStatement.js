@@ -86,7 +86,6 @@ const CoinsStatement = (props) => {
       StartDate
     ).toISOString()}&to_date=${new Date(EndDate).toISOString()}`;
 
-    console.log(fileUrl);
 
     ButtonRef.current.SetActivity(true, "WHITE");
     if (Platform.OS === "ios") {

@@ -60,7 +60,7 @@ PastWinner();
             {" "}amazing prizes
           </Label>
         </Label>
-        <TouchableOpacity onPress={() => navigation.navigate("SimpeStackScreen")}> 
+        <TouchableOpacity onPress={() => navigation.navigate("SimpeStackScreen",{screen:"Quiz"})}> 
           <View style={styles.btnView}>
             <Label primary font={16} bold dark style={{ color: "#EA245A", }}>
               Let's Begin
