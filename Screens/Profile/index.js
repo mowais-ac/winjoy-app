@@ -182,7 +182,7 @@ const LastGame = ({ props, navigation }) => {
           </>
         ) : (null)}
         {selected === 2 ? (
-          <>
+          <View style={{marginTop:10}}>
             <Label  bold headingtype="h4">
         Personal Details
       </Label>
@@ -214,7 +214,7 @@ const LastGame = ({ props, navigation }) => {
           
           </>
            )}
-           </>
+           </View>
         ) : (null)}
         {selected === 3 ? (
           <>

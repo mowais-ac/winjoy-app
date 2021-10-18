@@ -105,7 +105,8 @@ dist
 
 # Android
 .idea
-.gradle
 local.properties
 *.iml
-/android/app/build
+/android/
+.gradle/
+build/
