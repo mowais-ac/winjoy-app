@@ -28,7 +28,7 @@ function Tabs() {
                 alignItems: 'center',
                 height: 30,
                 
-               // paddingLeft: 20,
+                paddingLeft: 20,
                 
               }}>
             
