@@ -67,8 +67,8 @@ const HamburgerMenu = ({ props, navigation }) => {
         await axios.get(`${Config.API_URL}/accepted-connections/list`, requestOptions).then(response => {
             let res = response.data;
             console.log("friends", res.data[0]);
-            setFriendData( res.data[0])
-           
+            setFriendData(res.data[0])
+
 
 
         });
@@ -111,7 +111,7 @@ const HamburgerMenu = ({ props, navigation }) => {
                                 <Label primary notAlign font={14} bold style={{ color: "#FFFFFF", marginTop: 8 }}>
                                     {userData[0]?.designation}
                                     <Label primary font={14} notAlign style={{ color: "#e2acc7" }}>
-                                     {userData[0]?.company_name?" at ":null}
+                                        {userData[0]?.company_name ? " at " : null}
                                     </Label>
                                     {userData[0]?.company_name}
                                 </Label>
@@ -136,7 +136,7 @@ const HamburgerMenu = ({ props, navigation }) => {
 
                             renderItem={
                                 ({ item, index }) => {
-                                    console.log("item",item);
+                                    console.log("item", item);
                                     return (
                                         <View style={[styles.avatarView, {
                                             width: widthConverter(70),
@@ -144,15 +144,15 @@ const HamburgerMenu = ({ props, navigation }) => {
                                             borderRadius: heightConverter(70),
                                             marginLeft: 15
                                         }]}>
-                                            {item.profile_image?<Avatar
+                                            {item.profile_image ? <Avatar
                                                 rounded
                                                 size={70}
                                                 source={{
                                                     uri:
                                                         item.profile_image
                                                 }}
-                                            />:
-                                            <Avatar rounded title={item.first_name.charAt(0)+item.last_name.charAt(0)} />
+                                            /> :
+                                                <Avatar rounded title={item.first_name.charAt(0) + item.last_name.charAt(0)} />
                                             }
                                         </View>
                                     )
@@ -171,7 +171,7 @@ const HamburgerMenu = ({ props, navigation }) => {
                         </View>
                     </View>
                     <FlatList
-                        data={data2} 
+                        data={data2}
 
                         // horizontal={true}
                         ItemSeparatorComponent={() => {
@@ -197,23 +197,38 @@ const HamburgerMenu = ({ props, navigation }) => {
                                         width: widthPercentageToDP("90%"),
                                         marginTop: 10, marginLeft: 15
                                     }}>
-                                        <TouchableOpacity onPress={()=>{
-                                            if(item==="Friends"){
-                                             //   navigation.navigate("LastGameWinnerDetail")
+                                        <TouchableOpacity onPress={() => {
+                                            if (item === "Friends") {
+                                                navigation.navigate("TabsStack", {
+                                                    screen: "Profile"
+                                                })
+
                                             }
-                                            if(item==="DashBoard"){
-                                                navigation.navigate("DashBoard")
+                                            if (item === "DashBoard") {
+                                                navigation.navigate("SimpeStackScreen", {
+                                                    screen: "DashBoard"
+                                                })
                                             }
-                                            if(item==="LeaderBoard"){
-                                                navigation.navigate("LeaderBoard")
+                                            if (item === "LeaderBoard") {
+                                                navigation.navigate("SimpeStackScreen", {
+                                                    screen: "LeaderBoard"
+                                                })
                                             }
-                                            if(item==="View Profile"){
-                                                navigation.navigate("LastGameWinnerDetail")
+                                            if (item === "View Profile") {
+                                                navigation.navigate("TabsStack", {
+                                                    screen: "Profile"
+                                                })
                                             }
-                                        }}>
-                                        <Text style={[styles.text, { color: "#ffffff", height: heightPercentageToDP("5%"), top: 10 }]}>
-                                            {item}
-                                        </Text>
+                                            if (item === "played Games") {
+                                                navigation.navigate("TabsStack", {
+                                                    screen: "Profile"
+                                                })
+                                            }
+                                        }
+                                        }>
+                                            <Text style={[styles.text, { color: "#ffffff", height: heightPercentageToDP("5%"), top: 10 }]}>
+                                                {item}
+                                            </Text>
                                         </TouchableOpacity>
                                     </View>
                                 )

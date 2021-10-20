@@ -13,7 +13,7 @@ import {
 } from "react-native";
 import styled from "styled-components/native";
 import Video from "react-native-video";
-let urlVid="https://eaf1583c5a6e.us-east-1.playback.live-video.net/api/video/v1/us-east-1.537378758278.channel.etQDlpRRDxfl.m3u8";
+
 
 // import React, { useState, useRef, useEffect } from "react";
 // import {
@@ -47,8 +47,10 @@ import BackgroundRound from "../../Components/BackgroundRound";
 import PlayerView from "react-native-aws-ivs-player-view";
 const { width, height } = Dimensions.get("window");
 const BackgroundVideo = ({ route, navigation }) => {
-    const [buffer,setBuffer] = useState(false);
-
+    const { uri } = route.params;
+    const [selected, setSelected] = useState(null);
+    const [buffer, setBuffer] = useState(false);
+    const [timerCount, setTimer] = useState(20)
     const [question, setQuestion] = useState([]);
     const [questionIncrement, setQuestionIncrement] = useState(0);
     const [answerId, setAnswerId] = useState();
@@ -96,6 +98,9 @@ const BackgroundVideo = ({ route, navigation }) => {
                 console.log("res", res);
                 if (res === "Sorry! Try Next Time") {
                     navigation.navigate("WrongAnswer")
+                } else if (res.status === "error") {
+                    alert("error")
+                    navigation.navigate("Landing")
                 }
                 else {
                     navigation.navigate("Congrats", { data: res })
@@ -106,6 +111,8 @@ const BackgroundVideo = ({ route, navigation }) => {
             });
     }
     const SaveResponse = async (ansId) => {
+
+        setTimer(20)
         const Token = await EncryptedStorage.getItem("Token");
         const body = JSONtoForm({
             question: question[questionIncrement]?.id,
@@ -142,7 +149,7 @@ const BackgroundVideo = ({ route, navigation }) => {
                 }
                 else (res.status === "error")
                 {
-                    if (res.status === "Wrong Answer!! Don't loose hope try next time") {
+                    if (res.message === "Wrong Answer!! Don't loose hope try next time") {
                         navigation.navigate("WrongAnswer")
                     }
                 }
@@ -156,6 +163,7 @@ const BackgroundVideo = ({ route, navigation }) => {
 
 
                 setActivity(false)
+                setSelected(null)
 
             })
             .catch((e) => {
@@ -163,6 +171,19 @@ const BackgroundVideo = ({ route, navigation }) => {
                 alert("Error", e);
 
             });
+
+    }
+    if(timerCount<=0){
+        setTimer(20)
+        SaveResponse(0)
+        let interval = setInterval(() => {
+            setTimer(lastTimerCount => {
+                lastTimerCount <= 1 && clearInterval(interval)
+                return lastTimerCount - 1
+            })
+          }, 1000) //each count lasts for a second
+          //cleanup the interval on complete
+          return () => clearInterval(interval)
 
     }
     const onPressDone = (ansId) => {
@@ -174,8 +195,20 @@ const BackgroundVideo = ({ route, navigation }) => {
 
 
     }
+    const onPressOption = (sel) => {
+        setSelected(sel)
+
+    }
     useEffect(async () => {
         Questions()
+        let interval = setInterval(() => {
+            setTimer(lastTimerCount => {
+                lastTimerCount <= 1 && clearInterval(interval)
+                return lastTimerCount - 1
+            })
+        }, 1000) //each count lasts for a second
+        //cleanup the interval on complete
+        return () => clearInterval(interval)
     }, []);
     return (
         <View>
@@ -184,17 +217,17 @@ const BackgroundVideo = ({ route, navigation }) => {
             <Header back={true} />
 
             <Video
-           // key={keyS}
-            source={{
-              uri:urlVid
-            }}
-            style={styles.backgroundVideo}
-            resizeMode={"cover"}
-            minLoadRetryCount={2}
-            fullScreen={true}
-            ignoreSilentSwitch={"obey"}
-           onLoad={()=>setBuffer(false)}
-           onLoadStart={()=>setBuffer(true)}
+                // key={keyS}
+                source={{
+                    uri: uri
+                }}
+                style={styles.backgroundVideo}
+                resizeMode={"cover"}
+                minLoadRetryCount={2}
+                fullScreen={true}
+                ignoreSilentSwitch={"obey"}
+                onLoad={() => setBuffer(false)}
+                onLoadStart={() => setBuffer(true)}
             />
             {/* <PlayerView
                 style={styles.backgroundVideo}
@@ -219,7 +252,9 @@ const BackgroundVideo = ({ route, navigation }) => {
                                 style={styles.backgroundImage}
 
                             >
-
+                                <Label primary font={16} bold dark notAlign style={{ color: "#FFFF13", left: 10 }}>
+                                    {timerCount}
+                                </Label>
                                 <View style={{
                                     flex: 1,
                                     justifyContent: 'flex-end',
@@ -228,16 +263,18 @@ const BackgroundVideo = ({ route, navigation }) => {
                                     <Label primary font={16} bold dark style={{ color: "#FFFF13", }}>
                                         Question
                                     </Label>
-                                    <Label primary font={16} bold dark style={{ color: "#ffff", lineHeight: 32 }}>
+                                    <Label primary font={16} bold dark style={{ color: "#ffff", lineHeight: 28 }}>
                                         {question[questionIncrement]?.question}
                                     </Label>
                                 </View>
                                 {/* </LinearGradient> */}
                             </View>
-                            <QuizOptions options={question[questionIncrement]?.answer} onPress={() => alert("hii")}
+                            <QuizOptions options={question[questionIncrement]?.answer}
                                 onPressDone={onPressDone}
-                                optionDisable={false}
                                 activity={activity}
+                                optionSelected={selected}
+                                onPressOption={onPressOption}
+
                             />
                         </>
                     )}
@@ -259,7 +296,7 @@ const BackgroundVideo = ({ route, navigation }) => {
 const styles = StyleSheet.create({
     backgroundVideo: {
         height: height - 70,
-        width:"100%",
+        width: "100%",
         position: "absolute",
         top: 70,
         left: 0,

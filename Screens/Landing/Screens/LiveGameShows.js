@@ -21,10 +21,14 @@ import Config from "react-native-config";
 import axios from "axios";
 const LiveGameShows = ({ props, navigation }) => {
   useEffect(() => {
+    LiveStream()
     PastWinner();
     StartGame()
   }, [])
   const [winnerData, setWinnerData] = useState([]);
+  const [navToQuiz, setNavToQuiz] = useState(false);
+  const [liveStreamUri, setLiveStreamUri] = useState("");
+  const [gameBtnText, setGameBtnText] = useState("Let's Begin");
   const PastWinner = async () => {
     const Token = await EncryptedStorage.getItem("Token");
     const requestOptions = {
@@ -56,15 +60,38 @@ const LiveGameShows = ({ props, navigation }) => {
 
     await axios.get(`${Config.API_URL}/livegameshow`, requestOptions).then(response => {
       let res = response.data;
-      console.log("res", res);
+      console.log("res Game", res);
       if (res.status === "success") {
         if (res.message === "Game Show Available") {
           LetBegain( res?.LivegameShow?.id)
         //   navigation.navigate("SimpeStackScreen", { screen: "Quiz",
         //  // params:{liveGameShowId: res.LivegameShow.id}
         //  })
+        }else{
+          alert(res)
         }
       }
+    });
+
+  }
+  const LiveStream = async () => {
+    const Token = await EncryptedStorage.getItem("Token");
+    const requestOptions = {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Accept: "application/json",
+        Authorization: `Bearer ${Token}`,
+      },
+    };
+    // alert(13123);
+
+    await axios.get(`${Config.API_URL}/livestream/available`, requestOptions).then(response => {
+      let res = response.data;
+      console.log("res live", res);
+      if(res){
+        setLiveStreamUri(res?.livestream_url)
+      }
+   
     });
 
   }
@@ -85,16 +112,14 @@ const LiveGameShows = ({ props, navigation }) => {
       console.log("resletbeagin", res);
       if (res.status === "success") {
         if (res.message === "Welcome to Live Game Show") {
-          navigation.navigate("SimpeStackScreen", { screen: "Quiz",
-         // params:{liveGameShowId: res.LivegameShow.id}
-         })
+          setGameBtnText("Let's Begin")
+          setNavToQuiz(true)
+         
         }
       }
       else if (res.status === "error") {
         if (res.message === "Sorry! you have already played.") {
-          navigation.navigate("SimpeStackScreen", { screen: "Quiz",
-         // params:{liveGameShowId: res.LivegameShow.id}
-         })
+          setGameBtnText("Already played")
         }
       }
     });
@@ -120,13 +145,20 @@ const LiveGameShows = ({ props, navigation }) => {
             {" "}amazing prizes
           </Label>
         </Label>
-        <TouchableOpacity onPress={() =>
-          StartGame()
+        <TouchableOpacity onPress={() =>{
+           if(navToQuiz){
+            navigation.navigate("SimpeStackScreen", { screen: "Quiz",
+            params:{uri: liveStreamUri}
+           })
+        }else{
+          setGameBtnText("Quiz Not Started")
+        }
+      }
 
         }>
           <View style={styles.btnView}>
             <Label primary font={16} bold dark style={{ color: "#EA245A", }}>
-              Let's Begin
+              {gameBtnText}
             </Label>
           </View>
         </TouchableOpacity>

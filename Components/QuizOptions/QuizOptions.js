@@ -5,11 +5,8 @@ import LongButton from "../LongButton";
 import styles from "./Styles";
 const { StyleSheet, Dimensions } = require('react-native');
 const { width, height } = Dimensions.get("window");
-function QuizOptions({ options, onPress, reset, result, optionDisable, onPressDone, activity }) {
-
-  //console.log("optArr", optArr);
+function QuizOptions({ options, optionSelected, onPressOption, result, onPressDone, activity }) {
   const [ansId, setAnsId] = useState(null);
-  const [selected, setSelected] = useState(null);
   const [btnEnable, setBtnEnable] = useState(false);
 
   return (
@@ -21,29 +18,23 @@ function QuizOptions({ options, onPress, reset, result, optionDisable, onPressDo
             ({ item, index }) => {
               return (
                 <TouchableWithoutFeedback onPress={() => {
-                  setSelected(index)
+                 
+                  onPressOption(index)
                   setAnsId(item.id)
                   setBtnEnable(true)
                 }}
 
-                  disabled={optionDisable}
+                  disabled={activity}
                 >
-                  {
-                    optionDisable ?
-                      (
-                        <View style={[styles.optionView, { backgroundColor: '#ffffff' }]} >
-                          <Text style={[styles.optionsText, { color: '#2F2442' }]}>
+                  
+                   
+                        <View style={[styles.optionView, { backgroundColor: optionSelected === index ? '#ffffff' : null }]} >
+                          <Text style={[styles.optionsText, { color: optionSelected === index ? '#2F2442' : '#ffffff' }]}>
                             {item.answer}
                           </Text>
                         </View>
-                      ) : (
-                        <View style={[styles.optionView, { backgroundColor: selected === index ? '#ffffff' : null }]} >
-                          <Text style={[styles.optionsText, { color: selected === index ? '#2F2442' : '#ffffff' }]}>
-                            {item.answer}
-                          </Text>
-                        </View>
-                      )
-                  }
+                      
+                  
                 </TouchableWithoutFeedback>
               )
             }
@@ -58,7 +49,7 @@ function QuizOptions({ options, onPress, reset, result, optionDisable, onPressDo
             disabled={activity}
             onPress={() => {
               onPressDone(ansId),
-                setSelected(null)
+                //setSelected(null)
               setBtnEnable(false)
 
               // navigation.navigate("QuizAnswer")
