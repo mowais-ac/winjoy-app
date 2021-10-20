@@ -175,7 +175,7 @@ const BackgroundVideo = ({ route, navigation }) => {
     }
     if(timerCount<=0){
         setTimer(20)
-        SaveResponse(0)
+        SaveResponse(3)
         let interval = setInterval(() => {
             setTimer(lastTimerCount => {
                 lastTimerCount <= 1 && clearInterval(interval)
