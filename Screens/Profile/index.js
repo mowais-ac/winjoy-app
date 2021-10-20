@@ -37,6 +37,7 @@ const LastGame = ({ props, navigation }) => {
   const [userData, setUserData] = useState([]);
   const [userInfo, setUserInfo] = useState();
   const [selected, setSelected] = useState(1);
+  const [friendData, setFriendData] = useState([]);
   const [Data, setData] = useState(null);
   useEffect(async () => {
     const userInfo = JSON.parse(await EncryptedStorage.getItem("User"));
@@ -45,6 +46,7 @@ const LastGame = ({ props, navigation }) => {
     }
     setUserInfo(userInfo);
     GetData();
+    MyFriends();
   }, []);
   const GetData = async () => {
     const Token = await EncryptedStorage.getItem("Token");
@@ -68,6 +70,24 @@ const LastGame = ({ props, navigation }) => {
         }
       });
   };
+  const MyFriends = async () => {
+
+    const Token = await EncryptedStorage.getItem("Token");
+    const requestOptions = {
+        headers: {
+            "Content-Type": "multipart/form-data",
+            Accept: "application/json",
+            Authorization: `Bearer ${Token}`,
+        },
+    };
+    // alert(13123);
+    await axios.get(`${Config.API_URL}/accepted-connections/list`, requestOptions).then(response => {
+        let res = response.data;
+        console.log("friends", res.data.[0]);
+        setFriendData( res.data[0])
+    });
+
+}
   const GetField = (props) => {
     const { name, val, style } = props;
     return (
@@ -210,15 +230,14 @@ const LastGame = ({ props, navigation }) => {
                 }
               />
             </View>
-          </Section>
-          
+          </Section>         
           </>
            )}
            </View>
         ) : (null)}
         {selected === 3 ? (
           <>
-            {userData?.length > 0 && (
+            {friendData?.length > 0 && (
               <Label
                 notAlign
                 style={{ top: 5, color: "#FFFFFF", marginTop: 8, fontSize: 16 }}
@@ -227,7 +246,7 @@ const LastGame = ({ props, navigation }) => {
               </Label>
             )}
             <FlatList
-              data={userData}
+              data={friendData}
               contentContainerStyle={{
                 paddingBottom: height * 0.48,
               }}
@@ -253,7 +272,6 @@ const LastGame = ({ props, navigation }) => {
               renderItem={({ item, index }) => {
                 return (
                   <TriviaCard
-                    userInfo={userInfo}
                     userData={item}
                     onPress={() => navigation.navigate("HamburgerMenu")}
                   />
