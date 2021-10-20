@@ -146,7 +146,7 @@ const LiveGameShows = ({ props, navigation }) => {
           </Label>
         </Label>
         <TouchableOpacity onPress={() =>{
-           if(navToQuiz){
+           if(!navToQuiz){
             navigation.navigate("SimpeStackScreen", { screen: "Quiz",
             params:{uri: liveStreamUri}
            })
