@@ -30,14 +30,23 @@ import axios from "axios";
 import NotFound from "../../Components/NotFound";
 import ProfilePicture from "../../Components/ProfilePicture";
 import UserInfo from "../../Components/UserInfo";
+import Section from "../../Components/Section";
+import Colors from "../../Constants/Colors";
+import LongButton from "../../Components/LongButton";
 const LastGame = ({ props, navigation }) => {
   const [userData, setUserData] = useState([]);
   const [userInfo, setUserInfo] = useState();
   const [selected, setSelected] = useState(1);
+  const [friendData, setFriendData] = useState([]);
+  const [Data, setData] = useState(null);
   useEffect(async () => {
     const userInfo = JSON.parse(await EncryptedStorage.getItem("User"));
+    if (JSON.stringify(Data) !== userInfo) {
+      setData(userInfo);
+    }
     setUserInfo(userInfo);
     GetData();
+    MyFriends();
   }, []);
   const GetData = async () => {
     const Token = await EncryptedStorage.getItem("Token");
@@ -60,6 +69,40 @@ const LastGame = ({ props, navigation }) => {
           setUserData(res?.data);
         }
       });
+  };
+  const MyFriends = async () => {
+
+    const Token = await EncryptedStorage.getItem("Token");
+    const requestOptions = {
+        headers: {
+            "Content-Type": "multipart/form-data",
+            Accept: "application/json",
+            Authorization: `Bearer ${Token}`,
+        },
+    };
+    // alert(13123);
+    await axios.get(`${Config.API_URL}/accepted-connections/list`, requestOptions).then(response => {
+        let res = response.data;
+        console.log("friends", res.data.[0]);
+        setFriendData( res.data[0])
+    });
+
+}
+  const GetField = (props) => {
+    const { name, val, style } = props;
+    return (
+      <View style={[styles.ItemView, style]}>
+        <Label notAlign bold darkmuted text={name} />
+        <Label
+          notAlign
+          bold
+          dark
+          text={val || "N/A"}
+          style={styles.ItemLabel}
+          {...props}
+        />
+      </View>
+    );
   };
 
   return (
@@ -159,54 +202,42 @@ const LastGame = ({ props, navigation }) => {
           </>
         ) : (null)}
         {selected === 2 ? (
-          <>
-            {userData?.length > 0 && (
-              <Label
-                notAlign
-                style={{ top: 5, color: "#FFFFFF", marginTop: 8, fontSize: 16 }}
-              >
-                About
-              </Label>
-            )}
-            <FlatList
-              data={userData}
-              contentContainerStyle={{
-                paddingBottom: height * 0.48,
-              }}
-              ListEmptyComponent={
-                <NotFound
-                  text="Games"
-                  desc="You don't have win any Games yet "
-                  ConModal
-                />
-              }
-              ItemSeparatorComponent={() => {
-                return (
-                  <View
-                    style={{
-                      marginTop: 20,
-                      height: 1,
-                      width: "100%",
-                      backgroundColor: "#994e7c",
-                    }}
-                  />
-                );
-              }}
-              renderItem={({ item, index }) => {
-                return (
-                  <TriviaCard
-                    userInfo={userInfo}
-                    userData={item}
-                    onPress={() => navigation.navigate("HamburgerMenu")}
-                  />
-                );
-              }}
-            />
+          <View style={{marginTop:10}}>
+            <Label  bold headingtype="h4">
+        Personal Details
+      </Label>
+      {Data === null ? (
+        <ActivityIndicator size="large" color={Colors.BLACK} />
+      ) : (
+        <>
+          <Section style={styles.Personal}>
+            <View style={{ marginTop: height * 0.005 }}>
+              <GetField name="First name" val={Data.first_name} />
+              <GetField name="Last name" val={Data.last_name} />
+              <GetField name="Username" val={Data.user_name} />
+              <GetField name="Email" val={Data.email} />
+              <GetField name="Country" val={Data.country} />
+              <GetField name="City" val={Data.city} />
+              <GetField name="Address" val={Data.address} />
+              <GetField name="Phone" val={Data.phone_no} />
+              <LongButton
+                light
+                shadowless
+                text="Edit"
+                style={styles.EditBtn}
+                onPress={() =>
+                  navigation.navigate("MenuStack", { screen: "EditProfile" })
+                }
+              />
+            </View>
+          </Section>         
           </>
+           )}
+           </View>
         ) : (null)}
         {selected === 3 ? (
           <>
-            {userData?.length > 0 && (
+            {friendData?.length > 0 && (
               <Label
                 notAlign
                 style={{ top: 5, color: "#FFFFFF", marginTop: 8, fontSize: 16 }}
@@ -215,7 +246,7 @@ const LastGame = ({ props, navigation }) => {
               </Label>
             )}
             <FlatList
-              data={userData}
+              data={friendData}
               contentContainerStyle={{
                 paddingBottom: height * 0.48,
               }}
@@ -241,7 +272,6 @@ const LastGame = ({ props, navigation }) => {
               renderItem={({ item, index }) => {
                 return (
                   <TriviaCard
-                    userInfo={userInfo}
                     userData={item}
                     onPress={() => navigation.navigate("HamburgerMenu")}
                   />
@@ -315,6 +345,24 @@ const styles = StyleSheet.create({
     fontFamily: "Axiforma-Regular",
     color: "#ffffff",
     fontSize: 16,
+  },
+  EditBtn: {
+    marginTop: height * 0.007,
+    width: width * 0.8,
+    height: height * 0.05,
+  },
+  Personal: {
+    marginTop: height * 0.005,
+    height: height * 0.372,
+  },
+  ItemView: {
+    marginTop: height * 0.012,
+    marginLeft: width * 0.05,
+  },
+  ItemLabel: {
+    position: "absolute",
+    textAlign: "right",
+    width: width * 0.85,
   },
 });
 

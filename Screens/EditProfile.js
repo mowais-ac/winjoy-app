@@ -89,7 +89,7 @@ const EditProfile = ({ route, navigation }) => {
     const user_name = uname.current.getText();
     const email = emailref.current.getText();
     const country = countryref.current;
-    const city = cityref.current.getText();
+    const city = cityref.current;
     const address = addressref.current.getText();
 
     var JSONBody = {
