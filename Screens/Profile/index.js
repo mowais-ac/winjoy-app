@@ -83,7 +83,6 @@ const LastGame = ({ props, navigation }) => {
     // alert(13123);
     await axios.get(`${Config.API_URL}/accepted-connections/list`, requestOptions).then(response => {
         let res = response.data;
-        console.log("friends", res.data.[0]);
         setFriendData( res.data[0])
     });
 
