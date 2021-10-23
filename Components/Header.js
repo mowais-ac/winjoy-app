@@ -14,7 +14,7 @@ import Label from "./Label";
 import { Colors } from "../Constants/Index";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import EncryptedStorage from "react-native-encrypted-storage";
-import Config from "react-native-config"; 
+import Config from "react-native-config";
 import { connect } from "react-redux";
 import { UpdateBell } from "../redux/actions/Bell-action";
 import BackIcon from 'react-native-vector-icons/Ionicons';
@@ -58,35 +58,35 @@ const Header = (props) => {
   return (
     <>
       <View style={styles.Container}>
-    {props.back?(
-      <TouchableOpacity
-      onPress={() => navigation.goBack()}
-      >
-      <View style={styles.containerBack}>
-        <BackIcon name="ios-chevron-back" size={20} color="#FFFFFF" style={{left:5,top:heightConverter(2)}}/>
-        <Text style={styles.text}>Back</Text>
-      </View>
-      </TouchableOpacity>
-    ):(
-      <TouchableOpacity
-      onPress={() => {
-        navigation.reset({
-          index: 0,
-          routes: [{ name: "TabsStack" }],
-        });
-      }}
-    >
-      <Image
-        source={Images.Logo}
-        style={[
-          styles.Logo,
-          {
-            height: height * 0.058,
-          },
-        ]}
-      />
-    </TouchableOpacity>
-    )}
+        {props.back ? (
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+          >
+            <View style={styles.containerBack}>
+              <BackIcon name="ios-chevron-back" size={20} color="#FFFFFF" style={{ left: 5, top: heightConverter(2) }} />
+              <Text style={styles.text}>Back</Text>
+            </View>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            onPress={() => {
+              navigation.reset({
+                index: 0,
+                routes: [{ name: "TabsStack" }],
+              });
+            }}
+          >
+            <Image
+              source={Images.Logo}
+              style={[
+                styles.Logo,
+                {
+                  height: height * 0.058,
+                },
+              ]}
+            />
+          </TouchableOpacity>
+        )}
         {!props.noBell && <Bell style={styles.Bell} value={props.value} />}
         <TouchableOpacity
           style={styles.Lines}
@@ -108,17 +108,17 @@ const styles = StyleSheet.create({
   Container: {
     flexDirection: "row",
   },
-  containerBack:{
-    flexDirection:'row',
-    width:widthConverter(80),
-    marginRight:widthConverter(-30)
- 
+  containerBack: {
+    flexDirection: 'row',
+    width: widthConverter(80),
+    marginRight: widthConverter(-30)
+
   },
   text: {
     fontFamily: "Axiforma-Regular",
     fontSize: RFValue(14),
     color: Colors.LABEL,
-    left:4
+    left: 4
   },
   Logo: {
     width: width * 0.086,

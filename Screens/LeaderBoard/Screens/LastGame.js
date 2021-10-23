@@ -8,7 +8,7 @@ import {
 import Label from "../../../Components/Label";
 const { width, height } = Dimensions.get("window");
 import LinearGradient from "react-native-linear-gradient";
-import { TriviaAvatar, TriviaCard } from "../../../Components";
+import { TriviaAvatar, LeaderBoardCard } from "../../../Components";
 import { heightPercentageToDP } from "../../../Components/Helpers/Responsive";
 import EncryptedStorage from "react-native-encrypted-storage"; 
 import Config from "react-native-config";
@@ -90,7 +90,7 @@ const LastGame = ({ props, navigation }) => {
           renderItem={
             ({ item, index }) => {
               return (
-                <TriviaCard
+                <LeaderBoardCard
                 fullname={item?.winnerfull_name}
                 ammount={"AED 20000"}
                 profile_image={item?.profile_image}

@@ -6,4 +6,6 @@ export * from './RewardzButton/RewardzButton';
 export * from './Card/Card';
 export * from './WalletBlanceCard/WalletBlanceCard';
 export * from './WalletLastPlayedCard/WalletLastPlayedCard';
+export * from './LeaderBoardCard/LeaderBoardCard';
+
 
