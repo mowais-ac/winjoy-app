@@ -56,6 +56,8 @@ const BackgroundVideo = ({ route, navigation }) => {
     const [answerId, setAnswerId] = useState();
     const [activityScreen, setActivityScreen] = useState(false);
     const [activity, setActivity] = useState(false);
+    const [answer, setAnswer] = useState("");
+    
     const Questions = async () => {
         setActivityScreen(true)
         const Token = await EncryptedStorage.getItem("Token");
@@ -69,7 +71,7 @@ const BackgroundVideo = ({ route, navigation }) => {
         // alert(13123);
         await axios.get(`${Config.API_URL}/begin/game/questions/answers/list`, requestOptions).then(response => {
             let res = response.data;
-
+            console.log("resQuestion",res);
             setQuestion(res)
             setActivityScreen(false)
 
@@ -95,7 +97,6 @@ const BackgroundVideo = ({ route, navigation }) => {
         await fetch(`${Config.API_URL}/finish/gameshow`, requestOptions)
             .then(async (response) => response.json())
             .then(async (res) => {
-                console.log("res", res);
                 if (res === "Sorry! Try Next Time") {
                     navigation.navigate("WrongAnswer")
                 } else if (res.status === "error") {
@@ -111,7 +112,15 @@ const BackgroundVideo = ({ route, navigation }) => {
             });
     }
     const SaveResponse = async (ansId) => {
-
+        let ans=""
+        question[questionIncrement]?.answer.map((item) => {
+            console.log("item",item);
+            if(item.is_correct===1){
+                console.log("item.answer",item.answer);
+                ans=item.answer;
+            }
+        })
+        
         setTimer(20)
         const Token = await EncryptedStorage.getItem("Token");
         const body = JSONtoForm({
@@ -132,7 +141,6 @@ const BackgroundVideo = ({ route, navigation }) => {
         await fetch(`${Config.API_URL}/save/user/response`, requestOptions)
             .then(async (response) => response.json())
             .then(async (res) => {
-                console.log("savres", res);
                 if (res.status === "success") {
                     if (res.message === "Congrats!! move to next question") {
 
@@ -150,7 +158,7 @@ const BackgroundVideo = ({ route, navigation }) => {
                 else (res.status === "error")
                 {
                     if (res.message === "Wrong Answer!! Don't loose hope try next time") {
-                        navigation.navigate("WrongAnswer")
+                        navigation.navigate("WrongAnswer",{Tans: ans})
                     }
                 }
                 // if (question[question.length - 1].id === question[questionIncrement]?.id) {
@@ -175,7 +183,15 @@ const BackgroundVideo = ({ route, navigation }) => {
     }
     if(timerCount<=0){
         setTimer(20)
-        SaveResponse(3)
+        let ans=""
+        question[questionIncrement]?.answer.map((item) => {
+            console.log("item",item);
+            if(item.is_correct===1){
+                console.log("item.answer",item.answer);
+                ans=item.answer;
+            }
+        })
+        navigation.navigate("WrongAnswer",{Tans: ans})
         let interval = setInterval(() => {
             setTimer(lastTimerCount => {
                 lastTimerCount <= 1 && clearInterval(interval)
@@ -187,6 +203,7 @@ const BackgroundVideo = ({ route, navigation }) => {
 
     }
     const onPressDone = (ansId) => {
+      
         setActivity(true)
         setAnswerId(ansId)
 
@@ -201,6 +218,8 @@ const BackgroundVideo = ({ route, navigation }) => {
     }
     useEffect(async () => {
         Questions()
+       
+        
         let interval = setInterval(() => {
             setTimer(lastTimerCount => {
                 lastTimerCount <= 1 && clearInterval(interval)
@@ -209,6 +228,7 @@ const BackgroundVideo = ({ route, navigation }) => {
         }, 1000) //each count lasts for a second
         //cleanup the interval on complete
         return () => clearInterval(interval)
+        
     }, []);
     return (
         <View>

@@ -61,21 +61,10 @@ import Profile from "./Screens/Profile/index";
 
 // tabs stack
 import Withdrawals from "./Screens/Withdrawals";
-import Transfers from "./Screens/Transfers";
-import Activity from "./Screens/Activity";
-import Transactions from "./Screens/Transactions";
-
 import TabButton from "./Components/TabButton";
 
 //  redux
 import { Provider } from "react-redux";
-import { createStore, applyMiddleware } from "redux";
-import thunkMiddleware from "redux-thunk";
-import Reducers from "./redux/reducers/index";
-import Config from "react-native-config";
-//import Notifications from "./Screens/Notifications";
-
-
 const { width, height } = Dimensions.get("window");
 const LoginStack = createStackNavigator();
 
@@ -158,11 +147,11 @@ const SimpeStackScreen = () => (
       component={DashBoard}
       options={{ headerShown: false }}
     />
-    <SimpleScreenStack.Screen
-      key={11}
-      name="Cart"
-      component={Cart}
-      options={{ headerShown: false }}
+  <SimpleScreenStack.Screen
+        key={11}
+        name="WishlistDetails"
+        component={WishlistDetails}
+        options={{ headerShown: false}}
     />
   </SimpleScreenStack.Navigator>
 );
@@ -380,13 +369,6 @@ const WishListStackScreen = () => {
         component={WishList}
         options={{ headerShown: false }}
       />
-      <WishListStack.Screen
-        key={1}
-        name="WishlistDetails"
-        component={WishlistDetails}
-        options={{ headerShown: false }}
-      />
-     
     </WishListStack.Navigator>
   );
 };

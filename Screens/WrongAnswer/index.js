@@ -30,7 +30,6 @@ import Colors from "../../Constants/Colors";
 import BackIcon from 'react-native-vector-icons/Ionicons';
 const { width, height } = Dimensions.get("window");
 const WrongAnswer = ({ navigation, route }) => {
-
     return (
 
         <ScrollView>
@@ -59,7 +58,7 @@ const WrongAnswer = ({ navigation, route }) => {
                     }}>
                         <Text style={[styles.text, { fontSize: 20,width:widthConverter(250) }]}>
                             Ohh, you just selected the
-                            wrong answer, the correct answer is
+                            wrong answer, the correct answer is {route?.params?.Tans}
                         </Text>
                     </View>
                     <Text style={[styles.text, { fontSize: 20,width:widthConverter(250) }]}>
