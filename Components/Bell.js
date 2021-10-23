@@ -17,18 +17,18 @@ const Bell = (props) => {
       <TouchableOpacity
         style={[styles.Main, props.style]}
         onPress={() =>
-          navigation.navigate("Activity", { screen: "Notifications" })
+          navigation.navigate("SimpeStackScreen", { screen: "Cart" })
         }
       >
         <Image source={Images.Bell} style={styles.Bell} />
-        {+Bell.count >= 1 && (
+        {/* {+Bell.count >= 1 && (
           <>
             <Image source={Images.BellPop} style={styles.Pop} />
             <Label notAlign bold style={styles.Label} font={10}>
               {Bell.count > 9 ? 9 : Bell.count}
             </Label>
           </>
-        )}
+        )} */}
       </TouchableOpacity>
     </>
   );

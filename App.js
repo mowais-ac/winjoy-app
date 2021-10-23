@@ -35,10 +35,11 @@ import QuizAnswer from "./Screens/QuizAnswer/index";
 import PrizeList from "./Screens/PrizeList/index";
 import LeaderBoard from "./Screens/LeaderBoard/LeaderBoard";
 import HamburgerMenu from "./Screens/HamburgerMenu/index";
-import Congrats from "./Screens/Congrats/index"
-import WrongAnswer from "./Screens/WrongAnswer/index"
-import ProductDetail from "./Screens/ProductDetail/index"
-import DashBoard from "./Screens/DashBoard/index"
+import Congrats from "./Screens/Congrats/index";
+import WrongAnswer from "./Screens/WrongAnswer/index";
+import ProductDetail from "./Screens/ProductDetail/index";
+import DashBoard from "./Screens/DashBoard/index";
+import Cart from "./Screens/Cart/index";
 //meu stack
 //import Menu from "./Screens/Menu";
 import Menu from "./Screens/HamburgerMenu/index";
@@ -72,7 +73,9 @@ import { createStore, applyMiddleware } from "redux";
 import thunkMiddleware from "redux-thunk";
 import Reducers from "./redux/reducers/index";
 import Config from "react-native-config";
-import Notifications from "./Screens/Notifications";
+//import Notifications from "./Screens/Notifications";
+
+
 const { width, height } = Dimensions.get("window");
 const LoginStack = createStackNavigator();
 
@@ -153,6 +156,12 @@ const SimpeStackScreen = () => (
       key={10}
       name="DashBoard"
       component={DashBoard}
+      options={{ headerShown: false }}
+    />
+    <SimpleScreenStack.Screen
+      key={11}
+      name="Cart"
+      component={Cart}
       options={{ headerShown: false }}
     />
   </SimpleScreenStack.Navigator>
