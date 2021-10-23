@@ -47,7 +47,6 @@ const LastGame = ({ props, navigation }) => {
           horizontal={true}
           renderItem={
             ({ item, index }) => {
-              console.log("item",item.winnerfull_name);
               return (
                 <TriviaAvatar
                   title={true}

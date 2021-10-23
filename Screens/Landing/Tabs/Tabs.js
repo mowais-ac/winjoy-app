@@ -36,12 +36,12 @@ function Tabs() {
                 style={{
                   
                   fontFamily: 'Europa-Bold',
-                  fontSize: RFValue(20, 812),
+                  fontSize: RFValue(16, 812),
                   fontWeight: 'bold',
                   fontStyle: 'normal',
                   letterSpacing: 0,
                   color: focused ? '#E7003F' : '#ffffff',
-                  textTransform: 'capitalize',
+                  textTransform: 'uppercase',
                   
                 }}>
                 {route.name}

@@ -60,7 +60,6 @@ const LiveGameShows = ({ props, navigation }) => {
 
     await axios.get(`${Config.API_URL}/livegameshow`, requestOptions).then(response => {
       let res = response.data;
-      console.log("res Game", res);
       if (res.status === "success") {
         if (res.message === "Game Show Available") {
           LetBegain( res?.LivegameShow?.id)
@@ -87,7 +86,6 @@ const LiveGameShows = ({ props, navigation }) => {
 
     await axios.get(`${Config.API_URL}/livestream/available`, requestOptions).then(response => {
       let res = response.data;
-      console.log("res live", res);
       if(res){
         setLiveStreamUri(res?.livestream_url)
       }
@@ -96,7 +94,6 @@ const LiveGameShows = ({ props, navigation }) => {
 
   }
   const LetBegain = async (Lid) => {
-    console.log("lid",Lid);
     const Token = await EncryptedStorage.getItem("Token");
     const requestOptions = {
       headers: {
@@ -109,7 +106,6 @@ const LiveGameShows = ({ props, navigation }) => {
 
     await axios.get(`${Config.API_URL}/lets/begin?live_gameshow_id=${Lid}`, requestOptions).then(response => {
       let res = response.data;
-      console.log("resletbeagin", res);
       if (res.status === "success") {
         if (res.message === "Welcome to Live Game Show") {
           setGameBtnText("Let's Begin")

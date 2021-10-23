@@ -89,7 +89,6 @@ const BorrowCredit = ({ route, navigation }) => {
         await fetch(`${Config.API_URL}/credit/request`, requestOptions)
           .then(async (response) => response.json())
           .then(async (res) => {
-            console.log(res);
             if (res.status && res.status.toLowerCase() === "success") {
               navigation.replace("BorrowCreditSuccess");
             } else Alert.alert("Error", res.message);

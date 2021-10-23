@@ -57,13 +57,13 @@ const Header = (props) => {
   }, []);
   return (
     <>
-      <View style={styles.Container}>
+      <View style={[styles.Container,{height:props.height}]}>
     {props.back?(
       <TouchableOpacity
       onPress={() => navigation.goBack()}
       >
       <View style={styles.containerBack}>
-        <BackIcon name="ios-chevron-back" size={20} color="#FFFFFF" style={{left:5,top:heightConverter(2)}}/>
+        <BackIcon name="ios-chevron-back" size={20} color="#FFFFFF" style={{left:5}}/>
         <Text style={styles.text}>Back</Text>
       </View>
       </TouchableOpacity>
@@ -107,18 +107,20 @@ const Header = (props) => {
 const styles = StyleSheet.create({
   Container: {
     flexDirection: "row",
+    alignItems:"center",
   },
   containerBack:{
     flexDirection:'row',
     width:widthConverter(80),
-    marginRight:widthConverter(-30)
+    marginRight:widthConverter(-30),
+    alignItems:"center"
  
   },
   text: {
     fontFamily: "Axiforma-Regular",
     fontSize: RFValue(14),
     color: Colors.LABEL,
-    left:4
+    left:4,
   },
   Logo: {
     width: width * 0.086,

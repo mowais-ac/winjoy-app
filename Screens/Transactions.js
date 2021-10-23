@@ -100,7 +100,6 @@ const Transactions = ({ navigation }) => {
 
   const renderItem = ({ item }) => {
     const isReceive = ViewType === 2 ? item.type : ViewType === 0;
-    //    console.log(item);
     return (
       <TransactionSection
         item={item}
