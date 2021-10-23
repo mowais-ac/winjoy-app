@@ -22,9 +22,6 @@ function createNotificationService(params) {
   );
 
   eventSource.addEventListener("message", (data) => {
-    // console.log(data);
-    // console.log(data.type); // message
-    // console.log(data.data);
   });
 
   return eventSource;

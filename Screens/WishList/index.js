@@ -66,7 +66,10 @@ const WishList = ({ navigation }) => {
     }`;
     return (
       <TouchableOpacity
-        onPress={() => navigation.navigate("WishlistDetails", { item })}
+        onPress={() => navigation.navigate("SimpeStackScreen", {
+          screen: "WishlistDetails",
+          params:{item}
+      })}
       >
         <View>
           <Section style={styles.Section}>
@@ -88,7 +91,6 @@ const WishList = ({ navigation }) => {
                 </Label>
                 <Label
                   notAlign
-                  primary
                   bold
                   headingtype="h4"
                   style={styles.LessMargin}
@@ -115,7 +117,7 @@ const WishList = ({ navigation }) => {
       ) : (
         <>
           {Data.length >= 1 && (
-            <Label primary bold headingtype="h4">
+            <Label  bold headingtype="h4" style={{color:Colors.REDESH}}>
               Wish Lists
             </Label>
           )}
@@ -185,6 +187,7 @@ const styles = StyleSheet.create({
   },
   LessMargin: {
     marginTop: height * 0.003,
+    color:Colors.REDESH
   },
 });
 export default WishList;

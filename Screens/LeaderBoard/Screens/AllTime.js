@@ -123,7 +123,6 @@ const AllTime = (props) => {
       // alert(13123);
       await axios.get(`${Config.API_URL}/banners`, requestOptions).then(response => {
         let res = response.data;
-        console.log('res: ', res)
         if (res.status && res.status.toLowerCase() === "success") {
           setBanners(res.data);
         }

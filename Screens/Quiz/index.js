@@ -95,7 +95,6 @@ const BackgroundVideo = ({ route, navigation }) => {
         await fetch(`${Config.API_URL}/finish/gameshow`, requestOptions)
             .then(async (response) => response.json())
             .then(async (res) => {
-                console.log("res", res);
                 if (res === "Sorry! Try Next Time") {
                     navigation.navigate("WrongAnswer")
                 } else if (res.status === "error") {
@@ -132,7 +131,6 @@ const BackgroundVideo = ({ route, navigation }) => {
         await fetch(`${Config.API_URL}/save/user/response`, requestOptions)
             .then(async (response) => response.json())
             .then(async (res) => {
-                console.log("savres", res);
                 if (res.status === "success") {
                     if (res.message === "Congrats!! move to next question") {
 

@@ -429,7 +429,6 @@ const EditProfile = ({ route, navigation }) => {
             <View style={styles.ChangeConView}>
               <LabelButton
                 notAlign
-                primary
                 bold
                 text="Change"
                 headingtype="h5"
@@ -661,6 +660,7 @@ const styles = StyleSheet.create({
   },
   ChangeCon: {
     zIndex: 4,
+    color:Colors.REDESH
   },
   MarginLess: {
     marginTop: height * 0.01,

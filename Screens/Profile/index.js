@@ -33,12 +33,14 @@ import UserInfo from "../../Components/UserInfo";
 import Section from "../../Components/Section";
 import Colors from "../../Constants/Colors";
 import LongButton from "../../Components/LongButton";
-const LastGame = ({ props, navigation }) => {
+import { useFocusEffect } from "@react-navigation/native";
+const LastGame = ({ props, navigation,route }) => {
   const [userData, setUserData] = useState([]);
   const [userInfo, setUserInfo] = useState();
   const [selected, setSelected] = useState(1);
   const [friendData, setFriendData] = useState([]);
   const [Data, setData] = useState(null);
+  const routeSelected =route?.params?.selected;
   useEffect(async () => {
     const userInfo = JSON.parse(await EncryptedStorage.getItem("User"));
     if (JSON.stringify(Data) !== userInfo) {
@@ -48,6 +50,14 @@ const LastGame = ({ props, navigation }) => {
     GetData();
     MyFriends();
   }, []);
+  useFocusEffect(
+    React.useCallback(() => {    
+    if(routeSelected){ 
+    setSelected(routeSelected)
+  } 
+    }, [routeSelected])
+    );
+    
   const GetData = async () => {
     const Token = await EncryptedStorage.getItem("Token");
     const requestOptions = {

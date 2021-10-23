@@ -1,189 +1,232 @@
 import React from "react";
-import { View, StyleSheet, Dimensions, ScrollView, Image } from "react-native";
-
-import Background from "../../Components/Background";
-import SafeArea from "../../Components/SafeArea";
-import Header from "../../Components/Header";
+import {
+    View,
+    StyleSheet,
+    Dimensions,
+    Text,
+} from "react-native";
 import Label from "../../Components/Label";
-import Section from "../../Components/Section";
-import { Colors } from "../../Constants/Index.js";
-
-import { GetDate } from "../../Constants/Functions";
-import Config from "react-native-config";
-import SmallPopup from "../../Components/SmallPopup";
-import GoBack from "../../Components/GoBackButton";
-
 const { width, height } = Dimensions.get("window");
+import LinearGradient from "react-native-linear-gradient";
+import { Card } from "../../Components";
+import {
+    widthPercentageToDP,
+    heightPercentageToDP,
+    heightConverter,
+} from "../../Components/Helpers/Responsive";
+import Header from "../../Components/Header";
 
-const WishlistDetails = ({ route, navigation }) => {
-  const { item } = route.params;
-
-  const GetField = (props) => {
-    const { name, val, style } = props;
+const WishlistDetails = ({ props, navigation, route }) => {
+    const item  = route.params.item;
+    let progress=(item?.product?.updated_stocks? (item?.product?.updated_stocks/item?.product?.stock)*100 : 0);
     return (
-      <View style={[styles.ItemView, style]}>
-        <Label notAlign bold darkmuted text={name} />
-        <Label
-          notAlign
-          bold
-          dark
-          text={val}
-          style={styles.ItemLabel}
-          {...props}
-        />
-      </View>
+
+
+        <View style={{ height: heightPercentageToDP("100%") }}>
+            <LinearGradient
+                style={styles.mainView}
+                colors={["#420E92", "#E7003F"]}
+
+            >
+                <View style={{ height: 20 }} />
+                <Header back={true} />
+
+
+                <View style={styles.bottomView}>
+                    <Label primary font={13} dark style={{ color: "#ffffff", marginTop: 9, marginBottom: 9, }}>
+                        {item?.product?.updated_stocks || 0} sold out of {item?.product?.stock}
+                    </Label>
+                    <View style={styles.containerprogressBar}>
+                        <LinearGradient
+                            start={{ x: 0, y: 0 }}
+                            end={{ x: 1, y: 0 }}
+                            colors={["#ff9000", "#e70100"]}
+                            style={[
+                                styles.LinerGradientProgrees,
+                                { width: `${progress>99?99:progress}%` },
+                            ]}
+                        />
+                        <View style={styles.GreybarWidth} />
+                    </View>
+
+
+                </View>
+
+            </LinearGradient>
+            <View style={styles.upperView}>
+                <Card item={item?.product}/>
+            </View>
+            <View style={styles.card}>
+
+                <Label primary font={16} dark style={{ color: "#000000", marginTop: 30 }}>
+                    Get a chance to
+                    <Label notAlign primary font={16} bold style={{ color: "#E7003F" }}>
+                        {" "}WIN
+                    </Label>
+                </Label>
+                <Label font={16} dark style={{ color: "#000000" }}>
+                    {item?.product?.title}
+                </Label>
+                <Text style={styles.closingTxt}>
+                    Closing Soon
+                </Text>
+            </View>
+            <View style={styles.pdView}>
+                <Label notAlign primary font={16} bold style={{ color: "#E7003F" }}>
+                    Products Details
+                </Label>
+                <Label notAlign font={11} dark style={{ color: "#000000", lineHeight: 20 }}>
+                  {item?.product?.description}
+                </Label>
+            </View>
+            <View style={styles.card2}>
+
+                <View style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    width: widthPercentageToDP("83")
+                }}>
+                    <Text style={styles.metaText}>To enter in the lucky draw</Text>
+                    <Text style={[styles.text, { fontWeight: 'bold' }]}>{item.price}</Text>
+
+                </View>
+                <View style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    width: widthPercentageToDP("83")
+                }}>
+                    <Text style={[styles.metaText, { fontWeight: 'bold' }]}>Buy a {item.title}</Text>
+                    <Text style={styles.text}>Gold Coin</Text>
+
+                </View>
+                <LinearGradient
+                    start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
+                    style={{
+                        height: heightConverter(55),
+                        width: width - 25,
+                        position:'absolute',
+                        bottom:0,
+                        borderBottomLeftRadius:10,
+                        borderBottomRightRadius:10,
+                        justifyContent:'center',
+                        alignItems:'center'
+                    }}
+                    colors={["#420E92", "#E7003F"]}
+
+                >
+                    <Label  primary font={16} bold style={{ color: "#ffffff" }}>
+                   Add to Cart
+                </Label>
+                </LinearGradient>
+
+            </View>
+        </View>
+
+
     );
-  };
-  const ImgUrl = `${Config.PRODUCT_IMG}/${item.product.id}/${
-    JSON.parse(item.product.image)[0]
-  }`;
-  return (
-    <ScrollView>
-      <SafeArea>
-        <Background height={0.22} />
-        <View style={styles.MainTop}>
-          <Header />
-          <View style={styles.Header}>
-            <View style={styles.ImageView}>
-              <Image
-                source={{
-                  uri: ImgUrl,
-                }}
-                style={styles.Image}
-              />
-            </View>
-            <View style={styles.HeaderLabel}>
-              <Label notAlign bold style={styles.Info} headingtype="h3">
-              {item.product.title}
-              </Label>
-              <Label notAlign style={styles.Info} headingtype="h5">
-                {item.product.description}
-              </Label>
-            </View>
-            <View style={styles.PopupView}>
-              <SmallPopup
-                item={{
-                  Text: item.product.status.toUpperCase(),
-                  type: "success",
-                }}
-                style={{ marginLeft: 0 }}
-              />
-            </View>
-          </View>
-        </View>
-        <View style={styles.DetailsContainer}>
-          <Label primary bold headingtype="h4">
-            Wish List Details
-          </Label>
-          <Section style={styles.SectionContainer}>
-            <View style={styles.SectionTop}>
-              <GetField name="Product" val={item.product.title} />
-              <GetField name="Product Details" val={item.product.description} />
-              <GetField name="Order Date" val={GetDate(item.product.created_at)} />
-              <GetField
-                name="Shipping date"
-                val={item.product.shipping_date ? GetDate(item.product.created_at) : "N/A"}
-              />
-              <GetField name="Status" val={item.product.status} />
-            </View>
-          </Section>
-        </View>
-
-        <View style={[styles.SmallBorder, styles.Margin]} />
-
-        <Section style={[styles.Coupon, styles.Margin]}>
-          <View style={styles.CouponText}>
-            <Label notAlign bold dark font={13} text="Coupon no:" />
-            <Label
-              style={styles.ItemLabel}
-              notAlign
-              bold
-              dark
-              font={13}
-              text={item.product.discount_code}
-            />
-          </View>
-        </Section>
-        <GoBack style={styles.MarginLess} />
-      </SafeArea>
-    </ScrollView>
-  );
 };
 
 const styles = StyleSheet.create({
-  MainTop: {
-    height: height * 0.22,
-  },
-  Header: {
-    marginTop: height * 0.01,
-    flexDirection: "row",
-    alignSelf: "center",
-    width: width * 0.9,
-  },
-  ImageView: {
-    width: width * 0.2,
-    height: height * 0.1,
-    backgroundColor: Colors.WHITE,
-    borderRadius: 10,
-  },
-  Image: {
-    width: width * 0.2,
-    height: height * 0.1,
-    borderRadius: 10,
-    resizeMode: "contain",
-  },
-  HeaderLabel: {
-    justifyContent: "center",
-    width: width * 0.45,
-  },
-  PopupView: {
-    justifyContent: "center",
-  },
-  Info: {
-    marginLeft: width * 0.05,
-    width:"100%"
-  },
-  MarginLess: {
-    marginTop: height * 0.02,
-  },
-  DetailsContainer: {
-    marginTop: height * 0.02,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  SectionContainer: {
-    marginTop: height * 0.01,
-    height: height * 0.225,
-  },
-  SectionTop: {
-    height: height * 0.21,
-    marginTop: height * 0.01,
-  },
-  ItemView: {
-    marginTop: height * 0.013,
-    marginLeft: width * 0.05,
-  },
-  ItemLabel: {
-    position: "absolute",
-    textAlign: "right",
-    width: width * 0.85,
-  },
-  SmallBorder: {
-    width: width * 0.12,
-    height: 2,
-    backgroundColor: Colors.SMALL_LINE,
-    alignSelf: "center",
-  },
-  Coupon: {
-    height: height * 0.06,
-    justifyContent: "center",
-  },
-  CouponText: {
-    marginLeft: width * 0.05,
-  },
-  Margin: {
-    marginTop: height * 0.03,
-  },
+    mainView: {
+        height: heightConverter(200),
+    },
+    bottomView: {
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    LinerGradientProgrees: {
+        alignItems: "center",
+        justifyContent: "center",
+        width: 25,
+        borderRadius: 9,
+        height: 14,
+        left: 2,
+    },
+    GreybarWidth: {
+        width: widthPercentageToDP("95"),
+        height: 18,
+        zIndex: -1,
+        position: "absolute",
+        backgroundColor: "#EADFE3",
+        borderRadius: 9,
+
+
+    },
+    containerprogressBar: {
+        width: widthPercentageToDP("95"),
+        marginBottom: 1,
+        marginTop: 10,
+        flexDirection: "row",
+        alignItems: "center",
+        height: 3,
+        marginLeft: 2,
+        zIndex: 1
+
+    },
+    upperView: {
+        top: heightPercentageToDP('16%'),
+        position: 'absolute',
+
+    },
+    card: {
+        width: width - 25,
+        height: height * 0.1,
+        backgroundColor: '#ffffff',
+        marginLeft: 10,
+        borderRadius: 10,
+        padding: 10,
+        top: height * 0.16,
+        left: 2,
+        justifyContent: 'center', alignItems: 'center',
+        elevation: 3,
+        marginBottom: 15
+    },
+    card2: {
+        width: width - 25,
+        height: height * 0.15,
+        backgroundColor: '#ffffff',
+        marginLeft: 10,
+        borderRadius: 10,
+        padding: 10,
+        bottom: 0,
+        left: 2,
+       alignItems: 'center',
+        elevation: 3,
+        position: 'absolute',
+        marginBottom: 20
+    },
+    closingTxt: {
+        color: '#ffffff',
+        backgroundColor: '#e7003f',
+        fontFamily: "Axiforma-Regular",
+        fontWeight: 'bold',
+        fontSize: 16,
+        paddingLeft: 20,
+        paddingRight: 20,
+        paddingTop: 6,
+        paddingBottom: 6,
+        borderRadius: 20,
+        top: heightConverter(2)
+    },
+    pdView: {
+        position: 'absolute',
+        bottom: heightPercentageToDP("22"),
+        height: heightPercentageToDP("25"),
+        padding: 20,
+
+    },
+    metaText: {
+        color: '#000000',
+        fontFamily: "Axiforma-Regular",
+    },
+    text: {
+        color: '#e7003f',
+        fontFamily: "Axiforma-Regular",
+    }
 });
+
+
 
 export default WishlistDetails;
