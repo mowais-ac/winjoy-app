@@ -180,11 +180,7 @@ const LastGame = ({ props, navigation,route }) => {
                 paddingBottom: height * 0.48,
               }}
               ListEmptyComponent={
-                <NotFound
-                  text="Games"
-                  desc="You don't have win any Games yet "
-                  ConModal
-                />
+                <ActivityIndicator size="large" color="#fff" />
               }
               ItemSeparatorComponent={() => {
                 return (
@@ -260,11 +256,7 @@ const LastGame = ({ props, navigation,route }) => {
                 paddingBottom: height * 0.48,
               }}
               ListEmptyComponent={
-                <NotFound
-                  text="Games"
-                  desc="You don't have win any Games yet "
-                  ConModal
-                />
+                <ActivityIndicator size="large" color="#fff" />
               }
               ItemSeparatorComponent={() => {
                 return (

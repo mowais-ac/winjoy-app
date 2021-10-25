@@ -515,7 +515,7 @@ const EditProfile = ({ route, navigation }) => {
           <GetField
             name="Phone Number"
             ref={phone_noref}
-            value={OldUser.phone_no}
+            value={OldUser.phone_no} 
             editable={false}
           />
         </TouchableOpacity>
@@ -606,9 +606,10 @@ const styles = StyleSheet.create({
     marginTop: height * 0.02,
     width: width * 0.95,
     alignSelf: "center",
+    
   },
   FieldHeight: {
-    height: height * 0.06,
+    height: height * 0.07,
   },
   PersonalBtnView: {
     flexDirection: "row",
