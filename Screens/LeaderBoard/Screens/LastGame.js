@@ -51,7 +51,7 @@ const LastGame = ({ props, navigation }) => {
                 <TriviaAvatar
                   title={true}
                   fullname={item?.winnerfull_name}
-                  ammount={"AED 20000"}
+                  ammount={"AED 20,000"}
                   profile_image={item?.profile_image}
                 />
               )
@@ -91,7 +91,7 @@ const LastGame = ({ props, navigation }) => {
               return (
                 <LeaderBoardCard
                 fullname={item?.winnerfull_name}
-                ammount={"AED 20000"}
+                ammount={"AED 20,000"}
                 profile_image={item?.profile_image}
                 onPress={()=>navigation.navigate("LastGameWinnerDetail")}
                 />

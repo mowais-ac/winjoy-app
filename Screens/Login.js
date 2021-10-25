@@ -118,7 +118,7 @@ const Login = ({ navigation }) => {
           <Background height={1} design />
           <Image source={Images.Logo} style={styles.Logo} />
           <Label bold headingtype="h2" style={styles.MarginLarge}>
-            Login to MyRewardz
+            Login to WinJoy
           </Label>
           <Modals ModalRef={ModalState} Error />
           <InputField

@@ -25,13 +25,13 @@ import axios from "axios";
 import ProfilePicture from "../../Components/ProfilePicture";
 
 let data2 = [
-  "DashBoard",
-  "LeaderBoard",
-  "played Games",
+  "Dashboard",
+  "Leaderboard",
+  "Played games",
   "Friends",
-  "View Profile",
-  "My Orders",
-  "My Address",
+  "View profile",
+  "My orders",
+  "My address",
   "Logout",
 ];
 const HamburgerMenu = ({ props, navigation }) => {
@@ -118,7 +118,7 @@ const HamburgerMenu = ({ props, navigation }) => {
                 backgroundColor: "#72407e",
               }}
             />
-            <Text style={[styles.text, { color: "#ffffff", padding: 15 }]}>
+            <Text style={[styles.text, { color: "#ffffff", padding:15  }]}>
               My Friends
             </Text>
             <FlatList
@@ -167,7 +167,7 @@ const HamburgerMenu = ({ props, navigation }) => {
               return (
                 <View
                   style={{
-                    marginTop: 10,
+                    marginTop: 5,
                     height: 1,
                     width: "100%",
                     backgroundColor: "#994e7c",
@@ -180,7 +180,7 @@ const HamburgerMenu = ({ props, navigation }) => {
                 <View
                   style={{
                     width: widthPercentageToDP("90%"),
-                    marginTop: 10,
+                    marginTop: 5,
                     marginLeft: 15,
                   }}
                 >
@@ -195,17 +195,17 @@ const HamburgerMenu = ({ props, navigation }) => {
                           },
                         });
                       }
-                      if (item === "DashBoard") {
+                      if (item === "Dashboard") {
                         navigation.navigate("SimpeStackScreen", {
                           screen: "DashBoard",
                         });
                       }
-                      if (item === "LeaderBoard") {
+                      if (item === "Leaderboard") {
                         navigation.navigate("SimpeStackScreen", {
                           screen: "LeaderBoard",
                         });
                       }
-                      if (item === "View Profile") {
+                      if (item === "View profile") {
                         navigation.navigate("TabsStack", {
                           screen: "Profile",
                           params: {
@@ -214,7 +214,7 @@ const HamburgerMenu = ({ props, navigation }) => {
                           },
                         });
                       }
-                      if (item === "played Games") {
+                      if (item === "Played games") {
                         navigation.navigate("TabsStack", {
                           screen: "Profile",
                           params: {
@@ -223,7 +223,7 @@ const HamburgerMenu = ({ props, navigation }) => {
                           },
                         });
                       }
-                      if (item === "My Orders") {
+                      if (item === "My orders") {
                         navigation.navigate("Orders");
                       }
                     }}
@@ -280,7 +280,7 @@ const styles = StyleSheet.create({
   },
   bView: {
     backgroundColor: "rgba(0,0,0,0.4)",
-    height: heightPercentageToDP("43%"),
+    height: heightPercentageToDP("37%"),
   },
   flatListHeader: {
     marginTop: heightConverter(20),
@@ -292,7 +292,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
   },
   footer: {
-    height: heightConverter(50),
+    height: heightConverter(40),
     justifyContent: "center",
     width: widthPercentageToDP("100%"),
     paddingLeft: 15,
@@ -308,9 +308,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   avatarView: {
-    width: widthConverter(90),
-    height: widthConverter(90),
-    borderRadius: heightConverter(90),
+    width: widthConverter(65),
+    height: widthConverter(65),
+    borderRadius: heightConverter(65),
     borderWidth: 3,
     alignItems: "center",
     justifyContent: "center",
@@ -328,7 +328,7 @@ const styles = StyleSheet.create({
   text: {
     fontFamily: "Axiforma-Regular",
     color: "#ffffff",
-    fontSize: 16,
+    fontSize: 14,
   },
 });
 

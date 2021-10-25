@@ -19,6 +19,7 @@ import { heightConverter, heightPercentageToDP, widthConverter } from "../../../
 import EncryptedStorage from "react-native-encrypted-storage";
 import Config from "react-native-config";
 import axios from "axios";
+import dayjs from "dayjs"
 const LiveGameShows = ({ props, navigation }) => {
   useEffect(() => {
     LiveStream()
@@ -28,7 +29,8 @@ const LiveGameShows = ({ props, navigation }) => {
   const [winnerData, setWinnerData] = useState([]);
   const [navToQuiz, setNavToQuiz] = useState(false);
   const [liveStreamUri, setLiveStreamUri] = useState("");
-  const [gameBtnText, setGameBtnText] = useState("Let's Begin");
+  const [gameBtnText, setGameBtnText] = useState(true);
+  const [livegameData, setLivegameData] = useState([]);
   const PastWinner = async () => {
     const Token = await EncryptedStorage.getItem("Token");
     const requestOptions = {
@@ -60,13 +62,15 @@ const LiveGameShows = ({ props, navigation }) => {
 
     await axios.get(`${Config.API_URL}/livegameshow`, requestOptions).then(response => {
       let res = response.data;
+      console.log("res", res);
       if (res.status === "success") {
         if (res.message === "Game Show Available") {
-          LetBegain( res?.LivegameShow?.id)
-        //   navigation.navigate("SimpeStackScreen", { screen: "Quiz",
-        //  // params:{liveGameShowId: res.LivegameShow.id}
-        //  })
-        }else{
+          setLivegameData(res)
+          LetBegain(res?.LivegameShow?.LivegameShow?.id)
+          //   navigation.navigate("SimpeStackScreen", { screen: "Quiz",
+          //  // params:{liveGameShowId: res.LivegameShow.id}
+          //  })
+        } else {
           alert(res)
         }
       }
@@ -86,10 +90,10 @@ const LiveGameShows = ({ props, navigation }) => {
 
     await axios.get(`${Config.API_URL}/livestream/available`, requestOptions).then(response => {
       let res = response.data;
-      if(res){
+      if (res) {
         setLiveStreamUri(res?.livestream_url)
       }
-   
+
     });
 
   }
@@ -106,25 +110,32 @@ const LiveGameShows = ({ props, navigation }) => {
 
     await axios.get(`${Config.API_URL}/lets/begin?live_gameshow_id=${Lid}`, requestOptions).then(response => {
       let res = response.data;
+      console.log("letbegain", res);
       if (res.status === "success") {
         if (res.message === "Welcome to Live Game Show") {
-          setGameBtnText("Let's Begin")
+          setGameBtnText(true)
           setNavToQuiz(true)
-         
+
         }
       }
       else if (res.status === "error") {
         if (res.message === "Sorry! you have already played.") {
-          setGameBtnText("Already played")
+          setGameBtnText(false)
+        }
+        else {
+          setGameBtnText(false)
         }
       }
+     
     });
 
   }
 
 
   return (
-    <ScrollView>
+    <ScrollView
+    style={{ backgroundColor: "#ffffff" }}
+    >
       <LinearGradient
         colors={["#420E92", "#E7003F"]}
         style={styles.mainView}
@@ -141,25 +152,28 @@ const LiveGameShows = ({ props, navigation }) => {
             {" "}amazing prizes
           </Label>
         </Label>
-        <TouchableOpacity onPress={() =>{
-           if(navToQuiz){
-            navigation.navigate("SimpeStackScreen", { screen: "Quiz",
-            params:{uri: liveStreamUri}
-           })
-        }else{
-          setGameBtnText("Quiz Not Started")
-        }
-      }
+        {gameBtnText ? (
+          <TouchableOpacity onPress={() => {
+            if (navToQuiz) {
+              navigation.navigate("SimpeStackScreen", {
+                screen: "Quiz",
+                params: { uri: liveStreamUri }
+              })
+            } else {
+              setGameBtnText(false)
+            }
+          }
 
-        }>
-          <View style={styles.btnView}>
-            <Label primary font={16} bold dark style={{ color: "#EA245A", }}>
-              {gameBtnText}
-            </Label>
-          </View>
-        </TouchableOpacity>
+          }>
+            <View style={styles.btnView}>
+              <Label primary font={16} bold dark style={{ color: "#EA245A", }}>
+                Let's Begain
+              </Label>
+            </View>
+          </TouchableOpacity>
+        ) : (null)}
         <LinearGradient
-          colors={["#FFFF13", "#A4FF00"]}
+          colors={["#FFFF13", "#A4FF00"]} 
           style={styles.newGameView}
           start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
         >
@@ -167,7 +181,8 @@ const LiveGameShows = ({ props, navigation }) => {
             NEXT GAME
           </Label>
           <Label primary font={16} dark style={{ color: "#420E92", }}>
-            TOMORROW 3PM PST
+            {dayjs(livegameData?.LivegameShow?.start_date).format('DD-MMMM-YYYY hh:mm a')}
+           
           </Label>
         </LinearGradient>
       </LinearGradient>
@@ -179,7 +194,7 @@ const LiveGameShows = ({ props, navigation }) => {
 
 const styles = StyleSheet.create({
   mainView: {
-    height: heightPercentageToDP('55'),
+    height: heightPercentageToDP('45'),
     width: width,
 
     borderBottomLeftRadius: 20,
@@ -191,7 +206,7 @@ const styles = StyleSheet.create({
   newGameView: {
     marginTop: 10,
     width: width - 25,
-    height: heightConverter(120),
+    height: heightConverter(100),
     justifyContent: 'center',
     borderRadius: 20
   },

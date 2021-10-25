@@ -25,7 +25,7 @@ function ClosingSoon({ item }) {
     <View
       style={{
         width: width * 0.7,
-        height: height * 0.2,
+        height: height * 0.15,
         backgroundColor: "#F4EDEF",
         marginLeft: 10,
         borderRadius: 10,

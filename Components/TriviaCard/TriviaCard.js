@@ -35,7 +35,7 @@ function TriviaCard({ onPress, userInfo, userData }) {
         </Text>}
         </View>
         <Text style={styles.text2}>
-          {userData?.price || userData.country}
+          { userData?.price?parseInt(userData?.price).toLocaleString('en'):null || userData.country}
         </Text>
 
 
