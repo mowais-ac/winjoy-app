@@ -34,13 +34,14 @@ import Section from "../../Components/Section";
 import Colors from "../../Constants/Colors";
 import LongButton from "../../Components/LongButton";
 import { useFocusEffect } from "@react-navigation/native";
-const LastGame = ({ props, navigation,route }) => {
+const index = ({ props, navigation,route }) => {
   const [userData, setUserData] = useState([]);
   const [userInfo, setUserInfo] = useState();
   const [selected, setSelected] = useState(1);
   const [friendData, setFriendData] = useState([]);
   const [Data, setData] = useState(null);
   const routeSelected =route?.params?.selected;
+  const [activity, setActivity] = useState(true);
   useEffect(async () => {
     const userInfo = JSON.parse(await EncryptedStorage.getItem("User"));
     if (JSON.stringify(Data) !== userInfo) {
@@ -59,6 +60,7 @@ const LastGame = ({ props, navigation,route }) => {
     );
     
   const GetData = async () => {
+    setActivity(true)
     const Token = await EncryptedStorage.getItem("Token");
     const requestOptions = {
       headers: {
@@ -78,6 +80,7 @@ const LastGame = ({ props, navigation,route }) => {
         } else {
           setUserData(res?.data);
         }
+        setActivity(false)
       });
   };
   const MyFriends = async () => {
@@ -180,7 +183,15 @@ const LastGame = ({ props, navigation,route }) => {
                 paddingBottom: height * 0.48,
               }}
               ListEmptyComponent={
-                <ActivityIndicator size="large" color="#fff" />
+                activity?(
+                  <ActivityIndicator size="large" color="#fff" />
+                ):(
+                  <NotFound
+                  text="Games"
+                  desc="You don't have win any Games yet "
+                  ConModal
+                />
+                ) 
               }
               ItemSeparatorComponent={() => {
                 return (
@@ -256,7 +267,15 @@ const LastGame = ({ props, navigation,route }) => {
                 paddingBottom: height * 0.48,
               }}
               ListEmptyComponent={
-                <ActivityIndicator size="large" color="#fff" />
+                activity?(
+                  <ActivityIndicator size="large" color="#fff" />
+                ):(
+                  <NotFound
+                  text="Friends"
+                  desc="You don't have any Friend yet "
+                  ConModal
+                />
+                ) 
               }
               ItemSeparatorComponent={() => {
                 return (
@@ -367,4 +386,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LastGame;
+export default index;

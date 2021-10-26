@@ -34,7 +34,7 @@ import Quiz from "./Screens/Quiz/index";
 import QuizAnswer from "./Screens/QuizAnswer/index";
 import PrizeList from "./Screens/PrizeList/index";
 import LeaderBoard from "./Screens/LeaderBoard/LeaderBoard";
-import HamburgerMenu from "./Screens/HamburgerMenu/index";
+//import HamburgerMenu from "./Screens/HamburgerMenu/index";
 import Congrats from "./Screens/Congrats/index";
 import WrongAnswer from "./Screens/WrongAnswer/index";
 import ProductDetail from "./Screens/ProductDetail/index";

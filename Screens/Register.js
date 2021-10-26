@@ -229,6 +229,7 @@ const Register = ({ navigation }) => {
             font={17}
             onPress={HandleClick}
             ref={Buttonref}
+            textstyle={{color:'#fff'}}
           />
           <Label
             light

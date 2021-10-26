@@ -105,6 +105,7 @@ const ForgotPassword = ({ navigation }) => {
             font={17}
             onPress={HandleClick}
             ref={Buttonref}
+            textstyle={{color:'#fff'}}
           />
         </View>
         {/* <GoBack style={styles.MarginLarge} /> */}
