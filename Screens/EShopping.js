@@ -124,7 +124,7 @@ const EShopping = ({ navigation }) => {
           </View>
           <View style={styles.PriceView}>
             <Label primary style={styles.Price} headingtype="h5" bold>
-              {+item.price} Coins
+              {+(item.price).toLocaleString()} Coins
             </Label>
           </View>
           <View style={styles.ButtonsView}>

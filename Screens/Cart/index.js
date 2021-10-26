@@ -95,7 +95,7 @@ const index = ({ navigation }) => {
                 headingtype="h4"
                 style={styles.LessMargin}
               >
-                Total: {+item.product.price}
+                Total: {+(item.product.price).toLocaleString()}
               </Label>
             </View>
           </View>

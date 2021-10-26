@@ -66,6 +66,13 @@ const HamburgerMenu = ({ props, navigation }) => {
         console.log(res.data[0]);
       });
   };
+  const HandleLogout = async () => {
+    await EncryptedStorage.clear();
+    navigation.reset({
+      index: 0,
+      routes: [{ name: "Splash" }],
+    });
+  };
   useEffect(() => {
     UserInfo();
     MyFriends();
@@ -119,13 +126,13 @@ const HamburgerMenu = ({ props, navigation }) => {
             </View>
             <View
               style={{
-                marginTop: 20,
+                marginTop: 10,
                 height: 1,
                 width: widthConverter(375),
                 backgroundColor: "#72407e",
               }}
             />
-            <Text style={[styles.text, { color: "#ffffff", padding: 15 }]}>
+            <Text style={[styles.text, { color: "#ffffff", padding:15, paddingTop:10  }]}>
               My Friends
             </Text>
             <FlatList
@@ -236,8 +243,6 @@ const HamburgerMenu = ({ props, navigation }) => {
                       if (item === "Logout") {
                         HandleLogout()
                       }
-
-
                     }}
                   >
                     <Text
@@ -288,11 +293,11 @@ const styles = StyleSheet.create({
   aView: {
     // alignItems: 'center',
     width: widthPercentageToDP("100%"),
-    marginTop: 20,
+    marginTop: 10,
   },
   bView: {
     backgroundColor: "rgba(0,0,0,0.4)",
-    height: heightPercentageToDP("37%"),
+    height: heightPercentageToDP("33%"),
   },
   flatListHeader: {
     marginTop: heightConverter(20),
@@ -305,7 +310,6 @@ const styles = StyleSheet.create({
   },
   footer: {
     height: heightConverter(40),
-    justifyContent: "center",
     width: widthPercentageToDP("100%"),
     paddingLeft: 15,
     paddingRight: 15,
@@ -315,8 +319,7 @@ const styles = StyleSheet.create({
   },
   topView: {
     width: widthPercentageToDP("100%"),
-    justifyContent: "center",
-    paddingTop: 15,
+    paddingTop: 10,
     flexDirection: "row",
   },
   avatarView: {
