@@ -88,7 +88,7 @@ const ProductDetail = ({ props, navigation, route }) => {
                     width: widthPercentageToDP("83")
                 }}>
                     <Text style={styles.metaText}>To enter in the lucky draw</Text>
-                    <Text style={[styles.text, { fontWeight: 'bold' }]}>{item.price}</Text>
+                    <Text style={[styles.text, { fontWeight: 'bold' }]}>{+(item.price).toLocaleString()}</Text>
 
                 </View>
                 <View style={{

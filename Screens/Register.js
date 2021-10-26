@@ -111,7 +111,7 @@ const Register = ({ navigation }) => {
         body,
       };
 
-      await fetch(`${Config.API_URL}/auth/register`, requestOptions)
+      await fetch(`${Config.API_URL}/auth/new_register`, requestOptions)
         .then((response) => response.json())
         .then(async (res) => {
           if (res.status && res.status.toLowerCase() === "success") {

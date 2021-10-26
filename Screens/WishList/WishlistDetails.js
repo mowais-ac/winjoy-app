@@ -18,6 +18,7 @@ import Header from "../../Components/Header";
 
 const WishlistDetails = ({ props, navigation, route }) => {
     const item  = route.params.item;
+    console.log(item);
     let progress=(item?.product?.updated_stocks? (item?.product?.updated_stocks/item?.product?.stock)*100 : 0);
     return (
 
@@ -88,7 +89,7 @@ const WishlistDetails = ({ props, navigation, route }) => {
                     width: widthPercentageToDP("83")
                 }}>
                     <Text style={styles.metaText}>To enter in the lucky draw</Text>
-                    <Text style={[styles.text, { fontWeight: 'bold' }]}>{item.price}</Text>
+                    <Text style={[styles.text, { fontWeight: 'bold' }]}>{(+item?.product?.price).toLocaleString()}</Text>
 
                 </View>
                 <View style={{
@@ -97,14 +98,14 @@ const WishlistDetails = ({ props, navigation, route }) => {
                     alignItems: 'center',
                     width: widthPercentageToDP("83")
                 }}>
-                    <Text style={[styles.metaText, { fontWeight: 'bold' }]}>Buy a {item.title}</Text>
+                    <Text style={[styles.metaText, { fontWeight: 'bold' }]}>Buy a {item?.product?.title}</Text>
                     <Text style={styles.text}>Gold Coin</Text>
 
                 </View>
                 <LinearGradient
                     start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
                     style={{
-                        height: heightConverter(55),
+                        height: heightConverter(53),
                         width: width - 25,
                         position:'absolute',
                         bottom:0,
@@ -185,7 +186,7 @@ const styles = StyleSheet.create({
     },
     card2: {
         width: width - 25,
-        height: height * 0.15,
+        minHeight: height * 0.15,
         backgroundColor: '#ffffff',
         marginLeft: 10,
         borderRadius: 10,
@@ -220,10 +221,12 @@ const styles = StyleSheet.create({
     metaText: {
         color: '#000000',
         fontFamily: "Axiforma-Regular",
+        flex:1,
     },
     text: {
         color: '#e7003f',
         fontFamily: "Axiforma-Regular",
+        
     }
 });
 
