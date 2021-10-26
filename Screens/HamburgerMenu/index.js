@@ -34,7 +34,7 @@ let data2 = [
   "My address",
   "Logout",
 ];
-const HamburgerMenu = ({ props, navigation }) => {
+const index = ({ props, navigation }) => {
   const [userData, setUserData] = useState([]);
   const [friendData, setFriendData] = useState([]);
   const UserInfo = async () => {
@@ -66,13 +66,7 @@ const HamburgerMenu = ({ props, navigation }) => {
         console.log(res.data[0]);
       });
   };
-  const HandleLogout = async () => {
-    await EncryptedStorage.clear();
-    navigation.reset({
-      index: 0,
-      routes: [{ name: "Splash" }],
-    });
-  };
+ 
   useEffect(() => {
     UserInfo();
     MyFriends();
@@ -347,4 +341,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HamburgerMenu;
+export default index;
