@@ -113,6 +113,7 @@ const Verify = ({ route, navigation }) => {
             text="Verify"
             onPress={HandleClick}
             ref={ButtonRef}
+            textstyle={{color:'#fff'}}
           />
         </View>
         <View>

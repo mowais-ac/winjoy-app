@@ -41,6 +41,13 @@ const HamburgerMenu = ({ props, navigation }) => {
     const userInfo = JSON.parse(await EncryptedStorage.getItem("User"));
     setUserData(userInfo);
   };
+  const HandleLogout = async () => {
+    await EncryptedStorage.clear();
+    navigation.reset({
+      index: 0,
+      routes: [{ name: "Splash" }],
+    });
+  };
   const MyFriends = async () => {
     const Token = await EncryptedStorage.getItem("Token");
     const requestOptions = {
@@ -118,7 +125,7 @@ const HamburgerMenu = ({ props, navigation }) => {
                 backgroundColor: "#72407e",
               }}
             />
-            <Text style={[styles.text, { color: "#ffffff", padding:15  }]}>
+            <Text style={[styles.text, { color: "#ffffff", padding: 15 }]}>
               My Friends
             </Text>
             <FlatList
@@ -139,7 +146,7 @@ const HamburgerMenu = ({ props, navigation }) => {
               }}
             />
             <View style={styles.footer}>
-              <Text style={styles.text}>2,034 Friends HC</Text>
+              <Text style={styles.text}>2,034 Friends</Text>
               <TouchableOpacity
                 onPress={() =>
                   navigation.navigate("TabsStack", {
@@ -226,6 +233,11 @@ const HamburgerMenu = ({ props, navigation }) => {
                       if (item === "My orders") {
                         navigation.navigate("Orders");
                       }
+                      if (item === "Logout") {
+                        HandleLogout()
+                      }
+
+
                     }}
                   >
                     <Text

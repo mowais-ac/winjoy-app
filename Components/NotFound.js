@@ -65,11 +65,13 @@ const styles = StyleSheet.create({
   },
   Heading: {
     marginTop: height * 0.02,
+    color:"#fff"
   },
   Info: {
     marginTop: height * 0.01,
     width: width * 0.8,
     lineHeight: height * 0.025,
+    color:"#fff"
   },
   SmallBorder: {
     width: width * 0.15,
@@ -80,6 +82,7 @@ const styles = StyleSheet.create({
   },
   HeadingQuestion: {
     marginTop: height * 0.02,
+    color:"#fff"
   },
   Btn: {
     marginTop: height * 0.02,

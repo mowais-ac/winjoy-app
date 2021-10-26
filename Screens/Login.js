@@ -68,33 +68,38 @@ const Login = ({ navigation }) => {
       await fetch(`${Config.API_URL}/auth/login`, requestOptions)
         .then(async (response) => response.json())
         .then(async (res) => {
+          console.log("res",res);
           ButtonRef.current.SetActivity(false);
           if (res.status && res.status.toLowerCase() === "success") {
             await EncryptedStorage.setItem("Token", res.data.token);
-            if (await IsSuspended(res.data.token))
-              return ModalState.current(true, {
-                heading: "Account suspended",
-                Error:
-                  "Your account has been inactive/suspended. Please contact support for further details.",
-              });
-            if (await IsVerified(res.data.token)) {
-              navigation.replace("TabsStack");
-            } else {
-              navigation.replace("Verify", { phone: phone_no });
-            }
-          } else if (
-            res.message === "Enter 6 Digit Code which sent on your mobile"
-          ) {
-            await EncryptedStorage.setItem("Token", res.data);
-            navigation.replace("Verify", { phone: phone_no });
-          } else if (
-            res.message ===
-            "Your account has been inactive/suspended by our admin, please contact support for further details"
-          )
-            ModalState.current(true, {
-              heading: "Account suspended",
-              Error: res.message,
-            }); 
+            navigation.replace("TabsStack");
+            // if (await IsSuspended(res.data.token))
+            //   return ModalState.current(true, {
+            //     heading: "Account suspended",
+            //     Error:
+            //       "Your account has been inactive/suspended. Please contact support for further details.",
+            //   });
+            // if (await IsVerified(res.data.token)) {
+            //   navigation.replace("TabsStack");
+            // }
+            // else {
+            //   navigation.replace("Verify", { phone: phone_no });
+            // }
+          }
+          // else if (
+          //   res.message === "Enter 6 Digit Code which sent on your mobile"
+          // ) {
+          //   await EncryptedStorage.setItem("Token", res.data);
+          //   navigation.replace("Verify", { phone: phone_no });
+          // }
+          // else if (
+          //   res.message ===
+          //   "Your account has been inactive/suspended by our admin, please contact support for further details"
+          // )
+          //   ModalState.current(true, {
+          //     heading: "Account suspended",
+          //     Error: res.message,
+          //   });
           else {
             ModalState.current(true, {
               heading: "Error",
@@ -148,27 +153,30 @@ const Login = ({ navigation }) => {
             text="Login"
             onPress={HandleLogin}
             ref={ButtonRef}
+            textstyle={{ color: '#fff' }}
           />
           <LabelButton
             style={styles.MarginSmall}
             Notdark
             text="Forgot password?"
             onPress={() => navigation.navigate("ForgotPassword")}
+
           />
         </View>
         {/* <SmallButton style={styles.ORButton} text="OR" /> */}
         <Label
-            bold
-            muted
-            style={[styles.ORButton, { lineHeight: height * 0.03 }]}
-            font={15}
-          >
-            OR
-          </Label>
+          bold
+          muted
+          style={[styles.ORButton, { lineHeight: height * 0.03 }]}
+          font={15}
+        >
+          OR
+        </Label>
         <View style={{ marginTop: height * 0.052 }}>
           <LongButton
             text="Create an account"
             onPress={() => navigation.navigate("Register")}
+            textstyle={{ color: '#fff' }}
           />
           {/* <LongButton
             style={styles.MarginMed}
