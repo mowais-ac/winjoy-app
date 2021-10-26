@@ -71,7 +71,7 @@ const EShoppingSuccess = ({ route, navigation }) => {
         </Label>
         {[
           ["Coin Type", item.coin_type],
-          ["Subtotal", +item.products.price + " coins"],
+          ["Subtotal", +item.products.price.toLoacleString() + " coins"],
           ["Discount Code", item.products.discount_code || "none"],
         ].map((field, index) => (
           <GetField title={field[0]} text={field[1]} key={index} />
