@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   View,
   StyleSheet,
@@ -7,7 +7,11 @@ import {
   Image,
   ActivityIndicator,
   RefreshControl,
-  Text
+  Text,
+  Modal,
+  Pressable,
+  TouchableOpacity,
+  TextInput
 } from "react-native";
 
 import Background from "../../Components/Background";
@@ -22,13 +26,16 @@ import EncryptedStorage from "react-native-encrypted-storage";
 import Config from "react-native-config";
 import NotFound from "../../Components/NotFound";
 import { wait } from "../../Constants/Functions";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import LinearGradient from "react-native-linear-gradient";
 import { heightConverter, widthConverter, widthPercentageToDP } from "../../Components/Helpers/Responsive";
-
+import { RFValue } from "react-native-responsive-fontsize";
+import LongButton from "../../Components/LongButton";
+import PaymentModals from "../../Components/PaymentModals";
 const { width, height } = Dimensions.get("window");
 
 const index = ({ navigation }) => {
+  const ModalState = useRef();
+
   const [Data, setData] = useState(null);
   const [refreshing, setRefreshing] = useState(false);
 
@@ -157,8 +164,11 @@ const index = ({ navigation }) => {
               <Text style={styles.text}>Gold Coin</Text>
 
             </View> */}
-            <LinearGradient
-              start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
+            <PaymentModals ModalRef={ModalState} details />
+            <TouchableOpacity
+              onPress={() => {
+                ModalState.current(true);
+              }}
               style={{
                 height: heightConverter(55),
                 width: width - 25,
@@ -169,17 +179,104 @@ const index = ({ navigation }) => {
                 justifyContent: 'center',
                 alignItems: 'center'
               }}
-              colors={["#420E92", "#E7003F"]}
-
             >
-              <Label primary font={16} bold style={{ color: "#ffffff" }}>
-               Checkout
-              </Label>
-            </LinearGradient>
+              <LinearGradient
+                start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
+                style={{
+                  height: heightConverter(55),
+                  width: width - 25,
+                  position: 'absolute',
+                  bottom: 0,
+                  borderBottomLeftRadius: 10,
+                  borderBottomRightRadius: 10,
+                  justifyContent: 'center',
+                  alignItems: 'center'
+                }}
+                colors={["#420E92", "#E7003F"]}
+
+              >
+                <Label primary font={16} bold style={{ color: "#ffffff" }}>
+                  Checkout
+                </Label>
+              </LinearGradient>
+            </TouchableOpacity>
 
           </View>
         </>
       )}
+      {/* <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert("Modal has been closed.");
+          setModalVisible(!modalVisible);
+        }}
+      >
+
+       
+          <LinearGradient colors={["#420E92", "#E7003F"]} style={styles.modalView}>
+            <Label primary font={18} bold style={{ color: "#ffffff",marginBottom:20 }}>
+              Payment Details
+            </Label>
+            <View style={styles.Main2}>
+              <TextInput
+                placeholder="Name on Card"
+                placeholderTextColor={Colors.WHITE}
+                keyboardType={"numeric"}
+                // onBlur={onBlur}
+
+                // onChangeText={HandleChange}
+                style={styles.MarginLarge}
+              />
+            </View>
+            <View style={styles.Main2}>
+              <TextInput
+                placeholder="Card Number"
+                placeholderTextColor={Colors.WHITE}
+                keyboardType={"numeric"}
+                // onBlur={onBlur}
+
+                // onChangeText={HandleChange}
+                style={styles.MarginLarge}
+              />
+            </View>
+            <View style={styles.Main2}>
+              <TextInput
+                placeholder="Valid Through"
+                placeholderTextColor={Colors.WHITE}
+                keyboardType={"numeric"}
+                // onBlur={onBlur}
+
+                // onChangeText={HandleChange}
+                style={styles.MarginLarge}
+              />
+
+            </View>
+            <View style={styles.Main2}>
+              <TextInput
+                placeholder="CVV"
+                placeholderTextColor={Colors.WHITE}
+                keyboardType={"numeric"}
+                // onBlur={onBlur}
+
+                // onChangeText={HandleChange}
+                style={styles.MarginLarge}
+              />
+
+            </View>
+            <View style={{ marginTop: height * 0.052 }}>
+              <LongButton
+                text="Pay"
+                onPress={() =>setModalVisible(!modalVisible)}
+                textstyle={{ color: '#fff'}}
+                style={{width: width * 0.85,}}
+              />
+            </View>
+           
+          </LinearGradient>
+       
+      </Modal> */}
     </SafeArea>
   );
 };
@@ -246,8 +343,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     elevation: 3,
     position: 'absolute',
-    paddingTop:13,
-    
+    paddingTop: 13,
+
   },
   metaText: {
     color: '#000000',
@@ -256,6 +353,31 @@ const styles = StyleSheet.create({
   text: {
     color: '#e7003f',
     fontFamily: "Axiforma-Regular",
-  }
+  },
+  ///modal styles
+
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2
+  },
+  buttonOpen: {
+    backgroundColor: "#F194FF",
+  },
+  buttonClose: {
+    backgroundColor: "#2196F3",
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center"
+  },
+  MarginLarge: {
+    paddingLeft: width * 0.09,
+    fontSize: RFValue(12),
+    color: Colors.WHITE
+  },
+ 
+
 });
 export default index;

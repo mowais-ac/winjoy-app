@@ -153,6 +153,13 @@ const SimpeStackScreen = () => (
         component={WishlistDetails}
         options={{ headerShown: false}}
     />
+     <SimpleScreenStack.Screen
+        key={12}
+        name="Cart"
+        component={Cart}
+        options={{ headerShown: false}}
+    />
+    
   </SimpleScreenStack.Navigator>
 );
 const MenuStack = createStackNavigator();

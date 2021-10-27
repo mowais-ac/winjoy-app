@@ -33,10 +33,10 @@ const LongButton = React.forwardRef((props, ref) => {
     MutedBtn,
   } = props;
 
-  const [act, setact] = useState({ act: Activity, col: "PRIMARY_LABEL" });
+  const [act, setact] = useState({ act: Activity, col: "LABEL" });
 
   useImperativeHandle(ref, () => ({
-    SetActivity(ibool, col = "PRIMARY_LABEL") {
+    SetActivity(ibool, col = "LABEL") {
       setact({ act: ibool, col: col });
     },
     GetActivity() {

@@ -4,6 +4,7 @@ import {
     StyleSheet,
     Dimensions,
     Text,
+    TouchableOpacity
 } from "react-native";
 import Label from "../../Components/Label";
 const { width, height } = Dimensions.get("window");
@@ -17,8 +18,8 @@ import {
 import Header from "../../Components/Header";
 
 const ProductDetail = ({ props, navigation, route }) => {
-    const item  = route.params;
-    let progress=(item.updated_stocks? (item?.updated_stocks/item.stock)*100 : 0);
+    const item = route.params;
+    let progress = (item.updated_stocks ? (item?.updated_stocks / item.stock) * 100 : 0);
     return (
 
 
@@ -43,7 +44,7 @@ const ProductDetail = ({ props, navigation, route }) => {
                             colors={["#ff9000", "#e70100"]}
                             style={[
                                 styles.LinerGradientProgrees,
-                                { width: `${progress>99?99:progress}%` },
+                                { width: `${progress > 99 ? 99 : progress}%` },
                             ]}
                         />
                         <View style={styles.GreybarWidth} />
@@ -54,7 +55,7 @@ const ProductDetail = ({ props, navigation, route }) => {
 
             </LinearGradient>
             <View style={styles.upperView}>
-                <Card item={item}/>
+                <Card item={item} />
             </View>
             <View style={styles.card}>
 
@@ -76,7 +77,7 @@ const ProductDetail = ({ props, navigation, route }) => {
                     Products Details
                 </Label>
                 <Label notAlign font={11} dark style={{ color: "#000000", lineHeight: 20 }}>
-                  {item.description}
+                    {item.description}
                 </Label>
             </View>
             <View style={styles.card2}>
@@ -101,25 +102,43 @@ const ProductDetail = ({ props, navigation, route }) => {
                     <Text style={styles.text}>Gold Coin</Text>
 
                 </View>
+                <TouchableOpacity
+                 onPress={()=>{
+                    navigation.navigate("SimpeStackScreen", {
+                        screen: "Cart",
+                      })
+                 }}
+                 style={{
+                    height: heightConverter(55),
+                    width: width - 25,
+                    position: 'absolute',
+                    bottom: 0,
+                    borderBottomLeftRadius: 10,
+                    borderBottomRightRadius: 10,
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                }}
+                 > 
                 <LinearGradient
                     start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
                     style={{
                         height: heightConverter(55),
                         width: width - 25,
-                        position:'absolute',
-                        bottom:0,
-                        borderBottomLeftRadius:10,
-                        borderBottomRightRadius:10,
-                        justifyContent:'center',
-                        alignItems:'center'
+                        position: 'absolute',
+                        bottom: 0,
+                        borderBottomLeftRadius: 10,
+                        borderBottomRightRadius: 10,
+                        justifyContent: 'center',
+                        alignItems: 'center'
                     }}
                     colors={["#420E92", "#E7003F"]}
 
                 >
-                    <Label  primary font={16} bold style={{ color: "#ffffff" }}>
-                   Add to Cart
-                </Label>
+                    <Label primary font={16} bold style={{ color: "#ffffff" }}>
+                        Add to Cart
+                    </Label>
                 </LinearGradient>
+                </TouchableOpacity>
 
             </View>
         </View>
@@ -192,7 +211,7 @@ const styles = StyleSheet.create({
         padding: 10,
         bottom: 0,
         left: 2,
-       alignItems: 'center',
+        alignItems: 'center',
         elevation: 3,
         position: 'absolute',
         marginBottom: 20
