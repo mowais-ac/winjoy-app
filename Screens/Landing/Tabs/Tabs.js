@@ -36,7 +36,7 @@ function Tabs() {
                 style={{
                   
                   fontFamily: 'Europa-Bold',
-                  fontSize: RFValue(16, 812),
+                  fontSize: 14,
                   fontWeight: 'bold',
                   fontStyle: 'normal',
                   letterSpacing: 0,
@@ -56,7 +56,7 @@ function Tabs() {
         //  showIcon: true,
           labelStyle: {
             fontFamily: 'Europa-Bold',
-            fontSize: RFValue(18, 812),
+            fontSize: 14,
             fontWeight: 'bold',
             fontStyle: 'normal',
             letterSpacing: 0,
