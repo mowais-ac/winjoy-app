@@ -103,16 +103,15 @@ const index = ({ props, navigation }) => {
                   notAlign
                   font={14}
                   bold
-                  style={{ color: "#FFFFFF", marginTop: 8 }}
+                  style={{ color: "#FFFFFF", marginTop: 6 }}
                 >
-                  {userData?.designation}
+                  {userData?.designation} {"\n"}
                   <Label
                     primary
                     font={14}
-                    notAlign
                     style={{ color: "#e2acc7" }}
                   >
-                    {userData?.company_name ? " at " : null}
+                    {userData?.company_name ? " at \n" : null}
                   </Label>
                   {userData?.company_name}
                 </Label>
@@ -291,7 +290,7 @@ const styles = StyleSheet.create({
   },
   bView: {
     backgroundColor: "rgba(0,0,0,0.4)",
-    height: heightPercentageToDP("33%"),
+    height: heightPercentageToDP("34.5%"),
   },
   flatListHeader: {
     marginTop: heightConverter(20),
