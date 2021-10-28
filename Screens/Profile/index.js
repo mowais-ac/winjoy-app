@@ -34,6 +34,8 @@ import Section from "../../Components/Section";
 import Colors from "../../Constants/Colors";
 import LongButton from "../../Components/LongButton";
 import { useFocusEffect } from "@react-navigation/native";
+import { wait } from "../../Constants/Functions";
+
 const index = ({ props, navigation,route }) => {
   const [userData, setUserData] = useState([]);
   const [userInfo, setUserInfo] = useState();
@@ -42,6 +44,7 @@ const index = ({ props, navigation,route }) => {
   const [Data, setData] = useState(null);
   const routeSelected =route?.params?.selected;
   const [activity, setActivity] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   useEffect(async () => {
     const userInfo = JSON.parse(await EncryptedStorage.getItem("User"));
     if (JSON.stringify(Data) !== userInfo) {
@@ -51,6 +54,14 @@ const index = ({ props, navigation,route }) => {
     GetData();
     MyFriends();
   }, []);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    setFriendData([]);
+    setUserData([]);
+    wait(500).then(() => setRefreshing(false));
+  }, []);
+
   useFocusEffect(
     React.useCallback(() => {    
     if(routeSelected){ 
@@ -182,6 +193,9 @@ const index = ({ props, navigation,route }) => {
               contentContainerStyle={{
                 paddingBottom: height * 0.48,
               }}
+              refreshControl={
+                <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
+              }
               ListEmptyComponent={
                 activity?(
                   <ActivityIndicator size="large" color="#fff" />
@@ -266,6 +280,9 @@ const index = ({ props, navigation,route }) => {
               contentContainerStyle={{
                 paddingBottom: height * 0.48,
               }}
+              refreshControl={
+                <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
+              }
               ListEmptyComponent={
                 activity?(
                   <ActivityIndicator size="large" color="#fff" />

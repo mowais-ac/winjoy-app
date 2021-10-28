@@ -40,6 +40,7 @@ const index = ({ props, navigation }) => {
   const UserInfo = async () => {
     const userInfo = JSON.parse(await EncryptedStorage.getItem("User"));
     setUserData(userInfo);
+    console.log(userInfo);
   };
   const HandleLogout = async () => {
     await EncryptedStorage.clear();
@@ -147,7 +148,7 @@ const index = ({ props, navigation }) => {
               }}
             />
             <View style={styles.footer}>
-              <Text style={styles.text}>2,034 Friends</Text>
+              <Text style={styles.text}>{userData?.total_friends} Friends</Text>
               <TouchableOpacity
                 onPress={() =>
                   navigation.navigate("TabsStack", {
