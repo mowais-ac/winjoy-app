@@ -64,7 +64,6 @@ const index = ({ props, navigation }) => {
       .then((response) => {
         let res = response.data;
         setFriendData(res.data[0]);
-        console.log(res.data[0]);
       });
   };
  
@@ -148,7 +147,7 @@ const index = ({ props, navigation }) => {
               }}
             />
             <View style={styles.footer}>
-              <Text style={styles.text}>{userData?.total_friends} Friends</Text>
+              <Text style={styles.text}>{friendData.length} {friendData.length < 2 ? "Friend" : "Freinds"}</Text>
               <TouchableOpacity
                 onPress={() =>
                   navigation.navigate("TabsStack", {
