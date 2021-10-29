@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
   ORButton: {
     position: "absolute",
     marginTop: height * 0.68,
-  },
+  }, 
 });
 
 export default Login;
