@@ -151,7 +151,7 @@ const index = ({ navigation }) => {
               </Label>
             </View>
             <TouchableOpacity onPress={() => RemoveItem(item.id)}>
-              <Entypo name="cross" size={25} color={"#470e90"} style={{ left: 5 }} />
+              <Entypo name="cross" size={25} color={Colors.DARK_MUTED} style={{ left: 5 }} />
             </TouchableOpacity>
           </View>
         </Section>
