@@ -31,6 +31,9 @@ import { heightConverter, widthConverter, widthPercentageToDP } from "../../Comp
 import { RFValue } from "react-native-responsive-fontsize";
 import LongButton from "../../Components/LongButton";
 import PaymentModals from "../../Components/PaymentModals";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Entypo from 'react-native-vector-icons/Entypo';
+
 const { width, height } = Dimensions.get("window");
 
 const index = ({ navigation }) => {
@@ -38,6 +41,7 @@ const index = ({ navigation }) => {
 
   const [Data, setData] = useState(null);
   const [refreshing, setRefreshing] = useState(false);
+  const [total, setTotal] = useState(0);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -45,7 +49,18 @@ const index = ({ navigation }) => {
     wait(500).then(() => setRefreshing(false));
   }, []);
 
-  useEffect(() => {
+  useEffect(async () => {
+    GetData()
+  });
+  const GetData = async () => {
+    let dat = await AsyncStorage.getItem('ids');
+    //  let data=[1,2,3,4,5]
+    let ids = "";
+    JSON.parse(dat).map(element => {
+      ids = ids + element + ",";
+    });
+    console.log("ids", ids);
+    console.log("dat", dat);
     let isActive = true;
     const check = async () => {
       if (Data === null) {
@@ -58,27 +73,57 @@ const index = ({ navigation }) => {
             Authorization: `Bearer ${Token}`,
           },
         };
-        await fetch(`${Config.API_URL}/wishlist/`, requestOptions)
+        await fetch(`${Config.API_URL}/addtocart/products/collection?id=${ids}`, requestOptions)
           .then(async (response) => response.json())
           .then((res) => {
+            let total = 0;
+            console.log("res", res.data[0]);
+            res.data[0].map(element => {
+              total = total + parseFloat(element.price);
+            });
+            setTotal(total)
+            console.log("total", total);
             if (!isActive) return;
-            setData(res);
+            setData(res.data[0]);
           });
       }
     };
     check();
 
     return () => (isActive = false);
-  });
+  }
+  const RemoveItem = async (id) => {
+    let dat = await AsyncStorage.getItem('ids');
+    //  let data=[1,2,3,4,5]
+    let array = JSON.parse(dat);
+    console.log("array", array);
+
+    const index = array.indexOf(id);
+    if (index > -1) {
+      array.splice(index, 1);
+    }
+
+    AsyncStorage.setItem('ids', JSON.stringify(array))
+    const filteredData = Data.filter(item => item.id !== id);
+    setData(filteredData)
+    let total = 0;
+    filteredData.map(element => {
+      total = total + parseFloat(element.price);
+    });
+    setTotal(total)
+  }
   const renderItem = ({ item }) => {
-    const ImgUrl = `${Config.PRODUCT_IMG}/${item.product.id}/${JSON.parse(item.product.image)[0]
+    const ImgUrl = `${Config.PRODUCT_IMG}/${item.id}/${JSON.parse(item.image)
       }`;
     return (
       // <TouchableOpacity
       //   onPress={() => navigation.navigate("WishlistDetails", { item })}
       // >
       <View>
-        <Section style={styles.Section}>
+        <Section style={styles.Section}
+          disabled={true}
+        //onPress={() => navigation.navigate("ProductDetails", { item })}
+        >
           <View style={styles.SectionView}>
             <View style={styles.ImageView}>
               <Image
@@ -88,12 +133,12 @@ const index = ({ navigation }) => {
                 style={styles.Image}
               />
             </View>
-            <View style={styles.TextView}>
-              <Label notAlign dark bold2 headingtype="h5">
-                {item.product.title}
+            <View style={[styles.TextView, { width: width * 0.48 }]}>
+              <Label notAlign dark bold2 headingtype="h5" style={{ width: width * 0.48 }}>
+                {item.title}
               </Label>
               <Label notAlign darkmuted bold headingtype="h6">
-                {item.product.description}
+                {item.description}
               </Label>
               <Label
                 notAlign
@@ -102,9 +147,12 @@ const index = ({ navigation }) => {
                 headingtype="h4"
                 style={styles.LessMargin}
               >
-                Total: {+(item.product.price).toLocaleString()}
+                Total: {+(item.price).toLocaleString()}
               </Label>
             </View>
+            <TouchableOpacity onPress={() => RemoveItem(item.id)}>
+              <Entypo name="cross" size={25} color={"#470e90"} style={{ left: 5 }} />
+            </TouchableOpacity>
           </View>
         </Section>
       </View>
@@ -151,7 +199,7 @@ const index = ({ navigation }) => {
               width: widthPercentageToDP("83")
             }}>
               <Text style={styles.metaText}>Total</Text>
-              <Text style={[styles.text, { fontWeight: 'bold' }]}>3600</Text>
+              <Text style={[styles.text, { fontWeight: 'bold' }]}>{total.toLocaleString()}</Text>
 
             </View>
             {/* <View style={{
@@ -164,7 +212,7 @@ const index = ({ navigation }) => {
               <Text style={styles.text}>Gold Coin</Text>
 
             </View> */}
-            <PaymentModals ModalRef={ModalState} details />
+            <PaymentModals ModalRef={ModalState} details total={total} />
             <TouchableOpacity
               onPress={() => {
                 ModalState.current(true);
@@ -204,79 +252,7 @@ const index = ({ navigation }) => {
           </View>
         </>
       )}
-      {/* <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          Alert.alert("Modal has been closed.");
-          setModalVisible(!modalVisible);
-        }}
-      >
 
-       
-          <LinearGradient colors={["#420E92", "#E7003F"]} style={styles.modalView}>
-            <Label primary font={18} bold style={{ color: "#ffffff",marginBottom:20 }}>
-              Payment Details
-            </Label>
-            <View style={styles.Main2}>
-              <TextInput
-                placeholder="Name on Card"
-                placeholderTextColor={Colors.WHITE}
-                keyboardType={"numeric"}
-                // onBlur={onBlur}
-
-                // onChangeText={HandleChange}
-                style={styles.MarginLarge}
-              />
-            </View>
-            <View style={styles.Main2}>
-              <TextInput
-                placeholder="Card Number"
-                placeholderTextColor={Colors.WHITE}
-                keyboardType={"numeric"}
-                // onBlur={onBlur}
-
-                // onChangeText={HandleChange}
-                style={styles.MarginLarge}
-              />
-            </View>
-            <View style={styles.Main2}>
-              <TextInput
-                placeholder="Valid Through"
-                placeholderTextColor={Colors.WHITE}
-                keyboardType={"numeric"}
-                // onBlur={onBlur}
-
-                // onChangeText={HandleChange}
-                style={styles.MarginLarge}
-              />
-
-            </View>
-            <View style={styles.Main2}>
-              <TextInput
-                placeholder="CVV"
-                placeholderTextColor={Colors.WHITE}
-                keyboardType={"numeric"}
-                // onBlur={onBlur}
-
-                // onChangeText={HandleChange}
-                style={styles.MarginLarge}
-              />
-
-            </View>
-            <View style={{ marginTop: height * 0.052 }}>
-              <LongButton
-                text="Pay"
-                onPress={() =>setModalVisible(!modalVisible)}
-                textstyle={{ color: '#fff'}}
-                style={{width: width * 0.85,}}
-              />
-            </View>
-           
-          </LinearGradient>
-       
-      </Modal> */}
     </SafeArea>
   );
 };
@@ -377,7 +353,7 @@ const styles = StyleSheet.create({
     fontSize: RFValue(12),
     color: Colors.WHITE
   },
- 
+
 
 });
 export default index;

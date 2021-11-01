@@ -20,36 +20,42 @@ import { UpdateBell } from "../redux/actions/Bell-action";
 import BackIcon from 'react-native-vector-icons/Ionicons';
 import { heightConverter, widthConverter } from "./Helpers/Responsive";
 const { width, height } = Dimensions.get("window");
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const Header = (props) => {
+  
   const navigation = useNavigation();
 
   // const check = async () => {
   //
   // check();
 
+  // const UpdateValueOnce = async () => {
+  //   const Token = await EncryptedStorage.getItem("Token");
+  //   const requestOptions = {
+  //     method: "GET",
+  //     headers: {
+  //       "Content-Type": "multipart/form-data",
+  //       Accept: "application/json",
+  //       Authorization: `Bearer ${Token}`,
+  //     },
+  //   };
+  //   await fetch(`${Config.API_URL}/unread/notifications/list`, requestOptions)
+  //     .then(async (response) => response.json())
+  //     .then(async (res) => {
+  //       if (
+  //         res.status &&
+  //         res.status.toLowerCase() === "success" &&
+  //         res.data[0].length !== props.Bell.count
+  //       ) {
+  //         props.UpdateBell(UpdateBell(res.data[0].length));
+  //       }
+  //     })
+  //     .catch((e) => console.log(e));
+  // };
   const UpdateValueOnce = async () => {
-    const Token = await EncryptedStorage.getItem("Token");
-    const requestOptions = {
-      method: "GET",
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Accept: "application/json",
-        Authorization: `Bearer ${Token}`,
-      },
-    };
-    await fetch(`${Config.API_URL}/unread/notifications/list`, requestOptions)
-      .then(async (response) => response.json())
-      .then(async (res) => {
-        if (
-          res.status &&
-          res.status.toLowerCase() === "success" &&
-          res.data[0].length !== props.Bell.count
-        ) {
-          props.UpdateBell(UpdateBell(res.data[0].length));
-        }
-      })
-      .catch((e) => console.log(e));
+    let dat = await AsyncStorage.getItem('ids');
+    let count =JSON.parse(dat);
+    props.UpdateBell(UpdateBell(count.length));
   };
 
   useEffect(() => {

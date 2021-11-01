@@ -12,6 +12,7 @@ const { width, height } = Dimensions.get("window");
 const Bell = (props) => {
   const navigation = useNavigation();
   const { Bell } = props;
+  console.log("bell",Bell);
   return (
     <>
       <TouchableOpacity
@@ -21,14 +22,14 @@ const Bell = (props) => {
         }
       >
         <Image source={Images.Bell} style={styles.Bell} />
-        {/* {+Bell.count >= 1 && (
+        {+Bell.count >= 1 && (
           <>
             <Image source={Images.BellPop} style={styles.Pop} />
             <Label notAlign bold style={styles.Label} font={10}>
               {Bell.count > 9 ? 9 : Bell.count}
             </Label>
           </>
-        )} */}
+        )}
       </TouchableOpacity>
     </>
   );

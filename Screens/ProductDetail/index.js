@@ -16,10 +16,39 @@ import {
     heightConverter,
 } from "../../Components/Helpers/Responsive";
 import Header from "../../Components/Header";
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const ProductDetail = ({ props, navigation, route }) => {
     const item = route.params;
     let progress = (item.updated_stocks ? (item?.updated_stocks / item.stock) * 100 : 0);
+    console.log("item", item.id);
+    function uniqBy(a, key) {
+        var seen = {};
+        return a.filter(function (item) {
+            var k = key(item);
+            return seen.hasOwnProperty(k) ? false : (seen[k] = true);
+        })
+    }
+    const SaveIdInfo = async () => {
+        // await EncryptedStorage.setItem("ids","");
+        AsyncStorage 
+            .getItem('ids')
+            .then(favs => {
+                favs = favs == null ? [] : JSON.parse(favs)
+             
+
+                favs.push(item.id)
+                let  uniqueArray = favs.filter(function(item, pos) {
+                    return favs.indexOf(item) == pos;
+                });
+                console.log("uniqueArray",uniqueArray);
+                return AsyncStorage.setItem('ids', JSON.stringify(uniqueArray))
+            })
+
+            let dat=await AsyncStorage.getItem('ids');
+            console.log("dat",dat);
+
+    }
+    
     return (
 
 
@@ -103,24 +132,12 @@ const ProductDetail = ({ props, navigation, route }) => {
 
                 </View>
                 <TouchableOpacity
-                 onPress={()=>{
-                    navigation.navigate("SimpeStackScreen", {
-                        screen: "Cart",
-                      })
-                 }}
-                 style={{
-                    height: heightConverter(55),
-                    width: width - 25,
-                    position: 'absolute',
-                    bottom: 0,
-                    borderBottomLeftRadius: 10,
-                    borderBottomRightRadius: 10,
-                    justifyContent: 'center',
-                    alignItems: 'center'
-                }}
-                 > 
-                <LinearGradient
-                    start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
+                    onPress={() => {
+                        // navigation.navigate("SimpeStackScreen", {
+                        //     screen: "Cart",
+                        //   })]
+                        SaveIdInfo()
+                    }}
                     style={{
                         height: heightConverter(55),
                         width: width - 25,
@@ -131,13 +148,26 @@ const ProductDetail = ({ props, navigation, route }) => {
                         justifyContent: 'center',
                         alignItems: 'center'
                     }}
-                    colors={["#420E92", "#E7003F"]}
-
                 >
-                    <Label primary font={16} bold style={{ color: "#ffffff" }}>
-                        Add to Cart
-                    </Label>
-                </LinearGradient>
+                    <LinearGradient
+                        start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
+                        style={{
+                            height: heightConverter(55),
+                            width: width - 25,
+                            position: 'absolute',
+                            bottom: 0,
+                            borderBottomLeftRadius: 10,
+                            borderBottomRightRadius: 10,
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }}
+                        colors={["#420E92", "#E7003F"]}
+
+                    >
+                        <Label primary font={16} bold style={{ color: "#ffffff" }}>
+                            Add to Cart
+                        </Label>
+                    </LinearGradient>
                 </TouchableOpacity>
 
             </View>

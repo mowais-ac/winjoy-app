@@ -25,6 +25,7 @@ import { heightConverter } from "./Helpers/Responsive";
 const { width, height } = Dimensions.get("window");
 
 const PaymentModals = (props) => {
+  console.log("props",props);
   const [ModelState, setModelState] = useState({
     state: false,
     details: null,
@@ -202,7 +203,7 @@ const PaymentModals = (props) => {
 
               >
                 <Label primary font={16} bold style={{ color: "#ffffff" }}>
-                 Pay AED 450
+                 Pay AED {props.total.toLocaleString()}
                 </Label>
               </LinearGradient>
             </TouchableOpacity>

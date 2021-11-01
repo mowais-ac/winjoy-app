@@ -9,7 +9,7 @@ const Section = (props) => {
     !props.shadowless && styles.shadow,
     props.style,
   ];
-  return <TouchableOpacity style={SectionStyle} onPress={props.onPress}>{props.children}</TouchableOpacity>;
+  return <TouchableOpacity style={SectionStyle} onPress={props.onPress} disabled={props.disabled}>{props.children}</TouchableOpacity>;
 };
 
 const styles = StyleSheet.create({
