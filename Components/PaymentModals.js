@@ -7,6 +7,7 @@ import {
   Image,
   TouchableWithoutFeedback,
   Alert,
+  TouchableOpacity,
   TextInput
 } from "react-native";
 import Label from "./Label";
@@ -19,6 +20,8 @@ import Config from "react-native-config";
 import { GetDate } from "../Constants/Functions";
 import ProfilePicture from "./ProfilePicture";
 import { RFValue } from "react-native-responsive-fontsize";
+import LinearGradient from "react-native-linear-gradient";
+import { heightConverter } from "./Helpers/Responsive";
 const { width, height } = Dimensions.get("window");
 
 const PaymentModals = (props) => {
@@ -90,69 +93,119 @@ const PaymentModals = (props) => {
             <Label notAlign darkmuted style={styles.titleTxt}>
               Card Number
             </Label>
-            <View style={styles.Main2}>
+            <View style={[styles.Main2, { flexDirection: 'row', }]}>
               <TextInput
-                placeholder="Card Number"
+                placeholder="••••"
                 placeholderTextColor={Colors.DARK_LABEL}
                 keyboardType={"numeric"}
+                maxLength={4}
                 // onBlur={onBlur}
 
                 // onChangeText={HandleChange}
-                style={styles.MarginLarge}
+                style={styles.MarginLargeNumber}
               />
-            </View>
-          </View>
-          <View style={styles.mView}>
-            <Label notAlign darkmuted style={styles.titleTxt}>
-              Valid Through
-            </Label>
-            <View style={styles.Main2}>
               <TextInput
-                placeholder="Valid Through"
+                placeholder="••••"
                 placeholderTextColor={Colors.DARK_LABEL}
                 keyboardType={"numeric"}
+                maxLength={4}
                 // onBlur={onBlur}
 
                 // onChangeText={HandleChange}
-                style={styles.MarginLarge}
+                style={styles.MarginLargeNumber}
               />
-
-            </View>
-          </View>
-          <View style={styles.mView}>
-            <Label notAlign darkmuted style={styles.titleTxt}>
-              CVV
-            </Label>
-            <View style={styles.Main2}>
               <TextInput
-                placeholder="CVV"
+                placeholder="••••"
                 placeholderTextColor={Colors.DARK_LABEL}
                 keyboardType={"numeric"}
+                maxLength={4}
                 // onBlur={onBlur}
 
                 // onChangeText={HandleChange}
-                style={styles.MarginLarge}
+                style={styles.MarginLargeNumber}
               />
+              <TextInput
+                placeholder="••••"
+                placeholderTextColor={Colors.DARK_LABEL}
+                keyboardType={"numeric"}
+                maxLength={4}
+                // onBlur={onBlur}
 
+                // onChangeText={HandleChange}
+                style={styles.MarginLargeNumber}
+              />
             </View>
           </View>
-          <LongButton
-            text="Pay"
-            style={[styles.ProfileBtnMargin, styles.ProfileBtn]}
-            shadowless
-            Activity={false}
-          // onPress={() => {
-          //   navigation.reset({
-          //     index: 0,
-          //     routes: [{ name: "TabsStack" }],
-          //   });
-          //   setModelState({
-          //     ...ModelState,
-          //     state: !ModelState.state,
-          //   });
-          //   if (props.onClose) props.onClose();
-          // }}
-          />
+          <View style={{
+            flexDirection: 'row', width: width * 0.9, justifyContent: "space-between",
+
+            alignSelf: "center",
+          }}>
+            <View style={[styles.mView, { width: width * 0.4 }]}>
+              <Label notAlign darkmuted style={styles.titleTxt}>
+              Expiry date
+              </Label>
+              <View style={styles.Main1}>
+                <TextInput
+                  placeholder="12/21 "
+                  placeholderTextColor={Colors.DARK_LABEL}
+                  keyboardType={"numeric"}
+                  // onBlur={onBlur}
+
+                  // onChangeText={HandleChange}
+                  style={styles.MarginLarge}
+                />
+
+              </View>
+            </View>
+            <View style={[styles.mView, { width: width * 0.4  }]}>
+              <Label notAlign darkmuted style={styles.titleTxt}>
+                CVV
+              </Label>
+              <View style={styles.Main1}>
+                <TextInput
+                  placeholder="CVV"
+                  placeholderTextColor={Colors.DARK_LABEL}
+                  keyboardType={"numeric"}
+                  // onBlur={onBlur}
+
+                  // onChangeText={HandleChange}
+                  style={styles.MarginLarge}
+                />
+
+              </View>
+            </View>
+          </View>
+     
+          <TouchableOpacity
+              //onPress={() => {}}
+              style={{
+                height: heightConverter(20),
+                width: width * 0.9,
+                borderRadius:10,
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginTop: height * 0.06,
+                marginLeft:width * 0.04,
+              }}
+            >
+              <LinearGradient
+                start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
+                style={{
+                  height: heightConverter(55),
+                  width: width * 0.9,
+                  borderRadius:20,
+                  justifyContent: 'center',
+                  alignItems: 'center'
+                }}
+                colors={["#420E92", "#E7003F"]}
+
+              >
+                <Label primary font={16} bold style={{ color: "#ffffff" }}>
+                 Pay AED 450
+                </Label>
+              </LinearGradient>
+            </TouchableOpacity>
           <LabelButton
             primary
             headingtype="h3"
@@ -187,8 +240,8 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.BG_MUTED,
   },
   ModalView: {
-    height: height * 0.65,
-    marginTop: height * 0.25,
+    height: height * 0.5,
+    marginTop: height * 0.35,
     borderTopLeftRadius: 37,
     borderTopRightRadius: 37,
     backgroundColor: Colors.BENEFICIARY,
@@ -205,7 +258,7 @@ const styles = StyleSheet.create({
   },
 
   ModalBody: {
-    marginTop: height * 0.01,
+    marginTop: height * 0.02,
     backgroundColor: Colors.WHITE,
     height: height * 0.65,
   },
@@ -223,15 +276,8 @@ const styles = StyleSheet.create({
     width: width * 0.75,
     lineHeight: height * 0.03,
   },
-  ProfileBtnMargin: {
-    marginTop: height * 0.03,
-  },
-  ProfileBtn: {
-    borderWidth: 2,
-    borderColor: Colors.PRIMARY_LABEL,
-    backgroundColor: Colors.INVISIBLE,
-    width: width * 0.9,
-  },
+ 
+
   CloseBtn: {
     marginTop: height * 0.02,
   },
@@ -286,6 +332,16 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   ///new added
+  Main1: {
+    justifyContent: "center",
+    backgroundColor: Colors.WHITE,
+    width: width * 0.4,
+    borderRadius: 55,
+    alignSelf: "center",
+    marginTop: height * 0.011,
+    borderWidth: 1,
+    borderColor: Colors.DARK_LABEL
+  },
   Main2: {
     justifyContent: "center",
     backgroundColor: Colors.WHITE,
@@ -293,8 +349,8 @@ const styles = StyleSheet.create({
     borderRadius: 55,
     alignSelf: "center",
     marginTop: height * 0.011,
-    borderWidth:1,
-    borderColor:Colors.DARK_LABEL
+    borderWidth: 1,
+    borderColor: Colors.DARK_LABEL
   },
   mView: {
     justifyContent: "center",
@@ -305,7 +361,13 @@ const styles = StyleSheet.create({
   MarginLarge: {
     paddingLeft: width * 0.06,
     fontSize: RFValue(12),
-    color: Colors.WHITE
+    color: Colors.PRIMARY_LABEL
+  },
+  MarginLargeNumber: {
+    paddingLeft: width * 0.02,
+    fontSize: RFValue(12),
+    color: Colors.PRIMARY_LABEL,
+    letterSpacing: width * 0.03, width: width * 0.2,
   },
   titleTxt: {
     marginTop: height * 0.01

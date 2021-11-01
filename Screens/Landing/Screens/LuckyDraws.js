@@ -150,6 +150,7 @@ const LuckyDraws = (props) => {
         let arr = [];
         if (res.status && res.status.toLowerCase() === "success") {
           res.data.map((item) => {
+            console.log("item",item);
             item.map((v, i) => {
               arr.push(v);
             });
