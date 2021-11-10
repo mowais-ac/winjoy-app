@@ -88,7 +88,7 @@ const Congrats = ({ navigation, route }) => {
                         <Text style={[styles.yellowText, { fontWeight: 'normal' }]}>
                             AED{" "}
                         </Text>
-                        {+data[0].price.toLoacleString()}
+                        {data[0].price}
                     </Text>
                     <RewardzButton
                         text={"Go to LeaderBoard"}

@@ -25,14 +25,14 @@ import axios from "axios";
 import ProfilePicture from "../../Components/ProfilePicture";
 
 let data2 = [
-  "Dashboard",
+  "Wallet",
   "Leaderboard",
   "Played games",
   "Friends",
-  "View profile",
   "My orders",
-  "My address",
+  "View profile",
   "Logout",
+  "Settings",
 ];
 const index = ({ props, navigation }) => {
   const [userData, setUserData] = useState([]);
@@ -202,7 +202,7 @@ const index = ({ props, navigation }) => {
                           },
                         });
                       }
-                      if (item === "Dashboard") {
+                      if (item === "Wallet") {
                         navigation.navigate("SimpeStackScreen", {
                           screen: "DashBoard",
                         });
@@ -255,6 +255,7 @@ const index = ({ props, navigation }) => {
               );
             }}
           />
+          
         </View>
       </LinearGradient>
     </ScrollView>

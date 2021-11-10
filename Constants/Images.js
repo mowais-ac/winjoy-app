@@ -44,6 +44,8 @@ const Product = require("../assets/imgs/Product.png");
 //const Activity = require("../assets/imgs/Activity.png");
 const WishList = require("../assets/imgs/WishList.png");
 const Profile = require("../assets/imgs/Profile.png");
+const Leaderboard = require("../assets/imgs/Leaderboard.png");
+
 
 const PlusIcon = require("../assets/imgs/PlusIcon.png");
 
@@ -101,10 +103,10 @@ export default {
   Home,
   // Transaction,
   Product,
- // Activity,
- WishList,
+  // Activity,
+  WishList,
   Profile,
-
+  Leaderboard,
   PlusIcon,
 
   RadioSelected,

@@ -34,6 +34,9 @@ import Quiz from "./Screens/Quiz/index";
 import QuizAnswer from "./Screens/QuizAnswer/index";
 import PrizeList from "./Screens/PrizeList/index";
 import LeaderBoard from "./Screens/LeaderBoard/LeaderBoard";
+import Chat from "./Screens/Chat/index";
+
+import OnBoarding from "./Screens/OnBoarding/index"
 //import HamburgerMenu from "./Screens/HamburgerMenu/index";
 import Congrats from "./Screens/Congrats/index";
 import WrongAnswer from "./Screens/WrongAnswer/index";
@@ -55,7 +58,7 @@ import TicketList from "./Screens/TicketList";
 import Connections from "./Screens/Connections";
 import RequestCoins from "./Screens/RequestCoins";
 import SubmitTicketScreen from "./Screens/SubmitTicketScreen";
-
+import Draws from "./Screens/Draws/Draws";
 // profile stack
 import Profile from "./Screens/Profile/index";
 
@@ -69,7 +72,9 @@ const { width, height } = Dimensions.get("window");
 const LoginStack = createStackNavigator();
 
 const LoginStackScreen = () => (
-  <LoginStack.Navigator>
+  <LoginStack.Navigator
+  // initialRouteName={"Chat"}
+  >
     <LoginStack.Screen
       key={1}
       name="Login"
@@ -94,13 +99,26 @@ const LoginStackScreen = () => (
       component={ForgotPassword}
       options={{ headerShown: false }}
     />
+    <LoginStack.Screen
+      key={5}
+      name="OnBoarding"
+      component={OnBoarding}
+      options={{ headerShown: false }}
+    />
+    <LoginStack.Screen
+      key={6}
+      name="Chat"
+      component={Chat}
+      options={{ headerShown: false }}
+    />
+
   </LoginStack.Navigator>
 );
 const SimpleScreenStack = createStackNavigator();
 
 const SimpeStackScreen = () => (
   <SimpleScreenStack.Navigator
-    //initialRouteName={'Wallet'}
+  //initialRouteName={'Wallet'}
   >
     <SimpleScreenStack.Screen
       key={1}
@@ -121,7 +139,7 @@ const SimpeStackScreen = () => (
       component={LeaderBoard}
       options={{ headerShown: false }}
     />
-  
+
 
     <SimpleScreenStack.Screen
       key={7}
@@ -141,25 +159,25 @@ const SimpeStackScreen = () => (
       component={WrongAnswer}
       options={{ headerShown: false }}
     />
-  <SimpleScreenStack.Screen
+    <SimpleScreenStack.Screen
       key={10}
       name="DashBoard"
       component={DashBoard}
       options={{ headerShown: false }}
     />
-  <SimpleScreenStack.Screen
-        key={11}
-        name="WishlistDetails"
-        component={WishlistDetails}
-        options={{ headerShown: false}}
+    <SimpleScreenStack.Screen
+      key={11}
+      name="WishlistDetails"
+      component={WishlistDetails}
+      options={{ headerShown: false }}
     />
-     <SimpleScreenStack.Screen
-        key={12}
-        name="Cart"
-        component={Cart}
-        options={{ headerShown: false}}
+    <SimpleScreenStack.Screen
+      key={12}
+      name="Cart"
+      component={Cart}
+      options={{ headerShown: false }}
     />
-    
+
   </SimpleScreenStack.Navigator>
 );
 const MenuStack = createStackNavigator();
@@ -441,8 +459,13 @@ const TabsStackScreen = () => (
       name="Product"
       component={ProductsStackStackScreen}
     />
-    <TabsStack.Screen key={3} name="WishList" component={WishListStackScreen} />
-    <TabsStack.Screen key={4} name="Profile" component={ProfileScreen} />
+     <TabsStack.Screen
+      key={3}
+      name="Trophy"
+      component={LeaderBoard}
+    />
+    <TabsStack.Screen key={4} name="Draws" component={Draws} />
+    <TabsStack.Screen key={5} name="Wallet" component={DashBoard} />
   </TabsStack.Navigator>
 );
 
@@ -457,7 +480,7 @@ function App() {
         <StatusBar hidden />
         <NavigationContainer>
           <Main.Navigator
-           // initialRouteName={'SimpeStackScreen'}
+          // initialRouteName={'SimpeStackScreen'}
           >
             <Main.Screen
               key={0}

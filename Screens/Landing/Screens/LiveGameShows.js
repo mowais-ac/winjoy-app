@@ -21,44 +21,39 @@ import Config from "react-native-config";
 import axios from "axios";
 import dayjs from "dayjs"
 import socketIO from "socket.io-client";
-const ENDPOINT = "https://node-winjoyserver-deploy.herokuapp.com";
+const MYServer = "https://node-winjoyserver-deploy.herokuapp.com/";
 const LiveGameShows = ({ props, navigation }) => {
-  const socket = socketIO('192.168.10.13:3000');
+  const socket = socketIO(MYServer);
   useEffect(() => {
-    // const socket = socketIO('https://node-winjoyserver-deploy.herokuapp.com', {
-    //   transports: ['websocket'],
-    //   jsonp: false,
-    //   query: {}
-    // });
-    // // socket.connect();
-    // // socket.on('connect', () => {
-    // //   console.log('connected to socket server');
-    // //   socket.on("startlivestream", msg => {
-    // //     alert("hii")
-    // //     //console.log("msg", msg);
-    // //   });
-    // // });
-    // var data = "start livestreaming";
-    // //socket.emit('livestream', data);
-    // // socket.emit('test');
-    // socket.on('startlivestream', function(arg) {
-    //     console.log(arg);
 
-    // });
-
-    socket.on("startlivestream", msg => {
-      console.log("msg", msg);
+  
+   
+    socket.on("start", msg => {
+     // alert("hii")
+      console.log("msgg", msg);
     });
+    socket.on("startlivestream", msg => {
+      // alert("hii")
+       console.log("list", msg);
+     });
+     socket.on("sendStartlivegameshow", msg => {
+      // alert("hii")
+       console.log("game", msg);
+     });
+    // socket.on("start", msg => {
+    //  console.log("msg",msg);
+    //   // console.log("msg", msg);
+    // });
 
     LiveStream()
     PastWinner();
     GameBtnStat()
   }, [])
-  // const submitChatMessage = () => {
-  //   let dat = "waqarrr";
-  //   socket.emit('chat message', dat);
+  const submitChatMessage = () => {
+    let dat = "waqarrr";
+    socket.emit('livestream', dat);
 
-  // }
+  }
   const [winnerData, setWinnerData] = useState([]);
   const [navToQuiz, setNavToQuiz] = useState(false);
   const [liveStreamUri, setLiveStreamUri] = useState("");
@@ -123,6 +118,7 @@ const LiveGameShows = ({ props, navigation }) => {
 
     await axios.get(`${Config.API_URL}/livestream/available`, requestOptions).then(response => {
       let res = response.data;
+      console.log("reslink", res);
       if (res) {
         setLiveStreamUri(res?.livestream_url)
       }
@@ -147,12 +143,13 @@ const LiveGameShows = ({ props, navigation }) => {
       console.log("letbegain", res);
       if (res.status === "success") {
         if (res.message === "Welcome to Live Game Show") {
-          navigation.navigate("SimpeStackScreen", { screen: "Quiz" })
+          navigation.navigate("SimpeStackScreen", { screen: "Quiz", params: { selected: liveStreamUri } })
 
         }
       }
       else if (res.status === "error") {
         if (res.message === "Sorry! you have already played.") {
+
           alert(res.message)
         }
         else {
@@ -212,8 +209,8 @@ const LiveGameShows = ({ props, navigation }) => {
         {gameBtnText ? (
           <TouchableOpacity
             onPress={() => {
-            StartGame()
-          //  submitChatMessage()
+              StartGame()
+               // submitChatMessage()
             }
 
             }>

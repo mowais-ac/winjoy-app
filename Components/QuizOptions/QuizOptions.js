@@ -62,7 +62,7 @@ function QuizOptions({ options, optionSelected, onPressOption, result, onPressDo
                 fontSize: 17,
                 textAlign: 'center'
               }}
-            >Next</Text>
+            >Update</Text>
           </TouchableOpacity>
         ) : (
           <View style={styles.Margin}
@@ -73,7 +73,7 @@ function QuizOptions({ options, optionSelected, onPressOption, result, onPressDo
                 fontSize: 17,
                 textAlign: 'center'
               }}
-            >Next</Text>}
+            >Update</Text>}
           </View>
         )}
       </View>

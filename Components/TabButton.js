@@ -15,16 +15,21 @@ const TabButton = (props) => {
         return Images.WishList;
       case "Profile":
         return Images.Profile;
+      case "Trophy":
+        return Images.Leaderboard;
     }
   };
   return (
     <Image
       source={GetImage(props.name)}
-      style={{
+      style={[{
         width: width * 0.06,
         height: height * 0.04,
         resizeMode: "contain",
-      }}
+      }, props.name === "Trophy" ? {
+        width: width * 0.5,
+        height: height * 0.08,
+      } : null]}
     />
   );
 };

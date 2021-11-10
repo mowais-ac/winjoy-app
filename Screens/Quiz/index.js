@@ -45,8 +45,11 @@ import { RFValue } from "react-native-responsive-fontsize";
 import Colors from "../../Constants/Colors";
 import BackgroundRound from "../../Components/BackgroundRound";
 import PlayerView from "react-native-aws-ivs-player-view";
+import socketIO from "socket.io-client";
+const MYServer = "https://node-winjoyserver-deploy.herokuapp.com/";
 const { width, height } = Dimensions.get("window");
 const BackgroundVideo = ({ route, navigation }) => {
+    const socket = socketIO(MYServer);
     const { uri } = route.params;
     const [selected, setSelected] = useState(null);
     const [buffer, setBuffer] = useState(false);
@@ -57,7 +60,10 @@ const BackgroundVideo = ({ route, navigation }) => {
     const [activityScreen, setActivityScreen] = useState(false);
     const [activity, setActivity] = useState(false);
     const [answer, setAnswer] = useState("");
-    
+    const [liveStream, setLiveStream] = useState(false);
+    const [gameShowCheck, setGameShowCheck] = useState(false);
+    const [nextQuestion, setNextQuestion] = useState(false);
+    const [questionAttempt, setQuestionAttempt] = useState(false);
     const Questions = async () => {
         setActivityScreen(true)
         const Token = await EncryptedStorage.getItem("Token");
@@ -71,7 +77,7 @@ const BackgroundVideo = ({ route, navigation }) => {
         // alert(13123);
         await axios.get(`${Config.API_URL}/begin/game/questions/answers/list`, requestOptions).then(response => {
             let res = response.data;
-            console.log("resQuestion",res);
+            console.log("resQuestion", res);
             setQuestion(res)
             setActivityScreen(false)
 
@@ -97,6 +103,7 @@ const BackgroundVideo = ({ route, navigation }) => {
         await fetch(`${Config.API_URL}/finish/gameshow`, requestOptions)
             .then(async (response) => response.json())
             .then(async (res) => {
+                console.log("res", res);
                 if (res === "Sorry! Try Next Time") {
                     navigation.navigate("WrongAnswer")
                 } else if (res.status === "error") {
@@ -112,16 +119,16 @@ const BackgroundVideo = ({ route, navigation }) => {
             });
     }
     const SaveResponse = async (ansId) => {
-        let ans=""
+        let ans = ""
         question[questionIncrement]?.answer.map((item) => {
-            console.log("item",item);
-            if(item.is_correct===1){
-                console.log("item.answer",item.answer);
-                ans=item.answer;
+            console.log("item", item);
+            if (item.is_correct === 1) {
+                console.log("item.answer", item.answer);
+                ans = item.answer;
             }
         })
-        
-        setTimer(20)
+
+        // setTimer(20)
         const Token = await EncryptedStorage.getItem("Token");
         const body = JSONtoForm({
             question: question[questionIncrement]?.id,
@@ -150,15 +157,16 @@ const BackgroundVideo = ({ route, navigation }) => {
                             // navigation.navigate("Congrats", { data: res })
                         }
                         else {
-                            let inc = questionIncrement + 1;
-                            setQuestionIncrement(inc)
+                            setGameShowCheck(false)
+                            // let inc = questionIncrement + 1;
+                            // setQuestionIncrement(inc)
                         }
                     }
                 }
                 else (res.status === "error")
                 {
                     if (res.message === "Wrong Answer!! Don't loose hope try next time") {
-                        navigation.navigate("WrongAnswer",{Tans: ans})
+                        navigation.navigate("WrongAnswer", { Tans: ans })
                     }
                 }
                 // if (question[question.length - 1].id === question[questionIncrement]?.id) {
@@ -181,29 +189,30 @@ const BackgroundVideo = ({ route, navigation }) => {
             });
 
     }
-    if(timerCount<=0){
-        setTimer(20)
-        let ans=""
-        question[questionIncrement]?.answer.map((item) => {
-            console.log("item",item);
-            if(item.is_correct===1){
-                console.log("item.answer",item.answer);
-                ans=item.answer;
-            }
-        })
-        navigation.navigate("WrongAnswer",{Tans: ans})
-        let interval = setInterval(() => {
-            setTimer(lastTimerCount => {
-                lastTimerCount <= 1 && clearInterval(interval)
-                return lastTimerCount - 1
-            })
-          }, 1000) //each count lasts for a second
-          //cleanup the interval on complete
-          return () => clearInterval(interval)
+    // if(timerCount<=0){
+    //     setTimer(20)
+    //     let ans=""
+    //     question[questionIncrement]?.answer.map((item) => {
+    //         console.log("item",item);
+    //         if(item.is_correct===1){
+    //             console.log("item.answer",item.answer);
+    //             ans=item.answer;
+    //         }
+    //     })
+    //     navigation.navigate("WrongAnswer",{Tans: ans})
+    //     let interval = setInterval(() => {
+    //         setTimer(lastTimerCount => {
+    //             lastTimerCount <= 1 && clearInterval(interval)
+    //             return lastTimerCount - 1
+    //         })
+    //       }, 1000) //each count lasts for a second
+    //       //cleanup the interval on complete
+    //       return () => clearInterval(interval)
 
-    }
+    // }
     const onPressDone = (ansId) => {
-      
+        //  setGameShowCheck(false)
+        setQuestionAttempt(true)
         setActivity(true)
         setAnswerId(ansId)
 
@@ -217,9 +226,23 @@ const BackgroundVideo = ({ route, navigation }) => {
 
     }
     useEffect(async () => {
+        socket.on("startlivestream", msg => {
+            console.log("msg", msg);
+            setLiveStream(true)
+        });
+        socket.on("sendStartlivegameshow", msg => {
+            setGameShowCheck(true)
+        });
+        socket.on("sendSwitchNextQuestion", msg => {
+            console.log("msg", msg);
+            if (msg === "Next question should switch") {
+                setNextQuestion(true)
+            }
+        });
+
         Questions()
-       
-        
+
+
         let interval = setInterval(() => {
             setTimer(lastTimerCount => {
                 lastTimerCount <= 1 && clearInterval(interval)
@@ -228,27 +251,51 @@ const BackgroundVideo = ({ route, navigation }) => {
         }, 1000) //each count lasts for a second
         //cleanup the interval on complete
         return () => clearInterval(interval)
-        
+
     }, []);
+    if (nextQuestion) {
+        if (questionAttempt) {
+            setGameShowCheck(true)
+            let inc = questionIncrement + 1;
+            setQuestionIncrement(inc)
+            setNextQuestion(!nextQuestion)
+            setQuestionAttempt(false)
+        } else {
+            let ans = ""
+            question[questionIncrement]?.answer.map((item) => {
+                console.log("item", item);
+                if (item.is_correct === 1) {
+                    console.log("item.answer", item.answer);
+                    ans = item.answer;
+                }
+            })
+            navigation.navigate("WrongAnswer", { Tans: ans })
+        }
+    }
+
+
     return (
         <View>
             <BackgroundRound height={1} />
             <View style={{ height: 20 }} />
             <Header back={true} />
 
-            <Video
-                // key={keyS}
-                source={{
-                    uri: uri
-                }}
-                style={styles.backgroundVideo}
-                resizeMode={"cover"}
-                minLoadRetryCount={2}
-                fullScreen={true}
-                ignoreSilentSwitch={"obey"}
-                onLoad={() => setBuffer(false)}
-                onLoadStart={() => setBuffer(true)}
-            />
+            {liveStream ? (
+                <Video
+                    // key={keyS}
+                    source={{
+                        //uri: uri
+                        uri: "http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4"
+                    }}
+                    style={styles.backgroundVideo}
+                    resizeMode={"cover"}
+                    minLoadRetryCount={2}
+                    fullScreen={true}
+                    ignoreSilentSwitch={"obey"}
+                    onLoad={() => setBuffer(false)}
+                    onLoadStart={() => setBuffer(true)}
+                />
+            ) : null}
             {/* <PlayerView
                 style={styles.backgroundVideo}
                 ref={(e) => {
@@ -267,36 +314,38 @@ const BackgroundVideo = ({ route, navigation }) => {
                     {activityScreen ? (
                         <ActivityIndicator size="large" color={"#ffffff"} top={300} />
                     ) : (
-                        <>
-                            <View
-                                style={styles.backgroundImage}
+                        gameShowCheck ? (
+                            <>
+                                <View
+                                    style={styles.backgroundImage}
 
-                            >
-                                <Label primary font={16} bold dark notAlign style={{ color: "#FFFF13", left: 10 }}>
-                                    {timerCount}
-                                </Label>
-                                <View style={{
-                                    flex: 1,
-                                    justifyContent: 'flex-end',
-                                    marginBottom: 30,
-                                }}>
-                                    <Label primary font={16} bold dark style={{ color: "#FFFF13", }}>
-                                        Question
+                                >
+                                    <Label primary font={16} bold dark notAlign style={{ color: "#FFFF13", left: 10 }}>
+                                        {timerCount}
                                     </Label>
-                                    <Label primary font={16} bold dark style={{ color: "#ffff", lineHeight: 28 }}>
-                                        {question[questionIncrement]?.question}
-                                    </Label>
+                                    <View style={{
+                                        flex: 1,
+                                        justifyContent: 'flex-end',
+                                        marginBottom: 30,
+                                    }}>
+                                        <Label primary font={16} bold dark style={{ color: "#FFFF13", }}>
+                                            Question
+                                        </Label>
+                                        <Label primary font={16} bold dark style={{ color: "#ffff", lineHeight: 28 }}>
+                                            {question[questionIncrement]?.question}
+                                        </Label>
+                                    </View>
+                                    {/* </LinearGradient> */}
                                 </View>
-                                {/* </LinearGradient> */}
-                            </View>
-                            <QuizOptions options={question[questionIncrement]?.answer}
-                                onPressDone={onPressDone}
-                                activity={activity}
-                                optionSelected={selected}
-                                onPressOption={onPressOption}
+                                <QuizOptions options={question[questionIncrement]?.answer}
+                                    onPressDone={onPressDone}
+                                    activity={activity}
+                                    optionSelected={selected}
+                                    onPressOption={onPressOption}
 
-                            />
-                        </>
+                                />
+                            </>
+                        ) : null
                     )}
 
                 </LinearGradient>

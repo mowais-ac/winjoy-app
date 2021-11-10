@@ -65,7 +65,7 @@ function WalletBlanceCard({ options, onPress, reset, result, optionDisable, data
         <LongButton
           style={styles.Margin}
           textstyle={{ color: "#eb2b5f" }}
-          text={"TRANSFER"}
+          text={"TOPUP"}
           font={16}
         />
         <LongButton
