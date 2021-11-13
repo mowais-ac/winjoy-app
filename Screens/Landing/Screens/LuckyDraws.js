@@ -200,7 +200,7 @@ const LuckyDraws = (props) => {
              <LoaderImage
               source={{ uri: Banners[1].replace('http://', 'https://') }}
               style={styles.ShoppingBanner}
-              resizeMode="contain"
+              resizeMode="stretch"
             /> 
         )}
 
@@ -211,7 +211,7 @@ const LuckyDraws = (props) => {
           dark
           style={{
             color: "#ffff",
-            marginLeft: 10,
+            marginLeft: width * 0.04,
             marginTop: 10,
             marginBottom: 10,
           }}

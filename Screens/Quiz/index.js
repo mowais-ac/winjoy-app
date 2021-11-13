@@ -9,11 +9,12 @@ import {
     ImageBackground,
     ScrollView,
     SafeAreaView,
-    ActivityIndicator
+    ActivityIndicator,
+    Animated
 } from "react-native";
 import styled from "styled-components/native";
 import Video from "react-native-video";
-
+import { CountdownCircleTimer } from 'react-native-countdown-circle-timer'
 
 // import React, { useState, useRef, useEffect } from "react";
 // import {
@@ -320,9 +321,26 @@ const BackgroundVideo = ({ route, navigation }) => {
                                     style={styles.backgroundImage}
 
                                 >
-                                    <Label primary font={16} bold dark notAlign style={{ color: "#FFFF13", left: 10 }}>
+                                    {/* <Label primary font={16} bold dark notAlign style={{ color: "#FFFF13", left: 10 }}>
                                         {timerCount}
-                                    </Label>
+                                    </Label> */}
+                                    <CountdownCircleTimer
+                                        isPlaying
+                                        duration={10}
+                                        colors={[
+                                            ['#004777', 0.4],
+                                            ['#F7B801', 0.4],
+                                            ['#A30000', 0.2],
+                                        ]}
+                                        size={85}
+                                        strokeWidth={7}
+                                    >
+                                        {({ remainingTime, animatedColor }) => (
+                                            <Animated.Text style={{ color: animatedColor }}>
+                                                {remainingTime}                
+                                            </Animated.Text>
+                                        )}
+                                    </CountdownCircleTimer>
                                     <View style={{
                                         flex: 1,
                                         justifyContent: 'flex-end',
@@ -349,14 +367,6 @@ const BackgroundVideo = ({ route, navigation }) => {
                     )}
 
                 </LinearGradient>
-
-
-
-
-
-
-
-
             </Wrapper>
         </View>
     );

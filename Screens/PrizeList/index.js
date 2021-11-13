@@ -39,7 +39,7 @@ const index = ({ props, navigation }) => {
 
   const GetData = async () => {
     const Token = await EncryptedStorage.getItem("Token");
-    const requestOptions = {
+    const requestOptions = {                              
       headers: {
         "Content-Type": "multipart/form-data",
         Accept: "application/json",
@@ -50,6 +50,7 @@ const index = ({ props, navigation }) => {
       .get(`${Config.API_URL}/products/list`, requestOptions)
       .then((response) => {
         let res = response;`  `
+        console.log("resPro",res.data);
         setProductData(res?.data?.data[0]);
       });
   };

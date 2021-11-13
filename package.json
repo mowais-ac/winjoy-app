@@ -33,6 +33,7 @@
     "react-native-banner-carousel": "^1.0.3",
     "react-native-bouncy-checkbox": "^2.1.1",
     "react-native-config": "^1.4.3",
+    "react-native-countdown-circle-timer": "^2.5.4",
     "react-native-countdown-component": "^2.7.1",
     "react-native-country-picker-modal": "^2.0.0",
     "react-native-device-info": "^8.1.3",

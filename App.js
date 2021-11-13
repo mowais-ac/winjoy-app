@@ -453,19 +453,19 @@ const TabsStackScreen = () => (
       },
     })}
   >
-    <TabsStack.Screen key={1} name="Home" component={HomeStackScreen} />
+    <TabsStack.Screen key={1} name="HOME" component={HomeStackScreen} />
     <TabsStack.Screen
       key={2}
-      name="Product"
+      name="PRODUCTS"
       component={ProductsStackStackScreen}
     />
      <TabsStack.Screen
       key={3}
-      name="Trophy"
+      name="WINNERS"
       component={LeaderBoard}
     />
-    <TabsStack.Screen key={4} name="Draws" component={Draws} />
-    <TabsStack.Screen key={5} name="Wallet" component={DashBoard} />
+    <TabsStack.Screen key={4} name="DRAWS" component={Draws} />
+    <TabsStack.Screen key={5} name="WALLET" component={DashBoard} />
   </TabsStack.Navigator>
 );
 

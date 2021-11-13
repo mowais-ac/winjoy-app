@@ -43,8 +43,8 @@ const Home = require("../assets/imgs/Home.png");
 const Product = require("../assets/imgs/Product.png");
 //const Activity = require("../assets/imgs/Activity.png");
 const WishList = require("../assets/imgs/WishList.png");
-const Profile = require("../assets/imgs/Profile.png");
-const Leaderboard = require("../assets/imgs/Leaderboard.png");
+const Wallet = require("../assets/imgs/wallet.png");
+const Leaderboard = require("../assets/imgs/tropy.png");
 
 
 const PlusIcon = require("../assets/imgs/PlusIcon.png");
@@ -105,7 +105,7 @@ export default {
   Product,
   // Activity,
   WishList,
-  Profile,
+  Wallet,
   Leaderboard,
   PlusIcon,
 

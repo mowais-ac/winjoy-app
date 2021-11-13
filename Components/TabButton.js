@@ -7,15 +7,15 @@ import { Images } from "../Constants/Index";
 const TabButton = (props) => {
   const GetImage = (name) => {
     switch (name) {
-      case "Home":
+      case "HOME":
         return Images.Home;
-      case "Product":
+      case "PRODUCTS":
         return Images.Product;
-      case "WishList":
+      case "WISHLIST":
         return Images.WishList;
-      case "Profile":
-        return Images.Profile;
-      case "Trophy":
+      case "WALLET":
+        return Images.Wallet;
+      case "WINNERS":
         return Images.Leaderboard;
     }
   };
@@ -26,10 +26,12 @@ const TabButton = (props) => {
         width: width * 0.06,
         height: height * 0.04,
         resizeMode: "contain",
-      }, props.name === "Trophy" ? {
-        width: width * 0.5,
-        height: height * 0.08,
-      } : null]}
+      },
+        // props.name === "Trophy" ? {
+        //   width: width * 0.5,
+        //   height: height * 0.08,
+        // } : null
+      ]}
     />
   );
 };
