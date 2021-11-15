@@ -1,4 +1,5 @@
 export * from './QuizOptions/QuizOptions';
+export * from './QuizResult/QuizResult';
 export * from './ChanceCard/ChanceCard';
 export * from './TriviaAvatar/TriviaAvatar';
 export * from './TriviaCard/TriviaCard';

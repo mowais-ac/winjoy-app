@@ -6,9 +6,7 @@ import styles from "./Styles";
 const { StyleSheet, Dimensions } = require('react-native');
 const { width, height } = Dimensions.get("window");
 function QuizOptions({ options, optionSelected, onPressOption, result, onPressDone, activity }) {
-  const [ansId, setAnsId] = useState(null);
   const [btnEnable, setBtnEnable] = useState(false);
-
   return (
     <>
       <View style={styles.optionsViewMain}>
@@ -18,23 +16,24 @@ function QuizOptions({ options, optionSelected, onPressOption, result, onPressDo
             ({ item, index }) => {
               return (
                 <TouchableWithoutFeedback onPress={() => {
+
+                  onPressOption(index,item.answer,item.id)
                  
-                  onPressOption(index)
-                  setAnsId(item.id)
-                  setBtnEnable(true)
+            
+                 // setBtnEnable(false)
                 }}
 
-                  disabled={activity}
+                 // disabled={activity}
                 >
-                  
-                   
-                        <View style={[styles.optionView, { backgroundColor: optionSelected === index ? '#ffffff' : null }]} >
-                          <Text style={[styles.optionsText, { color: optionSelected === index ? '#2F2442' : '#ffffff' }]}>
-                            {item.answer}
-                          </Text>
-                        </View>
-                      
-                  
+
+
+                  <View style={[styles.optionView, { backgroundColor: optionSelected === index ? '#ffffff' : null }]} >
+                    <Text style={[styles.optionsText, { color: optionSelected === index ? '#2F2442' : '#ffffff' }]}>
+                      {item.answer}
+                    </Text>
+                  </View>
+
+
                 </TouchableWithoutFeedback>
               )
             }
@@ -43,14 +42,18 @@ function QuizOptions({ options, optionSelected, onPressOption, result, onPressDo
 
         />
       </View>
-      <View style={{ marginTop: height * 0.79, }}>
+      {/* <View style={{
+        marginLeft: 30,
+        position: "absolute",
+        bottom: 10,
+      }}>
         {btnEnable ? (
           <TouchableOpacity style={styles.Margin}
             disabled={activity}
             onPress={() => {
               onPressDone(ansId),
                 //setSelected(null)
-              setBtnEnable(false)
+                setBtnEnable(false)
 
               // navigation.navigate("QuizAnswer")
             }
@@ -67,7 +70,7 @@ function QuizOptions({ options, optionSelected, onPressOption, result, onPressDo
         ) : (
           <View style={styles.Margin}
           >
-             {activity ? <ActivityIndicator size="large" color={"#ffffff"} /> : <Text
+            {activity ? <ActivityIndicator size="large" color={"#ffffff"} /> : <Text
               style={{
                 color: '#ffffff',
                 fontSize: 17,
@@ -76,7 +79,7 @@ function QuizOptions({ options, optionSelected, onPressOption, result, onPressDo
             >Update</Text>}
           </View>
         )}
-      </View>
+      </View> */}
     </>
   );
 }

@@ -21,33 +21,16 @@ import Config from "react-native-config";
 import axios from "axios";
 import dayjs from "dayjs"
 import socketIO from "socket.io-client";
+import CountDown from 'react-native-countdown-component';
 const MYServer = "https://node-winjoyserver-deploy.herokuapp.com/";
 const LiveGameShows = ({ props, navigation }) => {
   const socket = socketIO(MYServer);
   useEffect(() => {
-
   
-   
-    socket.on("start", msg => {
-     // alert("hii")
-      console.log("msgg", msg);
-    });
-    socket.on("startlivestream", msg => {
-      // alert("hii")
-       console.log("list", msg);
-     });
-     socket.on("sendStartlivegameshow", msg => {
-      // alert("hii")
-       console.log("game", msg);
-     });
-    // socket.on("start", msg => {
-    //  console.log("msg",msg);
-    //   // console.log("msg", msg);
-    // });
-
     LiveStream()
     PastWinner();
     GameBtnStat()
+    StartGame()
   }, [])
   const submitChatMessage = () => {
     let dat = "waqarrr";
@@ -57,8 +40,9 @@ const LiveGameShows = ({ props, navigation }) => {
   const [winnerData, setWinnerData] = useState([]);
   const [navToQuiz, setNavToQuiz] = useState(false);
   const [liveStreamUri, setLiveStreamUri] = useState("");
-  const [gameBtnText, setGameBtnText] = useState(true);
+  const [gameBtnText, setGameBtnText] = useState(false);
   const [livegameData, setLivegameData] = useState([]);
+  const [time, setTime] = useState("");
   const PastWinner = async () => {
     const Token = await EncryptedStorage.getItem("Token");
     const requestOptions = {
@@ -94,7 +78,11 @@ const LiveGameShows = ({ props, navigation }) => {
       if (res.status === "success") {
         if (res.message === "Game Show Available") {
           setLivegameData(res)
-          LetBegain(res?.LivegameShow?.id)
+          var CurrentDate = dayjs().format("YYYY-MM-DDThh:mm:ss.000z");
+          var duration = dayjs(res?.LivegameShow?.start_date).diff(dayjs(CurrentDate), 'seconds');
+          setTime(duration)
+          console.log("duration",duration);
+       //   LetBegain(res?.LivegameShow?.id)
           //   navigation.navigate("SimpeStackScreen", { screen: "Quiz",
           //  // params:{liveGameShowId: res.LivegameShow.id}
           //  })
@@ -126,8 +114,8 @@ const LiveGameShows = ({ props, navigation }) => {
     });
 
   }
-  const LetBegain = async (Lid) => {
-    console.log("lid", Lid);
+  const LetBegain = async () => {
+    console.log("livegameData?.LivegameShow?.id", livegameData?.LivegameShow?.id);
     const Token = await EncryptedStorage.getItem("Token");
     const requestOptions = {
       headers: {
@@ -138,7 +126,7 @@ const LiveGameShows = ({ props, navigation }) => {
     };
     // alert(13123);
 
-    await axios.get(`${Config.API_URL}/lets/begin?live_gameshow_id=${Lid}`, requestOptions).then(response => {
+    await axios.get(`${Config.API_URL}/lets/begin?live_gameshow_id=${livegameData?.LivegameShow?.id}`, requestOptions).then(response => {
       let res = response.data;
       console.log("letbegain", res);
       if (res.status === "success") {
@@ -176,7 +164,7 @@ const LiveGameShows = ({ props, navigation }) => {
       console.log("reee", res);
       if (res.status === "success") {
         if (res.message === "Welcome to Live Game Show.") {
-          setGameBtnText(true)
+          // setGameBtnText(true)
         } else {
           alert(res)
         }
@@ -199,7 +187,7 @@ const LiveGameShows = ({ props, navigation }) => {
           Daily Challenge & Win
         </Text>
         <Label primary font={16} bold dark style={{ color: "#ffff", lineHeight: 27 }}>
-          Answer 12 simple questions and <Label primary font={16} bold dark style={{ color: "yellow", }}>
+          Answer {livegameData?.question_count} simple questions and <Label primary font={16} bold dark style={{ color: "yellow", }}>
             WIN
           </Label>
           <Label primary font={20} bold dark style={{ color: "#ffff", }}>
@@ -209,31 +197,49 @@ const LiveGameShows = ({ props, navigation }) => {
         {gameBtnText ? (
           <TouchableOpacity
             onPress={() => {
-              StartGame()
-               // submitChatMessage()
+              LetBegain()
+              // submitChatMessage()
             }
 
             }>
-            <View style={styles.btnView}>
-              <Label primary font={16} bold dark style={{ color: "#EA245A", }}>
+            <LinearGradient 
+              colors={["#FFFF13", "#A4FF00"]}
+              style={styles.newGameView}
+              start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
+            >
+              <Label primary font={20} bold dark style={{ color: "#420E92", }}>
                 Let's Begin
               </Label>
-            </View>
+            </LinearGradient>
           </TouchableOpacity>
-        ) : (null)}
-        <LinearGradient
-          colors={["#FFFF13", "#A4FF00"]}
-          style={styles.newGameView}
-          start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
-        >
-          <Label primary font={16} bold dark style={{ color: "#420E92", }}>
-            NEXT GAME
-          </Label>
-          <Label primary font={16} dark style={{ color: "#420E92", }}>
+        ) : (
+          <LinearGradient
+            colors={["#FFFF13", "#A4FF00"]}
+            style={styles.newGameView}
+            start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
+          >
+            <Label primary font={16} bold dark style={{ color: "#420E92", }}>
+              NEXT GAME
+            </Label>
+            {/* <Label primary font={16} dark style={{ color: "#420E92", }}>
             {dayjs(livegameData?.LivegameShow?.start_date).format('DD-MMMM-YYYY hh:mm a')}
+          </Label> */}
+            <CountDown
+              style={{ marginTop: 6 }}
+              size={16}
+              until={time}
+              onFinish={() => setGameBtnText(true)}
+              digitStyle={{ backgroundColor: '#FFF' }}
+              digitTxtStyle={{ color: '#420E92', fontSize: 18, fontFamily: 'Axiforma-Medium' }}
+              timeLabelStyle={{ color: 'red', }}
+              separatorStyle={{ color: '#420E92', paddingLeft: 5, paddingRight: 5 }}
+              timeToShow={['H', 'M', 'S']}
+              timeLabels={{ m: null, s: null }}
+              showSeparator
+            />
+          </LinearGradient>
+        )}
 
-          </Label>
-        </LinearGradient>
       </LinearGradient>
       <HomeBottomList data={winnerData} />
       <View style={{ marginBottom: height * 0.05 }} />

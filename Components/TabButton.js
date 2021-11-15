@@ -11,8 +11,8 @@ const TabButton = (props) => {
         return Images.Home;
       case "PRODUCTS":
         return Images.Product;
-      case "WISHLIST":
-        return Images.WishList;
+      case "DRAWS":
+        return Images.Draws;
       case "WALLET":
         return Images.Wallet;
       case "WINNERS":

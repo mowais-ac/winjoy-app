@@ -15,7 +15,8 @@ import {
 import styled from "styled-components/native";
 import Video from "react-native-video";
 import { CountdownCircleTimer } from 'react-native-countdown-circle-timer'
-
+import Icon from 'react-native-vector-icons/Ionicons';
+import ElimanationModal from "../../Components/ElimanationModal";
 // import React, { useState, useRef, useEffect } from "react";
 // import {
 //     StyleSheet,
@@ -35,7 +36,7 @@ import Background from "../../Components/Background";
 import Header from "../../Components/Header";
 import Label from "../../Components/Label";
 import LongButton from "../../Components/LongButton";
-import { QuizOptions } from "../../Components";
+import { QuizOptions, QuizResult } from "../../Components";
 import EncryptedStorage from "react-native-encrypted-storage";
 import Config from "react-native-config";
 import axios from "axios";
@@ -49,12 +50,13 @@ import PlayerView from "react-native-aws-ivs-player-view";
 import socketIO from "socket.io-client";
 const MYServer = "https://node-winjoyserver-deploy.herokuapp.com/";
 const { width, height } = Dimensions.get("window");
+let timer = () => { };
 const BackgroundVideo = ({ route, navigation }) => {
     const socket = socketIO(MYServer);
     const { uri } = route.params;
     const [selected, setSelected] = useState(null);
     const [buffer, setBuffer] = useState(false);
-    const [timerCount, setTimer] = useState(20)
+    const [timeLeft, setTimeLeft] = useState(20);
     const [question, setQuestion] = useState([]);
     const [questionIncrement, setQuestionIncrement] = useState(0);
     const [answerId, setAnswerId] = useState();
@@ -64,7 +66,32 @@ const BackgroundVideo = ({ route, navigation }) => {
     const [liveStream, setLiveStream] = useState(false);
     const [gameShowCheck, setGameShowCheck] = useState(false);
     const [nextQuestion, setNextQuestion] = useState(false);
-    const [questionAttempt, setQuestionAttempt] = useState(false);
+    const [showResult, setShowResult] = useState(false);
+    const [selectedAns, setSelectedAns] = useState("");
+    const [timerFlag, setTimerFlag] = useState(false);
+    const [joinedUsers, setJoinedUsers] = useState(0);
+    
+    const ModalState = useRef();
+    const startTimer = () => {
+        timer = setTimeout(() => {
+          if (timeLeft <= 0) {
+            clearTimeout(timer);
+            if (timerFlag&&gameShowCheck&&!showResult) {
+                setGameShowCheck(false)
+                setTimerFlag(false)
+                ModalState.current(true);
+              }
+            return false;
+            
+          }
+          setTimeLeft(timeLeft - 1);
+        }, 1000)
+      }
+
+    useEffect(() => {
+        startTimer();
+        return () => clearTimeout(timer);
+    });
     const Questions = async () => {
         setActivityScreen(true)
         const Token = await EncryptedStorage.getItem("Token");
@@ -106,7 +133,8 @@ const BackgroundVideo = ({ route, navigation }) => {
             .then(async (res) => {
                 console.log("res", res);
                 if (res === "Sorry! Try Next Time") {
-                    navigation.navigate("WrongAnswer")
+                    // navigation.navigate("WrongAnswer")
+                    // setShowResult(true)
                 } else if (res.status === "error") {
                     alert("error")
                     navigation.navigate("Landing")
@@ -128,7 +156,7 @@ const BackgroundVideo = ({ route, navigation }) => {
                 ans = item.answer;
             }
         })
-
+        setAnswer(ans)
         // setTimer(20)
         const Token = await EncryptedStorage.getItem("Token");
         const body = JSONtoForm({
@@ -158,16 +186,24 @@ const BackgroundVideo = ({ route, navigation }) => {
                             // navigation.navigate("Congrats", { data: res })
                         }
                         else {
+                            let inc = questionIncrement + 1;
+                            setQuestionIncrement(inc)
                             setGameShowCheck(false)
-                            // let inc = questionIncrement + 1;
-                            // setQuestionIncrement(inc)
                         }
                     }
                 }
                 else (res.status === "error")
                 {
                     if (res.message === "Wrong Answer!! Don't loose hope try next time") {
-                        navigation.navigate("WrongAnswer", { Tans: ans })
+                        let inc = questionIncrement + 1;
+                        setQuestionIncrement(inc)
+                        setGameShowCheck(true)
+                        setShowResult(true)
+                        setTimeout(() => {
+                            ModalState.current(true);
+                        }, 3000);
+
+                        //  navigation.navigate("WrongAnswer", { Tans: ans })
                     }
                 }
                 // if (question[question.length - 1].id === question[questionIncrement]?.id) {
@@ -190,103 +226,81 @@ const BackgroundVideo = ({ route, navigation }) => {
             });
 
     }
-    // if(timerCount<=0){
-    //     setTimer(20)
-    //     let ans=""
-    //     question[questionIncrement]?.answer.map((item) => {
-    //         console.log("item",item);
-    //         if(item.is_correct===1){
-    //             console.log("item.answer",item.answer);
-    //             ans=item.answer;
-    //         }
-    //     })
-    //     navigation.navigate("WrongAnswer",{Tans: ans})
-    //     let interval = setInterval(() => {
-    //         setTimer(lastTimerCount => {
-    //             lastTimerCount <= 1 && clearInterval(interval)
-    //             return lastTimerCount - 1
-    //         })
-    //       }, 1000) //each count lasts for a second
-    //       //cleanup the interval on complete
-    //       return () => clearInterval(interval)
 
-    // }
-    const onPressDone = (ansId) => {
-        //  setGameShowCheck(false)
-        setQuestionAttempt(true)
-        setActivity(true)
+    const onPressOption = (sel, ans, ansId) => {
+        console.log("ansId", ansId);
+
+        //  setActivity(true)
         setAnswerId(ansId)
-
-        SaveResponse(ansId)
-
-
-
-    }
-    const onPressOption = (sel) => {
+        setSelectedAns(ans)
         setSelected(sel)
-
+        SaveResponse(ansId)
     }
     useEffect(async () => {
+        socket.on("sendEndShow", msg => {
+            navigation.navigate("Landing")
+        });
+        socket.on("sendCount", msg => {
+            setJoinedUsers(msg)
+        });
+        socket.on("sendShowAnswer", msg => {
+            setGameShowCheck(true)
+            setShowResult(true)
+
+        });
         socket.on("startlivestream", msg => {
-            console.log("msg", msg);
+            console.log(msg);
             setLiveStream(true)
+           
         });
         socket.on("sendStartlivegameshow", msg => {
+            Questions()
             setGameShowCheck(true)
+            setTimeLeft(20)
+            clearTimeout(timer);
+            startTimer();
+            setTimerFlag(true)
         });
         socket.on("sendSwitchNextQuestion", msg => {
             console.log("msg", msg);
             if (msg === "Next question should switch") {
-                setNextQuestion(true)
+                setShowResult(false)
+                setTimeLeft(20)
+                clearTimeout(timer);
+                startTimer();
+
+                //  setTimer(20)
             }
         });
 
-        Questions()
 
 
-        let interval = setInterval(() => {
-            setTimer(lastTimerCount => {
-                lastTimerCount <= 1 && clearInterval(interval)
-                return lastTimerCount - 1
-            })
-        }, 1000) //each count lasts for a second
-        //cleanup the interval on complete
-        return () => clearInterval(interval)
+
+
 
     }, []);
-    if (nextQuestion) {
-        if (questionAttempt) {
-            setGameShowCheck(true)
-            let inc = questionIncrement + 1;
-            setQuestionIncrement(inc)
-            setNextQuestion(!nextQuestion)
-            setQuestionAttempt(false)
-        } else {
-            let ans = ""
-            question[questionIncrement]?.answer.map((item) => {
-                console.log("item", item);
-                if (item.is_correct === 1) {
-                    console.log("item.answer", item.answer);
-                    ans = item.answer;
-                }
-            })
-            navigation.navigate("WrongAnswer", { Tans: ans })
-        }
-    }
+    // if (nextQuestion) {
+    //     setTimer(20)
+    //     setGameShowCheck(true)
+    //     let inc = questionIncrement + 1;
+    //     setQuestionIncrement(inc)
+    //     setNextQuestion(!nextQuestion)
+
+    // }
 
 
     return (
         <View>
-            <BackgroundRound height={1} />
+            {/* <BackgroundRound height={1} />
             <View style={{ height: 20 }} />
-            <Header back={true} />
+            <Header back={true} /> */}
 
             {liveStream ? (
                 <Video
                     // key={keyS}
                     source={{
-                        //uri: uri
-                        uri: "http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4"
+                        uri: uri
+                       // uri: "http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4"
                     }}
                     style={styles.backgroundVideo}
                     resizeMode={"cover"}
@@ -296,7 +310,7 @@ const BackgroundVideo = ({ route, navigation }) => {
                     onLoad={() => setBuffer(false)}
                     onLoadStart={() => setBuffer(true)}
                 />
-            ) : null}
+            ) : <ActivityIndicator size="large" color={"black"} top={300} />}
             {/* <PlayerView
                 style={styles.backgroundVideo}
                 ref={(e) => {
@@ -307,88 +321,108 @@ const BackgroundVideo = ({ route, navigation }) => {
             <Wrapper>
 
 
-                <LinearGradient
-                    colors={["rgba(0,0,0,0)", "#390c7f"]}
+                <View
+
                     style={styles.gradientView}
                 >
 
                     {activityScreen ? (
-                        <ActivityIndicator size="large" color={"#ffffff"} top={300} />
+                        <ActivityIndicator size="large" color={"black"} top={300} />
                     ) : (
-                        gameShowCheck ? (
-                            <>
-                                <View
-                                    style={styles.backgroundImage}
 
-                                >
-                                    {/* <Label primary font={16} bold dark notAlign style={{ color: "#FFFF13", left: 10 }}>
-                                        {timerCount}
-                                    </Label> */}
-                                    <CountdownCircleTimer
-                                        isPlaying
-                                        duration={10}
-                                        colors={[
-                                            ['#004777', 0.4],
-                                            ['#F7B801', 0.4],
-                                            ['#A30000', 0.2],
-                                        ]}
-                                        size={85}
-                                        strokeWidth={7}
-                                    >
-                                        {({ remainingTime, animatedColor }) => (
-                                            <Animated.Text style={{ color: animatedColor }}>
-                                                {remainingTime}                
-                                            </Animated.Text>
-                                        )}
-                                    </CountdownCircleTimer>
-                                    <View style={{
-                                        flex: 1,
-                                        justifyContent: 'flex-end',
-                                        marginBottom: 30,
-                                    }}>
-                                        <Label primary font={16} bold dark style={{ color: "#FFFF13", }}>
-                                            Question
-                                        </Label>
-                                        <Label primary font={16} bold dark style={{ color: "#ffff", lineHeight: 28 }}>
-                                            {question[questionIncrement]?.question}
-                                        </Label>
-                                    </View>
-                                    {/* </LinearGradient> */}
+                        <>
+                            <View style={{ margin: 15 }}>
+                                <View style={{ flexDirection: 'row' }}>
+                                    <Icon name="person" size={25} color="#ffffff" />
+                                    <Text style={{ fontSize: 20, color: '#ffffff' }}>{joinedUsers}</Text>
                                 </View>
-                                <QuizOptions options={question[questionIncrement]?.answer}
-                                    onPressDone={onPressDone}
-                                    activity={activity}
-                                    optionSelected={selected}
-                                    onPressOption={onPressOption}
+                            </View>
+                            {gameShowCheck ? (
+                                <LinearGradient style={styles.backgroundImage}
+                                    colors={["rgba(128,0,128,0)", "rgba(128,0,128,0)", "#420e92", "#420e92"]}
+                                >
 
-                                />
-                            </>
-                        ) : null
+                                    {showResult ? (
+
+                                        <View
+                                            style={styles.quizView}
+                                        >
+                                            <Label primary font={26} bold dark style={{ color: "#FFFF13", }}>
+                                            Time's Up
+                                            </Label>
+                                            <Label primary font={16} bold dark style={{ color: "#FFFF13", }}>
+                                                Result
+                                            </Label>
+                                            <Label primary font={16} bold dark style={{ color: "#ffff", lineHeight: 28 }}>
+                                                {question[questionIncrement]?.question}
+                                            </Label>
+                                            {/* </View> */}
+                                            {/* </LinearGradient> */}
+                                            <QuizResult
+                                                options={question[questionIncrement - 1]?.answer}
+                                                answer={answer}
+                                                answerByUser={selectedAns}
+                                            />
+                                        </View>
+                                    ) : (
+                                        <View
+                                            style={styles.quizView}
+                                        >
+                                            <Label primary font={26} bold dark style={{ color: "#FFFF13", }}>
+                                                {timeLeft}
+                                            </Label>
+                                            <Label primary font={16} bold dark style={{ color: "#FFFF13", }}>
+                                                Question
+                                            </Label>
+                                            <Label primary font={16} bold dark style={{ color: "#ffff", lineHeight: 28 }}>
+                                                {question[questionIncrement]?.question}
+                                            </Label>
+                                            {/* </View> */}
+                                            {/* </LinearGradient> */}
+                                            <QuizOptions options={question[questionIncrement]?.answer}
+                                                //  onPressDone={onPressDone}
+                                                activity={activity}
+                                                optionSelected={selected}
+                                                onPressOption={onPressOption}
+
+                                            />
+                                        </View>
+                                    )}
+                                </LinearGradient>
+                            ) : null}
+                        </>
+
                     )}
 
-                </LinearGradient>
+                </View>
             </Wrapper>
+            <ElimanationModal ModalRef={ModalState} details />
         </View>
     );
 }
 
 const styles = StyleSheet.create({
     backgroundVideo: {
-        height: height - 70,
+        height: height,
         width: "100%",
         position: "absolute",
-        top: 70,
+        // top: 70,
         left: 0,
         alignItems: "stretch",
         bottom: 0,
         right: 0,
-        borderTopRightRadius: 30,
-        borderTopLeftRadius: 30
+        // borderTopRightRadius: 30,
+        // borderTopLeftRadius: 30
 
     },
+    quizView: {
+        height: height - 370,
+        width: "100%",
+        position: "absolute",
+        bottom: 0,
+    },
     backgroundImage: {
-        top: 50,
-        height: 350,
+        height: height,
         width: '100%',
         flex: 1,
         position: 'absolute',
