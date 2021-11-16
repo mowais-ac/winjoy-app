@@ -5,7 +5,7 @@ import LongButton from "../LongButton";
 import styles from "./Styles";
 const { StyleSheet, Dimensions } = require('react-native');
 const { width, height } = Dimensions.get("window");
-function QuizOptions({ options, optionSelected, onPressOption, result, onPressDone, activity }) {
+function QuizOptions({ options, optionSelected, onPressOption, result, onPressDone, disableOption }) {
   const [btnEnable, setBtnEnable] = useState(false);
   return (
     <>
@@ -23,7 +23,7 @@ function QuizOptions({ options, optionSelected, onPressOption, result, onPressDo
                  // setBtnEnable(false)
                 }}
 
-                 // disabled={activity}
+                  disabled={disableOption}
                 >
 
 

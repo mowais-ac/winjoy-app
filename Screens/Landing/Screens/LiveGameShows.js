@@ -26,7 +26,7 @@ const MYServer = "https://node-winjoyserver-deploy.herokuapp.com/";
 const LiveGameShows = ({ props, navigation }) => {
   const socket = socketIO(MYServer);
   useEffect(() => {
-  
+
     LiveStream()
     PastWinner();
     GameBtnStat()
@@ -43,6 +43,7 @@ const LiveGameShows = ({ props, navigation }) => {
   const [gameBtnText, setGameBtnText] = useState(false);
   const [livegameData, setLivegameData] = useState([]);
   const [time, setTime] = useState("");
+  const [btnAct, setBtnAct] = useState(false);
   const PastWinner = async () => {
     const Token = await EncryptedStorage.getItem("Token");
     const requestOptions = {
@@ -81,8 +82,8 @@ const LiveGameShows = ({ props, navigation }) => {
           var CurrentDate = dayjs().format("YYYY-MM-DDThh:mm:ss.000z");
           var duration = dayjs(res?.LivegameShow?.start_date).diff(dayjs(CurrentDate), 'seconds');
           setTime(duration)
-          console.log("duration",duration);
-       //   LetBegain(res?.LivegameShow?.id)
+          console.log("duration", duration);
+          //   LetBegain(res?.LivegameShow?.id)
           //   navigation.navigate("SimpeStackScreen", { screen: "Quiz",
           //  // params:{liveGameShowId: res.LivegameShow.id}
           //  })
@@ -115,6 +116,7 @@ const LiveGameShows = ({ props, navigation }) => {
 
   }
   const LetBegain = async () => {
+    setBtnAct(true)
     console.log("livegameData?.LivegameShow?.id", livegameData?.LivegameShow?.id);
     const Token = await EncryptedStorage.getItem("Token");
     const requestOptions = {
@@ -146,7 +148,7 @@ const LiveGameShows = ({ props, navigation }) => {
       }
 
     });
-
+    setBtnAct(false)
   }
   const GameBtnStat = async () => {
     const Token = await EncryptedStorage.getItem("Token");
@@ -194,23 +196,30 @@ const LiveGameShows = ({ props, navigation }) => {
             {" "}amazing prizes
           </Label>
         </Label>
-        {gameBtnText ? (
+        {!gameBtnText ? (
           <TouchableOpacity
             onPress={() => {
               LetBegain()
               // submitChatMessage()
-            }
+            }}
+            disabled={btnAct}
+          >
 
-            }>
-            <LinearGradient 
+            <LinearGradient
               colors={["#FFFF13", "#A4FF00"]}
               style={styles.newGameView}
               start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
             >
-              <Label primary font={20} bold dark style={{ color: "#420E92", }}>
-                Let's Begin
-              </Label>
+              {btnAct ? (
+                <ActivityIndicator size="large" color={"#420E92"} />
+              ) : (
+                <Label primary font={20} bold dark style={{ color: "#420E92", }}>
+                  Let's Begin
+                </Label>
+              )}
+             
             </LinearGradient>
+
           </TouchableOpacity>
         ) : (
           <LinearGradient

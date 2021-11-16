@@ -8,7 +8,9 @@ import Icon2 from 'react-native-vector-icons/Entypo';
 const { StyleSheet, Dimensions } = require('react-native');
 const { width, height } = Dimensions.get("window");
 function QuizResult({ options, optionSelected, answer, answerByUser, onPressDone, activity }) {
-  console.log("answer", answer);
+  console.log("options",options);
+  console.log("answerByUser", answerByUser);
+  console.log("answer",answer);
   return (
     <>
       <View style={styles.optionsViewMain}>
