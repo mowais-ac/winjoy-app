@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "C:\\Users\\Waqar\\Desktop\\Projects\\winjoy\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-h720dp-v13\\values-h720dp-v13.xml",
+            "outputFile": "/Users/muhammadowais/Documents/projects/mowais/winjoy/winjoy/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-h720dp-v13/values-h720dp-v13.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\Waqar\\.gradle\\caches\\transforms-2\\files-2.1\\c2e31d2ad231d2d17ab7d972c0cd4c9b\\appcompat-1.1.0\\res\\values-h720dp-v13\\values-h720dp-v13.xml",
+                    "source": "/Users/muhammadowais/.gradle/caches/transforms-3/6155db9e0b662c191e10fd85cfc3b874/transformed/appcompat-1.1.0/res/values-h720dp-v13/values-h720dp-v13.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
