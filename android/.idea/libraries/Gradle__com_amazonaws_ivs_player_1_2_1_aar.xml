@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Gradle: com.amazonaws:ivs-player:1.2.1@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/151c64924e492d5bb351a2493c5511d2/transformed/jetified-ivs-player-1.2.1/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/151c64924e492d5bb351a2493c5511d2/transformed/jetified-ivs-player-1.2.1/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/151c64924e492d5bb351a2493c5511d2/transformed/jetified-ivs-player-1.2.1/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/ivs-player/1.2.1/1cc2ca0a8e7e6d6284dbcdfb6020cbe94b77f96f/ivs-player-1.2.1-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES />
+  </library>
+</component>

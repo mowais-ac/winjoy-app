@@ -2,7 +2,31 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/android.iml" filepath="$PROJECT_DIR$/.idea/modules/android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/WinJoy.iml" filepath="$PROJECT_DIR$/.idea/modules/WinJoy.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/WinJoy.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/WinJoy.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-154449927/WinJoy.react-native-async-storage_async-storage.iml" filepath="$PROJECT_DIR$/.idea/modules/-154449927/WinJoy.react-native-async-storage_async-storage.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1966247190/WinJoy.react-native-aws-ivs-player-view.iml" filepath="$PROJECT_DIR$/.idea/modules/1966247190/WinJoy.react-native-aws-ivs-player-view.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1480426289/WinJoy.react-native-community_art.iml" filepath="$PROJECT_DIR$/.idea/modules/1480426289/WinJoy.react-native-community_art.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1297153275/WinJoy.react-native-community_datetimepicker.iml" filepath="$PROJECT_DIR$/.idea/modules/1297153275/WinJoy.react-native-community_datetimepicker.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1542203765/WinJoy.react-native-community_masked-view.iml" filepath="$PROJECT_DIR$/.idea/modules/1542203765/WinJoy.react-native-community_masked-view.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1690938298/WinJoy.react-native-config.iml" filepath="$PROJECT_DIR$/.idea/modules/-1690938298/WinJoy.react-native-config.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/868496129/WinJoy.react-native-device-info.iml" filepath="$PROJECT_DIR$/.idea/modules/868496129/WinJoy.react-native-device-info.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1593176402/WinJoy.react-native-encrypted-storage.iml" filepath="$PROJECT_DIR$/.idea/modules/-1593176402/WinJoy.react-native-encrypted-storage.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/290161765/WinJoy.react-native-firebase_app.iml" filepath="$PROJECT_DIR$/.idea/modules/290161765/WinJoy.react-native-firebase_app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1562315101/WinJoy.react-native-firebase_crashlytics.iml" filepath="$PROJECT_DIR$/.idea/modules/1562315101/WinJoy.react-native-firebase_crashlytics.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1771709698/WinJoy.react-native-gesture-handler.iml" filepath="$PROJECT_DIR$/.idea/modules/1771709698/WinJoy.react-native-gesture-handler.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-573604555/WinJoy.react-native-image-crop-picker.iml" filepath="$PROJECT_DIR$/.idea/modules/-573604555/WinJoy.react-native-image-crop-picker.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1903306476/WinJoy.react-native-linear-gradient.iml" filepath="$PROJECT_DIR$/.idea/modules/-1903306476/WinJoy.react-native-linear-gradient.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-862841687/WinJoy.react-native-nodemediaclient.iml" filepath="$PROJECT_DIR$/.idea/modules/-862841687/WinJoy.react-native-nodemediaclient.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-800411533/WinJoy.react-native-pager-view.iml" filepath="$PROJECT_DIR$/.idea/modules/-800411533/WinJoy.react-native-pager-view.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-293347366/WinJoy.react-native-reanimated.iml" filepath="$PROJECT_DIR$/.idea/modules/-293347366/WinJoy.react-native-reanimated.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1837628181/WinJoy.react-native-safe-area-context.iml" filepath="$PROJECT_DIR$/.idea/modules/-1837628181/WinJoy.react-native-safe-area-context.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1484619459/WinJoy.react-native-screens.iml" filepath="$PROJECT_DIR$/.idea/modules/1484619459/WinJoy.react-native-screens.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1259069321/WinJoy.react-native-sensitive-info.iml" filepath="$PROJECT_DIR$/.idea/modules/1259069321/WinJoy.react-native-sensitive-info.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-1719299936/WinJoy.react-native-svg.iml" filepath="$PROJECT_DIR$/.idea/modules/-1719299936/WinJoy.react-native-svg.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-41688556/WinJoy.react-native-vector-icons.iml" filepath="$PROJECT_DIR$/.idea/modules/-41688556/WinJoy.react-native-vector-icons.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1676581047/WinJoy.react-native-video.iml" filepath="$PROJECT_DIR$/.idea/modules/1676581047/WinJoy.react-native-video.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1190962013/WinJoy.rn-fetch-blob.iml" filepath="$PROJECT_DIR$/.idea/modules/1190962013/WinJoy.rn-fetch-blob.iml" />
     </modules>
   </component>
 </project>
