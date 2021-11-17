@@ -25,7 +25,7 @@ function ClosingSoon({ item }) {
     <View
       style={{
         width: width * 0.7,
-        height: height * 0.2,
+        height: height * 0.15,
         backgroundColor: "#F4EDEF",
         marginLeft: 10,
         borderRadius: 10,
@@ -40,10 +40,10 @@ function ClosingSoon({ item }) {
               uri: ImgUrl.replace("http://", "https://"),
             }}
             style={{
-              width: 100,
-              height: 120,
+              width: 80,
+              height: 100,
             }}
-            resizeMode="cover"
+            resizeMode="contain"
           />
         ) : item?.user?.profile_image ? (
           <LoaderImage
@@ -51,10 +51,10 @@ function ClosingSoon({ item }) {
               uri: ProfileUrl.replace("http://", "https://"),
             }}
             style={{
-              width: 100,
-              height: 120,
+              width: 80,
+              height: 100,
             }}
-            resizeMode="cover"
+            resizeMode="contain"
           />
         ) : (
           <View style={[styles.ProfileView, styles.ProfileBG]}>
@@ -70,7 +70,7 @@ function ClosingSoon({ item }) {
           </View>
         )}
 
-        <View style={{ marginLeft: 20 }}>
+        <View style={{ marginLeft: 20,alignContent:"center",justifyContent:"center" }}>
           <Label notAlign primary font={12} bold style={{ color: "#E7003F" }}>
             Congratulations
           </Label>

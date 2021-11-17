@@ -33,10 +33,10 @@ const LongButton = React.forwardRef((props, ref) => {
     MutedBtn,
   } = props;
 
-  const [act, setact] = useState({ act: Activity, col: "PRIMARY_LABEL" });
+  const [act, setact] = useState({ act: Activity, col: "LABEL" });
 
   useImperativeHandle(ref, () => ({
-    SetActivity(ibool, col = "PRIMARY_LABEL") {
+    SetActivity(ibool, col = "LABEL") {
       setact({ act: ibool, col: col });
     },
     GetActivity() {
@@ -48,7 +48,7 @@ const LongButton = React.forwardRef((props, ref) => {
     Button: {
       width: width * 0.95,
       height: height * 0.07,
-      backgroundColor: Colors.BUTTON_COLOR,
+      backgroundColor: Colors.REDESH,
       alignSelf: "center",
       justifyContent: "center",
     },
@@ -134,13 +134,13 @@ const LongButton = React.forwardRef((props, ref) => {
     <TouchableOpacity {...props} style={buttonStyles}>
       {childbefore && props.children}
       {gradient ? (
-        <ImageBackground
-          source={Images.Background}
+        <View
+      //    source={Images.Background}
           style={[styles.Button, styles.border, imgstyle]}
-          imageStyle={styles.border}
+       //   imageStyle={styles.border}
         >
           {GetData()}
-        </ImageBackground>
+        </View>
       ) : (
         GetData()
       )}

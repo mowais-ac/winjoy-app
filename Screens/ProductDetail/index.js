@@ -4,6 +4,7 @@ import {
     StyleSheet,
     Dimensions,
     Text,
+    TouchableOpacity
 } from "react-native";
 import Label from "../../Components/Label";
 const { width, height } = Dimensions.get("window");
@@ -15,10 +16,39 @@ import {
     heightConverter,
 } from "../../Components/Helpers/Responsive";
 import Header from "../../Components/Header";
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const ProductDetail = ({ props, navigation, route }) => {
-    const item  = route.params;
-    let progress=(item.updated_stocks? (item?.updated_stocks/item.stock)*100 : 0);
+    const item = route.params;
+    let progress = (item.updated_stocks ? (item?.updated_stocks / item.stock) * 100 : 0);
+    console.log("item", item.id);
+    function uniqBy(a, key) {
+        var seen = {};
+        return a.filter(function (item) {
+            var k = key(item);
+            return seen.hasOwnProperty(k) ? false : (seen[k] = true);
+        })
+    }
+    const SaveIdInfo = async () => {
+        // await EncryptedStorage.setItem("ids","");
+        AsyncStorage 
+            .getItem('ids')
+            .then(favs => {
+                favs = favs == null ? [] : JSON.parse(favs)
+             
+
+                favs.push(item.id)
+                let  uniqueArray = favs.filter(function(item, pos) {
+                    return favs.indexOf(item) == pos;
+                });
+                console.log("uniqueArray",uniqueArray);
+                return AsyncStorage.setItem('ids', JSON.stringify(uniqueArray))
+            })
+
+            let dat=await AsyncStorage.getItem('ids');
+            console.log("dat",dat);
+
+    }
+    
     return (
 
 
@@ -43,7 +73,7 @@ const ProductDetail = ({ props, navigation, route }) => {
                             colors={["#ff9000", "#e70100"]}
                             style={[
                                 styles.LinerGradientProgrees,
-                                { width: `${progress>99?99:progress}%` },
+                                { width: `${progress > 99 ? 99 : progress}%` },
                             ]}
                         />
                         <View style={styles.GreybarWidth} />
@@ -54,7 +84,7 @@ const ProductDetail = ({ props, navigation, route }) => {
 
             </LinearGradient>
             <View style={styles.upperView}>
-                <Card item={item}/>
+                <Card item={item} />
             </View>
             <View style={styles.card}>
 
@@ -76,7 +106,7 @@ const ProductDetail = ({ props, navigation, route }) => {
                     Products Details
                 </Label>
                 <Label notAlign font={11} dark style={{ color: "#000000", lineHeight: 20 }}>
-                  {item.description}
+                    {item.description}
                 </Label>
             </View>
             <View style={styles.card2}>
@@ -88,7 +118,7 @@ const ProductDetail = ({ props, navigation, route }) => {
                     width: widthPercentageToDP("83")
                 }}>
                     <Text style={styles.metaText}>To enter in the lucky draw</Text>
-                    <Text style={[styles.text, { fontWeight: 'bold' }]}>{item.price}</Text>
+                    <Text style={[styles.text, { fontWeight: 'bold' }]}>{+(item.price).toLocaleString()}</Text>
 
                 </View>
                 <View style={{
@@ -101,25 +131,44 @@ const ProductDetail = ({ props, navigation, route }) => {
                     <Text style={styles.text}>Gold Coin</Text>
 
                 </View>
-                <LinearGradient
-                    start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
+                <TouchableOpacity
+                    onPress={() => {
+                        // navigation.navigate("SimpeStackScreen", {
+                        //     screen: "Cart",
+                        //   })]
+                        SaveIdInfo()
+                    }}
                     style={{
                         height: heightConverter(55),
                         width: width - 25,
-                        position:'absolute',
-                        bottom:0,
-                        borderBottomLeftRadius:10,
-                        borderBottomRightRadius:10,
-                        justifyContent:'center',
-                        alignItems:'center'
+                        position: 'absolute',
+                        bottom: 0,
+                        borderBottomLeftRadius: 10,
+                        borderBottomRightRadius: 10,
+                        justifyContent: 'center',
+                        alignItems: 'center'
                     }}
-                    colors={["#420E92", "#E7003F"]}
-
                 >
-                    <Label  primary font={16} bold style={{ color: "#ffffff" }}>
-                   Add to Cart
-                </Label>
-                </LinearGradient>
+                    <LinearGradient
+                        start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
+                        style={{
+                            height: heightConverter(55),
+                            width: width - 25,
+                            position: 'absolute',
+                            bottom: 0,
+                            borderBottomLeftRadius: 10,
+                            borderBottomRightRadius: 10,
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }}
+                        colors={["#420E92", "#E7003F"]}
+
+                    >
+                        <Label primary font={16} bold style={{ color: "#ffffff" }}>
+                            Add to Cart
+                        </Label>
+                    </LinearGradient>
+                </TouchableOpacity>
 
             </View>
         </View>
@@ -192,7 +241,7 @@ const styles = StyleSheet.create({
         padding: 10,
         bottom: 0,
         left: 2,
-       alignItems: 'center',
+        alignItems: 'center',
         elevation: 3,
         position: 'absolute',
         marginBottom: 20

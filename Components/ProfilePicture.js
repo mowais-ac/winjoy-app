@@ -14,7 +14,7 @@ const ProfilePicture = (props) => {
     />
   ) : (
     <View style={[styles.ProfileView, styles.ProfileBG, style]}>
-      <Label adjustsFontSizeToFit={true} font={font || 18} bold>
+      <Label adjustsFontSizeToFit={true} font={font || 18} bold style={styles.Text}>
         {name}
       </Label>
     </View>
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   ProfileBG: {
-    backgroundColor: Colors.PROFILE_BG,
+    backgroundColor: Colors.WHITE,
   },
   ProfilePicture: {
     resizeMode: "contain",
@@ -39,5 +39,8 @@ const styles = StyleSheet.create({
     height: width * 0.14,
     borderRadius: 50,
   },
+  Text:{
+    color:Colors.REDESH
+  }
 });
 export default ProfilePicture;

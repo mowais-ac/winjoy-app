@@ -87,7 +87,6 @@ const RequestList = (props) => {
     if (initial !== undefined && First && Data !== null) {
       const val = Data.Data.filter((x) => x.id === initial);
       if (val.length >= 1) {
-        //        console.log(val[0]);
         ModalState.current(true, {
           ...val[0],
           Coins: Coins.Balance,

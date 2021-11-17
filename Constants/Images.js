@@ -43,7 +43,10 @@ const Home = require("../assets/imgs/Home.png");
 const Product = require("../assets/imgs/Product.png");
 //const Activity = require("../assets/imgs/Activity.png");
 const WishList = require("../assets/imgs/WishList.png");
-const Profile = require("../assets/imgs/Profile.png");
+const Draws = require("../assets/imgs/bingo.png");
+const Wallet = require("../assets/imgs/wallet.png");
+const Leaderboard = require("../assets/imgs/tropy.png");
+
 
 const PlusIcon = require("../assets/imgs/PlusIcon.png");
 
@@ -101,10 +104,11 @@ export default {
   Home,
   // Transaction,
   Product,
- // Activity,
- WishList,
-  Profile,
-
+  // Activity,
+  WishList,
+  Draws,
+  Wallet,
+  Leaderboard,
   PlusIcon,
 
   RadioSelected,

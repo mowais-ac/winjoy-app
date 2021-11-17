@@ -46,7 +46,7 @@ const LabelButton = (props) => {
     },
     dark: { color: Colors.DARK_LABEL },
     primary: {
-      color: Colors.PRIMARY_LABEL,
+      color: Colors.REDESH,
     },
     medium: {
       fontFamily: "Axiforma-Medium",

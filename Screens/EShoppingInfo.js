@@ -104,7 +104,7 @@ const EShopping = ({ route, navigation }) => {
             ShippingRef.current(true);
           }}
           onClose={() => BtnRef.current.SetActivity(false)}
-          BuyProduct={+item.price}
+          BuyProduct={+(item.price).toLoacleString()}
         />
         <DeliveryModal
           ModalRef={ShippingRef}
@@ -167,7 +167,7 @@ const EShopping = ({ route, navigation }) => {
           </View>
           <View>
             <Label notAlign primary style={styles.Price} headingtype="h1" bold>
-              {+item.price} Coins
+              {+item.price.toLoacleString()} Coins
             </Label>
           </View>
         </View>

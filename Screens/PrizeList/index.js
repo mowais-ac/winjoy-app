@@ -9,6 +9,8 @@ import {
   SafeAreaView,
   TouchableOpacity,
   FlatList,
+  RefreshControl,
+  ActivityIndicator,
 } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import BackgroundRound from "../../Components/BackgroundRound";
@@ -20,15 +22,24 @@ import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import EncryptedStorage from "react-native-encrypted-storage"; 
 import Config from "react-native-config";
 import axios from 'axios';
+import { wait } from "../../Constants/Functions";
+import Colors from "../../Constants/Colors";
 const { width, height } = Dimensions.get("window");
 const index = ({ props, navigation }) => {
   const [productData, setProductData] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
   useEffect(async () => {
     GetData();
+  });
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    setProductData([]);
+    wait(500).then(() => setRefreshing(false));
   }, []);
+
   const GetData = async () => {
     const Token = await EncryptedStorage.getItem("Token");
-    const requestOptions = {
+    const requestOptions = {                              
       headers: {
         "Content-Type": "multipart/form-data",
         Accept: "application/json",
@@ -39,6 +50,7 @@ const index = ({ props, navigation }) => {
       .get(`${Config.API_URL}/products/list`, requestOptions)
       .then((response) => {
         let res = response;`  `
+        console.log("resPro",res.data);
         setProductData(res?.data?.data[0]);
       });
   };
@@ -79,17 +91,29 @@ const index = ({ props, navigation }) => {
       </View>
       <View>
         {/* onPress={()=>navigation.navigate("SimpeStackScreen",{screen:"ProductDetail"})}> */}
-        <FlatList
-                data={productData}
-                renderItem={(item)=>
-                <ChanceCard data={item}
-                onPress={()=>navigation.navigate("SimpeStackScreen",{screen:"ProductDetail",params:item.item})}
-                />}
-                keyExtractor={(e) => e.id.toString()}
-                contentContainerStyle={{
-                  paddingBottom: height * 0.48,
-                }}
-              />
+        {productData.length === 0 ? (
+        <ActivityIndicator size="large" color={Colors.BLACK} />
+      ) : (
+        <>
+          {productData.length >= 1 && (
+      
+            <FlatList
+            data={productData}
+            renderItem={(item)=>
+            <ChanceCard data={item}
+            onPress={()=>navigation.navigate("SimpeStackScreen",{screen:"ProductDetail",params:item.item})}
+            />}
+            keyExtractor={(e) => e.id.toString()}
+            contentContainerStyle={{
+              paddingBottom: height * 0.48,
+            }}
+            refreshControl={
+              <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
+            }
+          />
+          )}
+          </>
+          )}
       </View>
     </SafeAreaView>
   );

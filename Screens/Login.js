@@ -68,10 +68,11 @@ const Login = ({ navigation }) => {
       await fetch(`${Config.API_URL}/auth/login`, requestOptions)
         .then(async (response) => response.json())
         .then(async (res) => {
-        //  console.log(res);
+          console.log("res",res);
           ButtonRef.current.SetActivity(false);
           if (res.status && res.status.toLowerCase() === "success") {
             await EncryptedStorage.setItem("Token", res.data.token);
+            navigation.replace("TabsStack");
             if (await IsSuspended(res.data.token))
               return ModalState.current(true, {
                 heading: "Account suspended",
@@ -80,22 +81,25 @@ const Login = ({ navigation }) => {
               });
             if (await IsVerified(res.data.token)) {
               navigation.replace("TabsStack");
-            } else {
+            }
+            else {
               navigation.replace("Verify", { phone: phone_no });
             }
-          } else if (
+          }
+          else if (
             res.message === "Enter 6 Digit Code which sent on your mobile"
           ) {
             await EncryptedStorage.setItem("Token", res.data);
             navigation.replace("Verify", { phone: phone_no });
-          } else if (
+          }
+          else if (
             res.message ===
             "Your account has been inactive/suspended by our admin, please contact support for further details"
           )
             ModalState.current(true, {
               heading: "Account suspended",
               Error: res.message,
-            }); 
+            });
           else {
             ModalState.current(true, {
               heading: "Error",
@@ -119,7 +123,7 @@ const Login = ({ navigation }) => {
           <Background height={1} design />
           <Image source={Images.Logo} style={styles.Logo} />
           <Label bold headingtype="h2" style={styles.MarginLarge}>
-            Login to MyRewardz
+            Login to WinJoy
           </Label>
           <Modals ModalRef={ModalState} Error />
           <InputField
@@ -149,27 +153,30 @@ const Login = ({ navigation }) => {
             text="Login"
             onPress={HandleLogin}
             ref={ButtonRef}
+            textstyle={{ color: '#fff' }}
           />
           <LabelButton
             style={styles.MarginSmall}
             Notdark
             text="Forgot password?"
             onPress={() => navigation.navigate("ForgotPassword")}
+
           />
         </View>
         {/* <SmallButton style={styles.ORButton} text="OR" /> */}
         <Label
-            bold
-            muted
-            style={[styles.ORButton, { lineHeight: height * 0.03 }]}
-            font={15}
-          >
-            OR
-          </Label>
+          bold
+          muted
+          style={[styles.ORButton, { lineHeight: height * 0.03 }]}
+          font={15}
+        >
+          OR
+        </Label>
         <View style={{ marginTop: height * 0.052 }}>
           <LongButton
             text="Create an account"
             onPress={() => navigation.navigate("Register")}
+            textstyle={{ color: '#fff' }}
           />
           {/* <LongButton
             style={styles.MarginMed}
@@ -203,7 +210,7 @@ const styles = StyleSheet.create({
   ORButton: {
     position: "absolute",
     marginTop: height * 0.68,
-  },
+  }, 
 });
 
 export default Login;

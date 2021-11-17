@@ -17,7 +17,7 @@ import Register from "./Screens/Register";
 import Verify from "./Screens/VerifyNum";
 import ForgotPassword from "./Screens/ForgotPassword";
 import WishList from "./Screens/WishList/index";
-
+import WishlistDetails from "./Screens/WishList/WishlistDetails";
 // LandingStack
 import Landing from "./Screens/Landing/Landing";
 import BuyCoins from "./Screens/BuyCoins";
@@ -34,11 +34,15 @@ import Quiz from "./Screens/Quiz/index";
 import QuizAnswer from "./Screens/QuizAnswer/index";
 import PrizeList from "./Screens/PrizeList/index";
 import LeaderBoard from "./Screens/LeaderBoard/LeaderBoard";
-import HamburgerMenu from "./Screens/HamburgerMenu/index";
-import Congrats from "./Screens/Congrats/index"
-import WrongAnswer from "./Screens/WrongAnswer/index"
-import ProductDetail from "./Screens/ProductDetail/index"
-import DashBoard from "./Screens/DashBoard/index"
+import Chat from "./Screens/Chat/index";
+
+import OnBoarding from "./Screens/OnBoarding/index"
+//import HamburgerMenu from "./Screens/HamburgerMenu/index";
+import Congrats from "./Screens/Congrats/index";
+import WrongAnswer from "./Screens/WrongAnswer/index";
+import ProductDetail from "./Screens/ProductDetail/index";
+import DashBoard from "./Screens/DashBoard/index";
+import Cart from "./Screens/Cart/index";
 //meu stack
 //import Menu from "./Screens/Menu";
 import Menu from "./Screens/HamburgerMenu/index";
@@ -47,37 +51,30 @@ import ContactUs from "./Screens/ContactUs";
 import BorrowCredit from "./Screens/BorrowCredit";
 import BorrowCreditSuccess from "./Screens/BorrowCreditSuccess";
 import RequestList from "./Screens/RequestList";
-import Orders from "./Screens/Orders";
-import OrderDetails from "./Screens/OrderDetails";
+import Orders from "./Screens/MyOrder/Orders";
+import OrderDetails from "./Screens/MyOrder/OrderDetails";
 import WithdrawCoins from "./Screens/WithdrawCoins";
 import TicketList from "./Screens/TicketList";
 import Connections from "./Screens/Connections";
 import RequestCoins from "./Screens/RequestCoins";
 import SubmitTicketScreen from "./Screens/SubmitTicketScreen";
-
+import Draws from "./Screens/Draws/Draws";
 // profile stack
 import Profile from "./Screens/Profile/index";
 
 // tabs stack
 import Withdrawals from "./Screens/Withdrawals";
-import Transfers from "./Screens/Transfers";
-import Activity from "./Screens/Activity";
-import Transactions from "./Screens/Transactions";
-
 import TabButton from "./Components/TabButton";
 
 //  redux
 import { Provider } from "react-redux";
-import { createStore, applyMiddleware } from "redux";
-import thunkMiddleware from "redux-thunk";
-import Reducers from "./redux/reducers/index";
-import Config from "react-native-config";
-import Notifications from "./Screens/Notifications";
 const { width, height } = Dimensions.get("window");
 const LoginStack = createStackNavigator();
 
 const LoginStackScreen = () => (
-  <LoginStack.Navigator>
+  <LoginStack.Navigator
+  // initialRouteName={"Chat"}
+  >
     <LoginStack.Screen
       key={1}
       name="Login"
@@ -102,13 +99,26 @@ const LoginStackScreen = () => (
       component={ForgotPassword}
       options={{ headerShown: false }}
     />
+    <LoginStack.Screen
+      key={5}
+      name="OnBoarding"
+      component={OnBoarding}
+      options={{ headerShown: false }}
+    />
+    <LoginStack.Screen
+      key={6}
+      name="Chat"
+      component={Chat}
+      options={{ headerShown: false }}
+    />
+
   </LoginStack.Navigator>
 );
 const SimpleScreenStack = createStackNavigator();
 
 const SimpeStackScreen = () => (
   <SimpleScreenStack.Navigator
-    //initialRouteName={'Wallet'}
+  //initialRouteName={'Wallet'}
   >
     <SimpleScreenStack.Screen
       key={1}
@@ -129,7 +139,7 @@ const SimpeStackScreen = () => (
       component={LeaderBoard}
       options={{ headerShown: false }}
     />
-  
+
 
     <SimpleScreenStack.Screen
       key={7}
@@ -149,12 +159,25 @@ const SimpeStackScreen = () => (
       component={WrongAnswer}
       options={{ headerShown: false }}
     />
-  <SimpleScreenStack.Screen
+    <SimpleScreenStack.Screen
       key={10}
       name="DashBoard"
       component={DashBoard}
       options={{ headerShown: false }}
     />
+    <SimpleScreenStack.Screen
+      key={11}
+      name="WishlistDetails"
+      component={WishlistDetails}
+      options={{ headerShown: false }}
+    />
+    <SimpleScreenStack.Screen
+      key={12}
+      name="Cart"
+      component={Cart}
+      options={{ headerShown: false }}
+    />
+
   </SimpleScreenStack.Navigator>
 );
 const MenuStack = createStackNavigator();
@@ -371,7 +394,6 @@ const WishListStackScreen = () => {
         component={WishList}
         options={{ headerShown: false }}
       />
-
     </WishListStack.Navigator>
   );
 };
@@ -431,14 +453,19 @@ const TabsStackScreen = () => (
       },
     })}
   >
-    <TabsStack.Screen key={1} name="Home" component={HomeStackScreen} />
+    <TabsStack.Screen key={1} name="HOME" component={HomeStackScreen} />
     <TabsStack.Screen
       key={2}
-      name="Product"
+      name="PRODUCTS"
       component={ProductsStackStackScreen}
     />
-    <TabsStack.Screen key={3} name="WishList" component={WishListStackScreen} />
-    <TabsStack.Screen key={4} name="Profile" component={ProfileScreen} />
+     <TabsStack.Screen
+      key={3}
+      name="WINNERS"
+      component={LeaderBoard}
+    />
+    <TabsStack.Screen key={4} name="DRAWS" component={Draws} />
+    <TabsStack.Screen key={5} name="WALLET" component={DashBoard} />
   </TabsStack.Navigator>
 );
 
@@ -453,7 +480,7 @@ function App() {
         <StatusBar hidden />
         <NavigationContainer>
           <Main.Navigator
-           // initialRouteName={'SimpeStackScreen'}
+          // initialRouteName={'SimpeStackScreen'}
           >
             <Main.Screen
               key={0}

@@ -12,12 +12,13 @@ const { width, height } = Dimensions.get("window");
 const Bell = (props) => {
   const navigation = useNavigation();
   const { Bell } = props;
+  console.log("bell",Bell);
   return (
     <>
       <TouchableOpacity
         style={[styles.Main, props.style]}
         onPress={() =>
-          navigation.navigate("Activity", { screen: "Notifications" })
+          navigation.navigate("SimpeStackScreen", { screen: "Cart" })
         }
       >
         <Image source={Images.Bell} style={styles.Bell} />

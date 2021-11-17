@@ -28,7 +28,7 @@ function Tabs() {
                 alignItems: 'center',
                 height: 30,
                 
-               // paddingLeft: 20,
+                paddingLeft: 20,
                 
               }}>
             
@@ -36,12 +36,12 @@ function Tabs() {
                 style={{
                   
                   fontFamily: 'Europa-Bold',
-                  fontSize: RFValue(20, 812),
+                  fontSize: 14,
                   fontWeight: 'bold',
                   fontStyle: 'normal',
                   letterSpacing: 0,
                   color: focused ? '#E7003F' : '#ffffff',
-                  textTransform: 'capitalize',
+                  textTransform: 'uppercase',
                   
                 }}>
                 {route.name}
@@ -56,7 +56,7 @@ function Tabs() {
         //  showIcon: true,
           labelStyle: {
             fontFamily: 'Europa-Bold',
-            fontSize: RFValue(18, 812),
+            fontSize: 14,
             fontWeight: 'bold',
             fontStyle: 'normal',
             letterSpacing: 0,

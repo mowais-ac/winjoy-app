@@ -24,7 +24,6 @@ import Config from "react-native-config";
 import ImagePicker from "react-native-image-crop-picker";
 import LabelButton from "../Components/LabelButton";
 import CountryModal from "../Components/CountryModal";
-import CityModal from "../Components/CityModal";
 import ValidateModal from "../Components/ValidateModal";
 import GoBack from "../Components/GoBack";
 
@@ -297,7 +296,7 @@ const EditProfile = ({ route, navigation }) => {
       <>
         <View style={styles.TopButtonsView}>
           <GetButton text="Personal Detail" val={0} font={11} noMargin />
-          {/* <GetButton text="Career Detail" val={1} /> */}
+          <GetButton text="Career Detail" val={1} />
           <GetButton text="Settings" val={2} />
         </View>
 
@@ -363,116 +362,42 @@ const EditProfile = ({ route, navigation }) => {
 
     const GetCountrySection = () => {
       const CountryModalRef = useRef();
-      const CityModalRef = useRef();
 
       const [CountryValue, setCountryValue] = useState(
         OldUser.country === "null" ? "N/A" : OldUser.country
       );
-      const [CityValue, setCityValue] = useState(
-        OldUser.city === "null" ? "N/A" : OldUser.city
-      );
 
       useEffect(() => {
         countryref.current = CountryValue;
-        if (
-          ["pakistan", "india", "united arab emirates"].indexOf(
-            CountryValue ? CountryValue.toLowerCase() : ""
-          ) !== -1
-        )
-          cityref.current = CityValue;
       });
-
-      const GetCountryCode = (e) => {
-        switch (e) {
-          case "india":
-            return 99;
-          case "pakistan":
-            return 162;
-          default:
-            return 224;
-        }
-      };
-
-      const GetModal = () => {
-        return (
-          <CityModal
-            CityRef={CityModalRef}
-            onChange={(e) => setCityValue(e)}
-            countryid={GetCountryCode(
-              CountryValue ? CountryValue.toLowerCase() : ""
-            )}
-          />
-        );
-      };
 
       return (
         <>
-          <View style={styles.InputView}>
-            <Label notAlign darkmuted text="Country" />
-            <CountryModal
-              CountryRef={CountryModalRef}
-              onChange={(e) => {
-                setCountryValue(e);
-                setCityValue("N/A");
-              }}
+          <CountryModal
+            CountryRef={CountryModalRef}
+            onChange={(e) => setCountryValue(e)}
+          />
+          <InputField
+            style={styles.UserFieldView}
+            fieldstyle={styles.SearchInput}
+            NoIcon
+            white
+            editable={false}
+            value={CountryValue}
+            placeholder={"Select Country"}
+            placeholderTextColor={Colors.DARK_MUTED}
+          />
+          <View style={styles.ChangeConView}>
+            <LabelButton
+              notAlign
+              primary
+              bold
+              text="Change"
+              headingtype="h5"
+              style={styles.ChangeCon}
+              onPress={() => CountryModalRef.current(true)}
             />
-            <InputField
-              style={styles.UserFieldView}
-              fieldstyle={styles.SearchInput}
-              NoIcon
-              white
-              editable={false}
-              value={CountryValue}
-              placeholder={"Select Country"}
-              placeholderTextColor={Colors.DARK_MUTED}
-            />
-            <View style={styles.ChangeConView}>
-              <LabelButton
-                notAlign
-                primary
-                bold
-                text="Change"
-                headingtype="h5"
-                style={styles.ChangeCon}
-                onPress={() => CountryModalRef.current(true)}
-              />
-            </View>
           </View>
-          {["pakistan", "india", "united arab emirates"].indexOf(
-            CountryValue ? CountryValue.toLowerCase() : ""
-          ) === -1 ? (
-            <GetField
-              name="City"
-              ref={cityref}
-              value={OldUser.city === "null" ? "N/A" : OldUser.city}
-            />
-          ) : (
-            <View style={styles.InputView}>
-              <Label notAlign darkmuted text="City" />
-              <GetModal />
-              <InputField
-                style={styles.UserFieldView}
-                fieldstyle={styles.SearchInput}
-                NoIcon
-                white
-                editable={false}
-                value={CityValue}
-                placeholder={"Select City"}
-                placeholderTextColor={Colors.DARK_MUTED}
-              />
-              <View style={styles.ChangeConView}>
-                <LabelButton
-                  notAlign
-                  primary
-                  bold
-                  text="Change"
-                  headingtype="h5"
-                  style={styles.ChangeCon}
-                  onPress={() => CityModalRef.current(true)}
-                />
-              </View>
-            </View>
-          )}
         </>
       );
     };
@@ -520,8 +445,15 @@ const EditProfile = ({ route, navigation }) => {
             editable={false}
           />
         </TouchableOpacity>
-        <GetCountrySection />
-
+        <View style={styles.InputView}>
+          <Label notAlign darkmuted text="Country" />
+          <GetCountrySection />
+        </View>
+        <GetField
+          name="City"
+          ref={cityref}
+          value={OldUser.city === "null" ? "N/A" : OldUser.city}
+        />
         <GetField
           name="Address"
           ref={addressref}
@@ -592,12 +524,12 @@ const styles = StyleSheet.create({
     marginLeft: width * 0.034,
   },
   TopButtonsView: {
-    width: width * 0.7,
-    alignSelf: "center",
+    width: width,
     flexDirection: "row",
+    justifyContent:"space-around"
   },
   TopButton: {
-    width: width * 0.32,
+    width: width * 0.3,
     height: height * 0.06,
   },
   SelectedBtn: {

@@ -150,6 +150,7 @@ const LuckyDraws = (props) => {
         let arr = [];
         if (res.status && res.status.toLowerCase() === "success") {
           res.data.map((item) => {
+            console.log("item",item);
             item.map((v, i) => {
               arr.push(v);
             });
@@ -196,13 +197,11 @@ const LuckyDraws = (props) => {
         {Banners === null ? (
           <ActivityIndicator size="large" color={Colors.BLACK} />
         ) : (
-          <TouchableOpacity onPress={() => navigation.navigate("EShopping")}>
              <LoaderImage
               source={{ uri: Banners[1].replace('http://', 'https://') }}
               style={styles.ShoppingBanner}
-              resizeMode="contain"
+              resizeMode="stretch"
             /> 
-          </TouchableOpacity>
         )}
 
         <Label
@@ -212,7 +211,7 @@ const LuckyDraws = (props) => {
           dark
           style={{
             color: "#ffff",
-            marginLeft: 10,
+            marginLeft: width * 0.04,
             marginTop: 10,
             marginBottom: 10,
           }}
@@ -232,7 +231,7 @@ const LuckyDraws = (props) => {
           renderItem={({ item }) => (
             <TouchableOpacity
               onPress={() =>
-                navigation.navigate("SimpeStackScreen", { screen: "PrizeList" })
+                navigation.navigate("SimpeStackScreen",{screen:"ProductDetail",params:item})
               }
             >
               <ClosingSoon props={props} index={item.index} item={item} />
@@ -249,6 +248,7 @@ const LuckyDraws = (props) => {
             marginTop: 13,
           }}
         />
+        <TouchableOpacity onPress={()=>navigation.navigate("TabsStack", { screen: "Product" })}>
         <Label
           primary
           font={16}
@@ -263,6 +263,7 @@ const LuckyDraws = (props) => {
         >
           View All Prizes
         </Label>
+        </TouchableOpacity>
         <View style={{ marginBottom: height * 0.01 }} />
       </LinearGradient>
       <HomeBottomList data = {winnerData}/>
