@@ -24,7 +24,7 @@ import LinearGradient from "react-native-linear-gradient";
 import { heightConverter } from "./Helpers/Responsive";
 const { width, height } = Dimensions.get("window");
 
-const ElimanationModal = (props) => {
+const EliminateQuizOptions = (props) => {
   const [ModelState, setModelState] = useState({
     state: false,
     details: null,
@@ -56,17 +56,9 @@ const ElimanationModal = (props) => {
         if (props.onClose) props.onClose();
       }}
     >
-      <TouchableWithoutFeedback
-        onPress={() => {
-          setModelState({
-            ...ModelState,
-            state: !ModelState.state,
-          });
-          if (props.onClose) props.onClose();
-        }}
-      >
+    
         <View style={styles.MainView} />
-      </TouchableWithoutFeedback>
+      
       <View style={styles.ModalView}>
         <View style={styles.SmallBorder} />
 
@@ -89,7 +81,7 @@ const ElimanationModal = (props) => {
           </Label>
 
           <TouchableOpacity
-            //onPress={() => {}}
+            onPress={() => {props.onPressContinue()}}
             style={{
               height: heightConverter(20),
               width: width * 0.9,
@@ -135,7 +127,7 @@ const ElimanationModal = (props) => {
   );
 };
 
-export default ElimanationModal;
+export default EliminateQuizOptions;
 
 const styles = StyleSheet.create({
   MainView: {

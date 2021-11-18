@@ -36,7 +36,7 @@ import Background from "../../Components/Background";
 import Header from "../../Components/Header";
 import Label from "../../Components/Label";
 import LongButton from "../../Components/LongButton";
-import { QuizOptions, QuizResult } from "../../Components";
+import { EliminateQuizResult, EliminateQuizOptions, QuizOptions, QuizResult } from "../../Components";
 import EncryptedStorage from "react-native-encrypted-storage";
 import Config from "react-native-config";
 import axios from "axios";
@@ -65,7 +65,6 @@ const BackgroundVideo = ({ route, navigation }) => {
     //  const [answer, setAnswer] = useState("");
     const [liveStream, setLiveStream] = useState(false);
     const [gameShowCheck, setGameShowCheck] = useState(false);
-    const [nextQuestion, setNextQuestion] = useState(false);
     const [showResult, setShowResult] = useState(false);
     // const [selectedAns, setSelectedAns] = useState("");
     const [timerFlag, setTimerFlag] = useState(false);
@@ -78,6 +77,7 @@ const BackgroundVideo = ({ route, navigation }) => {
     const questionIncrement = useRef(0);
     const attemptWrong = useRef(false);
     const ModalState = useRef();
+    const userElimante = useRef(false);
 
     const startTimer = () => {
         timer = setTimeout(() => {
@@ -196,29 +196,22 @@ const BackgroundVideo = ({ route, navigation }) => {
                 if (res.status === "success") {
                     if (res.message === "Congrats!! move to next question") {
 
-
-                        if (questionRef.current[questionRef.current.length - 1].id === questionRef.current[questionIncrement.current]?.id) {
-                            CheckResult()
-                            // navigation.navigate("Congrats", { data: res })
-                        }
-                        else {
-                            // let inc = questionIncrement + 1;
-                            // setQuestionIncrement(inc)
-                            // setGameShowCheck(false)
-                        }
                     }
                 }
                 else (res.status === "error")
                 {
                     if (res.message === "Wrong Answer!! Don't loose hope try next time") {
-                        attemptWrong.current = true;
+
                         // let inc = questionIncrement.current + 1;
                         // questionIncrement.current=inc;
                         // setGameShowCheck(true)
-                        // setShowResult(true)
-                        // setTimeout(() => {
-                        //     ModalState.current(true);
-                        // }, 9000);
+                        setShowResult(true)
+                        if (userElimante.current === false) {
+                            setTimeout(() => {
+                                ModalState.current(true);
+                            }, 3000);
+                        }
+
 
                         //  navigation.navigate("WrongAnswer", { Tans: ans })
                     }
@@ -245,8 +238,6 @@ const BackgroundVideo = ({ route, navigation }) => {
     }
 
     const onPressOption = (sel, ans, ansId) => {
-        console.log("ans", ans);
-        console.log("ansId", ansId);
         setDisableQuizOptions(true)
         //  setActivity(true)
         // setAnswerId(ansId)
@@ -256,21 +247,24 @@ const BackgroundVideo = ({ route, navigation }) => {
         setSelected(sel)
 
     }
+    const onPressContinue = () => {
+        ModalState.current(false)
+        userElimante.current = true;
+    }
     useEffect(() => {
         // action on update of movies
     }, [answerId]);
     useEffect(async () => {
-
         socket.on("sendHideQuestion", msg => {
             console.log(msg);
             setGameShowCheck(false)
 
         });
-        socket.on("sendHideAnswer", msg => {
+        socket.on("sendHideAnswer", msg => { 
             console.log(msg);
         });
         socket.on("sendEndShow", msg => {
-            navigation.navigate("Landing")
+            navigation.navigate("TabsStack", { screen: "WINNERS"})
         });
         socket.on("sendCount", msg => {
             setJoinedUsers(msg)
@@ -300,10 +294,8 @@ const BackgroundVideo = ({ route, navigation }) => {
         });
         socket.on("sendSwitchNextQuestion", msg => {
             console.log("msg", msg);
-            if (attemptWrong.current) {
-                ModalState.current(true);
-            }
-            else if (msg === "Next question should switch") {
+
+            if (msg === "Next question should switch") {
                 let inc = questionIncrement.current + 1;
                 questionIncrement.current = inc;
 
@@ -357,8 +349,8 @@ const BackgroundVideo = ({ route, navigation }) => {
                         <Video
                             // key={keyS}
                             source={{
-                                // uri: "https://eaf1583c5a6e.us-east-1.playback.live-video.net/api/video/v1/us-east-1.537378758278.channel.etQDlpRRDxfl.m3u8"
-                                uri: "http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4"
+                                uri: uri
+                                //  uri: "http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4"
                             }}
                             // onReadyForDisplay={readyToDisplay}
                             style={styles.backgroundVideo}
@@ -388,59 +380,114 @@ const BackgroundVideo = ({ route, navigation }) => {
                                 </View>
                             </View>
                             {gameShowCheck ? (
-                                <LinearGradient style={styles.backgroundImage}
-                                    colors={["rgba(128,0,128,0)", "rgba(128,0,128,0)", "#420e92", "#420e92"]}
-                                >
+                                userElimante.current ? (
+                                    <LinearGradient style={styles.backgroundImage}
+                                        colors={["rgba(128,0,128,0)", "rgba(128,0,128,0)", "#420e92", "#420e92"]}
+                                    >
 
-                                    {showResult ? (
+                                        {showResult ? (
 
-                                        <View
-                                            style={styles.quizView}
-                                        >
-                                            <Label primary font={26} bold dark style={{ color: "#FFFF13", }}>
-                                                Time's Up
-                                            </Label>
-                                            <Label primary font={16} bold dark style={{ color: "#FFFF13", }}>
-                                                Result
-                                            </Label>
-                                            <Label primary font={16} bold dark style={{ color: "#ffff", lineHeight: 28 }}>
-                                                {questionRef.current[questionIncrement.current]?.question}
-                                            </Label>
-                                            {/* </View> */}
-                                            {/* </LinearGradient> */}
-                                            <QuizResult
-                                                options={questionRef.current[questionIncrement.current]?.answer}
-                                                answer={answer.current}
-                                                answerByUser={selectedAns.current}
-                                                activity={activity}
-                                            />
-                                        </View>
-                                    ) : (
-                                        <View
-                                            style={styles.quizView}
-                                        >
-                                            <Label primary font={26} bold dark style={{ color: "#FFFF13", }}>
-                                                {timeLeft <= 0 ? "Time's Up" : timeLeft}
-                                            </Label>
-                                            <Label primary font={16} bold dark style={{ color: "#FFFF13", }}>
-                                                Question
-                                            </Label>
-                                            <Label primary font={16} bold dark style={{ color: "#ffff", lineHeight: 28 }}>
-                                                {questionRef.current[questionIncrement.current]?.question}
-                                            </Label>
-                                            {/* </View> */}
-                                            {/* </LinearGradient> */}
-                                            <QuizOptions options={questionRef.current[questionIncrement.current]?.answer}
-                                                //  onPressDone={onPressDone}
-                                              //  activity={activity}
-                                                optionSelected={selected}
-                                                onPressOption={onPressOption}
-                                                disableOption={timeLeft <= 0 || disableQuizOptions ? true : false}
+                                            <View
+                                                style={styles.quizView}
+                                            >
+                                                <Label primary font={26} bold dark style={{ color: "#FFFF13", }}>
+                                                    Time's Up
+                                                </Label>
+                                                <Label primary font={16} bold dark style={{ color: "#FFFF13", }}>
+                                                    Result
+                                                </Label>
+                                                <Label primary font={16} bold dark style={{ color: "#ffff", lineHeight: 28 }}>
+                                                    {questionRef.current[questionIncrement.current]?.question}
+                                                </Label>
+                                                {/* </View> */}
+                                                {/* </LinearGradient> */}
+                                                <EliminateQuizResult
+                                                    options={questionRef.current[questionIncrement.current]?.answer}
+                                                    answer={answer.current}
+                                                    activity={activity}
+                                                />
+                                            </View>
+                                        ) : (
+                                            <View
+                                                style={styles.quizView}
+                                            >
+                                                <Label primary font={26} bold dark style={{ color: "#FFFF13", }}>
+                                                    {timeLeft <= 0 ? "Time's Up" : timeLeft}
+                                                </Label>
+                                                <Label primary font={16} bold dark style={{ color: "#FFFF13", }}>
+                                                    Question
+                                                </Label>
+                                                <Label primary font={16} bold dark style={{ color: "#ffff", lineHeight: 28 }}>
+                                                    {questionRef.current[questionIncrement.current]?.question}
+                                                </Label>
+                                                {/* </View> */}
+                                                {/* </LinearGradient> */}
+                                                <EliminateQuizOptions options={questionRef.current[questionIncrement.current]?.answer}
+                                                    //  onPressDone={onPressDone}
+                                                    //  activity={activity}
+                                                    optionSelected={selected}
+                                                    onPressOption={onPressOption}
+                                                    disableOption={true}
 
-                                            />
-                                        </View>
-                                    )}
-                                </LinearGradient>
+                                                />
+                                            </View>
+                                        )}
+                                    </LinearGradient>
+                                ) : (
+                                    <LinearGradient style={styles.backgroundImage}
+                                        colors={["rgba(128,0,128,0)", "rgba(128,0,128,0)", "#420e92", "#420e92"]}
+                                    >
+
+                                        {showResult ? (
+
+                                            <View
+                                                style={styles.quizView}
+                                            >
+                                                <Label primary font={26} bold dark style={{ color: "#FFFF13", }}>
+                                                    Time's Up
+                                                </Label>
+                                                <Label primary font={16} bold dark style={{ color: "#FFFF13", }}>
+                                                    Result
+                                                </Label>
+                                                <Label primary font={16} bold dark style={{ color: "#ffff", lineHeight: 28 }}>
+                                                    {questionRef.current[questionIncrement.current]?.question}
+                                                </Label>
+                                                {/* </View> */}
+                                                {/* </LinearGradient> */}
+                                                <QuizResult
+                                                    options={questionRef.current[questionIncrement.current]?.answer}
+                                                    answer={answer.current}
+                                                    answerByUser={selectedAns.current}
+                                                    activity={activity}
+                                                />
+                                            </View>
+                                        ) : (
+                                            <View
+                                                style={styles.quizView}
+                                            >
+                                                <Label primary font={26} bold dark style={{ color: "#FFFF13", }}>
+                                                    {timeLeft <= 0 ? "Time's Up" : timeLeft}
+                                                </Label>
+                                                <Label primary font={16} bold dark style={{ color: "#FFFF13", }}>
+                                                    Question
+                                                </Label>
+                                                <Label primary font={16} bold dark style={{ color: "#ffff", lineHeight: 28 }}>
+                                                    {questionRef.current[questionIncrement.current]?.question}
+                                                </Label>
+                                                {/* </View> */}
+                                                {/* </LinearGradient> */}
+                                                <QuizOptions options={questionRef.current[questionIncrement.current]?.answer}
+                                                    //  onPressDone={onPressDone}
+                                                    //  activity={activity}
+                                                    optionSelected={selected}
+                                                    onPressOption={onPressOption}
+                                                    disableOption={timeLeft <= 0 || disableQuizOptions ? true : false}
+
+                                                />
+                                            </View>
+                                        )}
+                                    </LinearGradient>
+                                )
                             ) : null}
                         </>
 
@@ -448,7 +495,7 @@ const BackgroundVideo = ({ route, navigation }) => {
 
                 </View>
             </Wrapper>
-            <ElimanationModal ModalRef={ModalState} details />
+            <ElimanationModal ModalRef={ModalState} details onPressContinue={onPressContinue} />
         </View>
     );
 }

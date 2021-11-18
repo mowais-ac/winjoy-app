@@ -79,7 +79,7 @@ const LiveGameShows = ({ props, navigation }) => {
       if (res.status === "success") {
         if (res.message === "Game Show Available") {
           setLivegameData(res)
-          var CurrentDate = dayjs().format("YYYY-MM-DDThh:mm:ss.000z");
+          var CurrentDate = dayjs().format("YYYY-MM-DDThh:mm:ss.000000Z");
           var duration = dayjs(res?.LivegameShow?.start_date).diff(dayjs(CurrentDate), 'seconds');
           setTime(duration)
           console.log("duration", duration);
@@ -133,7 +133,7 @@ const LiveGameShows = ({ props, navigation }) => {
       console.log("letbegain", res);
       if (res.status === "success") {
         if (res.message === "Welcome to Live Game Show") {
-          navigation.navigate("SimpeStackScreen", { screen: "Quiz", params: { selected: liveStreamUri } })
+          navigation.navigate("SimpeStackScreen", { screen: "Quiz", params: { uri: liveStreamUri } })
 
         }
       }
@@ -196,7 +196,7 @@ const LiveGameShows = ({ props, navigation }) => {
             {" "}amazing prizes
           </Label>
         </Label>
-        {!gameBtnText ? (
+        {gameBtnText ? (
           <TouchableOpacity
             onPress={() => {
               LetBegain()
