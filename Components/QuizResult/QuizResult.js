@@ -8,9 +8,9 @@ import Icon2 from 'react-native-vector-icons/Entypo';
 const { StyleSheet, Dimensions } = require('react-native');
 const { width, height } = Dimensions.get("window");
 function QuizResult({ options, optionSelected, answer, answerByUser, onPressDone, activity }) {
-  console.log("options",options);
+  console.log("options", options);
   console.log("answerByUser", answerByUser);
-  console.log("answer",answer);
+  console.log("answer", answer);
   return (
     <>
       <View style={styles.optionsViewMain}>
@@ -20,30 +20,41 @@ function QuizResult({ options, optionSelected, answer, answerByUser, onPressDone
             ({ item, index }) => {
               return (
 
+                <>
+                  {activity ? (
+                    <View style={[styles.optionView, { backgroundColor:"#ffffff" }]} >
+                      <Text style={[styles.optionsText, { color:'#2F2442' }]}>
+                        {item.answer}
+                      </Text>
 
+                      <ActivityIndicator size="small" color={"#2F2442"} />
 
-                <View style={[styles.optionView, { backgroundColor: item.answer === answer ? '#4ce74b' : "#ffffff" }]} >
-                  <Text style={[styles.optionsText, { color: answerByUser === item.answer ? '#d3001d' : '#2F2442' }]}>
-                    {item.answer}
-                  </Text>
-                  {item.answer === answer && answerByUser === item.answer ? (
-                    <Icon name="check" size={30} color="#ffffff" />
+                    </View>
                   ) : (
-                    <>
-                      {item.answer === answer ? (
+                    <View style={[styles.optionView, { backgroundColor: item.answer === answer ? '#4ce74b' : "#ffffff" }]} >
+                      <Text style={[styles.optionsText, { 
+                        color: answerByUser !== item.answer ? '#2F2442' : item.answer===answer?'#2F2442':'#d3001d'
+
+                      }]}>
+                        {item.answer}
+                      </Text>
+                      {item.answer === answer && answerByUser === item.answer ? (
                         <Icon name="check" size={30} color="#ffffff" />
-                      ) : null}
-                      {answerByUser === item.answer ? (
-                        <Icon2 name="cross" size={30} color="#d3001d" />
-                      ) : null}
-                    </>
+                      ) : (
+                        <>
+                          {item.answer === answer ? (
+                            <Icon name="check" size={30} color="#ffffff" />
+                          ) : null}
+                          {answerByUser === item.answer ? (
+                            <Icon2 name="cross" size={30} color="#d3001d" />
+                          ) : null}
+                        </>
+                      )}
+
+
+                    </View>
                   )}
-
-
-                </View>
-
-
-
+                </>
               )
             }
           }

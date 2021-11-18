@@ -160,6 +160,7 @@ const BackgroundVideo = ({ route, navigation }) => {
             });
     }
     const SaveResponse = async () => {
+        setActivity(true)
         console.log("sques", questionRef.current);
         let ans = ""
         questionRef.current[questionIncrement.current]?.answer.map((item) => {
@@ -310,9 +311,8 @@ const BackgroundVideo = ({ route, navigation }) => {
                 setGameShowCheck(true)
                 setDisableQuizOptions(false)
                 setShowResult(false)
-                clearTimeout(timer);
                 setTimeLeft(20)
-
+                clearTimeout(timer);
                 startTimer();
 
                 //  setTimer(20)
@@ -412,6 +412,7 @@ const BackgroundVideo = ({ route, navigation }) => {
                                                 options={questionRef.current[questionIncrement.current]?.answer}
                                                 answer={answer.current}
                                                 answerByUser={selectedAns.current}
+                                                activity={activity}
                                             />
                                         </View>
                                     ) : (
@@ -431,7 +432,7 @@ const BackgroundVideo = ({ route, navigation }) => {
                                             {/* </LinearGradient> */}
                                             <QuizOptions options={questionRef.current[questionIncrement.current]?.answer}
                                                 //  onPressDone={onPressDone}
-                                                activity={activity}
+                                              //  activity={activity}
                                                 optionSelected={selected}
                                                 onPressOption={onPressOption}
                                                 disableOption={timeLeft <= 0 || disableQuizOptions ? true : false}
