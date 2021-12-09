@@ -8,10 +8,7 @@ import {
   ActivityIndicator,
   RefreshControl,
   Text,
-  Modal,
-  Pressable,
   TouchableOpacity,
-  TextInput
 } from "react-native";
 
 import Background from "../../Components/Background";
