@@ -1,1 +1,0 @@
-../../../../../node_modules/react-native-nodemediaclient/ios/RCTNodeMediaClient/RCTNodeMediaClient.h
