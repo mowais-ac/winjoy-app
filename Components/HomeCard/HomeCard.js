@@ -3,10 +3,10 @@ import { View, Text, TextInput, TouchableWithoutFeedback, StyleSheet, Image, } f
 import { widthConverter } from "../Helpers/Responsive";
 import styles from "./Styles";
 import CountDown from 'react-native-countdown-component';
-function HomeCard({ style, startAt, onPress, subHeading, timer, startIn }) {
+function HomeCard({ style, startAt, onPress, finish, time, startIn }) {
 
   return (
-    <TouchableWithoutFeedback
+    <TouchableWithoutFeedback 
       onPress={onPress}
     >
       <View style={[styles.mainView, style]}>
@@ -31,8 +31,8 @@ function HomeCard({ style, startAt, onPress, subHeading, timer, startIn }) {
           <CountDown
             style={{ marginTop: 6 }}
             size={16}
-            until={10000}
-            onFinish={() => alert("finish")}
+            until={time}
+            onFinish={finish}
             digitStyle={{ borderColor: '#D9FE51', borderWidth: 1 }}
             digitTxtStyle={{ color: '#D9FE51', fontSize: 18, fontFamily: 'Axiforma-Medium' }}
             timeLabelStyle={{ color: 'red', }}

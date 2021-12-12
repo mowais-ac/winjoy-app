@@ -26,7 +26,7 @@
 //           style={styles.yellowBtn} 
 //         >
 
-//             <AvatarBtn
+//             <AvatarBtn 
 //               picture={"https://abdulrahman.fleeti.com/save_file/uploads/provider/user/5bf637c8_60262ff8dbde39.10627959.jpg"}
 //               // id={userInfo?.id}
 //               name={(name.slice(0, 1) + name.slice(0, 1))}
@@ -134,7 +134,8 @@ import {
   ActivityIndicator,
   FlatList,
   ImageBackground,
-  Text
+  Text,
+  Image
 } from "react-native";
 import UpdateCoins from "../../redux/actions/Coins-action";
 import { connect } from "react-redux";
@@ -160,8 +161,16 @@ import AvatarBtn from "../../Components/AvatarBtn";
 import { RFValue } from "react-native-responsive-fontsize";
 import Entypo from 'react-native-vector-icons/Entypo';
 import styles from './style';
-import { HomeCard, ButtonWithIcon,TriviaAvatar,ProductViewCard, TriviaNightCard } from '../../Components';
-let name = "waqar hussain"
+import { HomeCard, ButtonWithIcon, TriviaAvatar, ProductViewCard, TriviaNightCard } from '../../Components';
+import { ImageSlider } from "react-native-image-slider-banner";
+;
+import dayjs from "dayjs"
+let name = "waqar hussain";
+const bImages = [
+  "https://virtualcurrency.archdubai.com/public/storage/banners/lastWinner_banner/product1_900x500.png",
+  "https://virtualcurrency.archdubai.com/public/storage/banners/liveStream_banner/banner.PNG"
+
+];
 function ClosingSoon({ item }) {
   let progress = item.updated_stocks
     ? (item?.updated_stocks / item?.stock) * 100
@@ -232,12 +241,62 @@ const index = (props) => {
   const [refreshing, setRefreshing] = React.useState(false);
   const [productList, setProductList] = React.useState([]);
   const [winnerData, setWinnerData] = useState([]);
+  const [imgActive, setImgActive] = useState(0);
+  const [homeData, setHomeData] = useState([]);
+  const [time, setTime] = useState("");
   const onRefresh = React.useCallback(() => {
     // setBanners(null);
     setRefreshing(true);
     UpdateCoinsOnce();
     wait(500).then(() => setRefreshing(false));
   }, []);
+  const onchange = (nativeEvent) => {
+    const slide = Math.ceil(nativeEvent.contentOffset.x / nativeEvent.layoutMeasurement.width)
+    if (slide != imgActive) {
+      setImgActive(slide);
+    }
+  }
+  useEffect(() => {
+    GetData()
+}, []);
+const finish=()=>{
+ //here put the code for time completion
+}
+const GetData=async()=>{
+  const Token = await EncryptedStorage.getItem("Token");
+  const requestOptions = {
+    headers: {
+      "Content-Type": "multipart/form-data",
+      Accept: "application/json",
+      Authorization: `Bearer ${Token}`,
+    },
+  };
+  // alert(13123);
+  await axios
+    .get(`${Config.API_URL}/home`, requestOptions)
+    .then((response) => {
+      let res = response.data;
+      console.log("home", res.LivegameShow.price);
+      if (res.status === "success") {
+        setHomeData(res)
+        if (res.message === "Game Show Available") {
+         // setLivegameData(res)
+          var CurrentDate = dayjs().format("YYYY-MM-DDThh:mm:ss.000000Z");
+          var duration = dayjs(res?.LivegameShow?.start_date).diff(dayjs(CurrentDate), 'seconds');
+          setTime(duration)
+          console.log("duration", duration);
+          //   LetBegain(res?.LivegameShow?.id)
+          //   navigation.navigate("SimpeStackScreen", { screen: "Quiz",
+          //  // params:{liveGameShowId: res.LivegameShow.id}
+          //  })
+        } else {
+          alert(res)
+        }
+      }
+
+    
+    });
+};
   const UpdateCoinsOnce = () => {
     initialLoad();
     props.UpdateCoins(UpdateCoins());
@@ -257,8 +316,15 @@ const index = (props) => {
         .get(`${Config.API_URL}/banners`, requestOptions)
         .then((response) => {
           let res = response.data;
+          console.log("res", res);
           if (res.status && res.status.toLowerCase() === "success") {
-            setBanners(res.data);
+            let arr = [];
+            res.data.map((item) => {
+              arr.push({
+                img: item
+              })
+            });
+            setBanners(arr);
           }
         });
     };
@@ -331,11 +397,43 @@ const index = (props) => {
         {Banners === null ? (
           <ActivityIndicator size="large" color={Colors.BLACK} />
         ) : (
-          <LoaderImage
-            source={{ uri: Banners[1].replace('http://', 'https://') }}
-            style={styles.ShoppingBanner}
-            resizeMode="stretch"
-          />
+          // <LoaderImage
+          //   source={{ uri: Banners[1].replace('http://', 'https://') }}
+          //   style={styles.ShoppingBanner}
+          //   resizeMode="stretch"
+          // />
+          <View style={styles.wrap}>
+            <ScrollView
+              const onScroll={({ nativeEvent }) => onchange(nativeEvent)}
+              showsHorizontalScrollIndicator={false}
+              pagingEnabled
+              horizontal
+              style={styles.ShoppingBanner}
+            >
+              {
+                bImages.map((e, index) =>
+                  <Image
+                    key={e}
+                    resizeMode="stretch"
+                    style={styles.ShoppingBanner}
+                    source={{ uri: e }}
+                  />
+                )
+              }
+            </ScrollView>
+            <View style={styles.wrapDot}>
+              {
+                bImages.map((e, index) =>
+                  <Text
+                    key={e}
+                    style={imgActive == index ? styles.dotActive : styles.dot}
+                  >
+                    ●
+                  </Text>
+                )
+              }
+            </View>
+          </View>
         )}
         <Header style={{ top: 0, position: "absolute", marginTop: 10 }} />
 
@@ -386,11 +484,12 @@ const index = (props) => {
               name={(name.slice(0, 1) + name.slice(0, 1))}
               size={50}
               font={28}
+              
             />
           </View>
 
           <View style={styles.btnTextView}>
-            <Text style={[styles.text, { color: '#fff', fontSize: RFValue(16) }]}>Penny N. Damian</Text>
+            <Text style={[styles.text, { color: '#fff', fontSize: RFValue(16) }]}>Penny N.Damian</Text>
             <Text style={[styles.text, { color: '#fff', fontSize: RFValue(16) }]}>Your balance: <Text style={[styles.text, { color: '#ffff00', fontSize: RFValue(16) }]}>AED 20,000</Text></Text>
           </View>
           <Entypo name="chevron-thin-right" size={22} color="#fff" style={{ marginTop: 6.5, marginRight: 6 }} />
@@ -423,69 +522,71 @@ const index = (props) => {
       </LinearGradient>
       <HomeCard
         onPress={() => navigation.navigate("Landing")}
-        style={{ marginTop: 10,marginLeft:13 }}
-      /> 
-        <Label
-          notAlign
-          primary
-          font={16}
-          dark
-          style={{
-            color: "#E7003F",
-            marginLeft: width * 0.04,
-            marginTop: 10,
-            marginBottom: 10,
-          }}
-        >
-          Closing Soon
-        </Label>
-       <FlatList
-          horizontal={true}
-          style={{ marginLeft: 1, minHeight: 50 }}
-          contentContainerStyle={{
-            alignSelf: "flex-start",
-            paddingRight: width * 0.04,
-          }}
-          showsVerticalScrollIndicator={false}
-          showsHorizontalScrollIndicator={false}
-          data={productList}
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              onPress={() =>
-                navigation.navigate("SimpeStackScreen",{screen:"ProductDetail",params:item})
-              }
-            >
-              <ClosingSoon props={props} index={item.index} item={item} />
-            </TouchableOpacity>
-          )}
-          keyExtractor={(item) => item.id}
-          //   ListEmptyComponent={this.RenderEmptyContainerOnGoing()}
-        />
+        style={{ marginTop: 10, marginLeft: 13 }}
+        time={time}
+        Finish={finish()}
+      />
+      <Label
+        notAlign
+        primary
+        font={16}
+        dark
+        style={{
+          color: "#E7003F",
+          marginLeft: width * 0.04,
+          marginTop: 10,
+          marginBottom: 10,
+        }}
+      >
+        Closing Soon
+      </Label>
+      <FlatList
+        horizontal={true}
+        style={{ marginLeft: 1, minHeight: 50 }}
+        contentContainerStyle={{
+          alignSelf: "flex-start",
+          paddingRight: width * 0.04,
+        }}
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
+        data={productList}
+        renderItem={({ item }) => (
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate("SimpeStackScreen", { screen: "ProductDetail", params: item })
+            }
+          >
+            <ClosingSoon props={props} index={item.index} item={item} />
+          </TouchableOpacity>
+        )}
+        keyExtractor={(item) => item.id}
+      //   ListEmptyComponent={this.RenderEmptyContainerOnGoing()}
+      />
       {/* <HomeBottomList data={winnerData} /> */}
       <FlatList
-          horizontal={true}
-          style={{ marginLeft: 1, minHeight: 50 }}
-          contentContainerStyle={{
-            marginTop:25,
-            marginLeft:10,
-            alignSelf: "flex-start",
-            paddingRight: width * 0.04,
-          }}
-          showsVerticalScrollIndicator={false}
-          showsHorizontalScrollIndicator={false}
-          data={productList}
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              onPress={() =>
-                navigation.navigate("SimpeStackScreen",{screen:"ProductDetail",params:item})
-              }
-            >
-              <TriviaNightCard props={props} index={item.index} item={item} />
-            </TouchableOpacity>
-          )}
-          keyExtractor={(item) => item.id}
-          //   ListEmptyComponent={this.RenderEmptyContainerOnGoing()}
-        />
+        horizontal={true}
+        style={{ marginLeft: 1, minHeight: 50 }}
+        contentContainerStyle={{
+          marginTop: 25,
+          marginLeft: 10,
+          alignSelf: "flex-start",
+          paddingRight: width * 0.04,
+        }}
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
+        data={productList}
+        renderItem={({ item }) => (
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate("SimpeStackScreen", { screen: "ProductDetail", params: item })
+            }
+          >
+            <TriviaNightCard props={props} index={item.index} item={item} />
+          </TouchableOpacity>
+        )}
+        keyExtractor={(item) => item.id}
+      //   ListEmptyComponent={this.RenderEmptyContainerOnGoing()}
+      />
       <View style={{ height: 20 }} />
     </ScrollView>
   );

@@ -17,7 +17,7 @@ export default StyleSheet.create({
     height: height * 0.3,
   },
   yellowBtn: {
-    marginTop: 10,
+    marginTop: 7,
     width: widthPercentageToDP("100%"),
     height: heightConverter(65),
    // justifyContent: 'center',
@@ -55,7 +55,7 @@ export default StyleSheet.create({
     fontSize: RFValue(20)
   },
   ShoppingBanner: {
-    width: "100%",
+    width: width,
     height: height * 0.3,
    // marginTop: height * 0.015,
     alignSelf: "center",
@@ -93,7 +93,7 @@ export default StyleSheet.create({
     marginLeft: 2,
   },
   mainView: {
-    height: heightPercentageToDP("42"),
+    height: heightPercentageToDP("40"),
     width: width,
 
     borderBottomLeftRadius: 20,
@@ -102,4 +102,42 @@ export default StyleSheet.create({
     borderTopRightRadius: 0,
     overflow: "hidden",
   },
+  wrapper: {},
+  slide1: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#9DD6EB'
+  },
+  slide2: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#97CAE5'
+  },
+  slide3: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#92BBD9'
+  },
+  text: {
+    color: '#fff',
+    fontSize: 30,
+    fontWeight: 'bold'
+  },
+  wrapDot:{
+    position:'absolute',
+    bottom:0,
+    flexDirection:'row',
+    alignSelf:'center'
+  },
+  dotActive:{
+    margin:3,
+    color:'white'
+  },
+  dot:{
+    margin:3,
+    color:'black'
+  }
 });

@@ -260,11 +260,11 @@ const BackgroundVideo = ({ route, navigation }) => {
             setGameShowCheck(false)
 
         });
-        socket.on("sendHideAnswer", msg => { 
+        socket.on("sendHideAnswer", msg => {
             console.log(msg);
         });
         socket.on("sendEndShow", msg => {
-            navigation.navigate("TabsStack", { screen: "WINNERS"})
+            navigation.navigate("TabsStack", { screen: "WINNERS" })
         });
         socket.on("sendCount", msg => {
             setJoinedUsers(msg)
@@ -349,8 +349,8 @@ const BackgroundVideo = ({ route, navigation }) => {
                         <Video
                             // key={keyS}
                             source={{
-                               // uri: uri
-                                  uri: "http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4"
+                                uri: uri
+                                // uri: "http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4"
                             }}
                             // onReadyForDisplay={readyToDisplay}
                             style={styles.backgroundVideo}
