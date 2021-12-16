@@ -136,5 +136,19 @@ export default StyleSheet.create({
   dot:{
     margin:3,
     color:'black'
-  }
+  },
+  avatarBannerView:{
+    width:"100%",
+    height:200,
+    alignItems:'center'
+},
+  avatarBanner:{
+    width:360,
+    height:200,
+},
+Margin: {
+  height: height * 0.06,
+  width: width * 0.4,
+  backgroundColor: "#ffffff",
+},
 });

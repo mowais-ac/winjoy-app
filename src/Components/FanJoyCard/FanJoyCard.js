@@ -16,17 +16,17 @@ function FanJoyCard({ style, onPress, reset, result, optionDisable, data }) {
     >
       <View>
         <Image
-          style={styles.bgImage}
+          style={[styles.bgImage,style]}
           source={{
             uri: 'https://abdulrahman.fleeti.com/save_file/uploads/provider/user/5bf637c8_60262ff8dbde39.10627959.jpg',
           }}
         />
         <LinearGradient
           colors={["rgba(0,0,128,0)","rgba(0,0,128,0)", "rgba(0,0,128,0.9)"]}
-          style={styles.bgView}
+          style={[styles.bgView,style]}
         >
-          <Text style={{color:'#fff',fontFamily:'Axiforma SemiBold'}}>Bobby Mares</Text>
-          <Text style={{color:'#fff',fontFamily:'Axiforma Regular'}}>120.5K Fans</Text>
+          <Text style={{color:'#ffffff',fontFamily:'Axiforma SemiBold'}}>Bobby Mares</Text>
+          <Text style={{color:'#ffffff',fontFamily:'Axiforma Regular'}}>120.5K Fans</Text>
         </LinearGradient>
       </View>
     </TouchableOpacity>
