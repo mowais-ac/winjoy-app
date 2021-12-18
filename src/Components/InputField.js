@@ -134,7 +134,7 @@ const InputField = React.forwardRef((props, ref) => {
       alignSelf: "center",
       fontSize: RFValue(12),
       borderRadius: 55,
-      fontFamily: "Axiforma Regular",
+      fontFamily: "Axiforma-Regular",
       color: Colors.LABEL,
     },
     NoIcon: {
@@ -154,7 +154,7 @@ const InputField = React.forwardRef((props, ref) => {
     Phone: {
       color: Colors.MUTED,
       fontWeight: 'bold',
-      fontFamily: "Axiforma Light",
+      fontFamily: "Axiforma-Light",
     },
     Arrow: {
       position: "absolute",
@@ -189,7 +189,7 @@ const InputField = React.forwardRef((props, ref) => {
       fontSize: RFValue(parseInt(props.font)),
     },
     bold: {
-      fontFamily: "Axiforma SemiBold",
+      fontFamily: "Axiforma-SemiBold",
     },
     BlackText: {
       color: Colors.BLACK,
@@ -242,7 +242,7 @@ const InputField = React.forwardRef((props, ref) => {
   };
 
   const CheckUserName = async () => {
-  
+    console.log("Config.API_URL", Config.API_URL);
     if (!ActForCheck) {
 
       if (val !== null && val !== "") {
@@ -263,6 +263,7 @@ const InputField = React.forwardRef((props, ref) => {
         await fetch(`${Config.API_URL}/auth/username`, requestOptions)
           .then((response) => response.ok && response.json())
           .then(async (res) => {
+            console.log("res user name", res);
             if (res.message == "valid username") {
               setisRight(Images.Right);
             } else {
@@ -322,7 +323,7 @@ const InputField = React.forwardRef((props, ref) => {
           <Text style={styles.Icon}>{GetIcon(props.Icon)}</Text>
         )}
         <TextInput
-          placeholderTextColor={props.white ? Colors.DARK_MUTED : Colors.WHITE}
+          placeholderTextColor={props.white ? Colors.DARK_MUTED : Colors.WHITE} 
           onBlur={onBlur}
           {...props}
           onChangeText={HandleChange}

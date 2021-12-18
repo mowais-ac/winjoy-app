@@ -166,14 +166,25 @@ import { HomeCard, ButtonWithIcon, TriviaAvatar, ProductViewCard, TriviaNightCar
 import dayjs from "dayjs"
 import LongButton from "../../Components/LongButton";
 import { FanJoyCard, WjBackground } from "../../Components";
+import Carousel from 'react-native-snap-carousel';
+import Video from "react-native-video";
 let name = "waqar hussain";
-const bImages = [
-  "https://virtualcurrency.archdubai.com/public/storage/banners/lastWinner_banner/product1_900x500.png",
-  "https://virtualcurrency.archdubai.com/public/storage/banners/liveStream_banner/banner.PNG"
-
+let carouselItems = [
+        {
+            id: 1,
+            mediaType: "image",
+            imgUrl: "https://images.unsplash.com/photo-1473177027534-53d906e9abcf?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1049&q=80"
+        },
+        {
+            id: 2,
+            mediaType: "video",
+            imgUrl: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+        },
 ];
+
+
 function ClosingSoon({ item }) {
-  let progress = item.updated_stocks
+  let progress = item.updated_stocks 
     ? (item?.updated_stocks / item?.stock) * 100
     : 0;
 
@@ -245,6 +256,8 @@ const index = (props) => {
   const [imgActive, setImgActive] = useState(0);
   const [homeData, setHomeData] = useState([]);
   const [time, setTime] = useState("");
+  const [activeSlide, setActiveSlide] = useState();
+
   const onRefresh = React.useCallback(() => {
     // setBanners(null);
     setRefreshing(true);
@@ -384,7 +397,33 @@ const index = (props) => {
       PastWinner();
     }, [])
   );
-
+  function _renderItem({ item, index }) {
+    console.log("iteeeem",item);
+    if (item.mediaType === "image") {
+      return (
+          <View key={index}>
+              <Image source={{ uri: item.imgUrl }} 
+              resizeMode={"cover"}
+              style={styles.ShoppingBanner}
+               />
+          </View>
+      )
+      } else {
+          return (
+              <View key={index}>
+                  <Video
+                      source={{ uri: item.imgUrl }}  // Can be a URL or a local file.
+                     // ref={(ref) => { this.player = ref }}  // Store reference
+                      resizeMode={"cover"}
+                     // paused={index !== activeSlide}
+                      onLoad={(txt)=>console.log("txt",txt)}
+                    //  onError={this.onVideoError}
+                      controls={false}
+                      style={styles.ShoppingBanner} />
+              </View>
+          )
+      }
+  }
   return (
     <ScrollView
       style={{ backgroundColor: "#f6f1f3" }}
@@ -405,38 +444,25 @@ const index = (props) => {
             //   resizeMode="stretch"
             // />
             <View style={styles.wrap}>
-              <ScrollView
-                const onScroll={({ nativeEvent }) => onchange(nativeEvent)}
-                showsHorizontalScrollIndicator={false}
-                pagingEnabled
-                horizontal
-                style={styles.ShoppingBanner}
-              >
-                {
-                  bImages.map((e, index) =>
-                    <Image
-                      key={e}
-                      resizeMode="stretch"
-                      style={styles.ShoppingBanner}
-                      source={{ uri: e }}
-                    />
-                  )
-                }
-              </ScrollView>
-              <View style={styles.wrapDot}>
-                {
-                  bImages.map((e, index) =>
-                    <Text
-                      key={e}
-                      style={imgActive == index ? styles.dotActive : styles.dot}
-                    >
-                      ●
-                    </Text>
-                  )
-                }
-              </View>
+        
+                <Carousel
+                  layout={"default"}
+                  resizeMode={"cover"}
+                  loop={true}
+                  autoplay={true}
+                  autoplayInterval={8000}
+                  
+                  //  ref={ref => this.carousel = ref}
+                  data={carouselItems}
+                  sliderWidth={width}
+                  itemWidth={width}
+                  renderItem={_renderItem}
+                  style={styles.ShoppingBanner}
+                  onSnapToItem={index => setActiveSlide(index)}
+                />
             </View>
           )}
+
           <Header style={{ top: 0, position: "absolute", marginTop: 10 }} />
 
           {/* <Label
