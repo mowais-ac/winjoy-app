@@ -164,14 +164,27 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import styles from './styles';
 import { HomeCard, ButtonWithIcon, TriviaAvatar, ProductViewCard, TriviaNightCard } from '../../Components';
 import dayjs from "dayjs"
+import LongButton from "../../Components/LongButton";
+import { FanJoyCard, WjBackground } from "../../Components";
+import Carousel from 'react-native-snap-carousel';
+import Video from "react-native-video";
 let name = "waqar hussain";
-const bImages = [
-  "https://virtualcurrency.archdubai.com/public/storage/banners/lastWinner_banner/product1_900x500.png",
-  "https://virtualcurrency.archdubai.com/public/storage/banners/liveStream_banner/banner.PNG"
-
+let carouselItems = [
+        {
+            id: 1,
+            mediaType: "image",
+            imgUrl: "https://images.unsplash.com/photo-1473177027534-53d906e9abcf?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1049&q=80"
+        },
+        {
+            id: 2,
+            mediaType: "video",
+            imgUrl: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+        },
 ];
+
+
 function ClosingSoon({ item }) {
-  let progress = item.updated_stocks
+  let progress = item.updated_stocks 
     ? (item?.updated_stocks / item?.stock) * 100
     : 0;
 
@@ -243,6 +256,8 @@ const index = (props) => {
   const [imgActive, setImgActive] = useState(0);
   const [homeData, setHomeData] = useState([]);
   const [time, setTime] = useState("");
+  const [activeSlide, setActiveSlide] = useState();
+
   const onRefresh = React.useCallback(() => {
     // setBanners(null);
     setRefreshing(true);
@@ -382,7 +397,33 @@ const index = (props) => {
       PastWinner();
     }, [])
   );
-
+  function _renderItem({ item, index }) {
+    console.log("iteeeem",item);
+    if (item.mediaType === "image") {
+      return (
+          <View key={index}>
+              <Image source={{ uri: item.imgUrl }} 
+              resizeMode={"cover"}
+              style={styles.ShoppingBanner}
+               />
+          </View>
+      )
+      } else {
+          return (
+              <View key={index}>
+                  <Video
+                      source={{ uri: item.imgUrl }}  // Can be a URL or a local file.
+                     // ref={(ref) => { this.player = ref }}  // Store reference
+                      resizeMode={"cover"}
+                     // paused={index !== activeSlide}
+                      onLoad={(txt)=>console.log("txt",txt)}
+                    //  onError={this.onVideoError}
+                      controls={false}
+                      style={styles.ShoppingBanner} />
+              </View>
+          )
+      }
+  }
   return (
     <ScrollView
       style={{ backgroundColor: "#f6f1f3" }}
@@ -390,67 +431,176 @@ const index = (props) => {
         <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
       }
     >
-      <LinearGradient colors={["#5B0C86", "#E7003F"]} style={styles.mainView}>
+      <View style={{ width: '100%', alignItems: 'center', }}>
+        <LinearGradient colors={["#5B0C86", "#E7003F"]} style={styles.mainView}>
 
 
-        {Banners === null ? (
-          <ActivityIndicator size="large" color={Colors.BLACK} />
-        ) : (
-          // <LoaderImage
-          //   source={{ uri: Banners[1].replace('http://', 'https://') }}
-          //   style={styles.ShoppingBanner}
-          //   resizeMode="stretch"
-          // />
-          <View style={styles.wrap}>
-            <ScrollView
-              const onScroll={({ nativeEvent }) => onchange(nativeEvent)}
-              showsHorizontalScrollIndicator={false}
-              pagingEnabled
-              horizontal
-              style={styles.ShoppingBanner}
-            >
-              {
-                bImages.map((e, index) =>
-                  <Image
-                    key={e}
-                    resizeMode="stretch"
-                    style={styles.ShoppingBanner}
-                    source={{ uri: e }}
-                  />
-                )
-              }
-            </ScrollView>
-            <View style={styles.wrapDot}>
-              {
-                bImages.map((e, index) =>
-                  <Text
-                    key={e}
-                    style={imgActive == index ? styles.dotActive : styles.dot}
-                  >
-                    ●
-                  </Text>
-                )
-              }
+          {Banners === null ? (
+            <ActivityIndicator size="large" color={Colors.BLACK} />
+          ) : (
+            // <LoaderImage
+            //   source={{ uri: Banners[1].replace('http://', 'https://') }}
+            //   style={styles.ShoppingBanner}
+            //   resizeMode="stretch"
+            // />
+            <View style={styles.wrap}>
+        
+                <Carousel
+                  layout={"default"}
+                  resizeMode={"cover"}
+                  loop={true}
+                  autoplay={true}
+                  autoplayInterval={8000}
+                  
+                  //  ref={ref => this.carousel = ref}
+                  data={carouselItems}
+                  sliderWidth={width}
+                  itemWidth={width}
+                  renderItem={_renderItem}
+                  style={styles.ShoppingBanner}
+                  onSnapToItem={index => setActiveSlide(index)}
+                />
             </View>
-          </View>
-        )}
-        <Header style={{ top: 0, position: "absolute", marginTop: 10 }} />
+          )}
 
-        {/* <Label
+          <Header style={{ top: 0, position: "absolute", marginTop: 10 }} />
+
+          {/* <Label
+  notAlign
+  primary
+  font={16}
+  dark
+  style={{
+    color: "#ffff",
+    marginLeft: width * 0.04,
+    marginTop: 10,
+    marginBottom: 10,
+  }}
+>
+  Closing Soon
+</Label> */}
+          {/* <FlatList
+  horizontal={true}
+  style={{ marginLeft: 1, minHeight: 50 }}
+  contentContainerStyle={{
+    alignSelf: "flex-start",
+    paddingRight: width * 0.04,
+  }}
+  showsVerticalScrollIndicator={false}
+  showsHorizontalScrollIndicator={false}
+  data={productList}
+  renderItem={({ item }) => (
+    <TouchableOpacity
+      onPress={() =>
+        navigation.navigate("SimpeStackScreen",{screen:"ProductDetail",params:item})
+      }
+    >
+      <ClosingSoon props={props} index={item.index} item={item} />
+    </TouchableOpacity>
+  )}
+  keyExtractor={(item) => item.id}
+  //   ListEmptyComponent={this.RenderEmptyContainerOnGoing()}
+/> */}
+          <View
+            style={styles.yellowBtn}
+          >
+
+            <View style={{ borderWidth: 2, borderColor: "#fff", borderRadius: 45 }}>
+              <AvatarBtn
+                picture={"https://abdulrahman.fleeti.com/save_file/uploads/provider/user/5bf637c8_60262ff8dbde39.10627959.jpg"}
+                // id={userInfo?.id}
+                name={(name.slice(0, 1) + name.slice(0, 1))}
+                size={50}
+                font={28}
+
+              />
+            </View>
+
+            <View style={styles.btnTextView}>
+              <Text style={[styles.text, { color: '#fff', fontSize: RFValue(16) }]}>Penny N.Damian</Text>
+              <Text style={[styles.text, { color: '#fff', fontSize: RFValue(16) }]}>Your balance: <Text style={[styles.text, { color: '#ffff00', fontSize: RFValue(16) }]}>AED 20,000</Text></Text>
+            </View>
+            <Entypo name="chevron-thin-right" size={22} color="#fff" style={{ marginTop: 6.5, marginRight: 6 }} />
+          </View>
+          {/* <View
+  style={{
+    height: 1,
+    width: width * 1,
+    backgroundColor: "#E74F7D",
+    marginTop: 13,
+  }}
+/>
+<TouchableOpacity onPress={() => navigation.navigate("TabsStack", { screen: "Product" })}>
+  <Label
+    primary
+    font={16}
+    bold
+    dark
+    style={{
+      color: "#ffffff",
+      marginLeft: 10,
+      marginTop: 10,
+      marginBottom: 10,
+    }}
+  >
+    View All Prizes
+  </Label>
+</TouchableOpacity>
+<View style={{ marginBottom: height * 0.01 }} /> */}
+        </LinearGradient>
+
+
+        <FlatList
+          horizontal={true}
+          style={{ marginLeft: 1, minHeight: 50 }}
+          contentContainerStyle={{
+            marginTop: 15,
+            marginLeft: 10,
+            alignSelf: "flex-start",
+            paddingRight: width * 0.04,
+            paddingBottom: 30
+          }}
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
+          data={productList}
+          renderItem={({ item }) => (
+            // <TouchableOpacity
+            //   onPress={() =>
+            //    // navigation.navigate("SimpeStackScreen", { screen: "ProductDetail", params: item })
+            //    alert("hii")
+            //   }
+            // >
+            <TriviaNightCard
+              props={props}
+              index={item.index}
+              item={item}
+              onPress={() => navigation.navigate("FanJoy")} />
+            // </TouchableOpacity>
+          )}
+          keyExtractor={(item) => item.id}
+        //   ListEmptyComponent={this.RenderEmptyContainerOnGoing()}
+        />
+        <HomeCard
+          onPress={() => navigation.navigate("Landing")}
+          style={{ marginTop: 15, }}
+          time={time}
+          Finish={finish()}
+        />
+        <Label
           notAlign
           primary
           font={16}
           dark
           style={{
-            color: "#ffff",
+            color: "#E7003F",
             marginLeft: width * 0.04,
             marginTop: 10,
             marginBottom: 10,
           }}
         >
           Closing Soon
-        </Label> */}
-        {/* <FlatList
+        </Label>
+        <FlatList
           horizontal={true}
           style={{ marginLeft: 1, minHeight: 50 }}
           contentContainerStyle={{
@@ -463,138 +613,74 @@ const index = (props) => {
           renderItem={({ item }) => (
             <TouchableOpacity
               onPress={() =>
-                navigation.navigate("SimpeStackScreen",{screen:"ProductDetail",params:item})
+                navigation.navigate("PRODUCTS", { params: item })
               }
             >
               <ClosingSoon props={props} index={item.index} item={item} />
             </TouchableOpacity>
           )}
           keyExtractor={(item) => item.id}
-          //   ListEmptyComponent={this.RenderEmptyContainerOnGoing()}
-        /> */}
-        <View
-          style={styles.yellowBtn}
+        //   ListEmptyComponent={this.RenderEmptyContainerOnGoing()}
+        />
+        <View style={styles.avatarBannerView}>
+          <Image
+            style={styles.avatarBanner}
+            source={require('../../assets/imgs/avatarBannar.png')}
+            resizeMode="stretch"
+          />
+          <LongButton
+            style={[
+              styles.Margin,
+              { backgroundColor: "#ffffff", position: 'absolute', bottom: 30, left: 30, },
+            ]}
+            textstyle={{ color: "#000000", fontFamily: "Axiforma SemiBold", fontSize: 14 }}
+            text="View Leaderboard"
+            font={16}
+            shadowless
+          />
+        </View>
+        <LinearGradient
+          start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
+          colors={["#f8d7e8", "#c7dfe8"]}
+          style={{ width: '100%', justifyContent: 'center', paddingLeft: 20, paddingTop: 20, paddingBottom: 20 }}
         >
-
-          <View style={{ borderWidth: 2, borderColor: "#fff", borderRadius: 45 }}>
-            <AvatarBtn
-              picture={"https://abdulrahman.fleeti.com/save_file/uploads/provider/user/5bf637c8_60262ff8dbde39.10627959.jpg"}
-              // id={userInfo?.id}
-              name={(name.slice(0, 1) + name.slice(0, 1))}
-              size={50}
-              font={28}
-
+          <View style={{ width: "95%", flexDirection: 'row', justifyContent: 'space-between' }}>
+            <View>
+              <Text style={{ color: '#E7003F', fontSize: 20, fontFamily: "Axiforma Bold" }}>FANJOY</Text>
+              <Text style={{ color: '#0B2142', fontSize: 16, fontFamily: "Axiforma Regular" }}>Created By Stars</Text>
+            </View>
+            <LongButton
+              style={[
+                styles.Margin,
+                { backgroundColor: "#ffffff", },
+              ]}
+              textstyle={{ color: "#000000", fontFamily: "Axiforma SemiBold", fontSize: 14 }}
+              text="View all Stars"
+              font={16}
+              shadowless
+              onPress={() => navigation.navigate("FanJoy")}
             />
           </View>
 
-          <View style={styles.btnTextView}>
-            <Text style={[styles.text, { color: '#fff', fontSize: RFValue(16) }]}>Penny N.Damian</Text>
-            <Text style={[styles.text, { color: '#fff', fontSize: RFValue(16) }]}>Your balance: <Text style={[styles.text, { color: '#ffff00', fontSize: RFValue(16) }]}>AED 20,000</Text></Text>
-          </View>
-          <Entypo name="chevron-thin-right" size={22} color="#fff" style={{ marginTop: 6.5, marginRight: 6 }} />
-        </View>
-        {/* <View
-          style={{
-            height: 1,
-            width: width * 1,
-            backgroundColor: "#E74F7D",
-            marginTop: 13,
-          }}
-        />
-        <TouchableOpacity onPress={() => navigation.navigate("TabsStack", { screen: "Product" })}>
-          <Label
-            primary
-            font={16}
-            bold
-            dark
-            style={{
-              color: "#ffffff",
-              marginLeft: 10,
-              marginTop: 10,
-              marginBottom: 10,
-            }}
-          >
-            View All Prizes
-          </Label>
-        </TouchableOpacity>
-        <View style={{ marginBottom: height * 0.01 }} /> */}
-      </LinearGradient>
-
-
-      <FlatList
-        horizontal={true}
-        style={{ marginLeft: 1, minHeight: 50 }}
-        contentContainerStyle={{
-          marginTop: 10,
-          marginLeft: 10,
-          alignSelf: "flex-start",
-          paddingRight: width * 0.04,
-        }}
-        showsVerticalScrollIndicator={false}
-        showsHorizontalScrollIndicator={false}
-        data={productList}
-        renderItem={({ item }) => (
-          // <TouchableOpacity
-          //   onPress={() =>
-          //    // navigation.navigate("SimpeStackScreen", { screen: "ProductDetail", params: item })
-          //    alert("hii")
-          //   }
-          // >
-          <TriviaNightCard
-            props={props}
-            index={item.index}
-            item={item}
-            onPress={() => navigation.navigate("FanJoy")} />
-          // </TouchableOpacity>
-        )}
-        keyExtractor={(item) => item.id}
-      //   ListEmptyComponent={this.RenderEmptyContainerOnGoing()}
-      />
-      <HomeCard
-        onPress={() => navigation.navigate("Landing")}
-        style={{ marginTop: 20, marginLeft: 20 }}
-        time={time}
-        Finish={finish()}
-      />
-      <Label
-        notAlign
-        primary
-        font={16}
-        dark
-        style={{
-          color: "#E7003F",
-          marginLeft: width * 0.04,
-          marginTop: 10,
-          marginBottom: 10,
-        }}
-      >
-        Closing Soon
-      </Label>
-      <FlatList
-        horizontal={true}
-        style={{ marginLeft: 1, minHeight: 50 }}
-        contentContainerStyle={{
-          alignSelf: "flex-start",
-          paddingRight: width * 0.04,
-        }}
-        showsVerticalScrollIndicator={false}
-        showsHorizontalScrollIndicator={false}
-        data={productList}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate("PRODUCTS", { params: item })
+          <FlatList
+            data={[1, 2, 3, 4, 5, 6]}
+            horizontal={true}
+            renderItem={(item) =>
+              <FanJoyCard
+                style={{ width: 150, marginRight: 20 }}
+              />
             }
-          >
-            <ClosingSoon props={props} index={item.index} item={item} />
-          </TouchableOpacity>
-        )}
-        keyExtractor={(item) => item.id}
-      //   ListEmptyComponent={this.RenderEmptyContainerOnGoing()}
-      />
-      {/* <HomeBottomList data={winnerData} /> */}
-
-      <View style={{ height: 20 }} />
+            //keyExtractor={(e) => e.id.toString()}
+            contentContainerStyle={{
+              marginTop: 20,
+            }}
+          // refreshControl={
+          //   <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
+          // }
+          />
+        </LinearGradient>
+        <View style={{ height: 200 }} />
+      </View>
     </ScrollView>
   );
 };

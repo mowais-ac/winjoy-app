@@ -29,7 +29,7 @@ const index = ({ route, navigation }) => {
         />
         <Header style={{ top: 0, position: "absolute", marginTop: 10 }} />
 
-        <View style={{ marginTop: 60, alignItems: 'center' }}>
+        <View style={{ marginTop: 60, alignItems: 'center',}}>
 
           <Text style={[styles.headerText]}>FAN JOY</Text>
           <Text style={styles.subHeaderText}>CREATED BY STARS</Text>

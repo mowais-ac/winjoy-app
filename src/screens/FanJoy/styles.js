@@ -2,7 +2,7 @@ import { RFValue } from 'react-native-responsive-fontsize';
 const {StyleSheet} = require('react-native');
 
 export default StyleSheet.create({
-    safeStyle: {
+    safeStyle: { 
         flex: 1,
         // backgroundColor:colors.background,
       },  
@@ -13,11 +13,12 @@ export default StyleSheet.create({
       },
       subHeaderText:{
           color:'#FFFFFF',
-          fontFamily:'Gotham Bold'
+          fontFamily:'Axiforma Regular'
       },
       playBtn:{
           width:60,
           height:60,
           marginTop:15
-      }
+      },
+    
 });
