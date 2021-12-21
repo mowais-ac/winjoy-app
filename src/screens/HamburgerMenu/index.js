@@ -161,7 +161,7 @@ const index = ({ props, navigation }) => {
                     },
                   })
                 }
-              >
+              > 
                 <Text style={[styles.text, { color: "#ffff00" }]}>
                   View all Friends
                 </Text>
@@ -198,18 +198,12 @@ const index = ({ props, navigation }) => {
                   <TouchableOpacity
                     onPress={() => {
                       if (item === "Friends") {
-                        navigation.navigate("TabsStack", {
-                          screen: "Profile",
-                          params: {
-                            screen: "ProfileScreen",
-                            params: { selected: 3 },
-                          },
+                        navigation.navigate("Friends", {
+                          selected: 3 
                         });
                       }
                       if (item === "Wallet") {
-                        navigation.navigate("SimpeStackScreen", {
-                          screen: "DashBoard",
-                        });
+                        navigation.navigate("Wallet");
                       }
                       if (item === "Leaderboard") {
                         navigation.navigate("SimpeStackScreen", {

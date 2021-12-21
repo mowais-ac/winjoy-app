@@ -11,7 +11,7 @@ import BottomTabStack from './BottomTabStack';
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistor, store } from '../redux/store';
 import { Provider } from "react-redux";
-import HamburgerMenu from "../screens/HamburgerMenu";
+import MenuStack from "../Router/MenuStack";
 import GameStack from "./GameStack";
 import Cart from "../screens/Cart";
 const Stack = createNativeStackNavigator();
@@ -121,7 +121,7 @@ function index() {
                             ) : (
                                 <>
                                     <Stack.Screen name="BottomTabStack" component={BottomTabStack} />
-                                    <Stack.Screen name="HamburgerMenu" component={HamburgerMenu} />
+                                    <Stack.Screen name="MenuStack" component={MenuStack} />
                                     <Stack.Screen name="Cart" component={Cart} />
                                     <Stack.Screen name="GameStack" component={GameStack} />
                                 </>

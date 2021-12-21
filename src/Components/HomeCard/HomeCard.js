@@ -4,7 +4,7 @@ import { widthConverter } from "../Helpers/Responsive";
 import styles from "./Styles";
 import CountDown from 'react-native-countdown-component';
 function HomeCard({ style, startAt, onPress, finish, time, startIn }) {
-
+console.log("time",time);
   return (
     <TouchableWithoutFeedback 
       onPress={onPress}

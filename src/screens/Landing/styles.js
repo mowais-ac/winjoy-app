@@ -151,4 +151,10 @@ Margin: {
   width: width * 0.4,
   backgroundColor: "#ffffff",
 },
+wrap:{
+  width: width,
+  height: height * 0.3,
+  alignItems:'center',
+  justifyContent:'center'
+}
 });

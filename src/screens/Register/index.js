@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { Image, View, StyleSheet, Dimensions, ScrollView } from "react-native";
 
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
@@ -20,10 +20,11 @@ import {
 import { Images } from "../../Constants/Index";
 import Modals from "../../Components/Modals";
 import GoBack from "../../Components/GoBack";
-
+import { strings } from "../../i18n";
 const { width, height } = Dimensions.get("window");
 
 const index = ({ navigation }) => {
+  const [lang, setLang] = useState("ar");
   const fnameref = useRef();
   const lnameref = useRef();
   const unameref = useRef();
@@ -148,11 +149,12 @@ const index = ({ navigation }) => {
     return (
       <InputField
         style={styles.Margin}
-        placeholder="Username"
+        placeholder={strings("signup.user")}
         autoCapitalize="none"
         ref={unameref}
         Icon="user"
         CheckUser
+        lang={lang}
       />
     );
   };
@@ -164,21 +166,23 @@ const index = ({ navigation }) => {
           <GoBack/>
           <Image source={Images.Logo} style={styles.Logo} />
           <Label bold headingtype="h1" style={styles.Margin}>
-            Create an account
+          {strings("signup.create_account")}
           </Label>
           
           <Modals ModalRef={ModalState} Error />
           <InputField
             style={styles.MarginLarge}
-            placeholder="First Name"
+            placeholder={strings("signup.f_name")}
             ref={fnameref}
             Icon="id"
+            lang={lang}
           />
           <InputField
             style={styles.Margin}
-            placeholder="Last Name"
+            placeholder={strings("signup.l_name")}
             ref={lnameref}
             Icon="id"
+            lang={lang}
           />
           <GetUserName />
 
@@ -190,22 +194,25 @@ const index = ({ navigation }) => {
             autoCapitalize="none"
             keyboardType="email-address"
             textContentType="emailAddress"
+            lang={lang}
           />
           <View>
             <InputField
               style={styles.Margin}
-              placeholder="Phone number"
+              placeholder={strings("signup.phone_number")}
               ref={phoneref}
               keyboardType="number-pad"
               phone
+              lang={lang}
             />
           </View>
           <InputField
             style={styles.Margin}
-            placeholder="Password"
+            placeholder={strings("signup.password")}
             secureTextEntry={true}
             ref={passref}
             Icon="lock"
+            lang={lang}
           />
           <Label
             light
@@ -218,14 +225,15 @@ const index = ({ navigation }) => {
           </Label>
           <InputField
             style={styles.Margin}
-            placeholder="Confirm Password"
+            placeholder={strings("signup.confirm_password")}
             secureTextEntry={true}
             ref={cpassref}
             Icon="lock"
+            lang={lang}
           />
           <LongButton
             style={styles.Margin}
-            text="Create an account"
+            text={strings("signup.create_account")}
             font={17}
             onPress={HandleClick}
             ref={Buttonref}

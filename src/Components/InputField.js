@@ -25,6 +25,7 @@ const { width, height } = Dimensions.get("window");
 
 const InputField = React.forwardRef((props, ref) => {
   const [err, seterr] = useState(null);
+  console.log("props.lang",props.lang);
   const [val, setval] = useState(null);
   const [isRight, setisRight] = useState(null);
   const [ActForCheck, setActForCheck] = useState(false);
@@ -136,6 +137,7 @@ const InputField = React.forwardRef((props, ref) => {
       borderRadius: 55,
       fontFamily: "Axiforma-Regular",
       color: Colors.LABEL,
+      textAlign:props.lang==='ar'?'right':'left'
     },
     NoIcon: {
       paddingLeft: width * 0.17,

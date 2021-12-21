@@ -2,6 +2,7 @@ import types from '../types';
 
 const INITIAL_STATE = {
   lastGameData: {},
+  userData: [],
 };
 
 
@@ -12,6 +13,11 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         lastGameData: action.lastGameData,
       };
+      case types.USER_DATA:
+        return {
+          ...state,
+          userData: action.userData,
+        };
     default:
       return state;
   }

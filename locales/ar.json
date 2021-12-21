@@ -1,0 +1,33 @@
+{
+  "landing_screen": {
+    "choose_your_identity": "اپنی شناخت کا انتخاب کریں?",
+    "please_select_from_the_following": "براہ کرم مندرجہ ذیل میں سے منتخب کریں۔ یہ آپ کی خدمت کو تیز تر تلاش کرنے میں ہماری مدد کرے گا",
+    "heading": "اپنے قریب ماہر سروس دریافت کریں ",
+    "description": "قابل اعتماد خدمات کی فراہمی ",
+    "maahir": "ماہر",
+    "customer": "صارف"
+  },
+  "login_screen": {
+    "login_heading": "تسجيل الدخول إلى ون جوے کے لیے لاگ ان کریں۔",
+    "login": "تسجيل الدخول",
+    "customer": "صارف",
+    "phone_number": "رقم التليفون",
+    "forgot_password": "هل نسيت كلمة السر؟",
+    "password": "كلمه السر",
+    "create_account": "انشئ حساب",
+    "or":"أو"
+  },
+  "signup": {
+    "back": "عودة",
+    "create_an_account":"انشئ حساب",
+    "f_name":"الاسم الاول",
+    "l_name":"اسم العائلة",
+    "user":"اسم المستخدم",
+    "check":"التحقق من",
+    "email":"بريد الالكتروني",
+    "phone_number":"رقم التليفون",
+    "password":"كلمة المرور",
+    "confirm_password":"تأكيد كلمة المرور",
+    "create_account":"انشئ حساب"
+  }
+}
