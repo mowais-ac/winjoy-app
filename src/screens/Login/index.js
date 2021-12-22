@@ -41,10 +41,10 @@ const index = ({ navigation }) => {
   const passref = useRef();
   const ButtonRef = useRef();
   const ModalState = useRef();
-  const [lang, setLang] = useState("en");
+  const [lang, setLang] = useState("ar");
   useEffect(() => {
-     AsyncStorage.setItem("language", "en");
-     ChangeLanguage("en");
+     AsyncStorage.setItem("language", "ar");
+     ChangeLanguage("ar");
   }, []);
   const HandleLogin = async () => {
     console.log("Config.API_UR",Config.API_URL);
@@ -77,8 +77,9 @@ const index = ({ navigation }) => {
       await fetch(`${Config.API_URL}/auth/login`, requestOptions) 
         .then(async (response) => response.json())
         .then(async (res) => {
+          console.log("reslogin",res);
           ButtonRef.current.SetActivity(false);
-          if (res) {
+          if (res?.data?.token) {
             dispatch({
               type: types.USER_DATA,
               userData:res?.data?.user,
@@ -94,8 +95,8 @@ const index = ({ navigation }) => {
                   "Your account has been inactive/suspended. Please contact support for further details.",
               });
             if (await IsVerified(res.data.token)) {
-            //  await EncryptedStorage.setItem("Token", res.data.token);
-             // signIn(res.data.token) 
+              await EncryptedStorage.setItem("Token", res.data.token);
+              signIn(res.data.token) 
             //  navigation.replace("HomeStack");
             }
             else {

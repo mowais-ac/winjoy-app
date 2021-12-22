@@ -1,12 +1,4 @@
 {
-  "landing_screen": {
-    "choose_your_identity": "اپنی شناخت کا انتخاب کریں?",
-    "please_select_from_the_following": "براہ کرم مندرجہ ذیل میں سے منتخب کریں۔ یہ آپ کی خدمت کو تیز تر تلاش کرنے میں ہماری مدد کرے گا",
-    "heading": "اپنے قریب ماہر سروس دریافت کریں ",
-    "description": "قابل اعتماد خدمات کی فراہمی ",
-    "maahir": "ماہر",
-    "customer": "صارف"
-  },
   "login_screen": {
     "login_heading": "تسجيل الدخول إلى ون جوے کے لیے لاگ ان کریں۔",
     "login": "تسجيل الدخول",
@@ -29,5 +21,8 @@
     "password":"كلمة المرور",
     "confirm_password":"تأكيد كلمة المرور",
     "create_account":"انشئ حساب"
+  },
+  "products":{
+    "do_not_miss_chance":"Don’t Miss a chace to"
   }
 }

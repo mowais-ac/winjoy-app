@@ -304,7 +304,7 @@ const index = (props) => {
               <AvatarBtn
                 picture={"https://abdulrahman.fleeti.com/save_file/uploads/provider/user/5bf637c8_60262ff8dbde39.10627959.jpg"}
                 // id={userInfo?.id}
-                name={(name.slice(0, 1) + name.slice(0, 1))}
+              //  name={(name.slice(0, 1) + name.slice(0, 1))}
                 size={50}
                 font={28}
 

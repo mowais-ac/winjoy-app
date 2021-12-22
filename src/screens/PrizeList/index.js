@@ -24,6 +24,7 @@ import Config from "react-native-config";
 import axios from 'axios';
 import { wait } from "../../Constants/Functions";
 import Colors from "../../Constants/Colors"; 
+import { strings} from "../../i18n";
 const { width, height } = Dimensions.get("window");
 const index = ({ props, navigation }) => {
   const [productData, setProductData] = useState([]);
@@ -52,7 +53,7 @@ const index = ({ props, navigation }) => {
     await axios
       .get(`${Config.API_URL}/products/list`, requestOptions)
       .then((response) => {
-        let res = response;`  `
+        let res = response;`  ` 
         console.log("resPro",res.data);
         setProductData(res?.data?.data[0]);
       });
@@ -63,7 +64,7 @@ const index = ({ props, navigation }) => {
       <View style={{ height: 20 }} />
       <Header />
       <Label primary font={16} bold dark style={{ color: "#ffff" }}>
-        Don’t Miss a chace to
+        {strings("products.login_screen.do_not_miss_chance")}
       </Label>
       <Label primary font={16} bold dark style={{ color: "#ffff" }}>
         win great deals

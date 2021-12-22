@@ -1,12 +1,4 @@
 {
-  "landing_screen": {
-    "choose_your_identity": "Choose Your Identity?",
-    "please_select_from_the_following": "Please select from the following. It will help us to find your service faster.",
-    "heading": "Discover Maahir service near you ",
-    "description": "Providing reliable services.",
-    "maahir": "Maahir",
-    "customer": "Customer"
-  },
   "login_screen": {
     "login_heading": "Login to WinJoy",
     "login": "Login",
