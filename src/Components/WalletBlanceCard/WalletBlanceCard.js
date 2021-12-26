@@ -8,6 +8,9 @@ import LoaderImage from "../LoaderImage";
 import Config from "react-native-config";
 import LongButton from "../LongButton";
 const { width, height } = Dimensions.get("window");
+import { strings} from "../../i18n";
+import I18n from 'react-native-i18n';
+I18n.locale="ar";
 function WalletBlanceCard({ options, onPress, reset, result, optionDisable, data }) {
 
   return (
@@ -47,7 +50,7 @@ function WalletBlanceCard({ options, onPress, reset, result, optionDisable, data
      
     <View style={{marginLeft:30}}>
     <Label notAlign primary font={14} bold style={{ color: "#E7003F",  }}>
-        Your Wallet
+    {strings("wallet.your_wallet")}
       </Label>
 
       <Label notAlign primary font={14} dark style={{ color: "#000000" }}>
@@ -65,7 +68,7 @@ function WalletBlanceCard({ options, onPress, reset, result, optionDisable, data
         <LongButton
           style={styles.Margin}
           textstyle={{ color: "#eb2b5f" }}
-          text={"TOPUP"}
+          text={strings("wallet.your_wallet")}
           font={16}
         />
         <LongButton
@@ -74,7 +77,7 @@ function WalletBlanceCard({ options, onPress, reset, result, optionDisable, data
             { backgroundColor: "#e3dbef"},
           ]}
           textstyle={{ color: "#420e92" }}
-          text="WITHDRAW"
+          text={strings("wallet.with_draw")}
           font={16}
      
         />

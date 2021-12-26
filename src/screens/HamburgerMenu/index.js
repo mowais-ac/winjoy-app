@@ -32,16 +32,18 @@ import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import LongButton from "../../Components/LongButton";
 import { AuthContext } from "../../Components/context";
-
+import I18n from 'react-native-i18n';
+I18n.locale="ar";
+import { strings} from "../../i18n";
 let data2 = [
-  "Wallet",
-  "Leaderboard",
-  "Played games",
-  "Friends",
-  "My orders",
-  "View profile",
-  "Refer & Earn",
-  "Logout",
+  strings("hamburger_menu.wallet"),
+  strings("hamburger_menu.leaderboard"),
+  strings("hamburger_menu.played_games"),
+  strings("hamburger_menu.friends"),
+  strings("hamburger_menu.my_order"),
+  strings("hamburger_menu.view_profile"),
+  strings("hamburger_menu.refer_&_Earn"),
+  strings("hamburger_menu.logout")
 ];
 const index = ({ props, navigation }) => {
   const [userData, setUserData] = useState([]);
@@ -130,7 +132,7 @@ const index = ({ props, navigation }) => {
               }}
             />
             <Text style={[styles.text, { color: "#ffffff", padding: 15, paddingTop: 10 }]}>
-              My Friends
+            {strings("hamburger_menu.my_friends")}
             </Text>
             <FlatList
               data={friendData}
@@ -163,7 +165,7 @@ const index = ({ props, navigation }) => {
                 }
               > 
                 <Text style={[styles.text, { color: "#ffff00" }]}>
-                  View all Friends
+                  {strings("hamburger_menu.view_all_friends")}
                 </Text>
               </TouchableOpacity>
             </View>
@@ -275,7 +277,7 @@ const index = ({ props, navigation }) => {
                 },
               ]}
             >
-              Settings
+              {strings("hamburger_menu.setting")}
             </Text>
             <View style={styles.rowView}>
               <View style={{ flexDirection: 'row', justifyContent: 'space-between', }}>
@@ -291,7 +293,7 @@ const index = ({ props, navigation }) => {
                       },
                     ]}
                   >
-                    Language
+                {strings("hamburger_menu.language")}
                   </Text>
                 </View>
                 <Text
@@ -321,7 +323,7 @@ const index = ({ props, navigation }) => {
                       },
                     ]}
                   >
-                    Currency
+                     {strings("hamburger_menu.curreny")}
                   </Text>
                 </View>
                 <Text
@@ -349,7 +351,8 @@ const index = ({ props, navigation }) => {
                 },
               ]}
             >
-              General
+              {strings("hamburger_menu.general")}
+              
             </Text>
             <View style={styles.rowView}>
               <View style={styles.innerRow}>
@@ -366,7 +369,7 @@ const index = ({ props, navigation }) => {
                     },
                   ]}
                 >
-                  How It Works
+                  {strings("hamburger_menu.how_it_works")}
                 </Text>
               </View>
               <View style={styles.innerRow}>
@@ -382,7 +385,7 @@ const index = ({ props, navigation }) => {
                     },
                   ]}
                 >
-                  Our Products
+               {strings("hamburger_menu.our_products")}
                 </Text>
               </View>
             </View>
@@ -390,13 +393,13 @@ const index = ({ props, navigation }) => {
               <LongButton
                 style={styles.Margin}
                 textstyle={{ color: "#eb2b5f" }}
-                text={"Call us"}
+                text={strings("hamburger_menu.call_us")}
                 font={16}
               />
               <LongButton
                 style={styles.Margin}
                 textstyle={{ color: "#eb2b5f" }}
-                text={"Email us"}
+                text={strings("hamburger_menu.email_us")}
                 font={16}
               />
             </View>

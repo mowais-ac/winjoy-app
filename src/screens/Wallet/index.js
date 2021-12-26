@@ -21,6 +21,9 @@ import ProfilePicture from "../../Components/ProfilePicture";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import EncryptedStorage from "react-native-encrypted-storage";
 import Config from "react-native-config";
+import I18n from 'react-native-i18n';
+I18n.locale="ar";
+import { strings} from "../../i18n";
 import axios from 'axios';
 import {
   widthPercentageToDP,
@@ -119,7 +122,7 @@ const index = ({ props, navigation }) => {
 
             <View style={{ marginLeft: 30 }}>
               <Label notAlign primary font={14} bold style={{ color: "#E7003F", }}>
-                Last 5 Transactions
+              {strings("wallet.last_five_transcation")}
               </Label>
               <FlatList
                 data={[1, 2, 3, 4, 5]}

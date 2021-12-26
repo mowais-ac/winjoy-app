@@ -25,6 +25,8 @@ import axios from 'axios';
 import { wait } from "../../Constants/Functions";
 import Colors from "../../Constants/Colors"; 
 import { strings} from "../../i18n";
+import I18n from 'react-native-i18n';
+I18n.locale="ar";
 const { width, height } = Dimensions.get("window");
 const index = ({ props, navigation }) => {
   const [productData, setProductData] = useState([]);
@@ -64,7 +66,7 @@ const index = ({ props, navigation }) => {
       <View style={{ height: 20 }} />
       <Header />
       <Label primary font={16} bold dark style={{ color: "#ffff" }}>
-        {strings("products.login_screen.do_not_miss_chance")}
+        {strings("products.do_not_miss_chance")}
       </Label>
       <Label primary font={16} bold dark style={{ color: "#ffff" }}>
         win great deals
@@ -88,7 +90,7 @@ const index = ({ props, navigation }) => {
             { backgroundColor: null, borderWidth: 2, borderColor: "#ffffff" },
           ]}
           textstyle={{ color: "#ffffff" }}
-          text="Closing Soon"
+          text={strings("products.closing_soon")}
           font={16}
           shadowless
         />

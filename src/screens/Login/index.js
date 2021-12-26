@@ -31,7 +31,8 @@ import Config from "react-native-config";
 import EncryptedStorage from "react-native-encrypted-storage";
 import Modals from "../../Components/Modals";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { strings, ChangeLanguage } from "../../i18n";
+import { strings} from "../../i18n";
+import I18n from 'react-native-i18n';
 const { width, height } = Dimensions.get("window");
 
 const index = ({ navigation }) => {
@@ -41,10 +42,10 @@ const index = ({ navigation }) => {
   const passref = useRef();
   const ButtonRef = useRef();
   const ModalState = useRef();
-  const [lang, setLang] = useState("ar");
+
+  I18n.locale="ar";
   useEffect(() => {
-     AsyncStorage.setItem("language", "ar");
-     ChangeLanguage("ar");
+ 
   }, []);
   const HandleLogin = async () => {
     console.log("Config.API_UR",Config.API_URL);
@@ -169,7 +170,7 @@ const index = ({ navigation }) => {
             placeholder={strings("login_screen.password")}
             secureTextEntry={true}
             Icon="lock"
-            lang={lang}
+          //  lang={lang}
           />
           <LongButton
             style={styles.MarginSmall}

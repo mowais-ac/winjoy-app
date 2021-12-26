@@ -12,7 +12,6 @@ import {
   Text,
   Image
 } from "react-native";
-import UpdateCoins from "../../redux/actions/Coins-action";
 import { connect, useSelector } from "react-redux";
 import { wait } from "../../Constants/Functions";
 import LoaderImage from "../../Components/LoaderImage";
@@ -112,6 +111,8 @@ const index = (props) => {
   const { Coins, navigation } = props;
 
   const [banners, setBanners] = useState([]);
+  const [lowerBanner, setLowerBanner] = useState([]);
+  const [fanjoyData, setFanjoyData] = useState([]);
   const [loader, setLoader] = useState(false);
   const [refreshing, setRefreshing] = React.useState(false);
   const [productList, setProductList] = React.useState([]);
@@ -130,12 +131,7 @@ const index = (props) => {
     UpdateCoinsOnce();
     wait(500).then(() => setRefreshing(false));
   }, []);
-  const onchange = (nativeEvent) => {
-    const slide = Math.ceil(nativeEvent.contentOffset.x / nativeEvent.layoutMeasurement.width)
-    if (slide != imgActive) {
-      setImgActive(slide);
-    }
-  }
+  
   useEffect(() => {
     GetData()
   }, []);
@@ -157,13 +153,14 @@ const index = (props) => {
       .get(`${Config.API_URL}/home`, requestOptions)
       .then((response) => {
         let res = response.data;
-        console.log("Res", res?.gameshow);
         if (res.status === "success") {
           var CurrentDate = dayjs().format("YYYY-MM-DDThh:mm:ss.000000Z");
           var duration = dayjs(res?.gameshow?.start_date).diff(dayjs(CurrentDate), 'seconds');
           setTime(duration)
           setBanners(res?.banners);
+          setLowerBanner(res?.lowerBanner)
           setProductList(res?.products)
+          setFanjoyData(res?.funJoy)
           setGameShowData(res?.gameshow)
           //setBanners(res?.banners)
 
@@ -172,61 +169,10 @@ const index = (props) => {
 
       });
   };
-  const UpdateCoinsOnce = () => {
-    props.UpdateCoins(UpdateCoins());
-  };
 
-  const ProductList = async () => {
-    const Token = await EncryptedStorage.getItem("Token");
-    const requestOptions = {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Accept: "application/json",
-        Authorization: `Bearer ${Token}`,
-      },
-    };
-    // alert(13123);
-    await axios
-      .get(`${Config.API_URL}api/home`, requestOptions)
-      .then((response) => {
-        let res = response.data;
-        let arr = [];
-        if (res.status && res.status.toLowerCase() === "success") {
-          res.data.map((item) => {
-            console.log("item", item);
-            item.map((v, i) => {
-              arr.push(v);
-            });
-          });
 
-          setProductList(arr);
-        }
-      });
-  };
-  const PastWinner = async () => {
-    const Token = await EncryptedStorage.getItem("Token");
-    const requestOptions = {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Accept: "application/json",
-        Authorization: `Bearer ${Token}`,
-      },
-    };
-    // alert(13123);
+  
 
-    await axios.get(`${Config.API_URL}/luckydraw/winner`, requestOptions).then(response => {
-      let res = response;
-      setWinnerData(res?.data[0])
-    });
-
-  }
-  useFocusEffect(
-    React.useCallback(() => {
-      UpdateCoinsOnce();
-      ProductList();
-      PastWinner();
-    }, [])
-  );
   function _renderItem({ item, index }) {
     if (item.type === "image") {
       return (
@@ -304,7 +250,7 @@ const index = (props) => {
               <AvatarBtn
                 picture={"https://abdulrahman.fleeti.com/save_file/uploads/provider/user/5bf637c8_60262ff8dbde39.10627959.jpg"}
                 // id={userInfo?.id}
-              //  name={(name.slice(0, 1) + name.slice(0, 1))}
+                //  name={(name.slice(0, 1) + name.slice(0, 1))}
                 size={50}
                 font={28}
 
@@ -335,7 +281,7 @@ const index = (props) => {
           }}
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
-          data={productList}
+          data={lowerBanner}
           renderItem={({ item }) => (
             // <TouchableOpacity
             //   onPress={() =>
@@ -344,7 +290,7 @@ const index = (props) => {
             //   }
             // >
             <TriviaNightCard
-              props={props}
+              uri={item.url}
               index={item.index}
               item={item}
               onPress={() => navigation.navigate("FanJoy")} />
@@ -436,10 +382,11 @@ const index = (props) => {
           </View>
 
           <FlatList
-            data={[1, 2, 3, 4, 5, 6]}
+            data={fanjoyData}
             horizontal={true}
-            renderItem={(item) =>
+            renderItem={({ item }) =>
               <FanJoyCard
+                name={item.first_name + item.last_name}
                 style={{ width: 150, marginRight: 20 }}
               />
             }
@@ -450,6 +397,7 @@ const index = (props) => {
           // refreshControl={
           //   <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
           // }
+          keyExtractor={(item) => item.id}
           />
         </LinearGradient>
         <View style={{ height: 200 }} />
@@ -458,19 +406,4 @@ const index = (props) => {
   );
 };
 
-
-
-const mapStateToProps = (state) => {
-  const { Coins } = state;
-  return {
-    Coins,
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    UpdateCoins: (data) => dispatch(data),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(index);
+export default index;

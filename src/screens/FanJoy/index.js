@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Image,
   SafeAreaView,
@@ -13,10 +13,41 @@ import Header from "../../Components/Header";
 import { FanJoyCard, WjBackground } from "../../Components";
 import styles from "./styles";
 import LinearGradient from "react-native-linear-gradient";
-
+import EncryptedStorage from "react-native-encrypted-storage";
+import I18n from 'react-native-i18n';
+import axios from "axios";
+import Config from "react-native-config";
+I18n.locale = "ar";
+import { strings } from "../../i18n";
 
 const { width, height } = Dimensions.get("window");
 const index = ({ route, navigation }) => {
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    GetData()
+  }, []);
+  const GetData = async () => {
+    const Token = await EncryptedStorage.getItem("Token");
+    const requestOptions = {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Accept: "application/json",
+        Authorization: `Bearer ${Token}`,
+      },
+    };
+    // alert(13123);
+    await axios
+      .get(`${Config.API_URL}/funJoy`, requestOptions)
+      .then((response) => {
+        let res = response.data;
+        if (res.status === "success") {
+
+          setData(res.user)
+        }
+
+      });
+  };
+
 
   return (
     <SafeAreaView style={styles.safeStyle}>
@@ -29,10 +60,10 @@ const index = ({ route, navigation }) => {
         />
         <Header style={{ top: 0, position: "absolute", marginTop: 10 }} />
 
-        <View style={{ marginTop: 60, alignItems: 'center',}}>
+        <View style={{ marginTop: 60, alignItems: 'center', }}>
 
-          <Text style={[styles.headerText]}>FAN JOY</Text>
-          <Text style={styles.subHeaderText}>CREATED BY STARS</Text>
+          <Text style={[styles.headerText]}>{strings("fan_joy.fan_joy")}</Text>
+          <Text style={styles.subHeaderText}>{strings("fan_joy.created_by_stars")}</Text>
           <Image
             style={styles.playBtn}
             source={require('../../assets/imgs/playRound.png')}
@@ -40,18 +71,20 @@ const index = ({ route, navigation }) => {
         </View>
         <View style={{ width: '100%', alignItems: 'center', marginLeft: 5 }}>
           <FlatList
-            data={[1, 2, 3, 4, 5, 6]}
+            data={data}
             numColumns={2}
             renderItem={(item) =>
               <FanJoyCard
+                name={item.item.first_name + item.item.last_name}
                 style={{ marginTop: 15 }}
               />
             }
             //keyExtractor={(e) => e.id.toString()}
             contentContainerStyle={{
-              
+
               paddingBottom: height * 0.51,
             }}
+            keyExtractor={(item) => item.id}
           // refreshControl={
           //   <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
           // }
