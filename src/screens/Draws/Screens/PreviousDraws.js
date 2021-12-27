@@ -10,8 +10,6 @@ import {
   FlatList,
   ImageBackground,
 } from "react-native";
-import UpdateCoins from "../../../redux/actions/Coins-action";
-import { connect } from "react-redux";
 import {  wait } from "../../../Constants/Functions";
 import LoaderImage from "../../../Components/LoaderImage";
 import Label from "../../../Components/Label";
@@ -100,12 +98,12 @@ const PreviousDraws = (props) => {
   const [refreshing, setRefreshing] = React.useState(false);
   const [productList, setProductList] = React.useState([]);
   const [winnerData, setWinnerData] = useState([]);
-  const onRefresh = React.useCallback(() => {
-    // setBanners(null);
-    setRefreshing(true);
-    UpdateCoinsOnce();
-    wait(500).then(() => setRefreshing(false));
-  }, []);
+  // const onRefresh = React.useCallback(() => {
+  //   // setBanners(null);
+  //   setRefreshing(true);
+  //   UpdateCoinsOnce();
+  //   wait(500).then(() => setRefreshing(false));
+  // }, []);
   const UpdateCoinsOnce = () => {
     initialLoad();
     props.UpdateCoins(UpdateCoins());
@@ -179,7 +177,7 @@ const PreviousDraws = (props) => {
   }
   useFocusEffect(
     React.useCallback(() => {
-      UpdateCoinsOnce();
+    //  UpdateCoinsOnce();
       initialLoad();
       ProductList();
       PastWinner();
@@ -189,9 +187,9 @@ const PreviousDraws = (props) => {
   return (
     <ScrollView
       style={{ backgroundColor: "#ffffff" }}
-      refreshControl={
-        <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
-      }
+      // refreshControl={
+      //   <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
+      // }
     >
       <LinearGradient colors={["#5B0C86", "#E7003F"]} style={styles.mainView}>
         {Banners === null ? (
@@ -323,17 +321,4 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = (state) => {
-  const { Coins } = state;
-  return {
-    Coins,
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    UpdateCoins: (data) => dispatch(data),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(PreviousDraws);
+export default PreviousDraws;

@@ -22,8 +22,8 @@ import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import EncryptedStorage from "react-native-encrypted-storage";
 import Config from "react-native-config";
 import I18n from 'react-native-i18n';
-I18n.locale="ar";
-import { strings} from "../../i18n";
+I18n.locale = "ar";
+import { strings } from "../../i18n";
 import axios from 'axios';
 import {
   widthPercentageToDP,
@@ -32,13 +32,22 @@ import {
   widthConverter,
 } from "../../Components/Helpers/Responsive";
 const { width, height } = Dimensions.get("window");
+//import { getWalletData } from '../../redux/actions/Wallet';
+import { useDispatch, useSelector } from "react-redux";
+import {getWalletData } from '../../Redux/actions';
 const index = ({ props, navigation }) => {
   const [productData, setProductData] = useState([]);
   const [userInfo, setUserInfo] = useState();
-  useEffect(async () => {
-    const userInfo = JSON.parse(await EncryptedStorage.getItem("User"));
-    setUserInfo(userInfo);
-    GetData();
+  const walletData  = useSelector(state => state.app.walletData); 
+  const dispatch = useDispatch();
+  console.log("walletData", walletData);
+  useEffect(() => { 
+    dispatch(getWalletData());
+  //  console.log("walletData",walletData);
+    // const userInfo = JSON.parse(await EncryptedStorage.getItem("User"));
+    // setUserInfo(userInfo);
+    // GetData();
+
   }, []);
   const GetData = async () => {
     const Token = await EncryptedStorage.getItem("Token");
@@ -99,14 +108,17 @@ const index = ({ props, navigation }) => {
 
         <View>
 
-          <WalletBlanceCard />
+          <WalletBlanceCard yourBalance={walletData?.wallet?.your_balance===null?0:walletData?.wallet?.your_balance}/>
           <WalletLastPlayedCard
             onPress={() => navigation.navigate("LastGameWinner")}
+            noOfQuestions={walletData?.wallet?. no_of_question===null?0:walletData?.wallet?. no_of_question}
+            wonPrize={walletData?.wallet?. won_prize===null?0:walletData?.wallet?. won_prize}
+            
           />
           <View
             style={{
               width: width - 25,
-              height:heightConverter(500),
+              height: heightConverter(500),
               backgroundColor: "#ffffff",
               marginLeft: 10,
               borderRadius: 10,
@@ -122,10 +134,10 @@ const index = ({ props, navigation }) => {
 
             <View style={{ marginLeft: 30 }}>
               <Label notAlign primary font={14} bold style={{ color: "#E7003F", }}>
-              {strings("wallet.last_five_transcation")}
+                {strings("wallet.last_five_transcation")}
               </Label>
               <FlatList
-                data={[1, 2, 3, 4, 5]}
+                data={walletData?.transaction}
                 contentContainerStyle={{
                   //paddingBottom: height * 0.48,
                   height: "100%"
@@ -171,10 +183,10 @@ const index = ({ props, navigation }) => {
 
                       }}>
                         <Text style={styles.text}>
-                          12,200
+                         {item?.amount}
                         </Text>
                         <Text style={styles.text2}>
-                          21 Dec, 2020
+                         {item.transaction_date}
                         </Text>
                       </View>
 

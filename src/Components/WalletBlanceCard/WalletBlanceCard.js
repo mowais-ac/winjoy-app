@@ -11,7 +11,7 @@ const { width, height } = Dimensions.get("window");
 import { strings} from "../../i18n";
 import I18n from 'react-native-i18n';
 I18n.locale="ar";
-function WalletBlanceCard({ options, onPress, reset, result, optionDisable, data }) {
+function WalletBlanceCard({ yourBalance, onPress, reset, result, optionDisable, data }) {
 
   return (
     // <TouchableOpacity
@@ -54,7 +54,7 @@ function WalletBlanceCard({ options, onPress, reset, result, optionDisable, data
       </Label>
 
       <Label notAlign primary font={14} dark style={{ color: "#000000" }}>
-        AED 1,450
+       {yourBalance}
       </Label>
     </View>
       <View

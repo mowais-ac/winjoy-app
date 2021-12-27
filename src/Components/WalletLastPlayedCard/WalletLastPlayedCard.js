@@ -11,7 +11,7 @@ const { width, height } = Dimensions.get("window");
 import { strings} from "../../i18n";
 import I18n from 'react-native-i18n';
 I18n.locale="ar";
-function WalletLastPlayedCard({ options, onPress, reset, result, optionDisable, data }) {
+function WalletLastPlayedCard({ noOfQuestions, onPress, wonPrize, result, optionDisable, data }) {
 
   return (
     // <TouchableOpacity
@@ -55,12 +55,12 @@ function WalletLastPlayedCard({ options, onPress, reset, result, optionDisable, 
         </Label>
 
         <Label notAlign primary font={14} dark style={{ color: "#000000",marginTop:20,fontFamily: "Axiforma-SemiBold", }}>
-          Answer 12 simple questions and WIN amazing prizes
+          Answer {noOfQuestions} simple questions and WIN amazing prizes
         </Label>
         <Label notAlign primary font={14} bold style={{ color: "#E7003F", marginTop:7}}>
         {strings("wallet.won_prize")}
          <Label notAlign primary font={14} dark style={{ color: "#000000" }}>
-         {" "}AED 670
+         {" "}AED {wonPrize}
         </Label>
         </Label>
       </View>

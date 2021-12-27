@@ -22,7 +22,7 @@ const Bell = (props) => {
         }
       > 
         <Image source={Images.Bell} style={styles.Bell} />
-        {+Bell.count >= 1 && (
+        {+Bell?.count >= 1 && ( 
           <>
             <Image source={Images.BellPop} style={styles.Pop} />
             <Label notAlign bold style={styles.Label} font={10}>

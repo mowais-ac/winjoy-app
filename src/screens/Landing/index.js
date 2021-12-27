@@ -12,7 +12,7 @@ import {
   Text,
   Image
 } from "react-native";
-import { connect, useSelector } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import { wait } from "../../Constants/Functions";
 import LoaderImage from "../../Components/LoaderImage";
 import Label from "../../Components/Label";
@@ -42,7 +42,7 @@ import LongButton from "../../Components/LongButton";
 import { FanJoyCard, WjBackground } from "../../Components";
 import Carousel from 'react-native-snap-carousel';
 import Video from "react-native-video";
-
+import {getLandingScreen } from '../../Redux/actions';
 
 function ClosingSoon({ item }) {
   let progress = item.updated_stocks
@@ -123,56 +123,32 @@ const index = (props) => {
   const [time, setTime] = useState("");
   const [activeSlide, setActiveSlide] = useState();
   const userData = useSelector(state => state.app.userData);
+  const LandingData  = useSelector(state => state.app.LandingData); 
   const [buffer, setBuffer] = useState(false);
-  console.log("userData", userData);
+  const dispatch = useDispatch();
+  console.log("LandingData", LandingData);
   const onRefresh = React.useCallback(() => {
     // setBanners(null);
     setRefreshing(true);
     UpdateCoinsOnce();
-    wait(500).then(() => setRefreshing(false));
+    wait(500).then(() => setRefreshing(false)); 
   }, []);
   
   useEffect(() => {
-    GetData()
+    dispatch(getLandingScreen());
+    var CurrentDate = dayjs().format("YYYY-MM-DDThh:mm:ss.000000Z");
+    var duration = dayjs(LandingData?.gameshow?.start_date).diff(dayjs(CurrentDate), 'seconds');
+    setTime(duration)
+    setBanners(LandingData?.banners);
+    setLowerBanner(LandingData?.lowerBanner)
+    setProductList(LandingData?.products)
+    setFanjoyData(LandingData?.funJoy)
+    setGameShowData(LandingData?.gameshow)
+   // GetData()
   }, []);
   const finish = () => {
     //here put the code for time completion
   }
-  const GetData = async () => {
-    setLoader(true)
-    const Token = await EncryptedStorage.getItem("Token");
-    const requestOptions = {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Accept: "application/json",
-        Authorization: `Bearer ${Token}`,
-      },
-    };
-    // alert(13123);
-    await axios
-      .get(`${Config.API_URL}/home`, requestOptions)
-      .then((response) => {
-        let res = response.data;
-        if (res.status === "success") {
-          var CurrentDate = dayjs().format("YYYY-MM-DDThh:mm:ss.000000Z");
-          var duration = dayjs(res?.gameshow?.start_date).diff(dayjs(CurrentDate), 'seconds');
-          setTime(duration)
-          setBanners(res?.banners);
-          setLowerBanner(res?.lowerBanner)
-          setProductList(res?.products)
-          setFanjoyData(res?.funJoy)
-          setGameShowData(res?.gameshow)
-          //setBanners(res?.banners)
-
-        }
-        setLoader(false)
-
-      });
-  };
-
-
-  
-
   function _renderItem({ item, index }) {
     if (item.type === "image") {
       return (

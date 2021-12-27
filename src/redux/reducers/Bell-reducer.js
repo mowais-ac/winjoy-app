@@ -1,12 +1,12 @@
-import { UPDATE_BELL } from "../constants/Bell-constant";
+import types from "../types";
 
-const initialState = {
+const initialState = { 
   count: 0,
 };
 
 const Bell = (state = initialState, action) => {
   switch (action.type) {
-    case UPDATE_BELL:
+    case types.UPDATE_BELL:
       return {
         count: parseInt(action.count),
       };

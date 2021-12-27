@@ -205,7 +205,11 @@ const index = ({ props, navigation }) => {
                         });
                       }
                       if (item === "Wallet") {
-                        navigation.navigate("Wallet");
+                       // navigation.navigate("BottomTabStack"); 
+                        navigation.navigate("BottomTabStack", {
+                            screen: "WALLET", 
+                         
+                        });
                       }
                       if (item === "Leaderboard") {
                         navigation.navigate("SimpeStackScreen", {

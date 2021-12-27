@@ -38,6 +38,7 @@ export default function index() {
       })}
     >
       <Tab.Screen name={strings("bottom_tabs.home")} component={HomeStack} />
+      <Tab.Screen name={strings("bottom_tabs.wallet")} component={Wallet} /> 
       <Tab.Screen name={strings("bottom_tabs.products")} component={ProductStack} />
 
 
@@ -47,7 +48,7 @@ export default function index() {
     />
     
     <Tab.Screen name={strings("bottom_tabs.draws")} component={Draws} />
-    <Tab.Screen name={strings("bottom_tabs.wallet")} component={Wallet} /> 
+
     </Tab.Navigator>
   );
 }
