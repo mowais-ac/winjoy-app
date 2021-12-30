@@ -34,43 +34,88 @@ import {
 const { width, height } = Dimensions.get("window");
 //import { getWalletData } from '../../redux/actions/Wallet';
 import { useDispatch, useSelector } from "react-redux";
-import {getWalletData } from '../../Redux/actions';
+import { getWalletData } from '../../Redux/actions';
+import dayjs from "dayjs";
+import WithDrawModal from "../../Components/WithDrawModal";
+import SuccessModal from "../../Components/SuccessModal";
+import {
+  JSONtoForm,
+} from "../../Constants/Functions";
+import Modals from "../../Components/Modals";
 const index = ({ props, navigation }) => {
   const [productData, setProductData] = useState([]);
-  const [userInfo, setUserInfo] = useState();
-  const walletData  = useSelector(state => state.app.walletData); 
+  const [ammount, setAmmount] = useState(null);
+  const userData = useSelector(state => state.app.userData);
+  const walletData = useSelector(state => state.app.walletData);
   const dispatch = useDispatch();
+  const ModalState = useRef()
+  const ModalState2 = useRef()
+  const ModalStateError = useRef()
+
   console.log("walletData", walletData);
-  useEffect(() => { 
+  useEffect(() => {
     dispatch(getWalletData());
-  //  console.log("walletData",walletData);
-    // const userInfo = JSON.parse(await EncryptedStorage.getItem("User"));
-    // setUserInfo(userInfo);
+    //  console.log("walletData",walletData);
+    // const userData = JSON.parse(await EncryptedStorage.getItem("User"));
+    // setuserData(userData);
     // GetData();
 
   }, []);
-  const GetData = async () => {
-    const Token = await EncryptedStorage.getItem("Token");
-    const requestOptions = {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Accept: "application/json",
-        Authorization: `Bearer ${Token}`,
-      },
-    };
-    // alert(13123);
-
-    await axios
-      .get(`${Config.API_URL}/livegameshow/user/game/history`, requestOptions)
-      .then((response) => {
-        let res = response;
-        if (res.data.message === "No Data Found.") {
-          setUserData([]);
-        } else {
-          setUserData(res?.data);
-        }
+  const HandleWithdraw = async () => {
+    console.log("ammount", ammount);
+    if (!ammount) {
+      alert("hiii")
+    } else {
+      const Token = await EncryptedStorage.getItem("Token");
+      const body = JSONtoForm({
+        w_amount: ammount,
       });
-  };
+      console.log("body", body);
+      const requestOptions = {
+        method: "POST",
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Accept: "application/json",
+          Authorization: `Bearer ${Token}`,
+        },
+        body,
+      };
+
+      await fetch(`${Config.API_URL}/withdrawal`, requestOptions)
+        .then(async (response) => response.json())
+        .then(async (res) => {
+          console.log("resWithdraw", res);
+          if (res.status === "error") {
+            ModalStateError.current(true, {
+              heading: "Error",
+              Error: res.message,
+              array: res.errors ? Object.values(res.errors) : [],
+            });
+          }
+          else {
+            ModalState.current(false)
+            ModalState2.current(true)
+          }
+
+          // else {
+          //   ModalState.current(true, {
+          //     heading: "Error",
+          //     Error: res.message,
+          //     array: res.errors ? Object.values(res.errors) : [],
+          //   });
+          //   ButtonRef.current.SetActivity(false);
+          // }
+        })
+        .catch((e) => {
+          console.log("error", e);
+          //  ButtonRef.current.SetActivity(false);
+        });
+    }
+  }
+
+  const onPress = () => {
+    HandleWithdraw()
+  }
   return (
     <SafeAreaView>
       <BackgroundRound height={0.14} />
@@ -80,9 +125,9 @@ const index = ({ props, navigation }) => {
         <View style={{ flexDirection: 'row', width: widthConverter(420), marginLeft: 25, marginTop: 4 }}>
           <View style={styles.avatarView}>
             <ProfilePicture
-              picture={userInfo?.profile_image}
-              id={userInfo?.id}
-              name={(userInfo?.first_name.slice(0, 1) + userInfo?.last_name.slice(0, 1))}
+              picture={userData?.profile_image}
+              id={userData?.id}
+              name={(userData?.first_name.slice(0, 1) + userData?.last_name.slice(0, 1))}
               style={styles.avatarView}
               font={28}
             />
@@ -90,30 +135,33 @@ const index = ({ props, navigation }) => {
 
           <View style={{ width: widthConverter(250), marginLeft: widthConverter(8), marginTop: 2 }}>
             <Text style={{ color: "#FFFFFF", marginTop: 8, fontFamily: "Axiforma-Bold", fontSize: 15 }}>
-              {userInfo?.first_name} {userInfo?.last_name}
+              {userData?.first_name?.charAt(0).toUpperCase() + userData?.first_name.slice(1)} {userData?.last_name?.charAt(0).toUpperCase() + userData?.last_name.slice(1)}
             </Text>
             <Text
 
               style={{ color: "#FFFFFF", marginTop: 2, fontFamily: "Axiforma-Bold", fontSize: 12 }}
             >
-              {userInfo?.designation || "Senior Product Analyst"}
+              {userData?.designation || "Senior Product Analyst"}
               <Text style={{ color: "#e2acc7", fontFamily: "Axiforma-Regular", fontSize: 12 }}>
                 {" "}
                 at{" "}
               </Text>
-              {userInfo?.company_name || "MicroSoft"}
+              {userData?.company_name || "MicroSoft"}
             </Text>
           </View>
         </View>
 
         <View>
 
-          <WalletBlanceCard yourBalance={walletData?.wallet?.your_balance===null?0:walletData?.wallet?.your_balance}/>
+          <WalletBlanceCard
+            yourBalance={walletData?.wallet?.your_balance === null ? 0 : walletData?.wallet?.your_balance}
+            onPressWithdraw={() => ModalState.current(true)}
+          />
           <WalletLastPlayedCard
             onPress={() => navigation.navigate("LastGameWinner")}
-            noOfQuestions={walletData?.wallet?. no_of_question===null?0:walletData?.wallet?. no_of_question}
-            wonPrize={walletData?.wallet?. won_prize===null?0:walletData?.wallet?. won_prize}
-            
+            noOfQuestions={walletData?.wallet?.no_of_question === null ? 0 : walletData?.wallet?.no_of_question}
+            wonPrize={walletData?.wallet?.won_prize === null ? 0 : walletData?.wallet?.won_prize}
+
           />
           <View
             style={{
@@ -183,27 +231,34 @@ const index = ({ props, navigation }) => {
 
                       }}>
                         <Text style={styles.text}>
-                         {item?.amount}
+                          {item?.amount}
                         </Text>
                         <Text style={styles.text2}>
-                         {item.transaction_date}
+                          {dayjs(item.transaction_date).format('DD MMM, YYYY')}
                         </Text>
                       </View>
 
                     </View>
-
-
-
                   );
                 }}
               />
-
             </View>
-
-
           </View>
         </View>
       </ScrollView>
+      <WithDrawModal ModalRef={ModalState}
+        details
+        onPressWithDrawal={() => onPress()}
+        yourBalance={walletData?.wallet?.your_balance === null ? 0 : walletData?.wallet?.your_balance}
+        AmmountHandleChange={(text) => setAmmount(text)}
+      />
+      <SuccessModal ModalRef={ModalState2}
+        details
+        requestOnPress={() => ModalState2.current(false)}
+        closeOnPress={() => ModalState2.current(false)}
+        yourBalance={walletData?.wallet?.your_balance === null ? 0 : walletData?.wallet?.your_balance}
+      />
+      <Modals ModalRef={ModalStateError} Error />
     </SafeAreaView>
   );
 };

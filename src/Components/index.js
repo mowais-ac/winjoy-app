@@ -16,6 +16,8 @@ export * from './ProductViewCard/ProductViewCard';
 export * from './TriviaNightCard/TriviaNightCard';
 export * from './WjBackground/WjBackground';
 export * from './FanJoyCard/FanJoyCard';
+export * from './LuckyDrawCard/LuckyDrawCard';
+
 
 
 

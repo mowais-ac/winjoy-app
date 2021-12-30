@@ -5,9 +5,12 @@ import {
   widthConverter
 } from '../Helpers/Responsive';
 import { RFValue } from 'react-native-responsive-fontsize';
+import {
+  Dimensions,
+  StyleSheet
+} from "react-native";
 
-const { StyleSheet } = require('react-native');
-
+const { width, height } = Dimensions.get("window");
 export default StyleSheet.create({
   mainView: {
     alignItems: 'center',
@@ -53,5 +56,10 @@ export default StyleSheet.create({
   },
   imageView: {
     justifyContent: 'center'
+  },
+  Margin: {
+    height: height * 0.06,
+    width: width * 0.4,
+    backgroundColor: "#ffffff",
   },
 });

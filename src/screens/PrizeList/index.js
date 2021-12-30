@@ -91,6 +91,7 @@ const index = ({ props, navigation }) => {
       
             <FlatList
             data={productData}
+            scrollEnabled={false}
             renderItem={(item)=>
             <ChanceCard data={item}
             onPress={()=>

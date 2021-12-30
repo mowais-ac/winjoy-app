@@ -51,7 +51,7 @@ const { width, height } = Dimensions.get("window");
 let timer = () => { };
 const BackgroundVideo = ({ route, navigation }) => {
     const socket = socketIO(MYServer);
-    const { uri } = route.params;
+  //  const { uri } = route.params;
     const [selected, setSelected] = useState(null);
     const [buffer, setBuffer] = useState(false);
     const [timeLeft, setTimeLeft] = useState(20);
@@ -347,8 +347,8 @@ const BackgroundVideo = ({ route, navigation }) => {
                         <Video
                             // key={keyS}
                             source={{
-                                uri: uri
-                                // uri: "http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4"
+                                //uri: uri
+                                 uri: "http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4"
                             }}
                             // onReadyForDisplay={readyToDisplay}
                             style={styles.backgroundVideo}

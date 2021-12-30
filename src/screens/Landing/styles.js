@@ -139,15 +139,15 @@ export default StyleSheet.create({
   },
   avatarBannerView:{
     width:"100%",
-    height:200,
+    height:170,
     alignItems:'center'
 },
   avatarBanner:{
     width:360,
-    height:200,
+    height:165,
 },
 Margin: {
-  height: height * 0.06,
+  height: height * 0.048,
   width: width * 0.4,
   backgroundColor: "#ffffff",
 },

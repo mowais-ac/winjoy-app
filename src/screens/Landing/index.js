@@ -36,13 +36,13 @@ import AvatarBtn from "../../Components/AvatarBtn";
 import { RFValue } from "react-native-responsive-fontsize";
 import Entypo from 'react-native-vector-icons/Entypo';
 import styles from './styles';
-import { HomeCard, ButtonWithIcon, TriviaAvatar, ProductViewCard, TriviaNightCard } from '../../Components';
+import { HomeCard, LuckyDrawCard, TriviaAvatar, ProductViewCard, TriviaNightCard } from '../../Components';
 import dayjs from "dayjs"
 import LongButton from "../../Components/LongButton";
 import { FanJoyCard, WjBackground } from "../../Components";
 import Carousel from 'react-native-snap-carousel';
 import Video from "react-native-video";
-import {getLandingScreen } from '../../Redux/actions';
+import { getLandingScreen } from '../../Redux/actions';
 
 function ClosingSoon({ item }) {
   let progress = item.updated_stocks
@@ -123,7 +123,7 @@ const index = (props) => {
   const [time, setTime] = useState("");
   const [activeSlide, setActiveSlide] = useState();
   const userData = useSelector(state => state.app.userData);
-  const LandingData  = useSelector(state => state.app.LandingData); 
+  const LandingData = useSelector(state => state.app.LandingData);
   const [buffer, setBuffer] = useState(false);
   const dispatch = useDispatch();
   console.log("LandingData", LandingData);
@@ -131,9 +131,9 @@ const index = (props) => {
     // setBanners(null);
     setRefreshing(true);
     UpdateCoinsOnce();
-    wait(500).then(() => setRefreshing(false)); 
+    wait(500).then(() => setRefreshing(false));
   }, []);
-  
+
   useEffect(() => {
     dispatch(getLandingScreen());
     var CurrentDate = dayjs().format("YYYY-MM-DDThh:mm:ss.000000Z");
@@ -143,17 +143,15 @@ const index = (props) => {
     setLowerBanner(LandingData?.lowerBanner)
     setProductList(LandingData?.products)
     setFanjoyData(LandingData?.funJoy)
-    setGameShowData(LandingData?.gameshow)
-   // GetData()
+    setGameShowData(LandingData?.gameShow)
+    // GetData()
   }, []);
-  const finish = () => {
-    //here put the code for time completion
-  }
+
   function _renderItem({ item, index }) {
     if (item.type === "image") {
       return (
         <View key={index}>
-          <Image source={{ uri: item.url }}
+          <Image source={{ uri: Config.MAIN_URL + item.url }}
             resizeMode={"cover"}
             style={styles.ShoppingBanner}
           />
@@ -164,7 +162,7 @@ const index = (props) => {
         <View key={index}>
           {item.url ? (
             <Video
-              source={{ uri: item.url }}  // Can be a URL or a local file.
+              source={{ uri: Config.MAIN_URL + item.url }}  // Can be a URL or a local file.
               // ref={(ref) => { this.player = ref }}  // Store reference
               resizeMode={"cover"}
               // paused={index !== activeSlide}
@@ -184,14 +182,19 @@ const index = (props) => {
     }
   }
   return (
-    <ScrollView
-      style={{ backgroundColor: "#f6f1f3" }}
-      refreshControl={
-        <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
-      }
-    >
-      <View style={{ width: '100%', alignItems: 'center', }}>
+
+    <View>
+      <Header style={{ top: 5, position: 'absolute', zIndex: 1000 }} />
+
+      <ScrollView
+        style={{ backgroundColor: "#f6f1f3" }}
+        refreshControl={
+          <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
+        }
+      >
+         <View style={{ width: '100%', alignItems: 'center', }}>
         <LinearGradient colors={["#5B0C86", "#E7003F"]} style={styles.mainView}>
+
 
           <View style={styles.wrap}>
             {loader ? (
@@ -217,7 +220,7 @@ const index = (props) => {
           </View>
 
 
-          <Header style={{ top: 0, position: "absolute", marginTop: 10 }} />
+
           <View
             style={styles.yellowBtn}
           >
@@ -235,7 +238,7 @@ const index = (props) => {
 
             <View style={styles.btnTextView}>
               <Text style={[styles.text, { color: '#fff', fontSize: RFValue(16) }]}>
-                {userData.first_name.charAt(0).toUpperCase() + userData.first_name.slice(1)} {userData.last_name.charAt(0).toUpperCase() + userData.last_name.slice(1)}
+                {userData?.first_name.charAt(0).toUpperCase() + userData?.first_name.slice(1)} {userData?.last_name.charAt(0).toUpperCase() + userData?.last_name.slice(1)}
               </Text>
               <Text style={[styles.text, { color: '#fff', fontSize: RFValue(16) }]}>Your balance: <Text style={[styles.text, { color: '#ffff00', fontSize: RFValue(16) }]}>AED {userData.balance ? userData.balance : 0}</Text></Text>
             </View>
@@ -247,13 +250,14 @@ const index = (props) => {
 
         <FlatList
           horizontal={true}
-          style={{ marginLeft: 1, minHeight: 50 }}
+          style={{ marginLeft: 1, minHeight: 50, width: '100%', }}
           contentContainerStyle={{
             marginTop: 15,
             marginLeft: 10,
             alignSelf: "flex-start",
             paddingRight: width * 0.04,
-            paddingBottom: 30
+            paddingBottom: 20,
+
           }}
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
@@ -266,7 +270,7 @@ const index = (props) => {
             //   }
             // >
             <TriviaNightCard
-              uri={item.url}
+              uri={Config.MAIN_URL + item.url}
               index={item.index}
               item={item}
               onPress={() => navigation.navigate("FanJoy")} />
@@ -276,25 +280,15 @@ const index = (props) => {
         //   ListEmptyComponent={this.RenderEmptyContainerOnGoing()}
         />
         <HomeCard
-          onPress={() => navigation.navigate("Landing")}
-          style={{ marginTop: 15, }}
+          onPress={() => navigation.navigate("GameStack")}
+          //style={{ marginTop: 10, }}
+          gameShowData={gameShowData}
           time={time}
-          Finish={finish()}
         />
-        <Label
-          notAlign
-          primary
-          font={16}
-          dark
-          style={{
-            color: "#E7003F",
-            marginLeft: width * 0.04,
-            marginTop: 10,
-            marginBottom: 10,
-          }}
-        >
-          Closing Soon
-        </Label>
+        <View style={{ flexDirection: 'row', width: '90%', justifyContent: 'space-between', marginTop: 10, marginBottom: 10 }}>
+          <Text style={{ color: '#E7003F', fontSize: 16, fontFamily: "Axiforma Bold" }}>Shop to Win</Text>
+          <Text style={{ color: '#E7003F', fontSize: 16, fontFamily: "Axiforma Bold" }}>View all</Text>
+        </View>
         <FlatList
           horizontal={true}
           style={{ marginLeft: 1, minHeight: 50 }}
@@ -326,7 +320,7 @@ const index = (props) => {
           <LongButton
             style={[
               styles.Margin,
-              { backgroundColor: "#ffffff", position: 'absolute', bottom: 30, left: 30, },
+              { backgroundColor: "#ffffff", position: 'absolute', bottom: 28, left: 30, },
             ]}
             textstyle={{ color: "#000000", fontFamily: "Axiforma SemiBold", fontSize: 14 }}
             text="View Leaderboard"
@@ -362,7 +356,7 @@ const index = (props) => {
             horizontal={true}
             renderItem={({ item }) =>
               <FanJoyCard
-                name={item.first_name + item.last_name}
+                name={item.user_name}
                 style={{ width: 150, marginRight: 20 }}
               />
             }
@@ -370,15 +364,21 @@ const index = (props) => {
             contentContainerStyle={{
               marginTop: 20,
             }}
-          // refreshControl={
-          //   <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
-          // }
-          keyExtractor={(item) => item.id}
+            // refreshControl={
+            //   <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
+            // }
+            keyExtractor={(item) => item.id}
           />
         </LinearGradient>
-        <View style={{ height: 200 }} />
-      </View>
-    </ScrollView>
+
+        <LuckyDrawCard
+          onPress={() => navigation.navigate("GameStack")}
+          style={{ marginTop: 15, }}
+        />
+        <View style={{ height: 10 }} />
+        </View>
+      </ScrollView>
+    </View >
   );
 };
 
