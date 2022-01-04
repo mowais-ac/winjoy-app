@@ -43,7 +43,8 @@ import { FanJoyCard, WjBackground } from "../../Components";
 import Carousel from 'react-native-snap-carousel';
 import Video from "react-native-video";
 import { getLandingScreen } from '../../Redux/actions';
-
+import socketIO from "socket.io-client";
+const MYServer = "https://node-winjoyserver-deploy.herokuapp.com/";
 function ClosingSoon({ item }) {
   let progress = item.updated_stocks
     ? (item?.updated_stocks / item?.stock) * 100
@@ -126,15 +127,27 @@ const index = (props) => {
   const LandingData = useSelector(state => state.app.LandingData);
   const [buffer, setBuffer] = useState(false);
   const dispatch = useDispatch();
+  const socket = socketIO(MYServer);
   console.log("LandingData", LandingData);
   const onRefresh = React.useCallback(() => {
     // setBanners(null);
     setRefreshing(true);
-    UpdateCoinsOnce();
-    wait(500).then(() => setRefreshing(false));
+    dispatch(getLandingScreen());
+    var CurrentDate = dayjs().format("YYYY-MM-DDThh:mm:ss.000000Z");
+    var duration = dayjs(LandingData?.gameshow?.start_date).diff(dayjs(CurrentDate), 'seconds');
+    setTime(duration)
+    setBanners(LandingData?.banners);
+    setLowerBanner(LandingData?.lowerBanner)
+    setProductList(LandingData?.products)
+    setFanjoyData(LandingData?.funJoy)
+    initialLoad();
+    wait(2000).then(() => setRefreshing(false));
   }, []);
-
-  useEffect(() => {
+  const UpdateLandingDataOnce = () => {
+    initialLoad();
+    dispatch(getLandingScreen());
+  };
+  const initialLoad = () => {
     dispatch(getLandingScreen());
     var CurrentDate = dayjs().format("YYYY-MM-DDThh:mm:ss.000000Z");
     var duration = dayjs(LandingData?.gameshow?.start_date).diff(dayjs(CurrentDate), 'seconds');
@@ -144,9 +157,16 @@ const index = (props) => {
     setProductList(LandingData?.products)
     setFanjoyData(LandingData?.funJoy)
     setGameShowData(LandingData?.gameShow)
-    // GetData()
-  }, []);
-
+  }
+  useFocusEffect(
+    React.useCallback(() => {
+      UpdateLandingDataOnce();
+      initialLoad();
+    }, [])
+  );
+  useEffect(() => {
+    setGameShowData(LandingData?.gameShow)
+  });
   function _renderItem({ item, index }) {
     if (item.type === "image") {
       return (
@@ -192,190 +212,201 @@ const index = (props) => {
           <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
         }
       >
-         <View style={{ width: '100%', alignItems: 'center', }}>
-        <LinearGradient colors={["#5B0C86", "#E7003F"]} style={styles.mainView}>
+        <View style={{ width: '100%', alignItems: 'center', }}>
+          <LinearGradient colors={["#5B0C86", "#E7003F"]} style={styles.mainView}>
 
 
-          <View style={styles.wrap}>
-            {loader ? (
-              <ActivityIndicator size="large" color="#fff" />
-            ) : (
-              <Carousel
-                layout={"default"}
-                resizeMode={"cover"}
-                loop={true}
-                autoplay={true}
-                autoplayInterval={8000}
+            <View style={styles.wrap}>
+              {loader ? (
+                <ActivityIndicator size="large" color="#fff" />
+              ) : (
+                null
+                // <Carousel
+                //   layout={"default"}
+                //   resizeMode={"cover"}
+                //   loop={true}
+                //   autoplay={true}
+                //   autoplayInterval={8000}
 
-                // ref={ref => this.carousel = ref}
-                data={banners}
-                sliderWidth={width}
-                itemWidth={width}
-                renderItem={_renderItem}
-                style={styles.ShoppingBanner}
-                onSnapToItem={index => setActiveSlide(index)}
-              />
-            )}
+                //   // ref={ref => this.carousel = ref}
+                //   data={banners}
+                //   sliderWidth={width}
+                //   itemWidth={width}
+                //   renderItem={_renderItem}
+                //   style={styles.ShoppingBanner}
+                //   onSnapToItem={index => setActiveSlide(index)}
+                // />
+              )}
 
-          </View>
-
-
-
-          <View
-            style={styles.yellowBtn}
-          >
-
-            <View style={{ borderWidth: 2, borderColor: "#fff", borderRadius: 45 }}>
-              <AvatarBtn
-                picture={"https://abdulrahman.fleeti.com/save_file/uploads/provider/user/5bf637c8_60262ff8dbde39.10627959.jpg"}
-                // id={userInfo?.id}
-                //  name={(name.slice(0, 1) + name.slice(0, 1))}
-                size={50}
-                font={28}
-
-              />
             </View>
 
-            <View style={styles.btnTextView}>
-              <Text style={[styles.text, { color: '#fff', fontSize: RFValue(16) }]}>
-                {userData?.first_name.charAt(0).toUpperCase() + userData?.first_name.slice(1)} {userData?.last_name.charAt(0).toUpperCase() + userData?.last_name.slice(1)}
-              </Text>
-              <Text style={[styles.text, { color: '#fff', fontSize: RFValue(16) }]}>Your balance: <Text style={[styles.text, { color: '#ffff00', fontSize: RFValue(16) }]}>AED {userData.balance ? userData.balance : 0}</Text></Text>
-            </View>
-            <Entypo name="chevron-thin-right" size={22} color="#fff" style={{ marginTop: 6.5, marginRight: 6 }} />
-          </View>
-
-        </LinearGradient>
 
 
-        <FlatList
-          horizontal={true}
-          style={{ marginLeft: 1, minHeight: 50, width: '100%', }}
-          contentContainerStyle={{
-            marginTop: 15,
-            marginLeft: 10,
-            alignSelf: "flex-start",
-            paddingRight: width * 0.04,
-            paddingBottom: 20,
-
-          }}
-          showsVerticalScrollIndicator={false}
-          showsHorizontalScrollIndicator={false}
-          data={lowerBanner}
-          renderItem={({ item }) => (
-            // <TouchableOpacity
-            //   onPress={() =>
-            //    // navigation.navigate("SimpeStackScreen", { screen: "ProductDetail", params: item })
-            //    alert("hii")
-            //   }
-            // >
-            <TriviaNightCard
-              uri={Config.MAIN_URL + item.url}
-              index={item.index}
-              item={item}
-              onPress={() => navigation.navigate("FanJoy")} />
-            // </TouchableOpacity>
-          )}
-          keyExtractor={(item) => item.id}
-        //   ListEmptyComponent={this.RenderEmptyContainerOnGoing()}
-        />
-        <HomeCard
-          onPress={() => navigation.navigate("GameStack")}
-          //style={{ marginTop: 10, }}
-          gameShowData={gameShowData}
-          time={time}
-        />
-        <View style={{ flexDirection: 'row', width: '90%', justifyContent: 'space-between', marginTop: 10, marginBottom: 10 }}>
-          <Text style={{ color: '#E7003F', fontSize: 16, fontFamily: "Axiforma Bold" }}>Shop to Win</Text>
-          <Text style={{ color: '#E7003F', fontSize: 16, fontFamily: "Axiforma Bold" }}>View all</Text>
-        </View>
-        <FlatList
-          horizontal={true}
-          style={{ marginLeft: 1, minHeight: 50 }}
-          contentContainerStyle={{
-            alignSelf: "flex-start",
-            paddingRight: width * 0.04,
-          }}
-          showsVerticalScrollIndicator={false}
-          showsHorizontalScrollIndicator={false}
-          data={productList}
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              onPress={() =>
-                navigation.navigate("PRODUCTS", { params: item })
-              }
+            <View
+              style={styles.yellowBtn}
             >
-              <ClosingSoon props={props} index={item.index} item={item} />
-            </TouchableOpacity>
-          )}
-          keyExtractor={(item) => item.id}
-        //   ListEmptyComponent={this.RenderEmptyContainerOnGoing()}
-        />
-        <View style={styles.avatarBannerView}>
-          <Image
-            style={styles.avatarBanner}
-            source={require('../../assets/imgs/avatarBannar.png')}
-            resizeMode="stretch"
-          />
-          <LongButton
-            style={[
-              styles.Margin,
-              { backgroundColor: "#ffffff", position: 'absolute', bottom: 28, left: 30, },
-            ]}
-            textstyle={{ color: "#000000", fontFamily: "Axiforma SemiBold", fontSize: 14 }}
-            text="View Leaderboard"
-            font={16}
-            shadowless
-          />
-        </View>
-        <LinearGradient
-          start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
-          colors={["#f8d7e8", "#c7dfe8"]}
-          style={{ width: '100%', justifyContent: 'center', paddingLeft: 20, paddingTop: 20, paddingBottom: 20 }}
-        >
-          <View style={{ width: "95%", flexDirection: 'row', justifyContent: 'space-between' }}>
-            <View>
-              <Text style={{ color: '#E7003F', fontSize: 20, fontFamily: "Axiforma Bold" }}>FANJOY</Text>
-              <Text style={{ color: '#0B2142', fontSize: 16, fontFamily: "Axiforma Regular" }}>Created By Stars</Text>
+
+              <View style={{ borderWidth: 2, borderColor: "#fff", borderRadius: 45 }}>
+                <AvatarBtn
+                  picture={"https://abdulrahman.fleeti.com/save_file/uploads/provider/user/5bf637c8_60262ff8dbde39.10627959.jpg"}
+                  // id={userInfo?.id}
+                  //  name={(name.slice(0, 1) + name.slice(0, 1))}
+                  size={50}
+                  font={28}
+
+                />
+              </View>
+
+              <View style={styles.btnTextView}>
+                <Text style={[styles.text, { color: '#fff', fontSize: RFValue(16) }]}>
+                  {userData?.first_name.charAt(0).toUpperCase() + userData?.first_name.slice(1)} {userData?.last_name.charAt(0).toUpperCase() + userData?.last_name.slice(1)}
+                </Text>
+                <Text style={[styles.text, { color: '#fff', fontSize: RFValue(16) }]}>Your balance: <Text style={[styles.text, { color: '#ffff00', fontSize: RFValue(16) }]}>AED {userData.balance ? userData.balance : 0}</Text></Text>
+              </View>
+              <Entypo name="chevron-thin-right" size={22} color="#fff" style={{ marginTop: 6.5, marginRight: 6 }} />
             </View>
+
+          </LinearGradient>
+
+
+
+
+          <FlatList
+            horizontal={true}
+            style={{ marginLeft: 1, minHeight: 50, width: '100%', }}
+            contentContainerStyle={{
+             
+              marginLeft: 10,
+              alignSelf: "flex-start",
+              paddingRight: width * 0.04,
+            
+
+            }}
+            showsVerticalScrollIndicator={false}
+            showsHorizontalScrollIndicator={false}
+            data={lowerBanner}
+            renderItem={({ item }) => (
+
+              // <TouchableOpacity
+              //   onPress={() =>
+              //    // navigation.navigate("SimpeStackScreen", { screen: "ProductDetail", params: item })
+              //    alert("hii")
+              //   }
+              // >
+              <TriviaNightCard
+                uri={Config.MAIN_URL + item.url}
+                index={item.index}
+                item={item}
+                onPress={() => navigation.navigate("FanJoy")} />
+              // </TouchableOpacity>
+            )}
+            keyExtractor={(item) => item.id}
+          //   ListEmptyComponent={this.RenderEmptyContainerOnGoing()}
+          />
+          <HomeCard
+            //onPress={() => navigation.navigate("GameStack")} 
+            onPress={() => navigation.navigate("GameStack", {
+              screen: "Quiz",
+              params: {
+                uri: LandingData?.gameShow?.live_stream?.key
+              }
+            })}
+
+            //style={{ marginTop: 10, }}
+            gameShowData={"hiii"}
+            time={time}
+          />
+          <View style={{ flexDirection: 'row', width: '90%', justifyContent: 'space-between', marginTop: 10, marginBottom: 10 }}>
+            <Text style={{ color: '#E7003F', fontSize: 16, fontFamily: "Axiforma Bold" }}>Shop to Win</Text>
+            <Text style={{ color: '#E7003F', fontSize: 16, fontFamily: "Axiforma Bold" }}>View all</Text>
+          </View>
+          <FlatList
+            horizontal={true}
+            style={{ marginLeft: 1, minHeight: 50 }}
+            contentContainerStyle={{
+              alignSelf: "flex-start",
+              paddingRight: width * 0.04,
+            }}
+            showsVerticalScrollIndicator={false}
+            showsHorizontalScrollIndicator={false}
+            data={productList}
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate("PRODUCTS", { params: item })
+                }
+              >
+                <ClosingSoon props={props} index={item.index} item={item} />
+              </TouchableOpacity>
+            )}
+            keyExtractor={(item) => item.id}
+          //   ListEmptyComponent={this.RenderEmptyContainerOnGoing()}
+          />
+          <View style={styles.avatarBannerView}>
+            <Image
+              style={styles.avatarBanner}
+              source={require('../../assets/imgs/avatarBannar.png')}
+              resizeMode="stretch"
+            />
             <LongButton
               style={[
                 styles.Margin,
-                { backgroundColor: "#ffffff", },
+                { backgroundColor: "#ffffff", position: 'absolute', bottom: 28, left: 30, },
               ]}
               textstyle={{ color: "#000000", fontFamily: "Axiforma SemiBold", fontSize: 14 }}
-              text="View all Stars"
+              text="View Leaderboard"
               font={16}
               shadowless
-              onPress={() => navigation.navigate("FanJoy")}
             />
           </View>
-
-          <FlatList
-            data={fanjoyData}
-            horizontal={true}
-            renderItem={({ item }) =>
-              <FanJoyCard
-                name={item.user_name}
-                style={{ width: 150, marginRight: 20 }}
+          <LinearGradient
+            start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
+            colors={["#f8d7e8", "#c7dfe8"]}
+            style={{ width: '100%', justifyContent: 'center', paddingLeft: 20, paddingTop: 20, paddingBottom: 20 }}
+          >
+            <View style={{ width: "95%", flexDirection: 'row', justifyContent: 'space-between' }}>
+              <View>
+                <Text style={{ color: '#E7003F', fontSize: 20, fontFamily: "Axiforma Bold" }}>FANJOY</Text>
+                <Text style={{ color: '#0B2142', fontSize: 16, fontFamily: "Axiforma Regular" }}>Products By Creators</Text>
+              </View>
+              <LongButton
+                style={[
+                  styles.Margin,
+                  { backgroundColor: "#ffffff", },
+                ]}
+                textstyle={{ color: "#000000", fontFamily: "Axiforma SemiBold", fontSize: 14 }}
+                text="View all Stars"
+                font={16}
+                shadowless
+                onPress={() => navigation.navigate("FanJoy")}
               />
-            }
-            //keyExtractor={(e) => e.id.toString()}
-            contentContainerStyle={{
-              marginTop: 20,
-            }}
-            // refreshControl={
-            //   <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
-            // }
-            keyExtractor={(item) => item.id}
-          />
-        </LinearGradient>
+            </View>
 
-        <LuckyDrawCard
-          onPress={() => navigation.navigate("GameStack")}
-          style={{ marginTop: 15, }}
-        />
-        <View style={{ height: 10 }} />
+            <FlatList
+              data={fanjoyData}
+              horizontal={true}
+              renderItem={({ item }) =>
+                <FanJoyCard
+                  name={item.user_name}
+                  style={{ width: 150, marginRight: 20 }}
+                />
+              }
+              //keyExtractor={(e) => e.id.toString()}
+              contentContainerStyle={{
+                marginTop: 20,
+              }}
+              // refreshControl={
+              //   <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
+              // }
+              keyExtractor={(item) => item.id}
+            />
+          </LinearGradient>
+
+          <LuckyDrawCard
+            onPress={() => navigation.navigate("GameStack")}
+            style={{ marginTop: 15, }}
+          />
+          <View style={{ height: 10 }} />
         </View>
       </ScrollView>
     </View >

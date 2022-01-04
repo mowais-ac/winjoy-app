@@ -59,6 +59,7 @@ export const getLandingScreen = () => {
                   },
             });
             const json = await result.json();
+            console.log("json",json);
             if (json&&json.status === "success") {
                 dispatch({
                     type: types.GET_LANDING_DATA,

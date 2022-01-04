@@ -25,7 +25,7 @@ function HomeCard({ style, onPress, gameShowData, time, startIn }) {
             style={[styles.commingSoonTxt, { color: '#D9FE51' }]} >
            TRIVIA
           </Text>
-          {gameShowData?(
+          {!gameShowData?(
               <Text
               style={[styles.commingSoonTxt,{fontSize: 16}]}
             >

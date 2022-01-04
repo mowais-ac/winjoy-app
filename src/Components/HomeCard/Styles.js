@@ -13,11 +13,11 @@ import {
 const { width, height } = Dimensions.get("window");
 export default StyleSheet.create({
   mainView: {
-    alignItems: 'center',
+    alignItems: 'center', 
     backgroundColor: '#f05b31',
-    borderRadius: widthConverter(20),
-    height: heightPercentageToDP("22%"),
-    width: widthPercentageToDP("90%"),
+    borderRadius: widthConverter(10),
+    height:145, 
+    width: widthPercentageToDP("95%"),
     flexDirection: 'row',
     justifyContent: 'flex-end',
 

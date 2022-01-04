@@ -19,7 +19,7 @@ export default StyleSheet.create({
   },
   optionView: {
     width: widthPercentageToDP("85%"),
-    height: heightPercentageToDP("7%"),
+    height: heightConverter(30),
     backgroundColor: '#ffffff',
     borderColor: '#ffffff',
     borderWidth: 2,
