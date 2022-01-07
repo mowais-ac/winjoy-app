@@ -116,10 +116,8 @@ const BackgroundVideo = ({ route, navigation }) => {
             let res = response.data;
             console.log("resQuestion", res);
             questionRef.current = res;
-
             // setQuestion(res)
             setActivityScreen(false)
-
         });
 
     }

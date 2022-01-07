@@ -20,7 +20,7 @@ import LongButton from "../../Components/LongButton";
 import { ChanceCard } from "../../Components";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import EncryptedStorage from "react-native-encrypted-storage"; 
-import Config from "react-native-config";
+import Config from "react-native-config"; 
 import axios from 'axios';
 import { wait } from "../../Constants/Functions";
 import Colors from "../../Constants/Colors"; 
@@ -33,10 +33,9 @@ const { width, height } = Dimensions.get("window");
 const index = ({ props, navigation }) => {
   const [productData, setProductData] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
-  const productsData = useSelector(state => state.app.productsData);
+  const productsData = useSelector(state => state?.app?.productsData);
   const dispatch = useDispatch();
   useEffect(() => {
-    console.log("productsData",productsData);
     dispatch(getProducts());
    setProductData(productsData?.data[0]);
   }, []);
@@ -91,7 +90,7 @@ const index = ({ props, navigation }) => {
       
             <FlatList
             data={productData}
-            scrollEnabled={false}
+            scrollEnabled={true}
             renderItem={(item)=>
             <ChanceCard data={item}
             onPress={()=>

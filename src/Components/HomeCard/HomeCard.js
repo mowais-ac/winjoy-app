@@ -10,8 +10,8 @@ function HomeCard({ style, onPress, gameShowData, time, startIn }) {
   return (
       <View style={[styles.mainView, style]}>
         <Image
-          style={[styles.mainView, { position: 'absolute' }]}
-          source={require('../../assets/imgs/trivia-coming-soon.png')}
+          style={[styles.mainView, { position: 'absolute', overlayColor: 'white', }]}
+          source={require('../../assets/imgs/trivia-coming-soon.gif')}
         />
         <View style={styles.textView}>
           {!renderBtn ? (

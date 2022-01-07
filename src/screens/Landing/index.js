@@ -126,6 +126,7 @@ const index = (props) => {
   const userData = useSelector(state => state.app.userData);
   const LandingData = useSelector(state => state.app.LandingData);
   const [buffer, setBuffer] = useState(false);
+  const [videoAction, setVideoAction] = useState(true);
   const dispatch = useDispatch();
   const socket = socketIO(MYServer);
   console.log("LandingData", LandingData);
@@ -179,24 +180,27 @@ const index = (props) => {
       )
     } else {
       return (
-        <View key={index}>
+        <View key={index} style={{backgroundColor:'#000000',   borderBottomLeftRadius:15,borderBottomRightRadius:15}}>
           {item.url ? (
             <Video
               source={{ uri: Config.MAIN_URL + item.url }}  // Can be a URL or a local file.
               // ref={(ref) => { this.player = ref }}  // Store reference
               resizeMode={"cover"}
-              // paused={index !== activeSlide}
+              paused={index !== activeSlide}
               //  onError={this.onVideoError}
               minLoadRetryCount={2}
               fullScreen={true}
               ignoreSilentSwitch={"obey"}
               onLoad={() => setBuffer(false)}
-              onLoadStart={() => setBuffer(true)}
+              onLoadStart={() => setVideoAction(false)}
               controls={false}
+              onEnd={()=>setVideoAction(true)}
               style={styles.ShoppingBanner}
             />
 
-          ) : (null)}
+          ) : (
+            null
+          )}
         </View>
       )
     }
@@ -220,22 +224,22 @@ const index = (props) => {
               {loader ? (
                 <ActivityIndicator size="large" color="#fff" />
               ) : (
-                null
-                // <Carousel
-                //   layout={"default"}
-                //   resizeMode={"cover"}
-                //   loop={true}
-                //   autoplay={true}
-                //   autoplayInterval={8000}
+                // null
+                <Carousel
+                  layout={"default"}
+                  resizeMode={"cover"}
+                  loop={videoAction}
+                  autoplay={videoAction}
+                  autoplayInterval={2000}
 
-                //   // ref={ref => this.carousel = ref}
-                //   data={banners}
-                //   sliderWidth={width}
-                //   itemWidth={width}
-                //   renderItem={_renderItem}
-                //   style={styles.ShoppingBanner}
-                //   onSnapToItem={index => setActiveSlide(index)}
-                // />
+                  // ref={ref => this.carousel = ref}
+                  data={banners}
+                  sliderWidth={width}
+                  itemWidth={width}
+                  renderItem={_renderItem}
+                  style={styles.ShoppingBanner}
+                  onSnapToItem={index => setActiveSlide(index)}
+                />
               )}
 
             </View>
@@ -257,12 +261,14 @@ const index = (props) => {
                 />
               </View>
 
-              <View style={styles.btnTextView}>
-                <Text style={[styles.text, { color: '#fff', fontSize: RFValue(16) }]}>
-                  {userData?.first_name.charAt(0).toUpperCase() + userData?.first_name.slice(1)} {userData?.last_name.charAt(0).toUpperCase() + userData?.last_name.slice(1)}
-                </Text>
-                <Text style={[styles.text, { color: '#fff', fontSize: RFValue(16) }]}>Your balance: <Text style={[styles.text, { color: '#ffff00', fontSize: RFValue(16) }]}>AED {userData.balance ? userData.balance : 0}</Text></Text>
-              </View>
+              <TouchableOpacity onPress={() => navigation.navigate("WALLET")}>
+                <View style={styles.btnTextView}>
+                  <Text style={[styles.text, { color: '#fff', fontSize: RFValue(14) }]}>
+                    {userData?.first_name.charAt(0).toUpperCase() + userData?.first_name.slice(1)} {userData?.last_name.charAt(0).toUpperCase() + userData?.last_name.slice(1)}
+                  </Text>
+                  <Text style={[styles.text, { color: '#fff', fontSize: RFValue(14) }]}>Your balance: <Text style={[styles.text, { color: '#ffff00', fontSize: RFValue(14) }]}>AED {userData.balance ? userData.balance : 0}</Text></Text>
+                </View>
+              </TouchableOpacity>
               <Entypo name="chevron-thin-right" size={22} color="#fff" style={{ marginTop: 6.5, marginRight: 6 }} />
             </View>
 
@@ -275,11 +281,11 @@ const index = (props) => {
             horizontal={true}
             style={{ marginLeft: 1, minHeight: 50, width: '100%', }}
             contentContainerStyle={{
-             
+
               marginLeft: 10,
               alignSelf: "flex-start",
               paddingRight: width * 0.04,
-            
+
 
             }}
             showsVerticalScrollIndicator={false}
@@ -297,7 +303,15 @@ const index = (props) => {
                 uri={Config.MAIN_URL + item.url}
                 index={item.index}
                 item={item}
-                onPress={() => navigation.navigate("FanJoy")} />
+                onPress={() => {
+                  item.id === 1 ? (
+                    navigation.navigate("TriviaJoy")
+                  ) : item.id === 2 ? (
+                    navigation.navigate("DealsJoy")
+                  ) : (
+                    navigation.navigate("FanJoy")
+                  )
+                }} />
               // </TouchableOpacity>
             )}
             keyExtractor={(item) => item.id}
@@ -318,7 +332,13 @@ const index = (props) => {
           />
           <View style={{ flexDirection: 'row', width: '90%', justifyContent: 'space-between', marginTop: 10, marginBottom: 10 }}>
             <Text style={{ color: '#E7003F', fontSize: 16, fontFamily: "Axiforma Bold" }}>Shop to Win</Text>
-            <Text style={{ color: '#E7003F', fontSize: 16, fontFamily: "Axiforma Bold" }}>View all</Text>
+
+            <TouchableOpacity onPress={() => navigation.navigate("PRODUCTS", {
+              screen: "PrizeList"
+            })}>
+              <Text style={{ color: '#E7003F', fontSize: 16, fontFamily: "Axiforma Bold" }}>View all</Text>
+            </TouchableOpacity>
+
           </View>
           <FlatList
             horizontal={true}
@@ -357,6 +377,7 @@ const index = (props) => {
               text="View Leaderboard"
               font={16}
               shadowless
+              onPress={() => navigation.navigate("WINNERS", { screen: 'All Time' })}
             />
           </View>
           <LinearGradient
@@ -378,7 +399,7 @@ const index = (props) => {
                 text="View all Stars"
                 font={16}
                 shadowless
-                onPress={() => navigation.navigate("FanJoy")}
+                onPress={() => navigation.navigate("CreatorsPage")}
               />
             </View>
 
@@ -387,6 +408,7 @@ const index = (props) => {
               horizontal={true}
               renderItem={({ item }) =>
                 <FanJoyCard
+                  onPress={() => navigation.navigate("AllCreatorsPage")}
                   name={item.user_name}
                   style={{ width: 150, marginRight: 20 }}
                 />

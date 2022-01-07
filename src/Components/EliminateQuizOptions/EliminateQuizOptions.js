@@ -11,7 +11,7 @@ function EliminateQuizOptions({ options, optionSelected, onPressOption, result, 
     <>
       <View style={styles.optionsViewMain}>
         <FlatList
-          data={options}
+          data={options} 
           renderItem={
             ({ item, index }) => {
               return (

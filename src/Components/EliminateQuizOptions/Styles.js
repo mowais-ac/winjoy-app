@@ -11,7 +11,7 @@ const { StyleSheet, Dimensions } = require('react-native');
 const { width, height } = Dimensions.get("window");
 export default StyleSheet.create({
   optionsViewMain: {
-    position: 'absolute',
+    position: 'absolute', 
     top: heightConverter(150),
     left: widthPercentageToDP("7%")
 
