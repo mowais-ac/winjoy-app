@@ -3,7 +3,7 @@ import { View, Text, TextInput, TouchableWithoutFeedback, StyleSheet, Image, } f
 import { widthConverter } from "../Helpers/Responsive";
 import styles from "./Styles";
 import CountDown from 'react-native-countdown-component';
-function TriviaNightCard({ style, startAt, onPress, subHeading, timer, startIn }) {
+function TriviaNightCard({ style, uri, onPress, subHeading, timer, startIn }) {
 
   return (
     <TouchableWithoutFeedback
@@ -12,7 +12,10 @@ function TriviaNightCard({ style, startAt, onPress, subHeading, timer, startIn }
       <View style={[styles.mainView, style]}>
         <Image
           style={[styles.mainView, { position: 'absolute' }]}
-          source={require('../../assets/imgs/trivia_night.png')}
+          resizeMode="contain"
+          source={{
+            uri: uri,
+          }}
         />
         {/* <View style={styles.textView}>
           <Text

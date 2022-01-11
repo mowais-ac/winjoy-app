@@ -46,6 +46,7 @@ import { RFValue } from "react-native-responsive-fontsize";
 import Colors from "../../Constants/Colors";
 import BackgroundRound from "../../Components/BackgroundRound";
 import socketIO from "socket.io-client";
+import ProgressCircle from 'react-native-progress-circle';
 const MYServer = "https://node-winjoyserver-deploy.herokuapp.com/";
 const { width, height } = Dimensions.get("window");
 let timer = () => { };
@@ -115,10 +116,8 @@ const BackgroundVideo = ({ route, navigation }) => {
             let res = response.data;
             console.log("resQuestion", res);
             questionRef.current = res;
-
             // setQuestion(res)
             setActivityScreen(false)
-
         });
 
     }
@@ -253,6 +252,7 @@ const BackgroundVideo = ({ route, navigation }) => {
         // action on update of movies
     }, [answerId]);
     useEffect(async () => {
+        console.log("uri", uri);
         socket.on("sendHideQuestion", msg => {
             console.log(msg);
             setGameShowCheck(false)
@@ -262,7 +262,8 @@ const BackgroundVideo = ({ route, navigation }) => {
             console.log(msg);
         });
         socket.on("sendEndShow", msg => {
-            navigation.navigate("TabsStack", { screen: "WINNERS" })
+            console.log("msg",msg);
+            navigation.navigate("BottomTabStack", { screen: "WINNERS" })  
         });
         socket.on("sendCount", msg => {
             setJoinedUsers(msg)
@@ -274,7 +275,7 @@ const BackgroundVideo = ({ route, navigation }) => {
             setShowResult(true)
             SaveResponse()
         });
-        socket.on("startlivestream", msg => {
+        socket.on("sendOnboarding", msg => {
             console.log(msg);
             setLiveStream(true)
 
@@ -313,10 +314,6 @@ const BackgroundVideo = ({ route, navigation }) => {
             setGameShowCheck(false)
 
         });
-
-
-
-
     }, []);
     // if (nextQuestion) {
     //     setTimer(20)
@@ -409,9 +406,23 @@ const BackgroundVideo = ({ route, navigation }) => {
                                             <View
                                                 style={styles.quizView}
                                             >
-                                                <Label primary font={26} bold dark style={{ color: "#FFFF13", }}>
-                                                    {timeLeft <= 0 ? "Time's Up" : timeLeft}
-                                                </Label>
+                                              <View style={{width:'100%',justifyContent:'center',alignItems:'center'}}>
+                                                    <ProgressCircle
+                                                        percent={(timeLeft*100)/20}
+                                                        radius={35}
+                                                        borderWidth={6}
+                                                        color={timeLeft<10?'red':'#490d8e'}
+                                                        shadowColor="#d3d9dd"
+                                                        bgColor="#fff"
+                                                    >
+                                                        <View style={{ justifyContent: 'center', alignItems: 'center', }}>
+                                                            <Text style={{ fontFamily: 'Axiforma-SemiBold', fontSize: 12, color: "#E7003F", lineHeight: 12, }}>
+                                                            {timeLeft <= 0 ? "Time's Up" : timeLeft}
+                                                            </Text>
+                                                         
+                                                        </View>
+                                                    </ProgressCircle>
+                                                </View>
                                                 <Label primary font={16} bold dark style={{ color: "#FFFF13", }}>
                                                     Question
                                                 </Label>
@@ -424,7 +435,7 @@ const BackgroundVideo = ({ route, navigation }) => {
                                                     //  onPressDone={onPressDone}
                                                     //  activity={activity}
                                                     optionSelected={selected}
-                                                    onPressOption={onPressOption}
+                                                    onPressOption={onPressOption} 
                                                     disableOption={true}
 
                                                 />
@@ -463,13 +474,30 @@ const BackgroundVideo = ({ route, navigation }) => {
                                             <View
                                                 style={styles.quizView}
                                             >
-                                                <Label primary font={26} bold dark style={{ color: "#FFFF13", }}>
+                                                {/* <Label primary font={26} bold dark style={{ color: "#FFFF13", }}>
                                                     {timeLeft <= 0 ? "Time's Up" : timeLeft}
-                                                </Label>
+                                                </Label> */}
+                                                <View style={{width:'100%',justifyContent:'center',alignItems:'center'}}>
+                                                    <ProgressCircle
+                                                        percent={(timeLeft*100)/20}
+                                                        radius={35}
+                                                        borderWidth={6}
+                                                        color={timeLeft<10?'red':'#490d8e'}
+                                                        shadowColor="#d3d9dd"
+                                                        bgColor="#fff"
+                                                    >
+                                                        <View style={{ justifyContent: 'center', alignItems: 'center', }}>
+                                                            <Text style={{ fontFamily: 'Axiforma-SemiBold', fontSize: 12, color: "#E7003F", lineHeight: 12, }}>
+                                                            {timeLeft <= 0 ? "Time's Up" : timeLeft}
+                                                            </Text>
+                                                         
+                                                        </View>
+                                                    </ProgressCircle>
+                                                </View>
                                                 <Label primary font={16} bold dark style={{ color: "#FFFF13", }}>
                                                     Question
                                                 </Label>
-                                                <Label primary font={16} bold dark style={{ color: "#ffff", lineHeight: 28 }}>
+                                                <Label primary font={14} bold dark style={{ color: "#ffff", lineHeight: 28,height:100 }}>
                                                     {questionRef.current[questionIncrement.current]?.question}
                                                 </Label>
                                                 {/* </View> */}

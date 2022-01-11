@@ -8,7 +8,10 @@ import LoaderImage from "../LoaderImage";
 import Config from "react-native-config";
 import LongButton from "../LongButton";
 const { width, height } = Dimensions.get("window");
-function WalletLastPlayedCard({ options, onPress, reset, result, optionDisable, data }) {
+import { strings} from "../../i18n";
+import I18n from 'react-native-i18n';
+I18n.locale="ar";
+function WalletLastPlayedCard({ noOfQuestions, onPress, wonPrize, result, optionDisable, data }) {
 
   return (
     // <TouchableOpacity
@@ -48,16 +51,16 @@ function WalletLastPlayedCard({ options, onPress, reset, result, optionDisable, 
 
       <View style={{ marginLeft: 30 }}>
         <Label notAlign primary font={16} bold style={{ color: "#E7003F",  }}>
-          Last Played Game
+        {strings("wallet.last_played_game")}
         </Label>
 
         <Label notAlign primary font={14} dark style={{ color: "#000000",marginTop:20,fontFamily: "Axiforma-SemiBold", }}>
-          Answer 12 simple questions and WIN amazing prizes
+          Answer {noOfQuestions} simple questions and WIN amazing prizes
         </Label>
         <Label notAlign primary font={14} bold style={{ color: "#E7003F", marginTop:7}}>
-         Won Prize:
+        {strings("wallet.won_prize")}
          <Label notAlign primary font={14} dark style={{ color: "#000000" }}>
-         {" "}AED 670
+         {" "}AED {wonPrize}
         </Label>
         </Label>
       </View>

@@ -6,7 +6,7 @@ import LinearGradient from "react-native-linear-gradient";
 import { heightConverter, widthPercentageToDP } from "../Helpers/Responsive";
 import LoaderImage from "../LoaderImage";
 import Config from "react-native-config";
-import ProgressCircle from 'react-native-progress-circle'
+import ProgressCircle from 'react-native-progress-circle';
 const { width, height } = Dimensions.get("window");
 function ChanceCard({ options, onPress, reset, result, optionDisable, data }) {
   let progress = data.item.updated_stocks

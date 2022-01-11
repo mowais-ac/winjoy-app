@@ -11,10 +11,10 @@ const { StyleSheet } = require('react-native');
 export default StyleSheet.create({
   mainView: {
     alignItems: 'center',
-    backgroundColor: '#f05b31',
-    borderRadius: widthConverter(20),
+  //  backgroundColor: '#f05b31',
+    borderRadius: widthConverter(10),
     height: heightPercentageToDP("22%"),
-    width: widthPercentageToDP("75%"),
+    width: widthPercentageToDP("35%"),
     flexDirection: 'row',
     justifyContent: 'flex-end',
     marginRight:10

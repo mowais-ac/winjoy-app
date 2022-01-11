@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   SafeAreaView,
   View,
@@ -17,9 +17,9 @@ import Label from "../../Components/Label";
 import LabelButton from "../../Components/LabelButton";
 import LongButton from "../../Components/LongButton";
 import SmallButton from "../../Components/SmallButton";
-
+import { useDispatch } from 'react-redux';
 import { Images } from "../../Constants/Index";
-
+import types from '../../Redux/types';
 import {
   JSONtoForm,
   IsVerified,
@@ -30,17 +30,23 @@ import {
 import Config from "react-native-config";
 import EncryptedStorage from "react-native-encrypted-storage";
 import Modals from "../../Components/Modals";
-
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { strings} from "../../i18n";
+import I18n from 'react-native-i18n';
 const { width, height } = Dimensions.get("window");
 
 const index = ({ navigation }) => {
+  const dispatch = useDispatch();
   const { signIn } = React.useContext(AuthContext);
   const emailref = useRef();
   const passref = useRef();
   const ButtonRef = useRef();
   const ModalState = useRef();
 
+  I18n.locale="ar";
+  useEffect(() => {
+ 
+  }, []);
   const HandleLogin = async () => {
     console.log("Config.API_UR",Config.API_URL);
     if (
@@ -64,19 +70,24 @@ const index = ({ navigation }) => {
         method: "POST",
         headers: {
           "Content-Type": "multipart/form-data",
-          Accept: "application/json",
+          "Accept": "application/json",
         },
         body,
       };
 
-      await fetch(`${Config.API_URL}/auth/login`, requestOptions)
+      await fetch(`${Config.API_URL}/auth/login`, requestOptions) 
         .then(async (response) => response.json())
         .then(async (res) => {
-          console.log("res",res);
+          console.log("reslogin",res);
           ButtonRef.current.SetActivity(false);
-          if (res.status && res.status.toLowerCase() === "success") {
-            // await EncryptedStorage.setItem("Token", res.data.token);
-            // signIn(result?.accessToken) 
+          if (res?.data?.token) {
+            dispatch({
+              type: types.USER_DATA,
+              userData:res?.data?.user,
+              //  user: res.data.data,
+            });
+            await EncryptedStorage.setItem("Token", res.data.token);
+            signIn(res.data.token) 
            // navigation.replace("HomeStack");
             if (await IsSuspended(res.data.token))
               return ModalState.current(true, {
@@ -90,13 +101,18 @@ const index = ({ navigation }) => {
             //  navigation.replace("HomeStack");
             }
             else {
+              dispatch({
+                type: types.USER_DATA,
+                userData:res?.data?.user,
+                //  user: res.data.data,
+              });
               navigation.replace("Verify", { phone: phone_no,token:res.data.token});  
             }
           }
           else if (
             res.message === "Enter 6 Digit Code which sent on your mobile"
           ) {
-            await EncryptedStorage.setItem("Token", res.data);
+            await EncryptedStorage.setItem("Token", res.data.token);
             navigation.replace("Verify", { phone: phone_no });
           }
           else if (
@@ -130,12 +146,12 @@ const index = ({ navigation }) => {
           <Background height={1} design />
           <Image source={Images.Logo} style={styles.Logo} />
           <Label bold headingtype="h2" style={styles.MarginLarge}>
-            Login to WinJoy
+          {strings("login_screen.login_heading")}
           </Label>
           <Modals ModalRef={ModalState} Error />
           <InputFieldWithModal
             style={styles.MarginLarge}
-            placeholder="Phone number"
+            placeholder= {strings("login_screen.phone_number")}
             ref={emailref}
             keyboardType="number-pad"
             phone
@@ -151,21 +167,22 @@ const index = ({ navigation }) => {
           <InputField
             style={styles.MarginSmall}
             ref={passref}
-            placeholder="Password"
+            placeholder={strings("login_screen.password")}
             secureTextEntry={true}
             Icon="lock"
+          //  lang={lang}
           />
           <LongButton
             style={styles.MarginSmall}
-            text="Login"
+            text={strings("login_screen.login")}
             onPress={HandleLogin}
             ref={ButtonRef}
-            textstyle={{ color: '#fff' }}
+            textstyle={{ color: '#fff', }}
           />
           <LabelButton
             style={styles.MarginSmall}
             Notdark
-            text="Forgot password?"
+            text={strings("login_screen.forgot_password")}
             onPress={() => navigation.navigate("ForgotPassword")}
 
           />
@@ -174,14 +191,14 @@ const index = ({ navigation }) => {
         <Label
           bold
           muted
-          style={[styles.ORButton, { lineHeight: height * 0.03 }]}
+          style={[styles.ORButton, { lineHeight: height * 0.03,top:10 }]}
           font={15}
         >
-          OR
+     {   strings("login_screen.or")}
         </Label>
         <View style={{ marginTop: height * 0.052 }}>
           <LongButton
-            text="Create an account"
+            text={strings("login_screen.create_account")}
             onPress={() => navigation.navigate("Register")}
             textstyle={{ color: '#fff' }}
           />

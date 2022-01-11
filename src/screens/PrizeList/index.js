@@ -20,50 +20,38 @@ import LongButton from "../../Components/LongButton";
 import { ChanceCard } from "../../Components";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import EncryptedStorage from "react-native-encrypted-storage"; 
-import Config from "react-native-config";
+import Config from "react-native-config"; 
 import axios from 'axios';
 import { wait } from "../../Constants/Functions";
 import Colors from "../../Constants/Colors"; 
+import { strings} from "../../i18n";
+import I18n from 'react-native-i18n';
+import {getProducts } from '../../Redux/actions';
+import { useDispatch, useSelector } from "react-redux";
+I18n.locale="ar";
 const { width, height } = Dimensions.get("window");
 const index = ({ props, navigation }) => {
   const [productData, setProductData] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
-  // useEffect(async () => {
-  
-  // });
+  const productsData = useSelector(state => state?.app?.productsData);
+  const dispatch = useDispatch();
   useEffect(() => {
-    GetData();
+    dispatch(getProducts());
+   setProductData(productsData?.data[0]);
   }, []);
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     setProductData([]);
-    wait(500).then(() => setRefreshing(false));
+    wait(500).then(() => setRefreshing(false)); 
   }, []);
 
-  const GetData = async () => {
-    const Token = await EncryptedStorage.getItem("Token");
-    const requestOptions = {                              
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Accept: "application/json",
-        Authorization: `Bearer ${Token}`,
-      },
-    };
-    await axios
-      .get(`${Config.API_URL}/products/list`, requestOptions)
-      .then((response) => {
-        let res = response;`  `
-        console.log("resPro",res.data);
-        setProductData(res?.data?.data[0]);
-      });
-  };
   return (
     <SafeAreaView>
       <BackgroundRound height={0.3} />
       <View style={{ height: 20 }} />
       <Header />
       <Label primary font={16} bold dark style={{ color: "#ffff" }}>
-        Don’t Miss a chace to
+        {strings("products.do_not_miss_chance")}
       </Label>
       <Label primary font={16} bold dark style={{ color: "#ffff" }}>
         win great deals
@@ -87,7 +75,7 @@ const index = ({ props, navigation }) => {
             { backgroundColor: null, borderWidth: 2, borderColor: "#ffffff" },
           ]}
           textstyle={{ color: "#ffffff" }}
-          text="Closing Soon"
+          text={strings("products.closing_soon")}
           font={16}
           shadowless
         />
@@ -102,6 +90,7 @@ const index = ({ props, navigation }) => {
       
             <FlatList
             data={productData}
+            scrollEnabled={true}
             renderItem={(item)=>
             <ChanceCard data={item}
             onPress={()=>

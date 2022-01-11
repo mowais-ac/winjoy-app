@@ -8,7 +8,9 @@ import TabButton from "../Components/TabButton";
 import Winners from '../screens/Winners/Winners';
 import Draws from '../screens/Draws/Draws';
 import Wallet from '../screens/Wallet';
-
+import I18n from 'react-native-i18n';
+I18n.locale = "ar";
+import { strings } from "../i18n";
 const { width, height } = Dimensions.get("window");
 const Tab = createBottomTabNavigator();
 
@@ -32,20 +34,18 @@ export default function index() {
             </View>
           );
         },
-        headerShown:false
+        headerShown: false
       })}
     >
-      <Tab.Screen name="Home" component={HomeStack} />
-      <Tab.Screen name="PRODUCTS" component={ProductStack} />
-
-
+      <Tab.Screen name={strings("bottom_tabs.home")} component={HomeStack} />
+      <Tab.Screen name={strings("bottom_tabs.products")} component={ProductStack} />
       <Tab.Screen
-      name="WINNERS"
-      component={Winners}
-    />
-    
-    <Tab.Screen name="DRAWS" component={Draws} />
-    <Tab.Screen name="WALLET" component={Wallet} /> 
+        name={strings("bottom_tabs.winners")}
+        component={Winners}
+      />
+      <Tab.Screen name={strings("bottom_tabs.wallet")} component={Wallet} />
+      <Tab.Screen name={strings("bottom_tabs.draws")} component={Draws} />
+
     </Tab.Navigator>
   );
 }

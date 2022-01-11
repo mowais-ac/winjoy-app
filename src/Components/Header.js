@@ -16,11 +16,11 @@ import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import EncryptedStorage from "react-native-encrypted-storage";
 import Config from "react-native-config";
 import { connect } from "react-redux";
-import { UpdateBell } from "../redux/actions/Bell-action";
 import BackIcon from 'react-native-vector-icons/Ionicons';
 import { heightConverter, widthConverter } from "./Helpers/Responsive";
 const { width, height } = Dimensions.get("window");
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {UpdateBell } from '../Redux/actions';
 const Header = (props) => {
 
   const navigation = useNavigation();
@@ -96,7 +96,7 @@ const Header = (props) => {
         {!props.noBell && <Bell style={styles.Bell} value={props.value} />}
         <TouchableOpacity
           style={styles.Lines}
-          onPress={() => navigation.navigate("HamburgerMenu")}
+          onPress={() => navigation.navigate("MenuStack")}
         >
           <Image source={Images.Lines} style={styles.Logo} />
         </TouchableOpacity>
@@ -146,6 +146,8 @@ const styles = StyleSheet.create({
     marginLeft: width * 0.83,
   },
 });
+
+
 const mapStateToProps = (state) => {
   const { Bell } = state;
   return {
