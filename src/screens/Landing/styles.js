@@ -144,11 +144,11 @@ export default StyleSheet.create({
 },
   avatarBanner:{
     width:"95%",
-    height:150,
+    height:130,
 },
 Margin: {
-  height: height * 0.041,
-  width: width * 0.4,
+  height: height * 0.035,
+  width: width * 0.3,
   backgroundColor: "#ffffff",
 },
 wrap:{

@@ -8,7 +8,7 @@ import {
   RefreshControl,
   ActivityIndicator,
   FlatList,
-  ImageBackground,
+  Animated,
   Text,
   Image
 } from "react-native";
@@ -109,8 +109,14 @@ function ClosingSoon({ item }) {
   );
 }
 const index = (props) => {
+  // const scrollY = new Animated.Value(0)
+  // const diffClamp = Animated.diffClamp(scrollY, 0, 45)
+  // const translateY = diffClamp.interpolate({
+  //   inputRange: [0, 45],
+  //   outputRange: [0, -45]
+  // })
+  const [headerValue, setHeaderValue] = useState(0);
   const { Coins, navigation } = props;
-
   const [banners, setBanners] = useState([]);
   const [lowerBanner, setLowerBanner] = useState([]);
   const [fanjoyData, setFanjoyData] = useState([]);
@@ -180,7 +186,7 @@ const index = (props) => {
       )
     } else {
       return (
-        <View key={index} style={{backgroundColor:'#000000',   borderBottomLeftRadius:15,borderBottomRightRadius:15}}>
+        <View key={index} style={{ backgroundColor: '#000000', borderBottomLeftRadius: 15, borderBottomRightRadius: 15 }}>
           {item.url ? (
             <Video
               source={{ uri: Config.MAIN_URL + item.url }}  // Can be a URL or a local file.
@@ -194,7 +200,7 @@ const index = (props) => {
               onLoad={() => setBuffer(false)}
               onLoadStart={() => setVideoAction(false)}
               controls={false}
-              onEnd={()=>setVideoAction(true)}
+              onEnd={() => setVideoAction(true)}
               style={styles.ShoppingBanner}
             />
 
@@ -208,9 +214,28 @@ const index = (props) => {
   return (
 
     <View>
-      <Header style={{ top: 5, position: 'absolute', zIndex: 1000 }} />
-
+      {/* <Animated.View
+        style={{
+          transform: [
+            { translateY: translateY }
+          ],
+          elevation: 4,
+          zIndex: 100,
+        }}
+      > */}
+        <Header style={{
+           position: 'absolute',
+            zIndex: 1000,
+             backgroundColor:headerValue!==0?'rgba(0,0,0,0.5)':null,
+              width: '100%',
+              borderBottomRightRadius:10,
+              borderBottomLeftRadius:10
+               }} />
+      {/* </Animated.View> */}
       <ScrollView
+        onScroll={(e)=>{
+          setHeaderValue(e.nativeEvent.contentOffset.y) 
+      }}
         style={{ backgroundColor: "#f6f1f3" }}
         refreshControl={
           <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
@@ -365,17 +390,17 @@ const index = (props) => {
           <View style={styles.avatarBannerView}>
             <Image
               style={styles.avatarBanner}
-              source={require('../../assets/imgs/avatarBannar.png')}
-              resizeMode="stretch"
+              source={require('../../assets/imgs/avatarBannar.gif')}
+              resizeMode="center"
             />
             <LongButton
               style={[
                 styles.Margin,
-                { backgroundColor: "#ffffff", position: 'absolute', bottom: 28, left: 30, },
+                { backgroundColor: "#ffffff", position: 'absolute', bottom: 48, right: 25, },
               ]}
-              textstyle={{ color: "#000000", fontFamily: "Axiforma SemiBold", fontSize: 14 }}
+              textstyle={{ color: "#000000", fontFamily: "Axiforma SemiBold", fontSize: 10 }}
               text="View Leaderboard"
-              font={16}
+              font={10}
               shadowless
               onPress={() => navigation.navigate("WINNERS", { screen: 'All Time' })}
             />
@@ -399,7 +424,7 @@ const index = (props) => {
                 text="View all Stars"
                 font={16}
                 shadowless
-                onPress={() => navigation.navigate("CreatorsPage")}
+                onPress={() => navigation.navigate("AllCreatorsPage")}
               />
             </View>
 
