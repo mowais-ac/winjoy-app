@@ -20,7 +20,7 @@ import BackIcon from 'react-native-vector-icons/Ionicons';
 import { heightConverter, widthConverter } from "./Helpers/Responsive";
 const { width, height } = Dimensions.get("window");
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {UpdateBell } from '../Redux/actions';
+import {UpdateBell } from '../redux/actions';
 const Header = (props) => {
 
   const navigation = useNavigation();

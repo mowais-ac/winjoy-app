@@ -19,7 +19,7 @@ import LongButton from "../../Components/LongButton";
 import SmallButton from "../../Components/SmallButton";
 import { useDispatch } from 'react-redux';
 import { Images } from "../../Constants/Index";
-import types from '../../Redux/types';
+import types from '../../redux/types';
 import {
   JSONtoForm,
   IsVerified,

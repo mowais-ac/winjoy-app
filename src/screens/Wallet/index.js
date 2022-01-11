@@ -34,7 +34,7 @@ import {
 const { width, height } = Dimensions.get("window");
 //import { getWalletData } from '../../redux/actions/Wallet';
 import { useDispatch, useSelector } from "react-redux";
-import { getWalletData } from '../../Redux/actions';
+import { getWalletData } from '../../redux/actions';
 import dayjs from "dayjs";
 import WithDrawModal from "../../Components/WithDrawModal";
 import SuccessModal from "../../Components/SuccessModal";
