@@ -31,13 +31,13 @@ import { useDispatch, useSelector } from "react-redux";
 I18n.locale="ar";
 const { width, height } = Dimensions.get("window");
 const index = ({ props, navigation }) => {
-  const [productData, setProductData] = useState([]);
+ // const [productData, setProductData] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
   const productsData = useSelector(state => state?.app?.productsData);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getProducts());
-   setProductData(productsData?.data[0]);
+  // setProductData(productsData?.data[0]);
   }, []);
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -66,7 +66,7 @@ const index = ({ props, navigation }) => {
         <LongButton
           style={styles.Margin}
           textstyle={{ color: "#000000" }}
-          text={"All "+"("+productData.length+")"}
+          text={"All "+"("+productsData?.data[0].length+")"}
           font={16}
         />
         <LongButton
@@ -82,14 +82,14 @@ const index = ({ props, navigation }) => {
       </View>
       <View>
         {/* onPress={()=>navigation.navigate("SimpeStackScreen",{screen:"ProductDetail"})}> */}
-        {productData.length === 0 ? (
+        {productsData?.data[0].length === 0 ? (
         <ActivityIndicator size="large" color={Colors.BLACK} />
       ) : (
         <>
-          {productData.length >= 1 && (
+          {productsData?.data[0].length >= 1 && (
       
             <FlatList
-            data={productData}
+            data={productsData?.data[0]}
             scrollEnabled={true}
             renderItem={(item)=>
             <ChanceCard data={item}

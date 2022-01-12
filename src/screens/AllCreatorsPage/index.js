@@ -112,11 +112,12 @@ const index = ({ route, navigation }) => {
             data={[1,2,3,4]}
             horizontal={true}
             renderItem={({ item }) =>
-              <TrendingCards
-                onPress={() => navigation.navigate("AllCreatorsPage")}
-                name={item.user_name}
-                style={{ width: 150, height: 180, marginRight: 20 }}
-              />
+            <TrendingCards
+            onPress={() => navigation.navigate("AllCreatorsPage")}
+            name={item.user_name}
+            style={{ width: 150, height: height*0.33, marginRight: 20,}}
+            imageStyle={{width: 150, height: height*0.25,borderRadius: 15}}
+          />
             }
             //keyExtractor={(e) => e.id.toString()}
             contentContainerStyle={{

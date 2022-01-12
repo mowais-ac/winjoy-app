@@ -50,7 +50,9 @@ const index = ({ route, navigation }) => {
 
       });
   };
-
+  const onPressContinue = () => {
+    ModalState.current(false)
+}
 
   return (
     <SafeAreaView style={styles.safeStyle}>
@@ -65,7 +67,7 @@ const index = ({ route, navigation }) => {
           />
 
           <Header style={{ top: 0, position: "absolute", marginTop: 10 }} />
-          <View style={{ marginTop: height * 0.192, alignItems: 'center', flexDirection: 'row', marginLeft: width * 0.02 }}>
+          <View style={{ marginTop: height * 0.188, alignItems: 'center', flexDirection: 'row', marginLeft: width * 0.02 }}>
 
             <Avatar
               rounded
@@ -78,14 +80,14 @@ const index = ({ route, navigation }) => {
               }}
             />
             <View>
-              <Text style={[styles.headerText, { marginLeft: 10 }]}>Omarosa</Text>
+              <Text style={[styles.headerText, { marginLeft: 10,top:15 }]}>Omarosa</Text>
               <Text style={{
                 fontFamily: 'Axiforma Regular',
                 color: '#000000',
                 width: width * 0.7,
                 textAlign: 'justify',
                 marginTop: height * 0.02,
-                height: height * 0.06,
+                height: height * 0.10,
                 marginLeft: 10
               }}>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut .
@@ -97,7 +99,7 @@ const index = ({ route, navigation }) => {
           <LinearGradient
             start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
             colors={["#420E92", "#E7003F"]}
-            style={{ width: '100%', height: height * 0.38, justifyContent: 'center', paddingLeft: 5, marginTop: 10 }}
+            style={{ width: '100%', height: height * 0.4, justifyContent: 'center', paddingLeft: 5, marginTop: 10 }}
           >
             <View style={{ width: "95%", flexDirection: 'row', justifyContent: 'space-between', marginTop: 14 }}>
               <View>
@@ -113,7 +115,8 @@ const index = ({ route, navigation }) => {
                 <TrendingCards
                   onPress={() => navigation.navigate("AllCreatorsPage")}
                   name={item.user_name}
-                  style={{ width: 150, height: 180, marginRight: 20 }}
+                  style={{ width: 150, height: height*0.33, marginRight: 20,}}
+                  imageStyle={{width: 150, height: height*0.25,borderRadius: 15}}
                 />
               }
               //keyExtractor={(e) => e.id.toString()}
@@ -153,7 +156,7 @@ const index = ({ route, navigation }) => {
           <ExperienceCelebrityModal
             ModalRef={ModalState}
             details
-          // onPressContinue={onPressContinue} 
+          onPressContinue={onPressContinue} 
           />
         </LinearGradient>
       </ScrollView>

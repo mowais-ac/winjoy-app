@@ -50,6 +50,7 @@ export const getLandingScreen = () => {
     try {
         return async dispatch => {
             const Token = await EncryptedStorage.getItem("Token");
+            console.log("tokenR",Token);
             const result = await fetch(`${Config.API_URL}/home`, {
                 method: 'GET',
                 headers: {
@@ -70,7 +71,7 @@ export const getLandingScreen = () => {
             }
         }
     } catch (error) {
-        console.log(error);
+        console.log("error",error);
     }
 }
 export const getProducts = () => {

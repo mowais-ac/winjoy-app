@@ -555,9 +555,6 @@ const styles = StyleSheet.create({
     gradientView: {
         height: height,
         width: '100%',
-
-
-
     },
     scrollViewStyle: {
         position: 'absolute',

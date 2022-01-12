@@ -117,12 +117,8 @@ const index = (props) => {
   // })
   const [headerValue, setHeaderValue] = useState(0);
   const { Coins, navigation } = props;
-  const [banners, setBanners] = useState([]);
-  const [lowerBanner, setLowerBanner] = useState([]);
-  const [fanjoyData, setFanjoyData] = useState([]);
   const [loader, setLoader] = useState(false);
   const [refreshing, setRefreshing] = React.useState(false);
-  const [productList, setProductList] = React.useState([]);
   const [winnerData, setWinnerData] = useState([]);
   const [imgActive, setImgActive] = useState(0);
   const [homeData, setHomeData] = useState([]);
@@ -135,7 +131,6 @@ const index = (props) => {
   const [videoAction, setVideoAction] = useState(true);
   const dispatch = useDispatch();
   const socket = socketIO(MYServer);
-  console.log("LandingData", LandingData);
   const onRefresh = React.useCallback(() => {
     // setBanners(null);
     setRefreshing(true);
@@ -143,10 +138,6 @@ const index = (props) => {
     var CurrentDate = dayjs().format("YYYY-MM-DDThh:mm:ss.000000Z");
     var duration = dayjs(LandingData?.gameshow?.start_date).diff(dayjs(CurrentDate), 'seconds');
     setTime(duration)
-    setBanners(LandingData?.banners);
-    setLowerBanner(LandingData?.lowerBanner)
-    setProductList(LandingData?.products)
-    setFanjoyData(LandingData?.funJoy)
     initialLoad();
     wait(2000).then(() => setRefreshing(false));
   }, []);
@@ -155,14 +146,10 @@ const index = (props) => {
     dispatch(getLandingScreen());
   };
   const initialLoad = () => {
-    dispatch(getLandingScreen());
+   
     var CurrentDate = dayjs().format("YYYY-MM-DDThh:mm:ss.000000Z");
     var duration = dayjs(LandingData?.gameshow?.start_date).diff(dayjs(CurrentDate), 'seconds');
     setTime(duration)
-    setBanners(LandingData?.banners);
-    setLowerBanner(LandingData?.lowerBanner)
-    setProductList(LandingData?.products)
-    setFanjoyData(LandingData?.funJoy)
     setGameShowData(LandingData?.gameShow)
   }
   useFocusEffect(
@@ -172,8 +159,9 @@ const index = (props) => {
     }, [])
   );
   useEffect(() => {
+    dispatch(getLandingScreen());
     setGameShowData(LandingData?.gameShow)
-  });
+  }, []);
   function _renderItem({ item, index }) {
     if (item.type === "image") {
       return (
@@ -258,7 +246,7 @@ const index = (props) => {
                   autoplayInterval={2000}
 
                   // ref={ref => this.carousel = ref}
-                  data={banners}
+                  data={LandingData?.banners}
                   sliderWidth={width}
                   itemWidth={width}
                   renderItem={_renderItem}
@@ -315,7 +303,7 @@ const index = (props) => {
             }}
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}
-            data={lowerBanner}
+            data={LandingData?.lowerBanner}
             renderItem={({ item }) => (
 
               // <TouchableOpacity
@@ -374,7 +362,7 @@ const index = (props) => {
             }}
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}
-            data={productList}
+            data={LandingData?.products}
             renderItem={({ item }) => (
               <TouchableOpacity
                 onPress={() =>
@@ -429,7 +417,7 @@ const index = (props) => {
             </View>
 
             <FlatList
-              data={fanjoyData}
+              data={LandingData?.funJoy}
               horizontal={true}
               renderItem={({ item }) =>
                 <FanJoyCard
