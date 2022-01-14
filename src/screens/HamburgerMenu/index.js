@@ -43,7 +43,8 @@ let data2 = [
   strings("hamburger_menu.my_order"),
   strings("hamburger_menu.view_profile"),
   strings("hamburger_menu.refer_&_Earn"),
-  strings("hamburger_menu.logout")
+  strings("hamburger_menu.logout"),
+  "Buy Lifes"
 ];
 const index = ({ props, navigation }) => {
   const [userData, setUserData] = useState([]);
@@ -243,6 +244,10 @@ const index = ({ props, navigation }) => {
                       if (item === "Settings") {
                         navigation.navigate("Settings")
                       }
+                      if (item === "Buy Lifes") {
+                        navigation.navigate("BuyLife")
+                      }
+                     
                     }}
                   >
                     <View style={{ flexDirection: 'row' }}>
@@ -393,6 +398,14 @@ const index = ({ props, navigation }) => {
                 </Text>
               </View>
             </View>
+     
+            <View style={{ flexDirection: 'row', justifyContent: 'space-around', width: "100%", paddingBottom: 10 }}>
+              <AntDesign name="instagram" size={28} color="#fff" />
+              <Feather name="facebook" size={28} color="#fff" />
+              <FontAwesome name="whatsapp" size={28} color="#fff" />
+              <Feather name="linkedin" size={28} color="#fff" />
+              <Feather name="twitter" size={28} color="#fff" />
+            </View>
             <View style={{flexDirection:'row',justifyContent:'space-around',width:'100%',paddingBottom:10}}>
               <LongButton
                 style={styles.Margin}
@@ -406,13 +419,6 @@ const index = ({ props, navigation }) => {
                 text={strings("hamburger_menu.email_us")}
                 font={16}
               />
-            </View>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-around', width: "100%", paddingBottom: 10 }}>
-              <AntDesign name="instagram" size={28} color="#fff" />
-              <Feather name="facebook" size={28} color="#fff" />
-              <FontAwesome name="whatsapp" size={28} color="#fff" />
-              <Feather name="linkedin" size={28} color="#fff" />
-              <Feather name="twitter" size={28} color="#fff" />
             </View>
           </View>
         </View>

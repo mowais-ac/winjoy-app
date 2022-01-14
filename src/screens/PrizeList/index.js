@@ -37,6 +37,7 @@ const index = ({ props, navigation }) => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getProducts());
+    console.log("productsData",productsData);
   // setProductData(productsData?.data[0]);
   }, []);
   const onRefresh = React.useCallback(() => {
@@ -66,7 +67,7 @@ const index = ({ props, navigation }) => {
         <LongButton
           style={styles.Margin}
           textstyle={{ color: "#000000" }}
-          text={"All "+"("+productsData?.data[0].length+")"}
+         text={"All "+"("+productsData?.data.length+")"}
           font={16}
         />
         <LongButton
@@ -82,14 +83,14 @@ const index = ({ props, navigation }) => {
       </View>
       <View>
         {/* onPress={()=>navigation.navigate("SimpeStackScreen",{screen:"ProductDetail"})}> */}
-        {productsData?.data[0].length === 0 ? (
+        {productsData?.data?.length === 0 ? (
         <ActivityIndicator size="large" color={Colors.BLACK} />
       ) : (
         <>
-          {productsData?.data[0].length >= 1 && (
+          {productsData?.data?.length >= 1 && (
       
             <FlatList
-            data={productsData?.data[0]}
+            data={productsData?.data}
             scrollEnabled={true}
             renderItem={(item)=>
             <ChanceCard data={item}

@@ -238,21 +238,22 @@ const index = (props) => {
                 <ActivityIndicator size="large" color="#fff" />
               ) : (
                 // null
-                <Carousel
-                  layout={"default"}
-                  resizeMode={"cover"}
-                  loop={videoAction}
-                  autoplay={videoAction}
-                  autoplayInterval={2000}
+                // <Carousel
+                //   layout={"default"}
+                //   resizeMode={"cover"}
+                //   loop={videoAction}
+                //   autoplay={videoAction}
+                //   autoplayInterval={2000}
 
-                  // ref={ref => this.carousel = ref}
-                  data={LandingData?.banners}
-                  sliderWidth={width}
-                  itemWidth={width}
-                  renderItem={_renderItem}
-                  style={styles.ShoppingBanner}
-                  onSnapToItem={index => setActiveSlide(index)}
-                />
+                //   // ref={ref => this.carousel = ref}
+                //   data={LandingData?.banners}
+                //   sliderWidth={width}
+                //   itemWidth={width}
+                //   renderItem={_renderItem}
+                //   style={styles.ShoppingBanner}
+                //   onSnapToItem={index => setActiveSlide(index)}
+                // />
+                null
               )}
 
             </View>

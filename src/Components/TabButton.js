@@ -5,6 +5,7 @@ const { width, height } = Dimensions.get("window");
 import { Images } from "../Constants/Index";
 
 const TabButton = (props) => {
+  console.log("pfff",props);
   const GetImage = (name) => {
     switch (name) {
       case "Home":
