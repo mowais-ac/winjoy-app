@@ -42,9 +42,10 @@ let data2 = [
   strings("hamburger_menu.friends"),
   strings("hamburger_menu.my_order"),
   strings("hamburger_menu.view_profile"),
+  "Buy Lifes",
   strings("hamburger_menu.refer_&_Earn"),
   strings("hamburger_menu.logout"),
-  "Buy Lifes"
+  
 ];
 const index = ({ props, navigation }) => {
   const [userData, setUserData] = useState([]);

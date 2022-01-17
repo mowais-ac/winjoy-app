@@ -23,6 +23,9 @@ export * from './ExperienceCard/ExperienceCard';
 export * from './SecondExperienceCard/SecondExperienceCard';
 export * from './LifeCard/LifeCard';
 export * from './LifeCardRefferAndVideo/LifeCardRefferAndVideo';
+export * from './RefferalTextInput/RefferalTextInput';
+
+
 
 
 

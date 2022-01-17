@@ -4,12 +4,11 @@ import {
   StyleSheet,
   Modal,
   Dimensions,
-  Text,
+  Image,
   TouchableWithoutFeedback,
-  FlatList,
+  Alert,
   TouchableOpacity,
-  TextInput,
-  ScrollView
+  TextInput
 } from "react-native";
 import Label from "./Label";
 import LabelButton from "./LabelButton";
@@ -23,15 +22,13 @@ import ProfilePicture from "./ProfilePicture";
 import { RFValue } from "react-native-responsive-fontsize";
 import LinearGradient from "react-native-linear-gradient";
 import { heightConverter } from "./Helpers/Responsive";
-import { RefferalTextInput } from "../Components/index";
 const { width, height } = Dimensions.get("window");
 
-const RefferLifeLineModal = (props) => {
+const BuyLifeCongrats = (props) => {
   const [ModelState, setModelState] = useState({
     state: false,
     details: null,
   });
-  const [selected, setSelected] = useState(0);
   const ApproveRef = useRef();
   const DeclineRef = useRef();
 
@@ -59,142 +56,65 @@ const RefferLifeLineModal = (props) => {
         if (props.onClose) props.onClose();
       }}
     >
-      <TouchableWithoutFeedback
-        onPress={() => {
-          setModelState({
-            ...ModelState,
-            state: !ModelState.state,
-          });
-          if (props.onClose) props.onClose();
-        }}
-      >
-        <View style={styles.MainView} />
-      </TouchableWithoutFeedback>
+
+      <View style={styles.MainView} />
+
       <View style={styles.ModalView}>
         <View style={styles.SmallBorder} />
 
-        <Text style={[styles.text, { textAlign: 'center', marginTop: height * 0.03, width: width }]}>
-          Refer To Earn Lives
-        </Text>
-     
+        <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', marginTop: 10 }}>
+          <Image
+            style={{
+              width: 100,
+              height: 100,
+            }}
+            source={require('../assets/imgs/success.png')}
+          />
+        </View>
         <View style={styles.ModalBody}>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>
-            <TouchableOpacity onPress={() => setSelected(0)}>
-              <View style={selected === 0 ? styles.refferBoxSelected : styles.refferBox}>
-                <Text style={[styles.mainTextHeading, { color: selected === 0 ? '#420E92' : '#6F5F87' }]}>Refer 1</Text>
-                <Text style={[styles.textHeading, { color: selected === 0 ? '#420E92' : '#6F5F87' }]}>Earn 1</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => setSelected(1)}>
-              <View style={selected === 1 ? styles.refferBoxSelected : styles.refferBox}>
-                <Text style={[styles.mainTextHeading, { color: selected === 1 ? '#420E92' : '#6F5F87' }]}>Refer 3</Text>
-                <Text style={[styles.textHeading, { color: selected === 1 ? '#420E92' : '#6F5F87' }]}>Earn 5</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => setSelected(2)}>
-              <View style={selected === 2 ? styles.refferBoxSelected : styles.refferBox}>
-                <Text style={[styles.mainTextHeading, { color: selected === 2 ? '#420E92' : '#6F5F87' }]}>Refer 5</Text>
-                <Text style={[styles.textHeading, { color: selected === 2 ? '#420E92' : '#6F5F87' }]}>Earn 10</Text>
-              </View>
-            </TouchableOpacity>
-          </View>
-          <View>
-            {selected === 0 ? (
-
-              <RefferalTextInput
-                srNumber={1}
-              />
-
-
-
-            ) : null}
-            {selected === 1 ? (
-              <FlatList
-                style={{ height: height * 0.35, width: '100%', }}
-
-
-                data={[1, 2, 3]}
-                renderItem={({ item }) => (
-                  <RefferalTextInput
-                    srNumber={item}
-                  />
-                )}
-
-              //   ListEmptyComponent={this.RenderEmptyContainerOnGoing()}
-              />
-            ) : null}
-            {selected === 2 ? (
-                 <FlatList
-                 style={{ height: height * 0.37,width: '100%', }}
-                 // contentContainerStyle={{}}
- 
-                 data={[1, 2, 3,4,5]}
-                 renderItem={({ item }) => (
-                   <RefferalTextInput
-                     srNumber={item}
-                   />
-                 )}
- 
-               //   ListEmptyComponent={this.RenderEmptyContainerOnGoing()}
-               />
-            ) : null}
-
-          </View>
-
+          <Label primary headingtype="h1" bold2 style={{ color: "#420E92" }}>
+            {props.heading}
+          </Label>
+          <Label primary headingtype="h1" font={16} style={{ color: "#0B2142", lineHeight: 25 }}>
+            {props.description}
+          </Label>
           <TouchableOpacity
-            onPress={() => { props.onPressContinue() }}
+            onPress={() => { props.closeOnPress() }}
             style={{
               height: heightConverter(20),
               width: width * 0.9,
 
               justifyContent: 'center',
               alignItems: 'center',
-              marginTop: height * 0.03,
-              marginLeft: width * 0.014,
-              
+              marginTop: height * 0.06,
+              marginLeft: width * 0.04,
             }}
           >
             <View
 
               style={{
-                height: heightConverter(60),
+                height: heightConverter(55),
                 width: width * 0.9,
                 justifyContent: 'center',
                 alignItems: 'center',
                 backgroundColor: '#420e92',
                 borderRadius: 40,
-               
-             
               }}
 
 
             >
               <Label primary font={16} bold style={{ color: "#ffffff" }}>
-                Refer {selected + 1} Friends
+               Close
               </Label>
             </View>
-          </TouchableOpacity>
-          <LabelButton
-            primary
-            headingtype="h3"
-            bold
-            style={[styles.CloseBtn, { color: '#6F5F87', fontSize: RFValue(14) }]}
-            onPress={() => {
-              setModelState({
-                ...ModelState,
-                state: !ModelState.state,
-              });
-            }}
-          >
-            Not Now
-          </LabelButton>
+          </TouchableOpacity> 
         </View>
       </View>
     </Modal>
   );
 };
 
-export default RefferLifeLineModal;
+export default BuyLifeCongrats;
 
 const styles = StyleSheet.create({
   MainView: {
@@ -204,8 +124,8 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.BG_MUTED,
   },
   ModalView: {
-    height: height * 0.75,
-    marginTop: height * 0.25,
+    height: height * 0.4,
+    marginTop: height * 0.55,
     borderTopLeftRadius: 37,
     borderTopRightRadius: 37,
     backgroundColor: Colors.WHITE,
@@ -223,12 +143,9 @@ const styles = StyleSheet.create({
   },
 
   ModalBody: {
-    paddingLeft: 15,
-    paddingRight: 15,
-    marginTop: height * 0.02,
+    marginTop: height * 0.04,
     backgroundColor: Colors.WHITE,
-    height: height * 0.6,
-    
+    height: height * 0.3,
   },
   CheckImage: {
     alignSelf: "center",
@@ -339,36 +256,5 @@ const styles = StyleSheet.create({
   },
   titleTxt: {
     marginTop: height * 0.01
-  },
-  textHeading: {
-    color: '#6F5F87', fontFamily: 'Axiforma Bold', fontSize: RFValue(16), textAlign: 'center'
-  },
-  mainTextHeading: {
-    color: '#6F5F87', fontFamily: 'Axiforma Regular', fontSize: RFValue(16), textAlign: 'center', lineHeight: height * 0.03
-  },
-  refferBox: {
-    width: width * 0.29,
-    height: height * 0.13,
-    backgroundColor: '#F2EFF5',
-    borderRadius: 10,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  refferBoxSelected: {
-    width: width * 0.29,
-    height: height * 0.13,
-    backgroundColor: '#F2EFF5',
-    borderRadius: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 2, borderColor: '#420E92'
-  },
-
-
-  text: {
-    color: '#420E92', fontFamily: 'Axiforma Bold', fontSize: RFValue(14)
-  },
-  descriptionText: {
-    color: '#000000', fontFamily: 'Axiforma Regular', fontSize: RFValue(13), textAlign: 'center', lineHeight: height * 0.03
   }
 });

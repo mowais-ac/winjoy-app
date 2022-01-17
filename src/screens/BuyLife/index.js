@@ -24,13 +24,14 @@ import { RFValue } from "react-native-responsive-fontsize";
 import BuyLifeLineModal from "../../Components/BuyLifeLineModal";
 import WatchAddModal from "../../Components/WatchAddModal";
 import RefferLifeLineModal from "../../Components/RefferLifeLineModal";
+import BuyLifeCongrats from "../../Components/BuyLifeCongrats";
 
 const { width, height } = Dimensions.get("window");
 const index = ({ route, navigation }) => {
     const ModalState = useRef();
     const AddModalState = useRef();
     const RefferModalState = useRef();
- 
+    const SucessModalState = useRef();
     useEffect(() => {
     }, []);
 
@@ -108,7 +109,18 @@ const index = ({ route, navigation }) => {
                      <WatchAddModal ModalRef={AddModalState} details 
                    // onPressContinue={onPressContinue} 
                     />
-                    <RefferLifeLineModal  ModalRef={RefferModalState} details/>
+                    <RefferLifeLineModal  ModalRef={RefferModalState} details
+                     onPressContinue={()=>{
+                        RefferModalState.current(false)
+                         SucessModalState.current(true)
+                        }} 
+                    />
+                     <BuyLifeCongrats  ModalRef={SucessModalState} 
+                     heading={"Congratulations"}
+                     description={"4 lives are ready to use. Feel free to play more games & win amazin prizes."}
+                     requestOnPress={() => SucessModalState.current(false)}
+                     closeOnPress={() => SucessModalState.current(false)}
+                    />
                 </LinearGradient>
             </ScrollView>
         </SafeAreaView>
