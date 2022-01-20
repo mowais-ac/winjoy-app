@@ -9,7 +9,7 @@ import Config from "react-native-config";
 import ProgressCircle from 'react-native-progress-circle'
 import { RFValue } from "react-native-responsive-fontsize";
 const { width, height } = Dimensions.get("window");
-function TrendingCards({ imageStyle,style, onPress, name, result, optionDisable, data }) {
+function TrendingCards({ imageStyle,style, onPress, title, price,}) {
   console.log("name", name);
   return (
     <TouchableOpacity
@@ -26,8 +26,8 @@ function TrendingCards({ imageStyle,style, onPress, name, result, optionDisable,
         <View
           style={{width:'100%', }}
         >
-          <Text style={{ color: '#ffffff', fontFamily: 'Axiforma SemiBold', textAlign: 'center',fontSize:RFValue(12), }}>AED 240</Text>
-          <Text style={{ color: '#ffffff', fontFamily: 'Axiforma Regular', textAlign: 'center',fontSize:RFValue(12) }}>Hey Y'all Cream Phone Case</Text>
+          <Text style={{ color: '#ffffff', fontFamily: 'Axiforma SemiBold', textAlign: 'center',fontSize:RFValue(12), }}>AED {price}</Text>
+          <Text style={{ color: '#ffffff', fontFamily: 'Axiforma Regular', textAlign: 'center',fontSize:RFValue(12) }}>{title}</Text>
         </View>
       </View>
     </TouchableOpacity>

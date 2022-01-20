@@ -10,6 +10,8 @@ const INITIAL_STATE = {
   walletData: [],
   LandingData: [],
   productsData: [],
+  livePlans: [],
+  resLivePlans: []
 };
 
 
@@ -30,8 +32,13 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, walletData: action.payload };
     case types.GET_LANDING_DATA:
       return { ...state, LandingData: action.payload };
-      case types.GET_PRODUCTS_LIST:
-        return { ...state, productsData: action.payload };
+    case types.GET_PRODUCTS_LIST:
+      return { ...state, productsData: action.payload };
+    case types.GET_LIVE_PLANS:
+      return { ...state, livePlans: action.payload };
+      case types.BUY_LIVE_PLAN:
+        return { ...state, resLivePlans: action.payload };
+      
     default:
       return state;
   }

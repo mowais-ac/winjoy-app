@@ -8,8 +8,7 @@ import LoaderImage from "../LoaderImage";
 import Config from "react-native-config";
 import ProgressCircle from 'react-native-progress-circle'
 const { width, height } = Dimensions.get("window");
-function ExperienceCard({ style, onPress, heading, result, optionDisable, data }) {
-  console.log("heading",heading);
+function ExperienceCard({ style, onPress, title, short_desc, data }) {
   return (
     <TouchableOpacity
       onPress={onPress}
@@ -26,8 +25,8 @@ function ExperienceCard({ style, onPress, heading, result, optionDisable, data }
           colors={["rgba(0,0,128,0)","rgba(0,0,128,0)", "rgba(0,0,128,0.9)"]}
           style={[styles.bgView,style]}
         >
-          <Text style={{color:'#ffffff',fontFamily:'Axiforma SemiBold'}}>{heading}</Text>
-          <Text style={{color:'#ffffff',fontFamily:'Axiforma Regular',textAlign:'center',width:'98%'}}>Record a question and recive an instant reply</Text>
+          <Text style={{color:'#ffffff',fontFamily:'Axiforma SemiBold'}}>{title}</Text>
+          <Text style={{color:'#ffffff',fontFamily:'Axiforma Regular',textAlign:'center',width:'98%'}}>{short_desc}</Text>
         </LinearGradient>
       </View>
     </TouchableOpacity>

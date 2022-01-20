@@ -5,7 +5,7 @@ import LinearGradient from "react-native-linear-gradient";
 import { RFValue } from "react-native-responsive-fontsize";
 const { width, height } = Dimensions.get("window");
 import styles from "./Styles";
-function LifeCard({ onPress }) {
+function LifeCard({ onPress,amount,lives }) {
   return (
     <TouchableOpacity onPress={onPress}>
       <LinearGradient
@@ -28,10 +28,10 @@ function LifeCard({ onPress }) {
           source={require('../../assets/imgs/life.png')}
         >
 
-          <Text style={{ color: "#E7003F", fontFamily: 'Axiforma SemiBold', fontSize: RFValue(20) }}>1</Text>
+          <Text style={{ color: "#E7003F", fontFamily: 'Axiforma SemiBold', fontSize: RFValue(20) }}>{lives}</Text>
         </ImageBackground>
         <Text style={styles.text}>
-          5 AED
+         {amount} AED
         </Text>
       </LinearGradient>
     </TouchableOpacity>

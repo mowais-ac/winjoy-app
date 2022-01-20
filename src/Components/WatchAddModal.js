@@ -20,15 +20,19 @@ import Config from "react-native-config";
 import { GetDate } from "../Constants/Functions";
 import ProfilePicture from "./ProfilePicture";
 import { RFValue } from "react-native-responsive-fontsize";
+import { useSelector, useDispatch } from "react-redux";
 import LinearGradient from "react-native-linear-gradient";
 import { heightConverter } from "./Helpers/Responsive";
 import Entypo from 'react-native-vector-icons/Entypo';
 import Video from "react-native-video";
 import * as Progress from 'react-native-progress';
+import { getLiveShowPlans } from '../redux/actions';
 const { width, height } = Dimensions.get("window");
-let timer = () => { };
+//let timer = () => { };
 const WatchAddModal = (props) => {
-  const [timeLeft, setTimeLeft] = useState(30);
+  const dispatch = useDispatch();
+  const [timer, setTimer] = useState(0);
+  const [totalTime, setTotalTime] = useState(30);
   const [ModelState, setModelState] = useState({
     state: false,
     details: null,
@@ -37,33 +41,64 @@ const WatchAddModal = (props) => {
   const DeclineRef = useRef();
 
   const navigation = useNavigation();
+  const getData = async () => {
+    try {
 
+      const Token = await EncryptedStorage.getItem("Token");
+      const result = await fetch(`${Config.API_URL}/buy_lives_plan/${props.id}`, {
+        method: 'POST',
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Accept: "application/json",
+          Authorization: `Bearer ${Token}`,
+        },
+      });
+      const json = await result.json();
+      console.log("json",json);
+      if(json.status==="success"){
+        if(json.message==="Lives buy successfully"){
+          setModelState({
+            ...ModelState,
+            state: ModelState.state = false,
+          });
+          dispatch(getLiveShowPlans());
+        }
+        else{
+          alert(json)
+        }
+      }
+    
+
+    } catch (error) {
+      console.log(error);
+    }
+  }
   useEffect(() => {
     if (props.ModalRef) props.ModalRef.current = HandleChange;
-    startTimer();
-    return () => clearTimeout(timer);
+   
   });
 
   const HandleChange = (state, details = null, ForceSuccess = false) => {
     setModelState({ state, details, ForceSuccess });
   };
 
-  const startTimer = () => {
-    timer = setTimeout(() => {
-      if (timeLeft >= 30) {
-        clearTimeout(timer);
-        setModelState({
-          ...ModelState,
-          state: ModelState.state=false,
-        });
-      
-        return false;
+  // const startTimer = () => {
+  //   timer = setTimeout(() => {
+  //     if (timeLeft >= 30) {
+
+  //       clearTimeout(timer);
+  //       setModelState({
+  //         ...ModelState,
+  //         state: ModelState.state=false,
+  //       });
+  //      // getData()
+  //       return false;
 
 
-      }
-      setTimeLeft(timeLeft +0.1);
-    }, 100)
-  }
+  //     }
+  //     setTimeLeft(timeLeft +0.1);
+  //   }, 100)
+  // }
 
   return (
     <Modal
@@ -102,7 +137,7 @@ const WatchAddModal = (props) => {
         <Video
           // key={keyS}
           source={{
-            uri: "http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4"
+            uri: props.video
           }}
           // onReadyForDisplay={readyToDisplay}
           style={styles.backgroundVideo}
@@ -111,10 +146,18 @@ const WatchAddModal = (props) => {
           fullScreen={true}
           ignoreSilentSwitch={"obey"}
           // onLoad={() => setBuffer(false)}
-          onLoadStart={() => {
-            setTimeLeft(0)
-            clearTimeout(timer);
-            startTimer();
+          // onLoadStart={() => {
+          //   setTimeLeft(0)
+          //   clearTimeout(timer);
+          //   startTimer();
+          // }}
+          onEnd={() => getData()}
+          onProgress={e => {
+            console.log("e", e.playableDuration)
+            setTimer(e.currentTime)
+
+            setTotalTime(e.seekableDuration)
+
           }}
         />
 
@@ -122,7 +165,7 @@ const WatchAddModal = (props) => {
           style={{ bottom: -0.001, position: 'absolute' }}
           //borderRadius={0}
           color="#430E92"
-          progress={timeLeft / 30}
+          progress={timer / totalTime}
           width={372}
           unfilledColor={"#E61C54"}
           borderWidth={0}

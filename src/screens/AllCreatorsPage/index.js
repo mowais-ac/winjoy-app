@@ -18,16 +18,17 @@ import EncryptedStorage from "react-native-encrypted-storage";
 import I18n from 'react-native-i18n';
 import axios from "axios";
 import Config from "react-native-config";
-I18n.locale = "ar";
 import { strings } from "../../i18n";
 
 const { width, height } = Dimensions.get("window");
 const index = ({ route, navigation }) => {
   const [data, setData] = useState([]);
   useEffect(() => {
+    console.log("Config.API_URL1",Config.API_URL);
     GetData()
   }, []);
   const GetData = async () => {
+   
     const Token = await EncryptedStorage.getItem("Token");
     const requestOptions = {
       headers: {
@@ -36,15 +37,16 @@ const index = ({ route, navigation }) => {
         Authorization: `Bearer ${Token}`,
       },
     };
+    console.log("Config.API_URL2",Config.API_URL);
     // alert(13123);
     await axios
-      .get(`${Config.API_URL}/funJoy`, requestOptions)
+      .get(`${Config.API_URL}/fanjoy/index`, requestOptions) 
       .then((response) => {
-        console.log("res",res);
+        console.log("resss",response.data); 
         let res = response.data;
         if (res.status === "success") {
-
-          setData(res.user)
+console.log("res",res);
+          setData(res)
         }
 
       });
@@ -77,12 +79,14 @@ const index = ({ route, navigation }) => {
             Creators
           </Text>
           <FlatList
-            data={[1,2,3,4]}
+            data={data.celebrities}
             horizontal={true}
             renderItem={({ item }) =>
               <FanJoyCard
                 onPress={() => navigation.navigate("CreatorsPage")}
-                name={item.user_name}
+                name={item?.first_name+" "+item?.first_name}
+                fans={item.fans}
+                
                 style={{ width: 150, marginRight: 20, height: 180 }}
               />
             }
@@ -109,12 +113,13 @@ const index = ({ route, navigation }) => {
           </View>
 
           <FlatList
-            data={[1,2,3,4]}
+            data={data?.products}
             horizontal={true}
             renderItem={({ item }) =>
             <TrendingCards
             onPress={() => navigation.navigate("AllCreatorsPage")}
-            name={item.user_name}
+            title={item?.title}
+            price={item?.price}
             style={{ width: 150, height: height*0.33, marginRight: 20,}}
             imageStyle={{width: 150, height: height*0.25,borderRadius: 15}}
           />
@@ -134,12 +139,13 @@ const index = ({ route, navigation }) => {
             Buy experience with celebrities
           </Text>
           <FlatList
-            data={[1,2,3,4]}
+            data={data?.experiences}
             horizontal={true}
             renderItem={({ item }) =>
               <ExperienceCard
                 onPress={() => navigation.navigate("AllCreatorsPage")}
-                heading={"Q/A"}
+                title={item?.title}
+                short_desc={item?.short_desc}
                 style={{ width: 170, marginRight: 20, height: 190 }}
               />
             }

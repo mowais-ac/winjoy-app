@@ -43,7 +43,7 @@ const index = ({ navigation }) => {
   const ButtonRef = useRef();
   const ModalState = useRef();
 
-  I18n.locale="en";
+  I18n.locale="ar";
   useEffect(() => {
  
   }, []);

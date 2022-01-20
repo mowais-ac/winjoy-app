@@ -14,6 +14,7 @@ import { Provider } from "react-redux";
 import MenuStack from "../Router/MenuStack";
 import GameStack from "./GameStack";
 import Cart from "../screens/Cart";
+import '../i18n/index';
 const Stack = createNativeStackNavigator();
 
 function index() {

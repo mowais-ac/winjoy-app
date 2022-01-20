@@ -16,9 +16,8 @@ import styles from "./styles";
 import LinearGradient from "react-native-linear-gradient";
 import EncryptedStorage from "react-native-encrypted-storage";
 import I18n from 'react-native-i18n';
-import axios from "axios";
+import axios from "axios"; 
 import Config from "react-native-config";
-I18n.locale = "ar";
 import { strings } from "../../i18n";
 import { Avatar } from "react-native-elements";
 import ExperienceCelebrityModal from '../../Components/ExperienceCelebrityModal';
@@ -30,6 +29,7 @@ const index = ({ route, navigation }) => {
     GetData()
   }, []);
   const GetData = async () => {
+    console.log("Config.API_URL",Config.API_URL);
     const Token = await EncryptedStorage.getItem("Token");
     const requestOptions = {
       headers: {
@@ -40,7 +40,7 @@ const index = ({ route, navigation }) => {
     };
     // alert(13123);
     await axios
-      .get(`${Config.API_URL}/funJoy`, requestOptions)
+      .get(`${Config.API_URL}/fanjoy/index`, requestOptions) 
       .then((response) => {
         let res = response.data;
         if (res.status === "success") {

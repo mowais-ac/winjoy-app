@@ -8,7 +8,7 @@ import LoaderImage from "../LoaderImage";
 import Config from "react-native-config";
 import ProgressCircle from 'react-native-progress-circle'
 const { width, height } = Dimensions.get("window");
-function FanJoyCard({ style, onPress, name, result, optionDisable, data }) {
+function FanJoyCard({ style, onPress, name, fans, optionDisable, data }) {
   console.log("name",name);
   return (
     <TouchableOpacity
@@ -27,7 +27,7 @@ function FanJoyCard({ style, onPress, name, result, optionDisable, data }) {
           style={[styles.bgView,style]}
         >
           <Text style={{color:'#ffffff',fontFamily:'Axiforma SemiBold'}}>{name}</Text>
-          <Text style={{color:'#ffffff',fontFamily:'Axiforma Regular'}}>120.5K Fans</Text>
+          <Text style={{color:'#ffffff',fontFamily:'Axiforma Regular'}}>{fans} Fans</Text>
         </LinearGradient>
       </View>
     </TouchableOpacity>

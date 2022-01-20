@@ -28,7 +28,9 @@ export default StyleSheet.create({
          lineHeight:height*0.028,
          textAlign:'center',
          paddingLeft:10,
-         paddingRight:10
+         paddingRight:10,
+         width:'50%',
+         
     },
     secondView:{
         width:width*0.93,

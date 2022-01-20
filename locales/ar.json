@@ -1,4 +1,22 @@
 {
+  "my_friends":"My Friends Ar",
+    "view_all_friends":"View all Friends Ar",
+    "wallet":"Wallet Ar",
+    "leaderboard":"Leaderboard",
+    "played_games":"Played games",
+    "friends":"Friends",
+    "my_order":"My order",
+    "view_profile":"View profile",
+    "refer_&_Earn":"Refer & Earn",
+    "logout":"Logout",
+    "setting":"Settings",
+    "language":"Language",
+    "curreny":"Currency",
+    "general":"General",
+    "how_it_works":"How It Works",
+    "our_products":"Our Products",
+    "call_us":"Call us",
+    "email_us":"Email us",
   "login_screen": {
     "login_heading": "تسجيل الدخول ل WinJoy",
     "login": "تسجيل الدخول ",
@@ -35,33 +53,13 @@
     "all":"ALL",
     "buy_now":"Buy Now"
   },
-  "wallet":{
+  "wallet1":{
     "your_wallet":"Your Wallet",
     "top_up":"TOPUP",
     "with_draw":"WITHDRAW",
     "last_played_game":"Last Played Game",
     "won_prize":"Won Prize",
     "last_five_transcation":"Last 5 Transactions "
-  },
-  "hamburger_menu":{
-    "my_friends":"My Friends",
-    "view_all_friends":"View all Friends",
-    "wallet":"Wallet",
-    "leaderboard":"Leaderboard",
-    "played_games":"Played games",
-    "friends":"Friends",
-    "my_order":"My order",
-    "view_profile":"View profile",
-    "refer_&_Earn":"Refer & Earn",
-    "logout":"Logout",
-    "setting":"Settings",
-    "language":"Language",
-    "curreny":"Currency",
-    "general":"General",
-    "how_it_works":"How It Works",
-    "our_products":"Our Products",
-    "call_us":"Call us",
-    "email_us":"Email us"
   },
   "fan_joy":{
     "fan_joy":"FAN JOY",

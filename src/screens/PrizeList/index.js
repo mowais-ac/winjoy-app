@@ -28,7 +28,7 @@ import { strings} from "../../i18n";
 import I18n from 'react-native-i18n';
 import {getProducts } from '../../redux/actions';
 import { useDispatch, useSelector } from "react-redux";
-I18n.locale="ar";
+//I18n.locale="ar";
 const { width, height } = Dimensions.get("window");
 const index = ({ props, navigation }) => {
  // const [productData, setProductData] = useState([]);

@@ -22,21 +22,40 @@ import ProfilePicture from "./ProfilePicture";
 import { RFValue } from "react-native-responsive-fontsize";
 import LinearGradient from "react-native-linear-gradient";
 import { heightConverter } from "./Helpers/Responsive";
-const { width, height } = Dimensions.get("window");
 
+import { useSelector, useDispatch } from "react-redux";
+const { width, height } = Dimensions.get("window");
 const BuyLifeLineModal = (props) => {
   const [ModelState, setModelState] = useState({
     state: false,
     details: null,
   });
-  const ApproveRef = useRef(); 
-  const DeclineRef = useRef();
+  const dispatch = useDispatch();
 
   const navigation = useNavigation();
 
   useEffect(() => {
     if (props.ModalRef) props.ModalRef.current = HandleChange;
   });
+  const getData = async () => {
+    try {
+     
+        const Token = await EncryptedStorage.getItem("Token");
+        const result = await fetch(`${Config.API_URL}/buy_lives_plan/${props.id}`, {
+          method: 'POST',
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Accept: "application/json",
+            Authorization: `Bearer ${Token}`,
+          },
+        });
+        const json = await result.json();
+        alert(json.message)
+      
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   const HandleChange = (state, details = null, ForceSuccess = false) => {
     setModelState({ state, details, ForceSuccess });
@@ -56,7 +75,7 @@ const BuyLifeLineModal = (props) => {
         if (props.onClose) props.onClose();
       }}
     >
-     <TouchableWithoutFeedback
+      <TouchableWithoutFeedback
         onPress={() => {
           setModelState({
             ...ModelState,
@@ -65,13 +84,13 @@ const BuyLifeLineModal = (props) => {
           if (props.onClose) props.onClose();
         }}
       >
-      <View style={styles.MainView} />
+        <View style={styles.MainView} />
       </TouchableWithoutFeedback>
       <View style={styles.ModalView}>
         <View style={styles.SmallBorder} />
 
         <Text style={[styles.text, { textAlign: 'center', marginTop: height * 0.03, width: width }]}>
-        Buy Lives
+          Buy Lives
         </Text>
 
         <View style={styles.ModalBody}>
@@ -79,14 +98,16 @@ const BuyLifeLineModal = (props) => {
             Pay AED 30 to buy 10 life lines, once you are done with the payment, you will be able to avail life lines in our gameshow.
           </Text>
           <View style={[styles.SmallBorder, { width: width * 0.1, height: 2, }]} />
-          <Text style={[styles.text, { textAlign: 'center', marginTop: height * 0.03, width: width*0.93, fontSize: RFValue(16) }]}>
-            AED 30
+          <Text style={[styles.text, { textAlign: 'center', marginTop: height * 0.03, width: width * 0.93, fontSize: RFValue(16) }]}>
+            AED {props.amount}
           </Text>
           <Text style={styles.descriptionText}>
-          Buy 10 lives
+            Buy {props.lives} lives
           </Text>
           <TouchableOpacity
-            onPress={() => { props.onPressContinue() }}
+            onPress={() => {
+              getData()
+            }}
             style={{
               height: heightConverter(20),
               width: width * 0.9,
@@ -96,6 +117,7 @@ const BuyLifeLineModal = (props) => {
               marginTop: height * 0.06,
               marginLeft: width * 0.014,
             }}
+
           >
             <View
 
@@ -119,7 +141,7 @@ const BuyLifeLineModal = (props) => {
             primary
             headingtype="h3"
             bold
-            style={[styles.CloseBtn, { color:'#6F5F87',fontSize:RFValue(14) }]}
+            style={[styles.CloseBtn, { color: '#6F5F87', fontSize: RFValue(14) }]}
             onPress={() => {
               setModelState({
                 ...ModelState,
@@ -127,7 +149,7 @@ const BuyLifeLineModal = (props) => {
               });
             }}
           >
-           Not Now
+            Not Now
           </LabelButton>
         </View>
       </View>
@@ -146,7 +168,7 @@ const styles = StyleSheet.create({
   },
   ModalView: {
     height: height * 0.5,
-    marginTop: height * 0.48,
+    marginTop: height * 0.5,
     borderTopLeftRadius: 37,
     borderTopRightRadius: 37,
     backgroundColor: Colors.WHITE,
@@ -284,6 +306,6 @@ const styles = StyleSheet.create({
     color: '#420E92', fontFamily: 'Axiforma Bold', fontSize: RFValue(14)
   },
   descriptionText: {
-    color: '#000000', fontFamily: 'Axiforma Regular', fontSize: RFValue(13), textAlign: 'center',lineHeight:height*0.03
+    color: '#000000', fontFamily: 'Axiforma Regular', fontSize: RFValue(13), textAlign: 'center', lineHeight: height * 0.03
   }
 });
