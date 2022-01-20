@@ -7,11 +7,13 @@ import {
   TouchableOpacity,
   Text,
   FlatList,
-  Image
+  Image,
+  I18nManager
 } from "react-native";
 import Label from "../../Components/Label";
 const { width, height } = Dimensions.get("window");
 import LinearGradient from "react-native-linear-gradient";
+import DropDownPicker from 'react-native-dropdown-picker';
 import {
   widthPercentageToDP,
   heightPercentageToDP,
@@ -33,19 +35,27 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import LongButton from "../../Components/LongButton";
 import { AuthContext } from "../../Components/context";
 import I18n from 'react-native-i18n';
-I18n.locale="ar";
-import { strings} from "../../i18n";
-let data2 = [
-  strings("hamburger_menu.wallet"),
-  strings("hamburger_menu.leaderboard"),
-  strings("hamburger_menu.played_games"),
-  strings("hamburger_menu.friends"),
-  strings("hamburger_menu.my_order"),
-  strings("hamburger_menu.view_profile"),
-  strings("hamburger_menu.refer_&_Earn"),
-  strings("hamburger_menu.logout")
-];
+import { RFValue } from "react-native-responsive-fontsize";
+import {useTranslation} from 'react-i18next';
+import RNRestart from 'react-native-restart';
+
 const index = ({ props, navigation }) => {
+  const {t, i18n} = useTranslation();
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(I18n.locale);
+  const [items, setItems] = useState([
+    { label: 'AR', value: 'ar' },
+    { label: 'EN', value: 'en' }
+  ]);
+
+  const [open2, setOpen2] = useState(false);
+  const [value2, setValue2] = useState("AED");
+  const [items2, setItems2] = useState([
+    { label: 'AED', value: 'AED' },
+    { label: 'PKR', value: 'PKR' }
+  ]);
+
+
   const [userData, setUserData] = useState([]);
   const [friendData, setFriendData] = useState([]);
   const { signOut } = React.useContext(AuthContext);
@@ -54,7 +64,18 @@ const index = ({ props, navigation }) => {
     setUserData(userInfo);
     console.log(userInfo);
   };
-
+  let data2 = [
+    t("wallet"),
+    t("leaderboard"),
+    t("played_games"),
+    t("friends"),
+    t("my_order"),
+    t("view_profile"),
+    "Buy Lifes",
+    t("refer_&_Earn"),
+    t("logout"),
+  
+  ];
   const MyFriends = async () => {
     const Token = await EncryptedStorage.getItem("Token");
     const requestOptions = {
@@ -72,7 +93,20 @@ const index = ({ props, navigation }) => {
         setFriendData(res.data[0]);
       });
   };
-
+  const languageRestart = async(item) => {
+  console.log("lang",item.value);
+   
+    if (item.value === "ar") {
+      if (I18nManager.isRTL) {
+        I18nManager.forceRTL(false);
+      }
+    } else {
+      if (!I18nManager.isRTL) {
+        I18nManager.forceRTL(true);
+      }
+    }
+    RNRestart.Restart();
+  };
   useEffect(() => {
     UserInfo();
     MyFriends();
@@ -132,7 +166,7 @@ const index = ({ props, navigation }) => {
               }}
             />
             <Text style={[styles.text, { color: "#ffffff", padding: 15, paddingTop: 10 }]}>
-            {strings("hamburger_menu.my_friends")}
+              {t("my_friends")}
             </Text>
             <FlatList
               data={friendData}
@@ -163,9 +197,9 @@ const index = ({ props, navigation }) => {
                     },
                   })
                 }
-              > 
+              >
                 <Text style={[styles.text, { color: "#ffff00" }]}>
-                  {strings("hamburger_menu.view_all_friends")}
+                  {t("view_all_friends")}
                 </Text>
               </TouchableOpacity>
             </View>
@@ -201,14 +235,14 @@ const index = ({ props, navigation }) => {
                     onPress={() => {
                       if (item === "Friends") {
                         navigation.navigate("Friends", {
-                          selected: 3 
+                          selected: 3
                         });
                       }
                       if (item === "Wallet") {
-                       // navigation.navigate("BottomTabStack"); 
+                        // navigation.navigate("BottomTabStack"); 
                         navigation.navigate("BottomTabStack", {
-                            screen: "WALLET", 
-                         
+                          screen: "WALLET",
+
                         });
                       }
                       if (item === "Leaderboard") {
@@ -243,6 +277,10 @@ const index = ({ props, navigation }) => {
                       if (item === "Settings") {
                         navigation.navigate("Settings")
                       }
+                      if (item === "Buy Lifes") {
+                        navigation.navigate("BuyLife")
+                      }
+
                     }}
                   >
                     <View style={{ flexDirection: 'row' }}>
@@ -281,7 +319,7 @@ const index = ({ props, navigation }) => {
                 },
               ]}
             >
-              {strings("hamburger_menu.setting")}
+              {t("setting")}
             </Text>
             <View style={styles.rowView}>
               <View style={{ flexDirection: 'row', justifyContent: 'space-between', }}>
@@ -297,10 +335,76 @@ const index = ({ props, navigation }) => {
                       },
                     ]}
                   >
-                {strings("hamburger_menu.language")}
+                    {t("language")}
                   </Text>
                 </View>
-                <Text
+                <View>
+                  <DropDownPicker
+                    open={open}
+                    value={value}
+                    items={items}
+                    setOpen={setOpen}
+                    setValue={setValue}
+                    setItems={setItems}
+                    onSelectItem={(item) => {
+                      i18n
+                      .changeLanguage(i18n.language === 'ar' ? 'en' : 'ar')
+                      .then(() => {
+                        I18nManager.forceRTL(i18n.language === 'ar');
+                        RNRestart.Restart();
+                      });
+                    }}
+                    containerStyle={{
+                      width: width * 0.25,
+                    }}
+                    zIndex={2000}
+                    textStyle={{
+                      fontSize: RFValue(14),
+                      fontFamily: "Axiforma-Regular",
+                      color: "#ffffff",
+                    }}
+                    dropDownContainerStyle={{
+                      backgroundColor: "#fff",
+                      marginTop: -height * 0.02,
+
+
+                    }}
+                    arrowIconStyle={{
+                      marginTop: -height * 0.023
+                    }}
+
+
+                    listItemLabelStyle={{
+                      color: '#000000',
+                      fontFamily: "Axiforma-Regular",
+
+                    }}
+                    labelStyle={{
+                      fontFamily: "Axiforma-Regular",
+                      color: "#ffffff",
+                      fontSize: RFValue(13),
+
+                      marginTop: -height * 0.028
+
+                    }}
+                    style={[
+
+                      styles.text,
+                      {
+
+                        color: "#ffffff",
+                        //height: heightPercentageToDP("5%"),
+                        width: width * 0.2,
+
+                        backgroundColor: null,
+                        borderWidth: 0,
+                        marginTop: 5
+                      },
+                    ]}
+                    disableBorderRadius={false}
+                  />
+                </View>
+                {/* <Text
                   style={[
 
                     styles.text,
@@ -312,7 +416,7 @@ const index = ({ props, navigation }) => {
                   ]}
                 >
                   English
-                </Text>
+                </Text> */}
               </View>
               <View style={{ flexDirection: 'row', justifyContent: 'space-between', }}>
                 <View style={styles.innerRow}>
@@ -327,10 +431,69 @@ const index = ({ props, navigation }) => {
                       },
                     ]}
                   >
-                     {strings("hamburger_menu.curreny")}
+                    {t("curreny")}
                   </Text>
                 </View>
-                <Text
+                <View>
+                  <DropDownPicker
+                    open={open2}
+                    value={value2}
+                    items={items2}
+                    setOpen={setOpen2}
+                    setValue={setValue2}
+                    setItems={setItems2}
+                    zIndex={1000}
+                    containerStyle={{
+                      width: width * 0.25,
+                    }}
+
+                    textStyle={{
+                      fontSize: RFValue(14),
+                      fontFamily: "Axiforma-Regular",
+                      color: "#ffffff",
+                    }}
+                    dropDownContainerStyle={{
+                      backgroundColor: "#fff",
+                      marginTop: -height * 0.02,
+
+
+                    }}
+                    arrowIconStyle={{
+                      bottom: 8
+                    }}
+
+
+                    listItemLabelStyle={{
+                      color: '#000000',
+                      fontFamily: "Axiforma-Regular",
+
+                    }}
+                    labelStyle={{
+                      fontFamily: "Axiforma-Regular",
+                      color: "#ffffff",
+                      fontSize: RFValue(13),
+                      height: 22,
+                      bottom: 8
+
+                    }}
+                    style={[
+
+                      styles.text,
+                      {
+
+                        color: "#ffffff",
+                        //height: heightPercentageToDP("5%"),
+                        width: width * 0.2,
+
+                        backgroundColor: null,
+                        borderWidth: 0,
+                        marginTop: 5
+                      },
+                    ]}
+                    disableBorderRadius={false}
+                  />
+                </View>
+                {/* <Text
                   style={[
                     styles.text,
                     {
@@ -341,7 +504,7 @@ const index = ({ props, navigation }) => {
                   ]}
                 >
                   AED
-                </Text>
+                </Text> */}
               </View>
             </View>
             <Text
@@ -355,8 +518,8 @@ const index = ({ props, navigation }) => {
                 },
               ]}
             >
-              {strings("hamburger_menu.general")}
-              
+              {t("general")}
+
             </Text>
             <View style={styles.rowView}>
               <View style={styles.innerRow}>
@@ -373,7 +536,7 @@ const index = ({ props, navigation }) => {
                     },
                   ]}
                 >
-                  {strings("hamburger_menu.how_it_works")}
+                  {t("how_it_works")}
                 </Text>
               </View>
               <View style={styles.innerRow}>
@@ -389,30 +552,31 @@ const index = ({ props, navigation }) => {
                     },
                   ]}
                 >
-               {strings("hamburger_menu.our_products")}
+                  {t("our_products")}
                 </Text>
               </View>
             </View>
-            <View style={{flexDirection:'row',justifyContent:'space-around',width:'100%',paddingBottom:10}}>
-              <LongButton
-                style={styles.Margin}
-                textstyle={{ color: "#eb2b5f" }}
-                text={strings("hamburger_menu.call_us")}
-                font={16}
-              />
-              <LongButton
-                style={styles.Margin}
-                textstyle={{ color: "#eb2b5f" }}
-                text={strings("hamburger_menu.email_us")}
-                font={16}
-              />
-            </View>
+
             <View style={{ flexDirection: 'row', justifyContent: 'space-around', width: "100%", paddingBottom: 10 }}>
               <AntDesign name="instagram" size={28} color="#fff" />
               <Feather name="facebook" size={28} color="#fff" />
               <FontAwesome name="whatsapp" size={28} color="#fff" />
               <Feather name="linkedin" size={28} color="#fff" />
               <Feather name="twitter" size={28} color="#fff" />
+            </View>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-around', width: '100%', paddingBottom: 10 }}>
+              <LongButton
+                style={styles.Margin}
+                textstyle={{ color: "#eb2b5f" }}
+                text={t("call_us")}
+                font={16}
+              />
+              <LongButton
+                style={styles.Margin}
+                textstyle={{ color: "#eb2b5f" }}
+                text={t("email_us")}
+                font={16}
+              />
             </View>
           </View>
         </View>
@@ -496,7 +660,7 @@ const styles = StyleSheet.create({
   text: {
     fontFamily: "Axiforma-Regular",
     color: "#ffffff",
-    fontSize: 14,
+    fontSize: RFValue(13),
   },
   rowView: {
     width: widthPercentageToDP("90%"),
@@ -515,8 +679,8 @@ const styles = StyleSheet.create({
     width: width * 0.06,
     height: height * 0.04,
     resizeMode: "contain",
-    marginTop:6,
-    marginRight:10
+    marginTop: 6,
+    marginRight: 10
   },
   Margin: {
     height: height * 0.065,

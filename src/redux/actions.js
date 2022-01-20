@@ -50,6 +50,7 @@ export const getLandingScreen = () => {
     try {
         return async dispatch => {
             const Token = await EncryptedStorage.getItem("Token");
+            console.log("tokenR",Token);
             const result = await fetch(`${Config.API_URL}/home`, {
                 method: 'GET',
                 headers: {
@@ -70,7 +71,7 @@ export const getLandingScreen = () => {
             }
         }
     } catch (error) {
-        console.log(error);
+        console.log("error",error);
     }
 }
 export const getProducts = () => {
@@ -97,7 +98,35 @@ export const getProducts = () => {
             }
         }
     } catch (error) {
+        console.log(error); 
+    }
+}
+export const getLiveShowPlans = () => {
+   
+    try {
+        return async dispatch => {
+            const Token = await EncryptedStorage.getItem("Token");
+            const result = await fetch(`${Config.API_URL}/gameshow_live_plans`, {
+                method: 'GET',
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    Accept: "application/json",
+                    Authorization: `Bearer ${Token}`,
+                  },
+            });
+            const json = await result.json();
+            if (json&&json.status === "success") {
+                dispatch({
+                    type: types.GET_LIVE_PLANS, 
+                    payload: json
+                });
+            } else {
+                console.log('Unable to fetch!');
+            }
+        }
+    } catch (error) {
         console.log(error);
     }
 }
+
 

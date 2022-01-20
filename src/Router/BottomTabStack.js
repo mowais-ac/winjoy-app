@@ -9,7 +9,7 @@ import Winners from '../screens/Winners/Winners';
 import Draws from '../screens/Draws/Draws';
 import Wallet from '../screens/Wallet';
 import I18n from 'react-native-i18n';
-I18n.locale = "ar";
+// I18n.locale = "ar";
 import { strings } from "../i18n";
 const { width, height } = Dimensions.get("window");
 const Tab = createBottomTabNavigator();

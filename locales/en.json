@@ -1,4 +1,22 @@
 {
+  "my_friends":"My Friends",
+    "view_all_friends":"View all Friends",
+    "wallet":"Wallet",
+    "leaderboard":"Leaderboard",
+    "played_games":"Played games",
+    "friends":"Friends",
+    "my_order":"My order",
+    "view_profile":"View profile",
+    "refer_&_Earn":"Refer & Earn",
+    "logout":"Logout",
+    "setting":"Settings",
+    "language":"Language",
+    "curreny":"Currency",
+    "general":"General",
+    "how_it_works":"How It Works",
+    "our_products":"Our Products",
+    "call_us":"Call us",
+    "email_us":"Email us",
   "login_screen": {
     "login_heading": "Login to WinJoy",
     "login": "Login",
@@ -28,5 +46,31 @@
     "password":"Password",
     "confirm_password":"Confirm Password",
     "create_account":"Create an account"
+  },
+  "products":{
+    "do_not_miss_chance":"Don’t Miss a chace to",
+    "closing_soon":"Closing Soon",
+    "all":"ALL",
+    "buy_now":"Buy Now"
+  },
+  "wallet1":{
+    "your_wallet":"Your Wallet",
+    "top_up":"TOPUP",
+    "with_draw":"WITHDRAW",
+    "last_played_game":"Last Played Game",
+    "won_prize":"Won Prize",
+    "last_five_transcation":"Last 5 Transactions "
+  },
+
+  "fan_joy":{
+    "fan_joy":"FAN JOY",
+    "created_by_stars":"CREATED BY STARS"
+  },
+  "bottom_tabs":{
+    "home":"Home",
+    "products":"PRODUCTS",
+    "winners":"WINNERS",
+    "draws":"DRAWS",
+    "wallet":"WALLET"
   }
 }

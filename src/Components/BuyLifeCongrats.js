@@ -8,7 +8,7 @@ import {
   TouchableWithoutFeedback,
   Alert,
   TouchableOpacity,
-  Text
+  TextInput
 } from "react-native";
 import Label from "./Label";
 import LabelButton from "./LabelButton";
@@ -22,10 +22,9 @@ import ProfilePicture from "./ProfilePicture";
 import { RFValue } from "react-native-responsive-fontsize";
 import LinearGradient from "react-native-linear-gradient";
 import { heightConverter } from "./Helpers/Responsive";
-import { Avatar } from "react-native-elements";
 const { width, height } = Dimensions.get("window");
 
-const ExperienceCelebrityModal = (props) => {
+const BuyLifeCongrats = (props) => {
   const [ModelState, setModelState] = useState({
     state: false,
     details: null,
@@ -63,97 +62,24 @@ const ExperienceCelebrityModal = (props) => {
       <View style={styles.ModalView}>
         <View style={styles.SmallBorder} />
 
-        <View style={{
-          width: '100%',
-          justifyContent: 'center',
-          alignItems: 'center',
-          marginTop: 10,
-        }}>
-          <View style={{
-            height: height * 0.18,
-            width: width * 0.9,
-            flexDirection: 'row',
-            alignItems: 'center'
-          }}>
-            <Image
-              style={{
-                width: 100,
-                height: 100,
-                borderRadius: 10
-              }}
-              source={{
-                uri: 'https://abdulrahman.fleeti.com/save_file/uploads/provider/user/5bf637c8_60262ff8dbde39.10627959.jpg',
-              }}
-            />
-            <View style={{ marginLeft: 20 }}>
-              <Text style={{ color: '#0B2142', fontFamily: 'Axiforma SemiBold', fontSize: RFValue(14) }}>Video Shoutout</Text>
-              <Text style={{ color: '#420E92', fontFamily: 'Axiforma Bold', fontSize: RFValue(14) }}>AED 240</Text>
-            </View>
-          </View>
+        <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', marginTop: 10 }}>
+          <Image
+            style={{
+              width: 100,
+              height: 100,
+            }}
+            source={require('../assets/imgs/success.png')}
+          />
         </View>
-        <View style={{ height: 1.3, width: '100%', backgroundColor: '#E6DFEE' }} />
-        <View style={{
-          width: '100%',
-          justifyContent: 'center',
-          alignItems: 'center',
-          marginTop: 10,
-        }}>
-          <View style={{
-            height: height * 0.18,
-            width: width * 0.9,
-            flexDirection: 'row',
-            alignItems: 'center'
-          }}>
-            <Avatar
-              rounded
-              size={75}
-
-              // title="MD"
-              source={{
-                uri:
-                  "https://abdulrahman.fleeti.com/save_file/uploads/provider/user/5bf637c8_60262ff8dbde39.10627959.jpg"
-              }}
-            />
-            <View style={{ marginLeft: 20, width: '70%' }}>
-              <Text style={{
-                color: '#000000',
-                fontFamily: 'Axiforma Regular', 
-                fontSize: RFValue(12),
-                textAlign: 'left'
-              }}>
-                Celebrate your fans everyday moments with a personalized birthday wish, graduation congrats and more.
-              </Text>
-            </View>
-          </View>
-        </View>
-        <View style={{ height: 1.3, width: '100%', backgroundColor: '#E6DFEE' }} />
-        <View style={{marginTop:20,marginLeft:20}}>
-        <Text style={{ color: '#000000', fontFamily: 'Axiforma SemiBold', fontSize: RFValue(12) }}>Video Shootouts</Text>
-        <Image
-              style={{
-                width: width*0.6,
-                height: height*0.16,
-                borderRadius: 10
-              }}
-              source={{
-                uri: 'https://abdulrahman.fleeti.com/save_file/uploads/provider/user/5bf637c8_60262ff8dbde39.10627959.jpg',
-              }}
-            />
-            <View style={{ height: 1.3, width: '100%', backgroundColor: '#E6DFEE',marginTop:25 }} />
-               <Text style={{
-                 color: '#000000', 
-                 fontFamily: 'Axiforma SemiBold',
-                  fontSize: RFValue(12),
-                  width:'90%',
-                  textAlign:'center',
-                  marginTop:10,
-                  color:'#420E92'
-                  }}>Total: <Text style={{fontSize: RFValue(16)}}>AED 240</Text></Text>
-        </View>
-        
         <View style={styles.ModalBody}>
+          <Label primary headingtype="h1" bold2 style={{ color: "#420E92" }}>
+            {props.heading}
+          </Label>
+          <Label primary headingtype="h1" font={16} style={{ color: "#0B2142", lineHeight: 25 }}>
+            {props.description}
+          </Label>
           <TouchableOpacity
-            onPress={() => { props.onPressContinue() }}
+            onPress={() => { props.closeOnPress() }}
             style={{
               height: heightConverter(20),
               width: width * 0.9,
@@ -167,7 +93,7 @@ const ExperienceCelebrityModal = (props) => {
             <View
 
               style={{
-                height: heightConverter(65),
+                height: heightConverter(55),
                 width: width * 0.9,
                 justifyContent: 'center',
                 alignItems: 'center',
@@ -177,30 +103,18 @@ const ExperienceCelebrityModal = (props) => {
 
 
             >
-           
               <Label primary font={16} bold style={{ color: "#ffffff" }}>
-                Pay Now
+               Close
               </Label>
             </View>
-          </TouchableOpacity>
-          <LabelButton
-            primary
-            headingtype="h3"
-            bold
-            style={[styles.CloseBtn, { color: '#6F5F87',fontSize:RFValue(14) }]}
-            onPress={() => {
-              navigation.navigate("Landing")
-            }}
-          >
-           Close
-          </LabelButton>
+          </TouchableOpacity> 
         </View>
       </View>
     </Modal>
   );
 };
 
-export default ExperienceCelebrityModal;
+export default BuyLifeCongrats;
 
 const styles = StyleSheet.create({
   MainView: {
@@ -210,8 +124,8 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.BG_MUTED,
   },
   ModalView: {
-    height: height * 0.77,
-    marginTop: height * 0.13,
+    height: height * 0.4,
+    marginTop: height * 0.55,
     borderTopLeftRadius: 37,
     borderTopRightRadius: 37,
     backgroundColor: Colors.WHITE,
@@ -229,6 +143,7 @@ const styles = StyleSheet.create({
   },
 
   ModalBody: {
+    marginTop: height * 0.04,
     backgroundColor: Colors.WHITE,
     height: height * 0.3,
   },

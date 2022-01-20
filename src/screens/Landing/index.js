@@ -44,6 +44,7 @@ import Carousel from 'react-native-snap-carousel';
 import Video from "react-native-video";
 import { getLandingScreen } from '../../redux/actions';
 import socketIO from "socket.io-client";
+import {useTranslation} from 'react-i18next';
 const MYServer = "https://node-winjoyserver-deploy.herokuapp.com/";
 function ClosingSoon({ item }) {
   let progress = item.updated_stocks
@@ -109,6 +110,7 @@ function ClosingSoon({ item }) {
   );
 }
 const index = (props) => {
+  const {t, i18n} = useTranslation();
   // const scrollY = new Animated.Value(0)
   // const diffClamp = Animated.diffClamp(scrollY, 0, 45)
   // const translateY = diffClamp.interpolate({
@@ -117,12 +119,8 @@ const index = (props) => {
   // })
   const [headerValue, setHeaderValue] = useState(0);
   const { Coins, navigation } = props;
-  const [banners, setBanners] = useState([]);
-  const [lowerBanner, setLowerBanner] = useState([]);
-  const [fanjoyData, setFanjoyData] = useState([]);
   const [loader, setLoader] = useState(false);
   const [refreshing, setRefreshing] = React.useState(false);
-  const [productList, setProductList] = React.useState([]);
   const [winnerData, setWinnerData] = useState([]);
   const [imgActive, setImgActive] = useState(0);
   const [homeData, setHomeData] = useState([]);
@@ -135,7 +133,6 @@ const index = (props) => {
   const [videoAction, setVideoAction] = useState(true);
   const dispatch = useDispatch();
   const socket = socketIO(MYServer);
-  console.log("LandingData", LandingData);
   const onRefresh = React.useCallback(() => {
     // setBanners(null);
     setRefreshing(true);
@@ -143,10 +140,6 @@ const index = (props) => {
     var CurrentDate = dayjs().format("YYYY-MM-DDThh:mm:ss.000000Z");
     var duration = dayjs(LandingData?.gameshow?.start_date).diff(dayjs(CurrentDate), 'seconds');
     setTime(duration)
-    setBanners(LandingData?.banners);
-    setLowerBanner(LandingData?.lowerBanner)
-    setProductList(LandingData?.products)
-    setFanjoyData(LandingData?.funJoy)
     initialLoad();
     wait(2000).then(() => setRefreshing(false));
   }, []);
@@ -155,14 +148,10 @@ const index = (props) => {
     dispatch(getLandingScreen());
   };
   const initialLoad = () => {
-    dispatch(getLandingScreen());
+   
     var CurrentDate = dayjs().format("YYYY-MM-DDThh:mm:ss.000000Z");
     var duration = dayjs(LandingData?.gameshow?.start_date).diff(dayjs(CurrentDate), 'seconds');
     setTime(duration)
-    setBanners(LandingData?.banners);
-    setLowerBanner(LandingData?.lowerBanner)
-    setProductList(LandingData?.products)
-    setFanjoyData(LandingData?.funJoy)
     setGameShowData(LandingData?.gameShow)
   }
   useFocusEffect(
@@ -172,8 +161,9 @@ const index = (props) => {
     }, [])
   );
   useEffect(() => {
+    dispatch(getLandingScreen());
     setGameShowData(LandingData?.gameShow)
-  });
+  }, []);
   function _renderItem({ item, index }) {
     if (item.type === "image") {
       return (
@@ -250,21 +240,22 @@ const index = (props) => {
                 <ActivityIndicator size="large" color="#fff" />
               ) : (
                 // null
-                <Carousel
-                  layout={"default"}
-                  resizeMode={"cover"}
-                  loop={videoAction}
-                  autoplay={videoAction}
-                  autoplayInterval={2000}
+                // <Carousel
+                //   layout={"default"}
+                //   resizeMode={"cover"}
+                //   loop={videoAction}
+                //   autoplay={videoAction}
+                //   autoplayInterval={2000}
 
-                  // ref={ref => this.carousel = ref}
-                  data={banners}
-                  sliderWidth={width}
-                  itemWidth={width}
-                  renderItem={_renderItem}
-                  style={styles.ShoppingBanner}
-                  onSnapToItem={index => setActiveSlide(index)}
-                />
+                //   // ref={ref => this.carousel = ref}
+                //   data={LandingData?.banners}
+                //   sliderWidth={width}
+                //   itemWidth={width}
+                //   renderItem={_renderItem}
+                //   style={styles.ShoppingBanner}
+                //   onSnapToItem={index => setActiveSlide(index)}
+                // />
+                null
               )}
 
             </View>
@@ -315,7 +306,7 @@ const index = (props) => {
             }}
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}
-            data={lowerBanner}
+            data={LandingData?.lowerBanner}
             renderItem={({ item }) => (
 
               // <TouchableOpacity
@@ -334,7 +325,8 @@ const index = (props) => {
                   ) : item.id === 2 ? (
                     navigation.navigate("DealsJoy")
                   ) : (
-                    navigation.navigate("FanJoy")
+                  //  navigation.navigate("FanJoy")
+                  alert("Under Construction")
                   )
                 }} />
               // </TouchableOpacity>
@@ -374,7 +366,7 @@ const index = (props) => {
             }}
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}
-            data={productList}
+            data={LandingData?.products}
             renderItem={({ item }) => (
               <TouchableOpacity
                 onPress={() =>
@@ -429,7 +421,7 @@ const index = (props) => {
             </View>
 
             <FlatList
-              data={fanjoyData}
+              data={LandingData?.funJoy}
               horizontal={true}
               renderItem={({ item }) =>
                 <FanJoyCard
@@ -461,3 +453,96 @@ const index = (props) => {
 };
 
 export default index;
+// import React, {useLayoutEffect} from 'react';
+// import {
+//   StyleSheet,
+//   View,
+//   Text,
+//   Button,
+//   TextInput,
+//   I18nManager,
+// } from 'react-native';
+// import {useTranslation} from 'react-i18next';
+// import RNRestart from 'react-native-restart';
+
+// const index = ({navigation}) => {
+//   const {t, i18n} = useTranslation();
+ 
+
+//   useLayoutEffect(() => {
+//     navigation.setOptions({
+//       title: t('Home'),
+//     });
+//   });
+
+//   return (
+//     <>
+//       <View style={styles.wrapper}>
+//         <View style={styles.sectionWrapper}>
+//           <Text style={styles.heading}>{t('Hello world')}</Text>
+//           <Text style={styles.regularText}>
+//             {t('Some text goes here, some more text goes here')}
+//           </Text>
+//         </View>
+//         <View style={styles.sectionWrapper}>
+//           <Text style={styles.heading}>{t('Row test')}</Text>
+//           <View style={styles.row}>
+//             <Text>{t('column 1')}</Text>
+//             <Text>{t('column 2')}</Text>
+//             <Text>{t('column 3')}</Text>
+//           </View>
+//         </View>
+//         <View style={styles.sectionWrapper}>
+//           <Text style={styles.heading}>{t('Textinput test')}</Text>
+//           <TextInput style={styles.textInput} placeholder={t('Testing')} />
+//         </View>
+//         <View style={styles.sectionWrapper}>
+//           <Button
+//             title={t('login_screen.login_heading')}
+//             onPress={() => navigation.navigate('Inner')}
+//           />
+//         </View>
+//         <View style={styles.sectionWrapper}>
+//           <Button
+//             title={t('Change_language')} 
+//             onPress={() => {
+//               i18n
+//                 .changeLanguage(i18n.language === 'ar' ? 'en' : 'ar')
+//                 .then(() => {
+//                   I18nManager.forceRTL(i18n.language === 'ar');
+//                   RNRestart.Restart();
+//                 });
+//             }}
+//           />
+//         </View>
+//       </View>
+//     </>
+//   );
+// };
+
+// const styles = StyleSheet.create({
+//   wrapper: {
+//     backgroundColor: '#f3f3f3',
+//     flex: 1,
+//   },
+//   sectionWrapper: {
+//     padding: 20,
+//   },
+//   heading: {
+//     fontSize: 20,
+//     marginBottom: 15,
+//     textAlign: 'left',
+//   },
+//   regularText: {
+//     textAlign: 'left',
+//   },
+//   row: {
+//     flexDirection: 'row',
+//     justifyContent: 'space-between',
+//   },
+//   textInput: {
+//     textAlign: I18nManager.isRTL ? 'right' : 'left',
+//   },
+// });
+
+// export default index;

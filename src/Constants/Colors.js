@@ -14,7 +14,7 @@ export default {
   INVISIBLE: "rgba(0, 0, 0, 0)",
   IMAGE_BORDER: "rgba(0, 0, 0, 0.2)",
   BENEFICIARY: "#EDF5F7",
-  BG_MUTED: "rgba(0,0,0,0.5)",
+  BG_MUTED: "rgba(91, 73, 118, 0.8)",
   PROFILE_BG: "#445A8C",
   PROGRESS_CIRCLE: "#EDC515",
 

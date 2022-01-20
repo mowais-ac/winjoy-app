@@ -4,11 +4,11 @@ import {
   StyleSheet,
   Modal,
   Dimensions,
-  Image,
+  Text,
   TouchableWithoutFeedback,
   Alert,
   TouchableOpacity,
-  Text
+  TextInput
 } from "react-native";
 import Label from "./Label";
 import LabelButton from "./LabelButton";
@@ -22,22 +22,40 @@ import ProfilePicture from "./ProfilePicture";
 import { RFValue } from "react-native-responsive-fontsize";
 import LinearGradient from "react-native-linear-gradient";
 import { heightConverter } from "./Helpers/Responsive";
-import { Avatar } from "react-native-elements";
-const { width, height } = Dimensions.get("window");
 
-const ExperienceCelebrityModal = (props) => {
+import { useSelector, useDispatch } from "react-redux";
+const { width, height } = Dimensions.get("window");
+const BuyLifeLineModal = (props) => {
   const [ModelState, setModelState] = useState({
     state: false,
     details: null,
   });
-  const ApproveRef = useRef();
-  const DeclineRef = useRef();
+  const dispatch = useDispatch();
 
   const navigation = useNavigation();
 
   useEffect(() => {
     if (props.ModalRef) props.ModalRef.current = HandleChange;
   });
+  const getData = async () => {
+    try {
+     
+        const Token = await EncryptedStorage.getItem("Token");
+        const result = await fetch(`${Config.API_URL}/buy_lives_plan/${props.id}`, {
+          method: 'POST',
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Accept: "application/json",
+            Authorization: `Bearer ${Token}`,
+          },
+        });
+        const json = await result.json();
+        alert(json.message)
+      
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   const HandleChange = (state, details = null, ForceSuccess = false) => {
     setModelState({ state, details, ForceSuccess });
@@ -57,103 +75,39 @@ const ExperienceCelebrityModal = (props) => {
         if (props.onClose) props.onClose();
       }}
     >
-
-      <View style={styles.MainView} />
-
+      <TouchableWithoutFeedback
+        onPress={() => {
+          setModelState({
+            ...ModelState,
+            state: !ModelState.state,
+          });
+          if (props.onClose) props.onClose();
+        }}
+      >
+        <View style={styles.MainView} />
+      </TouchableWithoutFeedback>
       <View style={styles.ModalView}>
         <View style={styles.SmallBorder} />
 
-        <View style={{
-          width: '100%',
-          justifyContent: 'center',
-          alignItems: 'center',
-          marginTop: 10,
-        }}>
-          <View style={{
-            height: height * 0.18,
-            width: width * 0.9,
-            flexDirection: 'row',
-            alignItems: 'center'
-          }}>
-            <Image
-              style={{
-                width: 100,
-                height: 100,
-                borderRadius: 10
-              }}
-              source={{
-                uri: 'https://abdulrahman.fleeti.com/save_file/uploads/provider/user/5bf637c8_60262ff8dbde39.10627959.jpg',
-              }}
-            />
-            <View style={{ marginLeft: 20 }}>
-              <Text style={{ color: '#0B2142', fontFamily: 'Axiforma SemiBold', fontSize: RFValue(14) }}>Video Shoutout</Text>
-              <Text style={{ color: '#420E92', fontFamily: 'Axiforma Bold', fontSize: RFValue(14) }}>AED 240</Text>
-            </View>
-          </View>
-        </View>
-        <View style={{ height: 1.3, width: '100%', backgroundColor: '#E6DFEE' }} />
-        <View style={{
-          width: '100%',
-          justifyContent: 'center',
-          alignItems: 'center',
-          marginTop: 10,
-        }}>
-          <View style={{
-            height: height * 0.18,
-            width: width * 0.9,
-            flexDirection: 'row',
-            alignItems: 'center'
-          }}>
-            <Avatar
-              rounded
-              size={75}
+        <Text style={[styles.text, { textAlign: 'center', marginTop: height * 0.03, width: width }]}>
+          Buy Lives
+        </Text>
 
-              // title="MD"
-              source={{
-                uri:
-                  "https://abdulrahman.fleeti.com/save_file/uploads/provider/user/5bf637c8_60262ff8dbde39.10627959.jpg"
-              }}
-            />
-            <View style={{ marginLeft: 20, width: '70%' }}>
-              <Text style={{
-                color: '#000000',
-                fontFamily: 'Axiforma Regular', 
-                fontSize: RFValue(12),
-                textAlign: 'left'
-              }}>
-                Celebrate your fans everyday moments with a personalized birthday wish, graduation congrats and more.
-              </Text>
-            </View>
-          </View>
-        </View>
-        <View style={{ height: 1.3, width: '100%', backgroundColor: '#E6DFEE' }} />
-        <View style={{marginTop:20,marginLeft:20}}>
-        <Text style={{ color: '#000000', fontFamily: 'Axiforma SemiBold', fontSize: RFValue(12) }}>Video Shootouts</Text>
-        <Image
-              style={{
-                width: width*0.6,
-                height: height*0.16,
-                borderRadius: 10
-              }}
-              source={{
-                uri: 'https://abdulrahman.fleeti.com/save_file/uploads/provider/user/5bf637c8_60262ff8dbde39.10627959.jpg',
-              }}
-            />
-            <View style={{ height: 1.3, width: '100%', backgroundColor: '#E6DFEE',marginTop:25 }} />
-               <Text style={{
-                 color: '#000000', 
-                 fontFamily: 'Axiforma SemiBold',
-                  fontSize: RFValue(12),
-                  width:'90%',
-                  textAlign:'center',
-                  marginTop:10,
-                  color:'#420E92'
-                  }}>Total: <Text style={{fontSize: RFValue(16)}}>AED 240</Text></Text>
-        </View>
-        
         <View style={styles.ModalBody}>
+          <Text style={styles.descriptionText}>
+            Pay AED 30 to buy 10 life lines, once you are done with the payment, you will be able to avail life lines in our gameshow.
+          </Text>
+          <View style={[styles.SmallBorder, { width: width * 0.1, height: 2, }]} />
+          <Text style={[styles.text, { textAlign: 'center', marginTop: height * 0.03, width: width * 0.93, fontSize: RFValue(16) }]}>
+            AED {props.amount}
+          </Text>
+          <Text style={styles.descriptionText}>
+            Buy {props.lives} lives
+          </Text>
           <TouchableOpacity
-            onPress={() => { props.onPressContinue() }}
+            onPress={() => {
+              getData()
+            }}
             style={{
               height: heightConverter(20),
               width: width * 0.9,
@@ -161,13 +115,14 @@ const ExperienceCelebrityModal = (props) => {
               justifyContent: 'center',
               alignItems: 'center',
               marginTop: height * 0.06,
-              marginLeft: width * 0.04,
+              marginLeft: width * 0.014,
             }}
+
           >
             <View
 
               style={{
-                height: heightConverter(65),
+                height: heightConverter(60),
                 width: width * 0.9,
                 justifyContent: 'center',
                 alignItems: 'center',
@@ -177,7 +132,6 @@ const ExperienceCelebrityModal = (props) => {
 
 
             >
-           
               <Label primary font={16} bold style={{ color: "#ffffff" }}>
                 Pay Now
               </Label>
@@ -187,12 +141,15 @@ const ExperienceCelebrityModal = (props) => {
             primary
             headingtype="h3"
             bold
-            style={[styles.CloseBtn, { color: '#6F5F87',fontSize:RFValue(14) }]}
+            style={[styles.CloseBtn, { color: '#6F5F87', fontSize: RFValue(14) }]}
             onPress={() => {
-              navigation.navigate("Landing")
+              setModelState({
+                ...ModelState,
+                state: !ModelState.state,
+              });
             }}
           >
-           Close
+            Not Now
           </LabelButton>
         </View>
       </View>
@@ -200,7 +157,7 @@ const ExperienceCelebrityModal = (props) => {
   );
 };
 
-export default ExperienceCelebrityModal;
+export default BuyLifeLineModal;
 
 const styles = StyleSheet.create({
   MainView: {
@@ -210,8 +167,8 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.BG_MUTED,
   },
   ModalView: {
-    height: height * 0.77,
-    marginTop: height * 0.13,
+    height: height * 0.5,
+    marginTop: height * 0.5,
     borderTopLeftRadius: 37,
     borderTopRightRadius: 37,
     backgroundColor: Colors.WHITE,
@@ -229,6 +186,9 @@ const styles = StyleSheet.create({
   },
 
   ModalBody: {
+    paddingLeft: 15,
+    paddingRight: 15,
+    marginTop: height * 0.02,
     backgroundColor: Colors.WHITE,
     height: height * 0.3,
   },
@@ -341,5 +301,11 @@ const styles = StyleSheet.create({
   },
   titleTxt: {
     marginTop: height * 0.01
+  },
+  text: {
+    color: '#420E92', fontFamily: 'Axiforma Bold', fontSize: RFValue(14)
+  },
+  descriptionText: {
+    color: '#000000', fontFamily: 'Axiforma Regular', fontSize: RFValue(13), textAlign: 'center', lineHeight: height * 0.03
   }
 });

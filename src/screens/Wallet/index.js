@@ -22,7 +22,7 @@ import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import EncryptedStorage from "react-native-encrypted-storage";
 import Config from "react-native-config";
 import I18n from 'react-native-i18n';
-I18n.locale = "ar";
+//I18n.locale = "ar";
 import { strings } from "../../i18n";
 import axios from 'axios';
 import {

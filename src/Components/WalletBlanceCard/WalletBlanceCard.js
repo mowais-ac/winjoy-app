@@ -10,7 +10,7 @@ import LongButton from "../LongButton";
 const { width, height } = Dimensions.get("window");
 import { strings} from "../../i18n";
 import I18n from 'react-native-i18n';
-I18n.locale="ar";
+//I18n.locale="ar";
 function WalletBlanceCard({ yourBalance, onPress, onPressWithdraw, result, optionDisable, data }) {
 
   return (
