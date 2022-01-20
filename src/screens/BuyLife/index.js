@@ -91,7 +91,7 @@ const index = ({ route, navigation }) => {
                                 () => <View style={{ width: 10, }} />
                             }
                             showsVerticalScrollIndicator={false}
-                            showsHorizontalScrollIndicator={false}
+                            showsHorizontalScrollIndicator={false} 
                             data={livePlans.plan}
                             renderItem={({ item }) => (
                                 item?.type === "buy" ? (
@@ -132,14 +132,15 @@ const index = ({ route, navigation }) => {
                             /> */}
                             <FlatList
                             horizontal={true}
-                            contentContainerStyle={{ marginLeft:9}}
+                           // contentContainerStyle={{ marginLeft:1}}
                             ItemSeparatorComponent={
-                                () => <View style={{ width: 10, }} />
+                                () => <View style={{ width: 5, }} />
                             }
                             showsVerticalScrollIndicator={false}
+                            scrollEnabled={false}
                             showsHorizontalScrollIndicator={false}
                             data={livePlans.plan}
-                            renderItem={({ item }) => (
+                            renderItem={({ item,index }) => (
                                 item?.type === "video" ? (
                                     <LifeCardRefferAndVideo
                                     imagePath={require('../../assets/imgs/videoIcon.png')}
@@ -151,11 +152,19 @@ const index = ({ route, navigation }) => {
                                         AddModalState.current(true) 
                                     }}
                                 />
-                                ) : null
+                                ) :index===1? (
+                                    <LifeCardRefferAndVideo
+                                    imagePath={require('../../assets/imgs/letterIcon.png')}
+                                    heading={"Refer Friends"}
+                                    description={"Earn upto 10 lives"}
+                                    onPress={() => RefferModalState.current(true)}
+                                /> 
+                                ):null
 
                             )}
                             keyExtractor={(item) => item.id}
                         />
+                       
                         </View>
                     </View>
                     <BuyLifeLineModal ModalRef={ModalState} details

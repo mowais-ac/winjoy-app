@@ -9,7 +9,7 @@ import Config from "react-native-config";
 import ProgressCircle from 'react-native-progress-circle';
 import { RFValue } from "react-native-responsive-fontsize";
 const { width, height } = Dimensions.get("window");
-function RefferalTextInput({ srNumber }) {
+function RefferalTextInput({ srNumber,onChangeName,onChangeNumber,validationBorder }) {
   return (
     <View style={{
       width: width * 0.92,
@@ -21,31 +21,35 @@ function RefferalTextInput({ srNumber }) {
 
     }}>
       <Text style={[styles.descriptionText, { fontSize: RFValue(19), color: '#D9D0E0' }]}>{srNumber}</Text>
-      <View style={{ width: width * 0.86, height: height * 0.1, borderRadius: 10, borderWidth: 1, borderColor: '#F2EFF5' }}>
+      <View style={{ width: width * 0.86, height: height * 0.105, borderRadius: 10, borderWidth: 1, borderColor:validationBorder?'red':'#F2EFF5' }}>
         <TextInput
           style={{
             height: 40,
-            width: width * 0.4,
+            width: width * 0.6,
             paddingLeft: 20,
+            color:'#000000',fontFamily: 'Axiforma Regular'
           }}
-          //  onChangeText={onChangeNumber}
+            onChangeText={onChangeName}
+           
           // value={number}
           placeholder="Name"
           placeholderTextColor={"#0B2142"}
-          keyboardType="numeric"
+          keyboardType="default"
         />
-        <View style={{ backgroundColor: '#F2EFF5', height: 1, width: width * 0.855 }} />
+        <View style={{ backgroundColor:validationBorder?'red':'#F2EFF5', height: 1, width: width * 0.855 }} />
         <TextInput
           style={{
             height: 40,
-            width: width * 0.4,
+            width: width * 0.6,
             paddingLeft: 20,
+            color:'#000000',fontFamily: 'Axiforma Regular'
           }}
-          //  onChangeText={onChangeNumber}
+        
+            onChangeText={onChangeNumber}
           // value={number}
           placeholder="Phone Number"
           placeholderTextColor={"#0B2142"}
-          keyboardType="numeric"
+          keyboardType="phone-pad"
         />
       </View>
     </View>
