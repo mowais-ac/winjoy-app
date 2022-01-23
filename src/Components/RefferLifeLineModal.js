@@ -9,7 +9,9 @@ import {
   FlatList,
   TouchableOpacity,
   TextInput,
-  ScrollView
+  ScrollView,
+  ActivityIndicator,
+  KeyboardAvoidingView
 } from "react-native";
 import Label from "./Label";
 import LabelButton from "./LabelButton";
@@ -53,17 +55,14 @@ const RefferLifeLineModal = (props) => {
     details: null,
   });
   const [selected, setSelected] = useState(0);
-  const [id, setId] = useState(null);
+  const [id, setId] = useState(0);
   const [validatorIndex, setValidatorIndex] = useState(false);
   //const validatorIndex=[]; 
   const [updateData, setUpdateData] = useState(false);
   const [refferalLivePlans, setRefferalLivePlans] = useState([]);
   const [totalRef, setTotalRef] = useState([]);
 
-  //referal 1
-  const [nameRef1, setNameRef1] = useState("");
-  const [numberRef1, setNumberRef1] = useState("");
-  const [checkUser, setCheckUser] = useState(false);
+  const [loader, setLoader] = useState(false);
 
 
   const ApproveRef = useRef();
@@ -83,14 +82,23 @@ const RefferLifeLineModal = (props) => {
     dispatch(getLiveShowPlans());
     console.log("livePlansModal", livePlans.plan);
     let li = [];
+    let idforFirst;
     livePlans.plan.forEach(element => {
+      console.log("element", element);
       if (element.type === "referral") {
         li.push(element)
+
+        if (element.required_referrals === 1) {
+          console.log("element", element.id);
+          idforFirst = element.id;
+        }
       }
+
 
     });
     setRefferalLivePlans(li);
-    //  dispatch(buyLivePlans());
+    setId(idforFirst)
+      
   }, []);
   const onPressRefTab = (index, item) => {
     li = [];
@@ -137,6 +145,7 @@ const RefferLifeLineModal = (props) => {
 
   //  }
   const HandleClick = async () => {
+    
     let validToPost = true;
     var postData = "";
     reff.forEach((element, index) => {
@@ -205,7 +214,10 @@ const RefferLifeLineModal = (props) => {
     // }
   };
   const PostData = async (postData) => {
+    setLoader(true)
     console.log("postData", postData);
+    console.log("id", id);
+
     var Token = await EncryptedStorage.getItem("Token");
     const requestOptions = {
       method: "POST",
@@ -219,8 +231,10 @@ const RefferLifeLineModal = (props) => {
     await fetch(`${Config.API_URL}/buy_lives_plan/${id}`, requestOptions)
       .then((response) => response.json())
       .then(async (res) => {
+        setLoader(false)
         console.log("ress", res);
         if (res.status === "success") {
+          dispatch(getLiveShowPlans());
           SucessModalState.current(true)
         }
         else {
@@ -234,7 +248,9 @@ const RefferLifeLineModal = (props) => {
 
 
       })
-      .catch((e) => console.log("error", e));
+      .catch((e) =>{
+        setLoader(false)
+         console.log("error", e)});
   }
   return (
     <Modal
@@ -250,6 +266,7 @@ const RefferLifeLineModal = (props) => {
         if (props.onClose) props.onClose();
       }}
     >
+          
       <TouchableWithoutFeedback
         onPress={() => {
           setModelState({
@@ -357,11 +374,13 @@ const RefferLifeLineModal = (props) => {
               />
             ) : null}
             {selected === 1 ? (
+            
               <FlatList
                 style={{ height: height * 0.35, width: '100%', }}
                 data={li}
                 extraData={updateData}
                 renderItem={({ item, index }) => (
+              
                   <RefferalTextInput
                     srNumber={item.sr}
                     validationBorderName={item.status}
@@ -383,10 +402,12 @@ const RefferLifeLineModal = (props) => {
                     }
                     }
                   />
+                   
                 )}
 
               //   ListEmptyComponent={this.RenderEmptyContainerOnGoing()}
               />
+             
             ) : null}
             {selected === 2 ? (
               <FlatList
@@ -426,6 +447,7 @@ const RefferLifeLineModal = (props) => {
           <View style={{ width: '100%', paddingLeft: 15 }}>
             <TouchableOpacity
               onPress={() => { HandleClick() }}
+              disabled={loader}
               style={{
                 height: heightConverter(20),
                 width: width * 0.9,
@@ -453,19 +475,24 @@ const RefferLifeLineModal = (props) => {
 
 
               >
-                {selected === 0 ? (
-                  <Label primary font={16} bold style={{ color: "#ffffff" }}>
-                    Refer 1 Friends
-                  </Label>
-                ) : selected === 1 ? (
-                  <Label primary font={16} bold style={{ color: "#ffffff" }}>
-                    Refer {totalRef} Friends
-                  </Label>
-                ) : selected === 2 ? (
-                  <Label primary font={16} bold style={{ color: "#ffffff" }}>
-                    Refer {totalRef} Friends
-                  </Label>
-                ) : null}
+                {loader ? (
+                  <ActivityIndicator size="large" color={"#ffffff"} />
+                ) : (
+                  selected === 0 ? (
+                    <Label primary font={16} bold style={{ color: "#ffffff" }}>
+                      Refer 1 Friends
+                    </Label>
+                  ) : selected === 1 ? (
+                    <Label primary font={16} bold style={{ color: "#ffffff" }}>
+                      Refer {totalRef} Friends
+                    </Label>
+                  ) : selected === 2 ? (
+                    <Label primary font={16} bold style={{ color: "#ffffff" }}>
+                      Refer {totalRef} Friends
+                    </Label>
+                  ) : null
+                )}
+
               </View>
             </TouchableOpacity>
             <LabelButton
@@ -478,8 +505,8 @@ const RefferLifeLineModal = (props) => {
                   ...ModelState,
                   state: !ModelState.state,
                 });
-                
-             
+
+
               }}
             >
               Not Now
@@ -489,9 +516,9 @@ const RefferLifeLineModal = (props) => {
               heading={"Congratulations"}
               description={"4 lives are ready to use. Feel free to play more games & win amazin prizes."}
               requestOnPress={() => {
-              
+
                 SucessModalState.current(false)
-               
+
               }}
               closeOnPress={() => {
                 SucessModalState.current(false)
@@ -504,7 +531,6 @@ const RefferLifeLineModal = (props) => {
           </View>
         </View>
       </View>
-
     </Modal>
   );
 };
