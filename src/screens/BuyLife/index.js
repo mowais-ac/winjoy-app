@@ -157,6 +157,7 @@ const index = ({ route, navigation }) => {
                                     imagePath={require('../../assets/imgs/letterIcon.png')}
                                     heading={"Refer Friends"}
                                     description={"Earn upto 10 lives"}
+                                   
                                     onPress={() => RefferModalState.current(true)}
                                 /> 
                                 ):null
@@ -171,6 +172,7 @@ const index = ({ route, navigation }) => {
                         amount={amount} 
                         lives={lives}
                         id={id}
+
                     // onPressContinue={()=>alert("hii")} 
                     />
                     <WatchAddModal ModalRef={AddModalState} details
@@ -183,6 +185,7 @@ const index = ({ route, navigation }) => {
                             RefferModalState.current(false)
                             SucessModalState.current(true)
                         }}
+                       
                     />
                     <BuyLifeCongrats ModalRef={SucessModalState}
                         heading={"Congratulations"}

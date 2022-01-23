@@ -4,7 +4,8 @@ import Config from "react-native-config";
 import { RFValue } from "react-native-responsive-fontsize";
 const { width, height } = Dimensions.get("window");
 import styles from "./Styles";
-function LifeCardRefferAndVideo({ imagePath, heading, description, onPress ,video_url}) {
+function LifeCardRefferAndVideo({ imagePath, heading, description, onPress ,video_url,}) {
+  
   return (
     <TouchableOpacity
       onPress={onPress}
