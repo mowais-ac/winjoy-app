@@ -67,7 +67,7 @@ const index = ({ props, navigation }) => {
         <LongButton
           style={styles.Margin}
           textstyle={{ color: "#000000" }}
-         text={"All "+"("+productsData?.data.length+")"}
+         text={"All "+"("+productsData?.data?.length+")"}
           font={16}
         />
         <LongButton

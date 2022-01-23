@@ -20,7 +20,7 @@ import EncryptedStorage from "react-native-encrypted-storage";
 import I18n from 'react-native-i18n';
 import axios from "axios";
 
-import { strings } from "../../i18n";
+
 import { RFValue } from "react-native-responsive-fontsize";
 import BuyLifeLineModal from "../../Components/BuyLifeLineModal";
 import WatchAddModal from "../../Components/WatchAddModal";

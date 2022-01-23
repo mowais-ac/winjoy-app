@@ -2,17 +2,10 @@ import React, { useState } from "react";
 import { View, Image, Dimensions, TouchableOpacity } from "react-native";
 import styles from "./Styles";
 import Label from "../Label";
-import LinearGradient from "react-native-linear-gradient";
-import { widthConverter, widthPercentageToDP } from "../Helpers/Responsive";
-import LoaderImage from "../LoaderImage";
-import Config from "react-native-config";
-import LongButton from "../LongButton";
+import { useTranslation } from 'react-i18next';
 const { width, height } = Dimensions.get("window");
-import { strings} from "../../i18n";
-import I18n from 'react-native-i18n';
-I18n.locale="ar";
 function WalletLastPlayedCard({ noOfQuestions, onPress, wonPrize, result, optionDisable, data }) {
-
+  const { t } = useTranslation();
   return (
     // <TouchableOpacity
     //   style={{
@@ -51,14 +44,14 @@ function WalletLastPlayedCard({ noOfQuestions, onPress, wonPrize, result, option
 
       <View style={{ marginLeft: 30 }}>
         <Label notAlign primary font={16} bold style={{ color: "#E7003F",  }}>
-        {strings("wallet.last_played_game")}
+        {t("last_played_game")}
         </Label>
 
         <Label notAlign primary font={14} dark style={{ color: "#000000",marginTop:20,fontFamily: "Axiforma-SemiBold", }}>
           Answer {noOfQuestions} simple questions and WIN amazing prizes
         </Label>
         <Label notAlign primary font={14} bold style={{ color: "#E7003F", marginTop:7}}>
-        {strings("wallet.won_prize")}
+        {t("won_prize")}
          <Label notAlign primary font={14} dark style={{ color: "#000000" }}>
          {" "}AED {wonPrize}
         </Label>

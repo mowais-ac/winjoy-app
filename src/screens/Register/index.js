@@ -4,7 +4,7 @@ import { Image, View, StyleSheet, Dimensions, ScrollView } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
 import EncryptedStorage from "react-native-encrypted-storage";
 import Config from "react-native-config";
-
+import { useTranslation } from 'react-i18next';
 import Background from "../../Components/Background";
 import InputField from "../../Components/InputField";
 import Label from "../../Components/Label";
@@ -20,11 +20,11 @@ import {
 import { Images } from "../../Constants/Index";
 import Modals from "../../Components/Modals";
 import GoBack from "../../Components/GoBack";
-import { strings } from "../../i18n";
+
 const { width, height } = Dimensions.get("window");
 
 const index = ({ navigation }) => {
-  const [lang, setLang] = useState("ar");
+  const { t } = useTranslation();
   const fnameref = useRef();
   const lnameref = useRef();
   const unameref = useRef();
@@ -35,18 +35,126 @@ const index = ({ navigation }) => {
   const Buttonref = useRef();
   const ModalState = useRef();
 
+  const HandleClick = async () => {
+    let isnull = false;
+    if (
+      emailref.current.validateEmail() &&
+      phoneref.current.validatePhone() &&
+      !Buttonref.current.GetActivity()
+    ) {
+      for (let e of [
+        fnameref,
+        lnameref,
+        unameref,
+        emailref,
+        phoneref,
+        passref,
+        cpassref,
+      ]) {
+        if (e.current.IsNull()) {
+          isnull = true;
+          break;
+        }
+      }
+      if (isnull) return;
 
+      const first_name = fnameref.current.getText();
+      const last_name = lnameref.current.getText();
+      const user_name = unameref.current.getText();
+      const email = emailref.current.getText();
+      const phone_no = phoneref.current.getText();
+      const password = passref.current.getText();
+      const password_confirmation = cpassref.current.getText();
+
+      if (user_name.length < 10) {
+        ModalState.current(true, {
+          heading: "Error",
+          Error: "Username must have atleast 10 characters",
+        });
+        return;
+      }
+
+      var arr = [
+        first_name,
+        last_name,
+        user_name,
+        email,
+        phone_no,
+        password,
+        password_confirmation,
+      ].filter((e) => e == null || e == "");
+
+      if (arr.length >= 1) return;
+
+      if (password !== password_confirmation) {
+        passref.current.Error();
+        cpassref.current.Error();
+        return;
+      }
+      Buttonref.current.SetActivity(true);
+
+      const body = JSONtoForm({
+        first_name,
+        last_name,
+        user_name,
+        email,
+        phone_no: `+${phone_no}`,
+        password,
+        password_confirmation,
+        ...(await GetUserDeviceDetails()),
+      });
+      const requestOptions = {
+        method: "POST",
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Accept: "application/json",
+        },
+        body,
+      };
+
+      await fetch(`${Config.API_URL}/auth/new_register`, requestOptions)
+        .then((response) => response.json())
+        .then(async (res) => {
+          if (res.status && res.status.toLowerCase() === "success") {
+            await EncryptedStorage.setItem("Token", res.data.token);
+            if (await IsVerified(res.data.token)) {
+              navigation.replace("TabsStack");
+            } else {
+              navigation.replace("Verify", { email, phone: phone_no });
+            }
+          } else {
+            Buttonref.current.SetActivity(false);
+            const array = res.errors
+              ? Object.values(res.errors).reduce((p, n) => {
+                  p.push(
+                    n[0] === "The phone no has already been taken."
+                      ? ["The phone number you entered already exists."]
+                      : n
+                  );
+                  return p;
+                }, [])
+              : [];
+            ModalState.current(true, {
+              heading: "Error",
+              Error: res.message,
+              array,
+            });
+          }
+        })
+        .catch((e) => console.log(e));
+    }
+  };
 
   const GetUserName = () => {
     return (
       <InputField
         style={styles.Margin}
-        placeholder={strings("signup.user")}
+        placeholder={t("user")}
         autoCapitalize="none"
         ref={unameref}
         Icon="user"
         CheckUser
-        lang={lang}
+      
       />
     );
   };
@@ -58,23 +166,23 @@ const index = ({ navigation }) => {
           <GoBack/>
           <Image source={Images.Logo} style={styles.Logo} />
           <Label bold headingtype="h1" style={styles.Margin}>
-          {strings("signup.create_account")}
+          {t("create_account")}
           </Label>
           
           <Modals ModalRef={ModalState} Error />
           <InputField
             style={styles.MarginLarge}
-            placeholder={strings("signup.f_name")}
+            placeholder={t("f_name")}
             ref={fnameref}
             Icon="id"
-            lang={lang}
+         
           />
           <InputField
             style={styles.Margin}
-            placeholder={strings("signup.l_name")}
+            placeholder={t("l_name")}
             ref={lnameref}
             Icon="id"
-            lang={lang}
+        
           />
           <GetUserName />
 
@@ -86,25 +194,25 @@ const index = ({ navigation }) => {
             autoCapitalize="none"
             keyboardType="email-address"
             textContentType="emailAddress"
-            lang={lang}
+       
           />
           <View>
             <InputField
               style={styles.Margin}
-              placeholder={strings("signup.phone_number")}
+              placeholder={t("phone_number")}
               ref={phoneref}
               keyboardType="number-pad"
               phone
-              lang={lang}
+         
             />
           </View>
           <InputField
             style={styles.Margin}
-            placeholder={strings("signup.password")}
+            placeholder={t("password")}
             secureTextEntry={true}
             ref={passref}
             Icon="lock"
-            lang={lang}
+       
           />
           <Label
             light
@@ -117,15 +225,15 @@ const index = ({ navigation }) => {
           </Label>
           <InputField
             style={styles.Margin}
-            placeholder={strings("signup.confirm_password")}
+            placeholder={t("confirm_password")}
             secureTextEntry={true}
             ref={cpassref}
             Icon="lock"
-            lang={lang}
+       
           />
           <LongButton
             style={styles.Margin}
-            text={strings("signup.create_account")}
+            text={t("create_account")}
             font={17}
             onPress={HandleClick}
             ref={Buttonref}

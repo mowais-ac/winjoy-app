@@ -21,9 +21,8 @@ import ProfilePicture from "../../Components/ProfilePicture";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import EncryptedStorage from "react-native-encrypted-storage";
 import Config from "react-native-config";
-import I18n from 'react-native-i18n';
+import { useTranslation } from 'react-i18next';
 //I18n.locale = "ar";
-import { strings } from "../../i18n";
 import axios from 'axios';
 import {
   widthPercentageToDP,
@@ -43,6 +42,7 @@ import {
 } from "../../Constants/Functions";
 import Modals from "../../Components/Modals";
 const index = ({ props, navigation }) => {
+  const { t } = useTranslation();
   const [productData, setProductData] = useState([]);
   const [ammount, setAmmount] = useState(null);
   const userData = useSelector(state => state.app.userData);
@@ -162,7 +162,7 @@ const index = ({ props, navigation }) => {
             noOfQuestions={walletData?.wallet?.no_of_question === null ? 0 : walletData?.wallet?.no_of_question}
             wonPrize={walletData?.wallet?.won_prize === null ? 0 : walletData?.wallet?.won_prize}
 
-          />
+          /> 
           <View
             style={{
               width: width - 25,
@@ -182,7 +182,7 @@ const index = ({ props, navigation }) => {
 
             <View style={{ marginLeft: 30 }}>
               <Label notAlign primary font={14} bold style={{ color: "#E7003F", }}>
-                {strings("wallet.last_five_transcation")}
+                {t("last_five_transcation")}
               </Label>
               <FlatList
                 data={walletData?.transaction}

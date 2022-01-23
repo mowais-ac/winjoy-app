@@ -12,8 +12,7 @@ function ChanceCard({ options, onPress, reset, result, optionDisable, data }) {
   let progress = data.item.updated_stocks
     ? (data.item?.updated_stocks / data.item.stock) * 100
     : 0;
-  const ImgUrl = `${Config.PRODUCT_IMG}/${data.item.id}/${JSON.parse(data.item.image)[0]
-    }`;
+ 
   return (
     <TouchableOpacity
       style={{
@@ -39,7 +38,7 @@ function ChanceCard({ options, onPress, reset, result, optionDisable, data }) {
         }}>
         <LoaderImage
           source={{
-            uri: ImgUrl.replace("http://", "https://"),
+            uri: data.item.image,
           }}
           style={{
             width: width - 25,

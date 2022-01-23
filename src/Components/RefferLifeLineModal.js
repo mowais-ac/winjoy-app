@@ -28,10 +28,10 @@ import { heightConverter } from "./Helpers/Responsive";
 import { RefferalTextInput } from "../Components/index";
 import { getLiveShowPlans } from '../redux/actions';
 import { useSelector, useDispatch } from "react-redux";
-import { LifeCard } from "./LifeCard/LifeCard";
 import { numericRegex, alphabetRegex } from '../Constants/regex';
 import Modals from "../Components/Modals";
 import BuyLifeCongrats from "./BuyLifeCongrats";
+import Clipboard from '@react-native-clipboard/clipboard';
 const { width, height } = Dimensions.get("window");
 
 let li = [{
@@ -98,8 +98,11 @@ const RefferLifeLineModal = (props) => {
     });
     setRefferalLivePlans(li);
     setId(idforFirst)
-      
+
   }, []);
+  const copyToClipboard = () => {
+    Clipboard.setString('https:/ /winjoy.ae/invite/token?aaasd');
+  };
   const onPressRefTab = (index, item) => {
     li = [];
     reff = [];
@@ -145,7 +148,7 @@ const RefferLifeLineModal = (props) => {
 
   //  }
   const HandleClick = async () => {
-    
+
     let validToPost = true;
     var postData = "";
     reff.forEach((element, index) => {
@@ -248,9 +251,10 @@ const RefferLifeLineModal = (props) => {
 
 
       })
-      .catch((e) =>{
+      .catch((e) => {
         setLoader(false)
-         console.log("error", e)});
+        console.log("error", e)
+      });
   }
   return (
     <Modal
@@ -266,7 +270,7 @@ const RefferLifeLineModal = (props) => {
         if (props.onClose) props.onClose();
       }}
     >
-          
+
       <TouchableWithoutFeedback
         onPress={() => {
           setModelState({
@@ -286,27 +290,38 @@ const RefferLifeLineModal = (props) => {
         </Text>
 
         <View style={styles.ModalBody}>
-          {/* <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>
-            <TouchableOpacity onPress={() => setSelected(0)}>
-              <View style={selected === 0 ? styles.refferBoxSelected : styles.refferBox}>
-                <Text style={[styles.mainTextHeading, { color: selected === 0 ? '#420E92' : '#6F5F87' }]}>Refer 1</Text>
-                <Text style={[styles.textHeading, { color: selected === 0 ? '#420E92' : '#6F5F87' }]}>Earn 1</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => setSelected(1)}>
-              <View style={selected === 1 ? styles.refferBoxSelected : styles.refferBox}>
-                <Text style={[styles.mainTextHeading, { color: selected === 1 ? '#420E92' : '#6F5F87' }]}>Refer 3</Text>
-                <Text style={[styles.textHeading, { color: selected === 1 ? '#420E92' : '#6F5F87' }]}>Earn 5</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => setSelected(2)}>
-              <View style={selected === 2 ? styles.refferBoxSelected : styles.refferBox}>
-                <Text style={[styles.mainTextHeading, { color: selected === 2 ? '#420E92' : '#6F5F87' }]}>Refer 5</Text>
-                <Text style={[styles.textHeading, { color: selected === 2 ? '#420E92' : '#6F5F87' }]}>Earn 10</Text>
-              </View>
-            </TouchableOpacity>
-          </View> */}
-          <View style={{ alignItems: 'center' }}>
+
+          <View style={{ alignItems: 'center', }}>
+            <View style={{
+              width: width * 0.93,
+              height: height * 0.075,
+              backgroundColor: '#F2EFF5',
+              borderRadius: 10,
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginBottom: height * 0.03,
+              flexDirection:'row'
+            }}>
+              <Text 
+              numberOfLines={1}
+              
+              style={[styles.mainTextHeading, { color: '#000000',width:width*0.68,textAlign:'left',  }]}>https:/ /winjoy.ae/invite/token?aaasd</Text>
+              <TouchableOpacity
+            onPress={copyToClipboard}
+              >
+                <View style={{
+                  width: width * 0.2,
+                  height: height * 0.06,
+                  backgroundColor: '#fff',
+                  borderRadius: 10,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  
+                }}>
+                  <Text style={[styles.mainTextHeading, { color: '#420E92',fontFamily: 'Axiforma Bold',}]}>Copy</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
             <FlatList
               horizontal={true}
               style={{}}
@@ -374,13 +389,15 @@ const RefferLifeLineModal = (props) => {
               />
             ) : null}
             {selected === 1 ? (
-            
+
               <FlatList
-                style={{ height: height * 0.35, width: '100%', }}
+                style={{ height: height * 0.4, width: '100%', }}
+                contentContainerStyle={{ paddingBottom: height * 0.3 }}
                 data={li}
                 extraData={updateData}
                 renderItem={({ item, index }) => (
-              
+
+
                   <RefferalTextInput
                     srNumber={item.sr}
                     validationBorderName={item.status}
@@ -402,19 +419,23 @@ const RefferLifeLineModal = (props) => {
                     }
                     }
                   />
-                   
+
+
+
                 )}
 
               //   ListEmptyComponent={this.RenderEmptyContainerOnGoing()}
               />
-             
+
             ) : null}
             {selected === 2 ? (
               <FlatList
-                style={{ height: height * 0.35, width: '100%', }}
+                style={{ height: height * 0.4, width: '100%', }}
+                contentContainerStyle={{ paddingBottom: height * 0.3 }}
                 data={li}
                 extraData={updateData}
                 renderItem={({ item, index }) => (
+
                   <RefferalTextInput
                     srNumber={item.sr}
                     validationBorderName={item.status}
@@ -436,6 +457,7 @@ const RefferLifeLineModal = (props) => {
                     }
                     }
                   />
+
                 )}
 
               //   ListEmptyComponent={this.RenderEmptyContainerOnGoing()}
@@ -545,8 +567,8 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.BG_MUTED,
   },
   ModalView: {
-    height: height * 0.75,
-    marginTop: height * 0.25,
+    height: height * 0.95,
+    marginTop: height * 0.05,
     borderTopLeftRadius: 37,
     borderTopRightRadius: 37,
     backgroundColor: Colors.WHITE,
@@ -688,7 +710,7 @@ const styles = StyleSheet.create({
   },
   refferBox: {
     width: width * 0.29,
-    height: height * 0.13,
+    height: height * 0.12,
     backgroundColor: '#F2EFF5',
     borderRadius: 10,
     justifyContent: 'center',
@@ -696,7 +718,7 @@ const styles = StyleSheet.create({
   },
   refferBoxSelected: {
     width: width * 0.29,
-    height: height * 0.13,
+    height: height * 0.12,
     backgroundColor: '#F2EFF5',
     borderRadius: 10,
     justifyContent: 'center',

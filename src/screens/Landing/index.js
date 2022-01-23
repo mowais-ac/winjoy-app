@@ -51,9 +51,9 @@ function ClosingSoon({ item }) {
     ? (item?.updated_stocks / item?.stock) * 100
     : 0;
 
-  const ImgUrl = `${Config.PRODUCT_IMG}/${item.id}/${JSON.parse(item.image)[0]
-    }`;
-  return (
+  // const ImgUrl = `${Config.PRODUCT_IMG}/${item.id}/${JSON.parse(item.image)[0]
+  //   }`;
+  return ( 
     <View
       style={{
         width: width * 0.38,
@@ -66,7 +66,8 @@ function ClosingSoon({ item }) {
     >
       <LoaderImage
         source={{
-          uri: ImgUrl.replace("http://", "https://"),
+         // uri: ImgUrl.replace("http://", "https://"),
+         uri:item?.image
         }}
         style={{
           width: 120,
