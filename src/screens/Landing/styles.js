@@ -45,11 +45,11 @@ export default StyleSheet.create({
     shadowOpacity: 0.43,
     shadowRadius: 9.51,
   },
-  btnTextView: {
+  btnHeadingView: {
     width:width*0.7,
     marginLeft:widthConverter(20),
   },
-  text: {
+  Heading: {
     fontFamily: 'Axiforma Bold',
     color: '#fff',
     fontSize: RFValue(20)
@@ -156,5 +156,6 @@ wrap:{
   height: height * 0.3,
   alignItems:'center',
   justifyContent:'center'
-}
+},
+
 });

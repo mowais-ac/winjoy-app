@@ -4,8 +4,8 @@ import Config from "react-native-config";
 import LoaderImage from "../LoaderImage";
 const { width, height } = Dimensions.get("window");
 function Card({ options, onPress, reset, result, optionDisable, item }) {
-  const ImgUrl = `${Config.PRODUCT_IMG}/${item.id}/${
-    JSON.parse(item.image)[0]
+  const ImgUrl = `${Config.PRODUCT_IMG}/${item?.id}/${
+    JSON.parse(item?.image)[0]
   }`;
   return (
     <View
@@ -26,7 +26,7 @@ function Card({ options, onPress, reset, result, optionDisable, item }) {
     >
       <LoaderImage
         source={{
-          uri: ImgUrl.replace("http://", "https://"),
+          uri: ImgUrl?.replace("http://", "https://"),
         }}
         style={{
           width: 230,

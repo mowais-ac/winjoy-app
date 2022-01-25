@@ -42,7 +42,7 @@ import LongButton from "../../Components/LongButton";
 import { FanJoyCard, WjBackground } from "../../Components";
 import Carousel from 'react-native-snap-carousel';
 import Video from "react-native-video";
-import { getLandingScreen } from '../../redux/actions';
+import { getLandingScreen } from '../../redux/actions'; 
 import socketIO from "socket.io-client";
 import {useTranslation} from 'react-i18next';
 const MYServer = "https://node-winjoyserver-deploy.herokuapp.com/";
@@ -166,10 +166,11 @@ const index = (props) => {
     setGameShowData(LandingData?.gameShow)
   }, []);
   function _renderItem({ item, index }) {
+    //console.log("item.url",item.url);
     if (item.type === "image") {
       return (
         <View key={index}>
-          <Image source={{ uri: Config.MAIN_URL + item.url }}
+          <Image source={{ uri:item.url }}
             resizeMode={"cover"}
             style={styles.ShoppingBanner}
           />
@@ -180,7 +181,7 @@ const index = (props) => {
         <View key={index} style={{ backgroundColor: '#000000', borderBottomLeftRadius: 15, borderBottomRightRadius: 15 }}>
           {item.url ? (
             <Video
-              source={{ uri: Config.MAIN_URL + item.url }}  // Can be a URL or a local file.
+              source={{ uri:item.url }}  // Can be a URL or a local file.
               // ref={(ref) => { this.player = ref }}  // Store reference
               resizeMode={"cover"}
               paused={index !== activeSlide}
@@ -240,23 +241,23 @@ const index = (props) => {
               {loader ? (
                 <ActivityIndicator size="large" color="#fff" />
               ) : (
-                // null
-                // <Carousel
-                //   layout={"default"}
-                //   resizeMode={"cover"}
-                //   loop={videoAction}
-                //   autoplay={videoAction}
-                //   autoplayInterval={2000}
+               // null
+                <Carousel
+                  layout={"default"}
+                  resizeMode={"cover"}
+                  loop={videoAction}
+                  autoplay={videoAction}
+                  autoplayInterval={3000}
 
-                //   // ref={ref => this.carousel = ref}
-                //   data={LandingData?.banners}
-                //   sliderWidth={width}
-                //   itemWidth={width}
-                //   renderItem={_renderItem}
-                //   style={styles.ShoppingBanner}
-                //   onSnapToItem={index => setActiveSlide(index)}
-                // />
-                null
+                  // ref={ref => this.carousel = ref}
+                  data={LandingData?.banners}
+                  sliderWidth={width}
+                  itemWidth={width}
+                  renderItem={_renderItem}
+                  style={styles.ShoppingBanner}
+                  onSnapToItem={index => setActiveSlide(index)}
+                />
+              
               )}
 
             </View>
@@ -269,7 +270,7 @@ const index = (props) => {
 
               <View style={{ borderWidth: 2, borderColor: "#fff", borderRadius: 45 }}>
                 <AvatarBtn
-                  picture={"https://abdulrahman.fleeti.com/save_file/uploads/provider/user/5bf637c8_60262ff8dbde39.10627959.jpg"}
+                  picture={userData?.profile_image}
                   // id={userInfo?.id}
                   //  name={(name.slice(0, 1) + name.slice(0, 1))}
                   size={50}
@@ -317,7 +318,7 @@ const index = (props) => {
               //   }
               // >
               <TriviaNightCard
-                uri={Config.MAIN_URL + item.url}
+                uri={item.url}
                 index={item.index}
                 item={item}
                 onPress={() => {
@@ -429,6 +430,7 @@ const index = (props) => {
                   onPress={() => navigation.navigate("AllCreatorsPage")}
                   name={item.user_name}
                   style={{ width: 150, marginRight: 20 }}
+                  imageUrl={item?.image}
                 />
               }
               //keyExtractor={(e) => e.id.toString()}
@@ -454,96 +456,3 @@ const index = (props) => {
 };
 
 export default index;
-// import React, {useLayoutEffect} from 'react';
-// import {
-//   StyleSheet,
-//   View,
-//   Text,
-//   Button,
-//   TextInput,
-//   I18nManager,
-// } from 'react-native';
-// import {useTranslation} from 'react-i18next';
-// import RNRestart from 'react-native-restart';
-
-// const index = ({navigation}) => {
-//   const {t, i18n} = useTranslation();
- 
-
-//   useLayoutEffect(() => {
-//     navigation.setOptions({
-//       title: t('Home'),
-//     });
-//   });
-
-//   return (
-//     <>
-//       <View style={styles.wrapper}>
-//         <View style={styles.sectionWrapper}>
-//           <Text style={styles.heading}>{t('Hello world')}</Text>
-//           <Text style={styles.regularText}>
-//             {t('Some text goes here, some more text goes here')}
-//           </Text>
-//         </View>
-//         <View style={styles.sectionWrapper}>
-//           <Text style={styles.heading}>{t('Row test')}</Text>
-//           <View style={styles.row}>
-//             <Text>{t('column 1')}</Text>
-//             <Text>{t('column 2')}</Text>
-//             <Text>{t('column 3')}</Text>
-//           </View>
-//         </View>
-//         <View style={styles.sectionWrapper}>
-//           <Text style={styles.heading}>{t('Textinput test')}</Text>
-//           <TextInput style={styles.textInput} placeholder={t('Testing')} />
-//         </View>
-//         <View style={styles.sectionWrapper}>
-//           <Button
-//             title={t('login_screen.login_heading')}
-//             onPress={() => navigation.navigate('Inner')}
-//           />
-//         </View>
-//         <View style={styles.sectionWrapper}>
-//           <Button
-//             title={t('Change_language')} 
-//             onPress={() => {
-//               i18n
-//                 .changeLanguage(i18n.language === 'ar' ? 'en' : 'ar')
-//                 .then(() => {
-//                   I18nManager.forceRTL(i18n.language === 'ar');
-//                   RNRestart.Restart();
-//                 });
-//             }}
-//           />
-//         </View>
-//       </View>
-//     </>
-//   );
-// };
-
-// const styles = StyleSheet.create({
-//   wrapper: {
-//     backgroundColor: '#f3f3f3',
-//     flex: 1,
-//   },
-//   sectionWrapper: {
-//     padding: 20,
-//   },
-//   heading: {
-//     fontSize: 20,
-//     marginBottom: 15,
-//     textAlign: 'left',
-//   },
-//   regularText: {
-//     textAlign: 'left',
-//   },
-//   row: {
-//     flexDirection: 'row',
-//     justifyContent: 'space-between',
-//   },
-//   textInput: {
-//     textAlign: I18nManager.isRTL ? 'right' : 'left',
-//   },
-// });
-
-// export default index;

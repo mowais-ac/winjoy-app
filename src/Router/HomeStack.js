@@ -5,6 +5,9 @@ import TriviaJoy from "../screens/TriviaJoy";
 import DealsJoy from "../screens/DealsJoy";
 import CreatorsPage from "../screens/CreatorsPage";
 import AllCreatorsPage from "../screens/AllCreatorsPage";
+import CreatorsGallery from "../screens/CreatorsGallery";
+import ExperienceProductDetail from "../screens/ExperienceProductDetail";
+
 const Stack = createNativeStackNavigator();
 export default index = () => (
     <Stack.Navigator screenOptions={{
@@ -15,5 +18,7 @@ export default index = () => (
         <Stack.Screen name="DealsJoy" component={DealsJoy} />
         <Stack.Screen name="CreatorsPage" component={CreatorsPage} />
         <Stack.Screen name="AllCreatorsPage" component={AllCreatorsPage} />
+        <Stack.Screen name="CreatorsGallery" component={CreatorsGallery} />
+        <Stack.Screen name="ExperienceProductDetail" component={ExperienceProductDetail} />
     </Stack.Navigator>
 );

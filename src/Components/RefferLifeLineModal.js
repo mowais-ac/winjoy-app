@@ -83,7 +83,7 @@ const RefferLifeLineModal = (props) => {
     console.log("livePlansModal", livePlans.plan);
     let li = [];
     let idforFirst;
-    livePlans.plan.forEach(element => {
+    livePlans?.plan?.forEach(element => {
       console.log("element", element);
       if (element.type === "referral") {
         li.push(element)
@@ -151,7 +151,7 @@ const RefferLifeLineModal = (props) => {
 
     let validToPost = true;
     var postData = "";
-    reff.forEach((element, index) => {
+    reff?.forEach((element, index) => {
       if (element.name !== "" && element.name !== null && element.name !== undefined && alphabetRegex.test(element?.name)) {
         li[index].status = false;
       }
@@ -167,7 +167,7 @@ const RefferLifeLineModal = (props) => {
         console.log("chek2", li[index].status2);
       }
     });
-    li.forEach(element => {
+    li?.forEach(element => {
       if (element.status === true) {
         validToPost = false;
       }

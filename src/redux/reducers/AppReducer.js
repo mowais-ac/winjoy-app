@@ -11,7 +11,12 @@ const INITIAL_STATE = {
   LandingData: [],
   productsData: [],
   livePlans: [],
-  resLivePlans: []
+  resLivePlans: [],
+  fanjoyData: [],
+  creatorId: '',
+  galleryData: [],
+  creatorPageData: [],
+  winExperienceProductData:[]
 };
 
 
@@ -36,9 +41,22 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, productsData: action.payload };
     case types.GET_LIVE_PLANS:
       return { ...state, livePlans: action.payload };
-      case types.BUY_LIVE_PLAN:
-        return { ...state, resLivePlans: action.payload };
-      
+    case types.BUY_LIVE_PLAN:
+      return { ...state, resLivePlans: action.payload };
+    case types.GET_FANJOY_DATA:
+      return { ...state, fanjoyData: action.payload };
+    case types.CREATOR_ID:
+      return {
+        ...state,
+        creatorId: action.creatorId
+
+      };
+    case types.GALLERY_DATA:
+      return { ...state, galleryData: action.payload };
+    case types.CREATOR_PAGE_DATA:
+      return { ...state, creatorPageData: action.payload };
+      case types.WIN_EXPERIENCE_PRODUCT_DATA:
+        return { ...state, winExperienceProductData: action.payload };
     default:
       return state;
   }

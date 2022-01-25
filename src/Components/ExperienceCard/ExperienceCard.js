@@ -8,7 +8,7 @@ import LoaderImage from "../LoaderImage";
 import Config from "react-native-config";
 import ProgressCircle from 'react-native-progress-circle'
 const { width, height } = Dimensions.get("window");
-function ExperienceCard({ style, onPress, title, short_desc, data }) {
+function ExperienceCard({ style, onPress, title, short_desc, imageUrl }) {
   return (
     <TouchableOpacity
       onPress={onPress}
@@ -18,7 +18,7 @@ function ExperienceCard({ style, onPress, title, short_desc, data }) {
         <Image
           style={[styles.bgImage,style]}
           source={{
-            uri: 'https://abdulrahman.fleeti.com/save_file/uploads/provider/user/5bf637c8_60262ff8dbde39.10627959.jpg',
+            uri: imageUrl,
           }}
         />
         <LinearGradient
