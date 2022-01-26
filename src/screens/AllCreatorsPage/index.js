@@ -27,10 +27,11 @@ import ModalCelebrityProducts from "../../Components/ModalCelebrityProducts";
 const { width, height } = Dimensions.get("window");
 const index = ({ route, navigation }) => {
   const celebrityModalState = useRef();
+  const experienceId = useRef();
   const dispatch = useDispatch();
   const dispatch2 = useDispatch();
   const data = useSelector(state => state.app.fanjoyData);
-  const [experienceId, setExperienceId] = useState();
+ // const [experienceId, setExperienceId] = useState();
   useEffect(() => {
     dispatch(getAllCreator());
     console.log("datat", data);
@@ -183,7 +184,7 @@ const index = ({ route, navigation }) => {
               renderItem={({ item }) =>
                 <WinExperienceCard
                   onPress={() => {
-                    setExperienceId(item?.id)
+                    experienceId.current=item?.id;
                     celebrityModalState.current(true)
                   }}
                   short_desc={item?.short_desc}
@@ -204,7 +205,7 @@ const index = ({ route, navigation }) => {
               keyExtractor={(item) => item.id}
             />
           </View>
-          <ModalCelebrityProducts ModalRef={celebrityModalState} details experienceId={experienceId}
+          <ModalCelebrityProducts ModalRef={celebrityModalState} details experienceId={experienceId.current}
             onPressContinue={() => {
 
               celebrityModalState.current(false)

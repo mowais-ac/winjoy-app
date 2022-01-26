@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
     View,
-    StyleSheet,
+    StyleSheet, 
     Dimensions,
     Text,
     TouchableOpacity,
@@ -18,18 +18,30 @@ import {
 } from "../../Components/Helpers/Responsive";
 import Header from "../../Components/Header";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { ExperienceProductDetal } from '../../redux/actions';
+import { useDispatch, useSelector } from "react-redux";
 const ProductDetail = ({ props, navigation, route }) => {
-    const item = route?.params?.data; 
-    console.log("item", item);
-    let progress = (item?.updated_stocks ? (item?.updated_stocks / item?.stock) * 100 : 0);
-    console.log("item", item?.id);
-    function uniqBy(a, key) {
-        var seen = {};
-        return a?.filter(function (item) {
-            var k = key(item);
-            return seen?.hasOwnProperty(k) ? false : (seen[k] = true);
-        })
-    }
+    const productId = route?.params?.productId; 
+    const experienceId = route?.params?.experienceId; 
+    const dispatch = useDispatch();
+    const data = useSelector(state => state?.app?.expProductDetail);
+    useEffect(() => {
+        console.log("dataProd",data);
+        console.log("productIdd", productId);
+        console.log("experienceIdd", experienceId);
+        dispatch(ExperienceProductDetal(experienceId,productId));
+       
+    
+      }, []);
+    let progress = (data?.products?.updated_stocks ? (data?.products?.updated_stocks / data?.products?.stock) * 100 : 0);
+    //console.log("item", item?.id);
+    // function uniqBy(a, key) {
+    //     var seen = {};
+    //     return a?.filter(function (item) {
+    //         var k = key(item);
+    //         return seen?.hasOwnProperty(k) ? false : (seen[k] = true);
+    //     })
+    // }
     const SaveIdInfo = async () => {
         // await EncryptedStorage.setItem("ids","");
         AsyncStorage
@@ -38,7 +50,7 @@ const ProductDetail = ({ props, navigation, route }) => {
                 favs = favs == null ? [] : JSON.parse(favs)
 
 
-                favs.push(item?.id)
+                favs.push(data?.products?.id)
                 let uniqueArray = favs.filter(function (item, pos) {
                     return favs.indexOf(item) == pos;
                 });
@@ -67,7 +79,7 @@ const ProductDetail = ({ props, navigation, route }) => {
 
                 <View style={styles.bottomView}>
                     <Label primary font={13} dark style={{ color: "#ffffff", marginTop: 9, marginBottom: 9, }}>
-                        {item?.updated_stocks || 0} sold out of {item?.stock}
+                        {data?.products?.updated_stocks || 0} sold out of {data?.products?.stock}
                     </Label>
                     <View style={styles.containerprogressBar}>
                         <LinearGradient
@@ -87,7 +99,7 @@ const ProductDetail = ({ props, navigation, route }) => {
 
             </LinearGradient>
             <View style={styles.upperView}>
-                {/* <Card item={item} /> */}
+                <Card imageUrl={data?.products?.image} />
             </View>
             <View style={styles.card}>
 
@@ -98,7 +110,7 @@ const ProductDetail = ({ props, navigation, route }) => {
                     </Label>
                 </Label>
                 <Label font={16} dark style={{ color: "#000000" }}>
-                    {item?.luckydraw?.gift_title}
+                    {data?.products?.title}
                 </Label>
                 <Text style={styles.closingTxt}>
                     Closing Soon
@@ -109,7 +121,7 @@ const ProductDetail = ({ props, navigation, route }) => {
                     Products Details
                 </Label>
                 <Label notAlign font={11} dark style={{ color: "#000000", lineHeight: 20 }}>
-                    {item?.description}
+                    {data?.products?.description}
                 </Label>
             </View>
             <View style={styles.card2}>
@@ -121,7 +133,7 @@ const ProductDetail = ({ props, navigation, route }) => {
                     width: widthPercentageToDP("83")
                 }}>
                     <Text style={styles.metaText}>To enter in the lucky draw</Text>
-                    <Text style={[styles.text, { fontWeight: 'bold' }]}>{+(item?.price)?.toLocaleString()}</Text>
+                    <Text style={[styles.text, { fontWeight: 'bold' }]}>{+(data?.products?.price)?.toLocaleString()}</Text>
 
                 </View>
                 <View style={{
@@ -130,7 +142,7 @@ const ProductDetail = ({ props, navigation, route }) => {
                     alignItems: 'center',
                     width: widthPercentageToDP("83")
                 }}>
-                    <Text style={[styles.metaText, { fontWeight: 'bold' }]}>Buy a {item?.title}</Text>
+                    <Text style={[styles.metaText, { fontWeight: 'bold' }]}>Buy a {data?.products?.title}</Text>
                     <Text style={styles.text}>Gold Coin</Text>
 
                 </View>
@@ -139,7 +151,7 @@ const ProductDetail = ({ props, navigation, route }) => {
                         // navigation.navigate("SimpeStackScreen", {
                         //     screen: "Cart",
                         //   })]
-                        SaveIdInfo()
+                       SaveIdInfo()
                     }}
                     style={{
                         height: heightConverter(55),

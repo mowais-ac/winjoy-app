@@ -16,7 +16,8 @@ const INITIAL_STATE = {
   creatorId: '',
   galleryData: [],
   creatorPageData: [],
-  winExperienceProductData:[]
+  winExperienceProductData:[],
+  expProductDetail:[]
 };
 
 
@@ -57,6 +58,8 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, creatorPageData: action.payload };
       case types.WIN_EXPERIENCE_PRODUCT_DATA:
         return { ...state, winExperienceProductData: action.payload };
+        case types.EXPERIENCE_PRODUCT_DETAILS:
+        return { ...state, expProductDetail: action.payload };
     default:
       return state;
   }

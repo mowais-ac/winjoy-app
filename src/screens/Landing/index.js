@@ -280,7 +280,7 @@ const index = (props) => {
               </View>
 
               <TouchableOpacity onPress={() => navigation.navigate("WALLET")}>
-                <View style={styles.btnTextView}>
+                <View style={styles.secondHeaderMiddleView}>
                   <Text style={[styles.text, { color: '#fff', fontSize: RFValue(14) }]}>
                     {userData?.first_name.charAt(0).toUpperCase() + userData?.first_name.slice(1)} {userData?.last_name.charAt(0).toUpperCase() + userData?.last_name.slice(1)}
                   </Text>
@@ -323,7 +323,7 @@ const index = (props) => {
                 item={item}
                 onPress={() => {
                   item.id === 1 ? (
-                    navigation.navigate("TriviaJoy")
+                    navigation.navigate("TriviaJoy") 
                   ) : item.id === 2 ? (
                     navigation.navigate("DealsJoy")
                   ) : (

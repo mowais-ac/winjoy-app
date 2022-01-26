@@ -113,8 +113,7 @@ const index = ({ navigation }) => {
     setTotal(total)
   }
   const renderItem = ({ item }) => {
-    const ImgUrl = `${Config.PRODUCT_IMG}/${item.id}/${JSON.parse(item.image)
-      }`;
+    const ImgUrl = item.image;
     return (
       // <TouchableOpacity
       //   onPress={() => navigation.navigate("WishlistDetails", { item })}

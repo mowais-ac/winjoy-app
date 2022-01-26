@@ -34,6 +34,7 @@ const index = ({ props, navigation }) => {
  // const [productData, setProductData] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
   const productsData = useSelector(state => state?.app?.productsData);
+  const [headerValue, setHeaderValue] = useState(0);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getProducts());
@@ -42,16 +43,30 @@ const index = ({ props, navigation }) => {
   }, []);
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    setProductData([]);
+    dispatch(getProducts());
     wait(500).then(() => setRefreshing(false)); 
   }, []);
 
   return (
     <SafeAreaView>
       <BackgroundRound height={0.3} />
-      <View style={{ height: 20 }} />
-      <Header />
-      <Label primary font={16} bold dark style={{ color: "#ffff" }}>
+      <Header style={{
+           position: 'absolute',
+            zIndex: 1000,
+             backgroundColor:headerValue!==0?'rgba(0,0,0,0.5)':null,
+              width: '100%',
+              borderBottomRightRadius:10,
+              borderBottomLeftRadius:10
+               }} />
+      <ScrollView
+       refreshControl={
+        <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
+      }
+      onScroll={(e)=>{
+        setHeaderValue(e.nativeEvent.contentOffset.y) 
+    }}
+      >
+      <Label primary font={16} bold dark style={{ color: "#ffff",marginTop:height*0.07 }}>
         {strings("products.do_not_miss_chance")}
       </Label>
       <Label primary font={16} bold dark style={{ color: "#ffff" }}>
@@ -91,7 +106,7 @@ const index = ({ props, navigation }) => {
       
             <FlatList
             data={productsData?.data}
-            scrollEnabled={true}
+            scrollEnabled={false}
             renderItem={(item)=>
             <ChanceCard data={item}
             onPress={()=>
@@ -103,14 +118,13 @@ const index = ({ props, navigation }) => {
             contentContainerStyle={{
               paddingBottom: height * 0.48,
             }}
-            refreshControl={
-              <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
-            }
+           
           />
           )}
           </>
           )}
       </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };

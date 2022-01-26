@@ -91,7 +91,7 @@ const ModalCelebrityProducts = (props) => {
 
         <View style={styles.ModalBody}>
           <FlatList
-            data={data?.experience.products}
+            data={data?.experience?.products}
 
             style={{ paddingLeft: 12, }}
             numColumns={2}
@@ -101,7 +101,7 @@ const ModalCelebrityProducts = (props) => {
                 <TrendingCards
 
 
-                  onPress={() => navigation.navigate("ExperienceProductDetail")}
+                  onPress={() => navigation.navigate("ExperienceProductDetail",{experienceId:props?.experienceId,productId: item?.id})} 
                   imageUrl={item.image}
                   title={item?.title}
                   price={item?.price}

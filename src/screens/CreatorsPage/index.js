@@ -108,7 +108,7 @@ const index = ({ route, navigation }) => {
             <FlatList
               data={data?.products}
               horizontal={true}
-              ListHeaderComponent={() => (
+              ListEmptyComponent={() => (
                 <Text style={{color:'#000000'}}>The list is empty</Text>  
               )
               }
@@ -141,13 +141,15 @@ const index = ({ route, navigation }) => {
               <FlatList
                 data={data?.experience}
                 horizontal={true}
-                ListHeaderComponent={() => (
+                ListEmptyComponent={() => (
                   <Text style={{color:'#000000'}}>The list is empty</Text>  
-                )
+                ) 
                 }
                 renderItem={({ item }) =>
                   <SecondExperienceCard
-                    onPress={() => ModalState.current(true)}
+                    onPress={() => 
+                      ModalState.current(true)
+                    }
                     cover_photo={item.cover_photo}
                     short_desc={item.short_desc}
                     price={item?.price}

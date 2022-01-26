@@ -51,6 +51,7 @@ const index = ({ props, navigation }) => {
   const ModalState = useRef()
   const ModalState2 = useRef()
   const ModalStateError = useRef()
+  const [headerValue, setHeaderValue] = useState(0);
 
   console.log("walletData", walletData);
   useEffect(() => {
@@ -119,10 +120,22 @@ const index = ({ props, navigation }) => {
   return (
     <SafeAreaView>
       <BackgroundRound height={0.14} />
-      <View style={{ height: 20 }} />
-      <Header back={true} />
-      <ScrollView>
-        <View style={{ flexDirection: 'row', width: widthConverter(420), marginLeft: 25, marginTop: 4 }}>
+      <Header style={{
+           position: 'absolute',
+            zIndex: 1000,
+             backgroundColor:headerValue!==0?'rgba(0,0,0,0.5)':null,
+              width: '100%',
+              borderBottomRightRadius:10,
+              borderBottomLeftRadius:10
+               }}
+               back={true}
+                />
+      <ScrollView
+         onScroll={(e)=>{
+          setHeaderValue(e.nativeEvent.contentOffset.y) 
+      }}
+      >
+        <View style={{ flexDirection: 'row', width: widthConverter(420), marginLeft: 25, marginTop: height*0.07 }}>
           <View style={styles.avatarView}>
             <ProfilePicture
               picture={userData?.profile_image}
