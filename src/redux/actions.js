@@ -128,5 +128,137 @@ export const getLiveShowPlans = () => {
         console.log(error);
     }
 }
+export const getAllCreator = () => {
+   
+    try {
+        return async dispatch => {
+            const Token = await EncryptedStorage.getItem("Token");
+            const result = await fetch(`${Config.API_URL}/fanjoy/index`, {
+                method: 'GET',
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    Accept: "application/json",
+                    Authorization: `Bearer ${Token}`,
+                  },
+            });
+            const json = await result.json();
+           
+            if (json&&json.status === "success") {
+                dispatch({
+                    type: types.GET_FANJOY_DATA, 
+                    payload: json
+                });
+            } else {
+                console.log('Unable to fetch fanjoyAPI!');
+            }
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+export const GetGalleryData = (id) => {   
+    try {
+        return async dispatch => {
+            const Token = await EncryptedStorage.getItem("Token");
+            const result = await fetch(`${Config.API_URL}/gallery/index?user_id=${id}`, {
+                method: 'GET',
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    Accept: "application/json",
+                    Authorization: `Bearer ${Token}`,
+                  },
+            });
+            const json = await result.json();
+            if (json&&json.status === "success") {
+                dispatch({
+                    type: types.GALLERY_DATA, 
+                    payload: json
+                });
+            } else {
+                console.log('Unable to fetch!');
+            }
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+export const GetCreatorPageData = (id) => {   
+    try {
+        return async dispatch => {
+            const Token = await EncryptedStorage.getItem("Token");
+            const result = await fetch(`${Config.API_URL}/celebrity/detail/${id}`, {
+                method: 'GET',
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    Accept: "application/json",
+                    Authorization: `Bearer ${Token}`,
+                  },
+            });
+            const json = await result.json();
+            if (json&&json.status === "success") {
+                dispatch({
+                    type: types.CREATOR_PAGE_DATA, 
+                    payload: json
+                });
+            } else {
+                console.log('Unable to fetch!');
+            }
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+export const ExperienceProductData = (id) => {   
+    try {
+        return async dispatch => {
+            const Token = await EncryptedStorage.getItem("Token");
+            const result = await fetch(`${Config.API_URL}/experience/product_list?experience_id=${id}`, {
+                method: 'GET',
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    Accept: "application/json",
+                    Authorization: `Bearer ${Token}`,
+                  },
+            });
+            const json = await result.json();
+            if (json&&json.status === "success") {
+                dispatch({
+                    type: types.WIN_EXPERIENCE_PRODUCT_DATA, 
+                    payload: json
+                });
+            } else {
+                console.log('Unable to fetch!');
+            }
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+export const ExperienceProductDetal = (expId,productId) => {   
+    try {
+        return async dispatch => {
+            const Token = await EncryptedStorage.getItem("Token");
+            const result = await fetch(`${Config.API_URL}/experience/${expId}/product/detail/${productId}`, {
+                method: 'GET',
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    Accept: "application/json",
+                    Authorization: `Bearer ${Token}`,
+                  },
+            });
+            const json = await result.json();
+            if (json&&json.status === "success") {
+                dispatch({
+                    type: types.EXPERIENCE_PRODUCT_DETAILS, 
+                    payload: json
+                });
+            } else {
+                console.log('Unable to fetch!');
+            }
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
 
 

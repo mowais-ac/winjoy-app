@@ -1,6 +1,10 @@
 import { RFValue } from 'react-native-responsive-fontsize';
 const {StyleSheet} = require('react-native');
-
+const { width, height } = Dimensions.get("window");
+import {
+    Dimensions,
+ 
+  } from "react-native";
 export default StyleSheet.create({
     safeStyle: { 
         flex: 1,
@@ -20,5 +24,10 @@ export default StyleSheet.create({
           height:60,
           marginTop:15
       },
+      textHeading:{
+        fontFamily: 'Axiforma Bold', color: '#eb3d6e', width: width*1,
+        fontSize:RFValue(13),
+        marginLeft:20
+      }
     
 });

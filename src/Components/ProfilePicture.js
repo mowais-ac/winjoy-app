@@ -9,7 +9,7 @@ const ProfilePicture = (props) => {
   const { id, name, picture, style,font } = props;
   return picture && picture !== null ? (
     <ImageBackground
-      source={{ uri: `${Config.Profile_URL}/${picture}` }}
+      source={{ uri: picture }}
       style={[styles.ProfileView, styles.ProfilePicture, style]}
     />
   ) : (

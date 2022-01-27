@@ -22,7 +22,7 @@ const Winners = (props) => {
   return (
     <>
     <BackgroundRound height={1}/>
-    <View style={{ height: 20 }} />
+   
     <Header/>
 
     <Tabs />

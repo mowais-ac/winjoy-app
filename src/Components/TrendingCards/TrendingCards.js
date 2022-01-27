@@ -9,25 +9,26 @@ import Config from "react-native-config";
 import ProgressCircle from 'react-native-progress-circle'
 import { RFValue } from "react-native-responsive-fontsize";
 const { width, height } = Dimensions.get("window");
-function TrendingCards({ imageStyle,style, onPress, title, price,}) {
-  console.log("name", name);
+function TrendingCards({ imageStyle, style, onPress, title, price,imageUrl,mainViewStyle }) {
   return (
     <TouchableOpacity
       onPress={onPress}
-      style={[{ width: 170 }, style]}
+      style={style}
     >
-      <View style={{ height: height * 0.31,}}>
-        <Image
-          style={imageStyle}
+      <View style={[{ height: height * 0.31},mainViewStyle]}>
+        <LoaderImage
           source={{
-            uri: 'https://abdulrahman.fleeti.com/save_file/uploads/provider/user/5bf637c8_60262ff8dbde39.10627959.jpg',
+            // uri: ImgUrl.replace("http://", "https://"),
+            uri: imageUrl,
           }}
+          style={imageStyle}
+          resizeMode="stretch"
         />
         <View
-          style={{width:'100%', }}
+          style={{ width: '100%', marginTop: height * 0.01 }}
         >
-          <Text style={{ color: '#ffffff', fontFamily: 'Axiforma SemiBold', textAlign: 'center',fontSize:RFValue(12), }}>AED {price}</Text>
-          <Text style={{ color: '#ffffff', fontFamily: 'Axiforma Regular', textAlign: 'center',fontSize:RFValue(12) }}>{title}</Text>
+          <Text style={{ color: '#eb3d6e', fontFamily: 'Axiforma SemiBold', textAlign: 'center', fontSize: RFValue(12), }}>AED {price}</Text>
+          <Text style={{ color: '#000000', fontFamily: 'Axiforma Regular', textAlign: 'center', fontSize: RFValue(12), marginTop: 4 }}>{title}</Text>
         </View>
       </View>
     </TouchableOpacity>

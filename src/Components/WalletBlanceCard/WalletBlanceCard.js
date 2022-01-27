@@ -8,11 +8,10 @@ import LoaderImage from "../LoaderImage";
 import Config from "react-native-config";
 import LongButton from "../LongButton";
 const { width, height } = Dimensions.get("window");
-import { strings} from "../../i18n";
-import I18n from 'react-native-i18n';
+import { useTranslation } from 'react-i18next';
 //I18n.locale="ar";
 function WalletBlanceCard({ yourBalance, onPress, onPressWithdraw, result, optionDisable, data }) {
-
+  const { t } = useTranslation();
   return (
     // <TouchableOpacity
     //   style={{
@@ -50,7 +49,7 @@ function WalletBlanceCard({ yourBalance, onPress, onPressWithdraw, result, optio
      
     <View style={{marginLeft:30}}>
     <Label notAlign primary font={14} bold2 style={{ color: "#E7003F",  }}>
-    {strings("wallet.your_wallet")}
+    {t("your_wallet")}
       </Label>
 
       <Label notAlign primary bold2  font={14} dark style={{ color: "#000000" }}>
@@ -68,7 +67,7 @@ function WalletBlanceCard({ yourBalance, onPress, onPressWithdraw, result, optio
         <LongButton
           style={styles.Margin}
           textstyle={{ color: "#eb2b5f" }}
-          text={strings("wallet.top_up")}
+          text={t("top_up")}
           font={16}
         />
         <LongButton
@@ -77,7 +76,7 @@ function WalletBlanceCard({ yourBalance, onPress, onPressWithdraw, result, optio
             { backgroundColor: "#e3dbef"},
           ]}
           textstyle={{ color: "#420e92" }}
-          text={strings("wallet.with_draw")}
+          text={t("with_draw")}
           font={16} 
           onPress={onPressWithdraw}
      

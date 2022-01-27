@@ -9,7 +9,9 @@ import {
   FlatList,
   TouchableOpacity,
   TextInput,
-  ScrollView
+  ScrollView,
+  ActivityIndicator,
+  KeyboardAvoidingView
 } from "react-native";
 import Label from "./Label";
 import LabelButton from "./LabelButton";
@@ -26,11 +28,26 @@ import { heightConverter } from "./Helpers/Responsive";
 import { RefferalTextInput } from "../Components/index";
 import { getLiveShowPlans } from '../redux/actions';
 import { useSelector, useDispatch } from "react-redux";
-import { LifeCard } from "./LifeCard/LifeCard";
-import { emailRegex } from '../Constants/regex';
+import { numericRegex, alphabetRegex } from '../Constants/regex';
+import Modals from "../Components/Modals";
+import BuyLifeCongrats from "./BuyLifeCongrats";
+import Clipboard from '@react-native-clipboard/clipboard';
 const { width, height } = Dimensions.get("window");
-let referrals= [];
+
+let li = [{
+  sr: 1,
+  status: false,
+  status2: false
+}];
+let reff = [{
+  name: null,
+  phone_no: null
+}];
+
 const RefferLifeLineModal = (props) => {
+
+  const ModalState = useRef();
+  const ModalStateError = useRef();
   const livePlans = useSelector(state => state.app.livePlans);
   const dispatch = useDispatch();
   const [ModelState, setModelState] = useState({
@@ -38,40 +55,21 @@ const RefferLifeLineModal = (props) => {
     details: null,
   });
   const [selected, setSelected] = useState(0);
-  const [id, setId] = useState(null);
-  const [array, setArray] = useState([]);
+  const [id, setId] = useState(0);
+  const [validatorIndex, setValidatorIndex] = useState(false);
+  //const validatorIndex=[]; 
+  const [updateData, setUpdateData] = useState(false);
+  const [refferalLivePlans, setRefferalLivePlans] = useState([]);
+  const [totalRef, setTotalRef] = useState([]);
 
+  const [loader, setLoader] = useState(false);
 
-  //referal 1
-  const [nameRef1, setNameRef1] = useState("");
-  const [numberRef1, setNumberRef1] = useState("");
-  const [checkUser, setCheckUser] = useState(false);
-
-
-  //referal 2
-  const [names, setName] = useState([]);
-
-
-  //referal 3
-  const [name1Ref3, setName1Ref3] = useState("");
-  const [number1Ref3, setNumber1Ref3] = useState("");
-
-  const [name2Ref3, setName2Ref3] = useState("");
-  const [number2Ref3, setNumber2Ref3] = useState("");
-
-  const [name3Ref3, setName3Ref3] = useState("");
-  const [number3Ref3, setNumber3Ref3] = useState("");
-
-  const [name4Ref3, setName4Ref3] = useState("");
-  const [number4Ref3, setNumber4Ref3] = useState("");
-
-  const [name5Ref3, setName5Ref3] = useState("");
-  const [number5Ref3, setNumber5Ref3] = useState("");
 
   const ApproveRef = useRef();
   const DeclineRef = useRef();
 
   const navigation = useNavigation();
+  const SucessModalState = useRef();
 
   useEffect(() => {
     if (props.ModalRef) props.ModalRef.current = HandleChange;
@@ -82,90 +80,147 @@ const RefferLifeLineModal = (props) => {
   };
   useEffect(() => {
     dispatch(getLiveShowPlans());
-    //  dispatch(buyLivePlans());
-    console.log("liveplansModal", livePlans);
-  }, []);
-  const Setting = (name,number,index) => {
-    referrals.push({
-      name: name,
-      number:number,
+    console.log("livePlansModal", livePlans.plan);
+    let li = [];
+    let idforFirst;
+    livePlans?.plan?.forEach(element => {
+      console.log("element", element);
+      if (element.type === "referral") {
+        li.push(element)
+
+        if (element.required_referrals === 1) {
+          console.log("element", element.id);
+          idforFirst = element.id;
+        }
+      }
+
+
     });
-    console.log("ref",referrals);
+    setRefferalLivePlans(li);
+    setId(idforFirst)
+
+  }, []);
+  const copyToClipboard = () => {
+    Clipboard.setString('https:/ /winjoy.ae/invite/token?aaasd');
   };
- 
- 
+  const onPressRefTab = (index, item) => {
+    li = [];
+    reff = [];
+    setTotalRef(item.required_referrals)
+    setSelected(index)
+    setId(item.id)
+    console.log("num", item.required_referrals);
+    for (var i = 0; i < item?.required_referrals; ++i) {
+      console.log("i", i);
+      li.push({
+        sr: i + 1,
+        status: false,
+        status2: false
+      })
+      reff.push({
+        name: null,
+        phone_no: null
+      })
+    }
+  }
+  const SettingName = (name, index) => {
+    // if (name === "" || name === undefined || name === null) {
+    //   li[index].status = true;
+    // } else {
+    //   li[index].status = false
+    // }
+    reff[index].name = name;
+    // if(reff[index].name===""){
+    //   setIsValid(index)
+    // }
+    console.log("reff", reff);
+  }
+  const SettingNumber = (number, index) => {
+    reff[index].phone_no = number
+    console.log("reff", reff);
+    // phoneArr[index] = number;
+    // console.log("phoneArr", phoneArr);
+
+  }
+
   // const SettingNumber = (text, index) => {
   //   console.log("number",text,index);
-   
+
   //  }
   const HandleClick = async () => {
 
+    let validToPost = true;
     var postData = "";
-
-    if (selected === 4) {
-      if (!nameRef1) {
-        alert("Wrong Email", nameRef1)
-      } else if (!numberRef1) {
-        alert("number Required")
+    reff?.forEach((element, index) => {
+      if (element.name !== "" && element.name !== null && element.name !== undefined && alphabetRegex.test(element?.name)) {
+        li[index].status = false;
       }
       else {
-        postData = {
-          "referrals": [
-            {
-              "phone_no": `${numberRef1}`,
-              "name": `${nameRef1}`
-            }
-          ]
-        };
-        PostData(postData)
+        li[index].status = true;
+        console.log("chek", li[index].status);
       }
-
-    } else if (selected === 5) {
+      if (element.phone_no !== "" && element.phone_no !== null && element.phone_no !== undefined && numericRegex.test(element?.phone_no) && element?.phone_no.length === 11) {
+        li[index].status2 = false;
+      }
+      else {
+        li[index].status2 = true;
+        console.log("chek2", li[index].status2);
+      }
+    });
+    li?.forEach(element => {
+      if (element.status === true) {
+        validToPost = false;
+      }
+      if (element.status2 === true) {
+        validToPost = false;
+      }
+    });
+    setUpdateData(!updateData)
+    if (validToPost) {
       postData = {
-        "referrals": [
-          {
-            "phone_no": `${name1Ref2}`,
-            "name": `${number1Ref2}`
-          },
-          {
-            "phone_no": `${name2Ref2}`,
-            "name": `${number2Ref2}`
-          },
-          {
-            "phone_no": `${name3Ref2}`,
-            "name": `${number3Ref2}`
-          },
-        ]
+        "referrals": reff
       };
-    } else if (selected === 7) {
-      postData = {
-        "referrals": [
-          {
-            "phone_no": `${name1Ref3}`,
-            "name": `${number1Ref3}`
-          },
-          {
-            "phone_no": `${name2Ref3}`,
-            "name": `${number2Ref3}`
-          },
-          {
-            "phone_no": `${name3Ref3}`,
-            "name": `${number3Ref3}`
-          },
-          {
-            "phone_no": `${name4Ref3}`,
-            "name": `${number4Ref3}`
-          },
-          {
-            "phone_no": `${name5Ref3}`,
-            "name": `${number5Ref3}`
-          },
-        ]
-      };
+      PostData(postData)
     }
 
+    // if (dataCheck === true) {
+    //   setUpdateData(!updateData)
+    // }
+    // else {
+    //   var postData = "";
+    //   postData = {
+    //     "referrals": reff
+    //   };
+    //   PostData(postData)
+    // }
+
+
+    // if (selected === 4) {
+    //   referrals.push({
+    //     name: nameRef1,
+    //     phone_no: numberRef1,
+    //   });
+    // }
+    // else if (selected === 5) {
+    //   var postData = "";
+    //   postData = {
+    //     "referrals": reff
+    //   };
+    //   PostData(postData)
+    // }
+    // else if (selected === 6) {
+    //   var postData = "";
+    //   postData = {
+    //     "referrals": reff
+    //   };
+    //   PostData(postData)
+    // }
   };
   const PostData = async (postData) => {
+    setLoader(true)
+    console.log("postData", postData);
+    console.log("id", id);
+
     var Token = await EncryptedStorage.getItem("Token");
     const requestOptions = {
       method: "POST",
@@ -176,18 +231,30 @@ const RefferLifeLineModal = (props) => {
       },
       body: JSON.stringify(postData),
     };
-    console.log("requestOptions",);
     await fetch(`${Config.API_URL}/buy_lives_plan/${id}`, requestOptions)
       .then((response) => response.json())
       .then(async (res) => {
+        setLoader(false)
         console.log("ress", res);
-        // console.log("res", res.already_exist_users[0].email);
-        alert(res.message)
-        if (res.already_exist_users[0].email === nameRef1) {
-          setCheckUser(true)
+        if (res.status === "success") {
+          dispatch(getLiveShowPlans());
+          SucessModalState.current(true)
         }
+        else {
+          ModalStateError.current(true, {
+            heading: "Error",
+            Error: res.message,
+            // array: res.errors ? Object.values(res.errors) : [],
+          });
+        }
+
+
+
       })
-      .catch((e) => console.log("error", e));
+      .catch((e) => {
+        setLoader(false)
+        console.log("error", e)
+      });
   }
   return (
     <Modal
@@ -203,6 +270,7 @@ const RefferLifeLineModal = (props) => {
         if (props.onClose) props.onClose();
       }}
     >
+
       <TouchableWithoutFeedback
         onPress={() => {
           setModelState({
@@ -222,27 +290,38 @@ const RefferLifeLineModal = (props) => {
         </Text>
 
         <View style={styles.ModalBody}>
-          {/* <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>
-            <TouchableOpacity onPress={() => setSelected(0)}>
-              <View style={selected === 0 ? styles.refferBoxSelected : styles.refferBox}>
-                <Text style={[styles.mainTextHeading, { color: selected === 0 ? '#420E92' : '#6F5F87' }]}>Refer 1</Text>
-                <Text style={[styles.textHeading, { color: selected === 0 ? '#420E92' : '#6F5F87' }]}>Earn 1</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => setSelected(1)}>
-              <View style={selected === 1 ? styles.refferBoxSelected : styles.refferBox}>
-                <Text style={[styles.mainTextHeading, { color: selected === 1 ? '#420E92' : '#6F5F87' }]}>Refer 3</Text>
-                <Text style={[styles.textHeading, { color: selected === 1 ? '#420E92' : '#6F5F87' }]}>Earn 5</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => setSelected(2)}>
-              <View style={selected === 2 ? styles.refferBoxSelected : styles.refferBox}>
-                <Text style={[styles.mainTextHeading, { color: selected === 2 ? '#420E92' : '#6F5F87' }]}>Refer 5</Text>
-                <Text style={[styles.textHeading, { color: selected === 2 ? '#420E92' : '#6F5F87' }]}>Earn 10</Text>
-              </View>
-            </TouchableOpacity>
-          </View> */}
-          <View style={{ alignItems: 'center' }}>
+
+          <View style={{ alignItems: 'center', }}>
+            <View style={{
+              width: width * 0.93,
+              height: height * 0.075,
+              backgroundColor: '#F2EFF5',
+              borderRadius: 10,
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginBottom: height * 0.03,
+              flexDirection:'row'
+            }}>
+              <Text 
+              numberOfLines={1}
+              
+              style={[styles.mainTextHeading, { color: '#000000',width:width*0.68,textAlign:'left',  }]}>https:/ /winjoy.ae/invite/token?aaasd</Text>
+              <TouchableOpacity
+            onPress={copyToClipboard}
+              >
+                <View style={{
+                  width: width * 0.2,
+                  height: height * 0.06,
+                  backgroundColor: '#fff',
+                  borderRadius: 10,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  
+                }}>
+                  <Text style={[styles.mainTextHeading, { color: '#420E92',fontFamily: 'Axiforma Bold',}]}>Copy</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
             <FlatList
               horizontal={true}
               style={{}}
@@ -252,14 +331,13 @@ const RefferLifeLineModal = (props) => {
               // }
               showsVerticalScrollIndicator={false}
               showsHorizontalScrollIndicator={false}
-              data={livePlans.plan}
+              data={refferalLivePlans}
               renderItem={({ item, index }) => (
                 item?.type === "referral" ? (
                   <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: width * 0.32, }}>
                     <TouchableOpacity
                       onPress={() => {
-                        setSelected(index)
-                        setId(item.id)
+                        onPressRefTab(index, item)
                       }
                       }>
                       <View style={selected === index ? styles.refferBoxSelected : styles.refferBox}>
@@ -278,71 +356,112 @@ const RefferLifeLineModal = (props) => {
             paddingLeft: 15,
             paddingRight: 15,
           }}>
-            {selected === 4 ? (
-
-              <RefferalTextInput
-                srNumber={1}
-                onChangeName={(text) => { setNameRef1(text) }}
-                onChangeNumber={(text) => setNumberRef1(text)}
-                validationBorder={false}
-              />
-
-
-
-            ) : null}
-            {selected === 5 ? (
+            {selected === 0 ? (
               <FlatList
                 style={{ height: height * 0.35, width: '100%', }}
-
-
-                data={[1, 2, 3]}
+                data={li}
+                extraData={updateData}
                 renderItem={({ item, index }) => (
                   <RefferalTextInput
-                    srNumber={item}
+                    srNumber={item.sr}
+                    validationBorderName={item.status}
+                    validationBorderNumber={item.status2}
                     onChangeName={(name) => {
-                      Setting(name, index)
-                    }}
-                    onChangeNumber={(number) => 
-                      Setting(number, index)
+                      if (!name) {
+                        SettingName(name, index)
+                      } else {
+                        SettingName(name, index)
                       }
+
+                    }}
+                    onChangeNumber={(number) => {
+                      if (!number) {
+                        SettingNumber(number, index)
+                      } else {
+                        SettingNumber(number, index)
+                      }
+                    }
+                    }
                   />
                 )}
 
               //   ListEmptyComponent={this.RenderEmptyContainerOnGoing()}
               />
             ) : null}
-            {selected === 6 ? (
+            {selected === 1 ? (
 
-              <View style={{ height: height * 0.37 }}>
-                <ScrollView>
-                  <RefferalTextInput
-                    srNumber={1}
-                    onChangeName={(text) => { setName1Ref3(text) }}
-                    onChangeNumber={(text) => setNumber1Ref3(text)}
-                  />
-                  <RefferalTextInput
-                    srNumber={2}
-                    onChangeName={(text) => { setName2Ref3(text) }}
-                    onChangeNumber={(text) => setNumber2Ref3(text)}
-                  />
-                  <RefferalTextInput
-                    srNumber={3}
-                    onChangeName={(text) => { setName3Ref3(text) }}
-                    onChangeNumber={(text) => setNumber3Ref3(text)}
-                  />
-                  <RefferalTextInput
-                    srNumber={4}
-                    onChangeName={(text) => { setName4Ref3(text) }}
-                    onChangeNumber={(text) => setNumber4Ref3(text)}
-                  />
-                  <RefferalTextInput
-                    srNumber={5}
-                    onChangeName={(text) => { setName5Ref3(text) }}
-                    onChangeNumber={(text) => setNumber5Ref3(text)}
-                  />
-                </ScrollView>
-              </View>
+              <FlatList
+                style={{ height: height * 0.4, width: '100%', }}
+                contentContainerStyle={{ paddingBottom: height * 0.3 }}
+                data={li}
+                extraData={updateData}
+                renderItem={({ item, index }) => (
 
+
+                  <RefferalTextInput
+                    srNumber={item.sr}
+                    validationBorderName={item.status}
+                    validationBorderNumber={item.status2}
+                    onChangeName={(name) => {
+                      if (!name) {
+                        SettingName(name, index)
+                      } else {
+                        SettingName(name, index)
+                      }
+
+                    }}
+                    onChangeNumber={(number) => {
+                      if (!number) {
+                        SettingNumber(number, index)
+                      } else {
+                        SettingNumber(number, index)
+                      }
+                    }
+                    }
+                  />
+
+
+
+                )}
+
+              //   ListEmptyComponent={this.RenderEmptyContainerOnGoing()}
+              />
+
+            ) : null}
+            {selected === 2 ? (
+              <FlatList
+                style={{ height: height * 0.4, width: '100%', }}
+                contentContainerStyle={{ paddingBottom: height * 0.3 }}
+                data={li}
+                extraData={updateData}
+                renderItem={({ item, index }) => (
+
+                  <RefferalTextInput
+                    srNumber={item.sr}
+                    validationBorderName={item.status}
+                    validationBorderNumber={item.status2}
+                    onChangeName={(name) => {
+                      if (!name) {
+                        SettingName(name, index)
+                      } else {
+                        SettingName(name, index)
+                      }
+
+                    }}
+                    onChangeNumber={(number) => {
+                      if (!number) {
+                        SettingNumber(number, index)
+                      } else {
+                        SettingNumber(number, index)
+                      }
+                    }
+                    }
+                  />
+
+                )}
+
+              //   ListEmptyComponent={this.RenderEmptyContainerOnGoing()}
+              />
             ) : null}
 
           </View>
@@ -350,6 +469,7 @@ const RefferLifeLineModal = (props) => {
           <View style={{ width: '100%', paddingLeft: 15 }}>
             <TouchableOpacity
               onPress={() => { HandleClick() }}
+              disabled={loader}
               style={{
                 height: heightConverter(20),
                 width: width * 0.9,
@@ -377,19 +497,24 @@ const RefferLifeLineModal = (props) => {
 
 
               >
-                {selected === 4 ? (
-                  <Label primary font={16} bold style={{ color: "#ffffff" }}>
-                    Refer 1 Friends
-                  </Label>
-                ) : selected === 5 ? (
-                  <Label primary font={16} bold style={{ color: "#ffffff" }}>
-                    Refer 3 Friends
-                  </Label>
-                ) : selected === 6 ? (
-                  <Label primary font={16} bold style={{ color: "#ffffff" }}>
-                    Refer 5 Friends
-                  </Label>
-                ) : null}
+                {loader ? (
+                  <ActivityIndicator size="large" color={"#ffffff"} />
+                ) : (
+                  selected === 0 ? (
+                    <Label primary font={16} bold style={{ color: "#ffffff" }}>
+                      Refer 1 Friends
+                    </Label>
+                  ) : selected === 1 ? (
+                    <Label primary font={16} bold style={{ color: "#ffffff" }}>
+                      Refer {totalRef} Friends
+                    </Label>
+                  ) : selected === 2 ? (
+                    <Label primary font={16} bold style={{ color: "#ffffff" }}>
+                      Refer {totalRef} Friends
+                    </Label>
+                  ) : null
+                )}
+
               </View>
             </TouchableOpacity>
             <LabelButton
@@ -402,10 +527,29 @@ const RefferLifeLineModal = (props) => {
                   ...ModelState,
                   state: !ModelState.state,
                 });
+
+
               }}
             >
               Not Now
             </LabelButton>
+            <Modals ModalRef={ModalStateError} Error />
+            <BuyLifeCongrats ModalRef={SucessModalState}
+              heading={"Congratulations"}
+              description={"4 lives are ready to use. Feel free to play more games & win amazin prizes."}
+              requestOnPress={() => {
+
+                SucessModalState.current(false)
+
+              }}
+              closeOnPress={() => {
+                SucessModalState.current(false)
+                setModelState({
+                  ...ModelState,
+                  state: !ModelState.state,
+                });
+              }}
+            />
           </View>
         </View>
       </View>
@@ -423,8 +567,8 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.BG_MUTED,
   },
   ModalView: {
-    height: height * 0.75,
-    marginTop: height * 0.25,
+    height: height * 0.95,
+    marginTop: height * 0.05,
     borderTopLeftRadius: 37,
     borderTopRightRadius: 37,
     backgroundColor: Colors.WHITE,
@@ -566,7 +710,7 @@ const styles = StyleSheet.create({
   },
   refferBox: {
     width: width * 0.29,
-    height: height * 0.13,
+    height: height * 0.12,
     backgroundColor: '#F2EFF5',
     borderRadius: 10,
     justifyContent: 'center',
@@ -574,7 +718,7 @@ const styles = StyleSheet.create({
   },
   refferBoxSelected: {
     width: width * 0.29,
-    height: height * 0.13,
+    height: height * 0.12,
     backgroundColor: '#F2EFF5',
     borderRadius: 10,
     justifyContent: 'center',

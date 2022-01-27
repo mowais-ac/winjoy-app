@@ -17,7 +17,7 @@
     "our_products":"Our Products",
     "call_us":"Call us",
     "email_us":"Email us",
-  "login_screen": {
+  
     "login_heading": "Login to WinJoy",
     "login": "Login",
     "customer": "Customer",
@@ -26,15 +26,15 @@
     "password": "Password",
     "do_not_have_an_account": "Don't have account?",
     "create_account": "Create an account",
-    "or": "OR"
-  },
+    "or": "OR",
+
   "forgot_password_screen": {
     "heading": "Forgot password?",
     "please_enter_your": "Please enter your phone number. You will receive a code to create a new password via SMS.",
     "phone": "Phone",
     "send": "Send"
   },
-  "signup": {
+ 
     "back": "Back",
     "create_an_account":"Create an account",
     "f_name":"First Name",
@@ -42,25 +42,23 @@
     "user":"Username",
     "check":"Check",
     "email":"Email",
-    "phone_number":"Phone Number",
-    "password":"Password",
     "confirm_password":"Confirm Password",
-    "create_account":"Create an account"
-  },
+   
+
   "products":{
     "do_not_miss_chance":"Don’t Miss a chace to",
     "closing_soon":"Closing Soon",
     "all":"ALL",
     "buy_now":"Buy Now"
   },
-  "wallet1":{
+
     "your_wallet":"Your Wallet",
     "top_up":"TOPUP",
     "with_draw":"WITHDRAW",
     "last_played_game":"Last Played Game",
     "won_prize":"Won Prize",
-    "last_five_transcation":"Last 5 Transactions "
-  },
+    "last_five_transcation":"Last 5 Transactions ",
+
 
   "fan_joy":{
     "fan_joy":"FAN JOY",

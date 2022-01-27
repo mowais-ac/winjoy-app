@@ -18,13 +18,16 @@ export default StyleSheet.create({
   },
   yellowBtn: {
     marginTop: 7,
-    width: widthPercentageToDP("100%"),
+    width: widthPercentageToDP("95%"),
     height: heightConverter(65),
-   // justifyContent: 'center',
-   paddingLeft:8,
-    alignItems:'center',
+    justifyContent: 'space-between',
+    paddingLeft: 8,
+    alignItems: 'center',
     flexDirection: 'row',
 
+  },
+  secondHeaderMiddleView: {
+    width: width * 0.65
   },
   avatarView: {
     //position: 'absolute',
@@ -45,11 +48,11 @@ export default StyleSheet.create({
     shadowOpacity: 0.43,
     shadowRadius: 9.51,
   },
-  btnTextView: {
-    width:width*0.7,
-    marginLeft:widthConverter(20),
+  btnHeadingView: {
+    width: width * 0.7,
+    marginLeft: widthConverter(20),
   },
-  text: {
+  Heading: {
     fontFamily: 'Axiforma Bold',
     color: '#fff',
     fontSize: RFValue(20)
@@ -57,10 +60,10 @@ export default StyleSheet.create({
   ShoppingBanner: {
     width: width,
     height: height * 0.3,
-   // marginTop: height * 0.015,
+    // marginTop: height * 0.015,
     alignSelf: "center",
-    borderBottomLeftRadius:15,
-    borderBottomRightRadius:15
+    borderBottomLeftRadius: 15,
+    borderBottomRightRadius: 15
   },
   bgImageUpperView: {
     width: width * 1.01,
@@ -123,38 +126,39 @@ export default StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#92BBD9'
   },
-  wrapDot:{
-    position:'absolute',
-    bottom:0,
-    flexDirection:'row',
-    alignSelf:'center'
+  wrapDot: {
+    position: 'absolute',
+    bottom: 0,
+    flexDirection: 'row',
+    alignSelf: 'center'
   },
-  dotActive:{
-    margin:3,
-    color:'white'
+  dotActive: {
+    margin: 3,
+    color: 'white'
   },
-  dot:{
-    margin:3,
-    color:'black'
+  dot: {
+    margin: 3,
+    color: 'black'
   },
-  avatarBannerView:{
-    width:"100%",
-    height:160,
-    alignItems:'center'
-},
-  avatarBanner:{
-    width:"95%",
-    height:130,
-},
-Margin: {
-  height: height * 0.035,
-  width: width * 0.3,
-  backgroundColor: "#ffffff",
-},
-wrap:{
-  width: width,
-  height: height * 0.3,
-  alignItems:'center',
-  justifyContent:'center'
-}
+  avatarBannerView: {
+    width: "100%",
+    height: 160,
+    alignItems: 'center'
+  },
+  avatarBanner: {
+    width: "95%",
+    height: 130,
+  },
+  Margin: {
+    height: height * 0.035,
+    width: width * 0.3,
+    backgroundColor: "#ffffff",
+  },
+  wrap: {
+    width: width,
+    height: height * 0.3,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+
 });

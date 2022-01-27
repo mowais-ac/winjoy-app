@@ -37,7 +37,7 @@ function ClosingSoon({ item }) {
         {item.product_image || item.profile_image=== null ? (
           <LoaderImage
             source={{
-              uri: ImgUrl.replace("http://", "https://"),
+              uri:item.product_image,
             }}
             style={{
               width: 80,
@@ -48,7 +48,7 @@ function ClosingSoon({ item }) {
         ) : item?.user?.profile_image ? (
           <LoaderImage
             source={{
-              uri: ProfileUrl.replace("http://", "https://"),
+              uri: item?.user?.profile_image ,
             }}
             style={{
               width: 80,
