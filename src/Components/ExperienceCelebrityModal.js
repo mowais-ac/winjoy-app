@@ -8,7 +8,8 @@ import {
   TouchableWithoutFeedback,
   Alert,
   TouchableOpacity,
-  Text
+  Text,
+  FlatList
 } from "react-native";
 import Label from "./Label";
 import LabelButton from "./LabelButton";
@@ -26,6 +27,7 @@ import { Avatar } from "react-native-elements";
 const { width, height } = Dimensions.get("window");
 
 const ExperienceCelebrityModal = (props) => {
+  console.log("props.experienceDetail", props.experienceDetail);
   const [ModelState, setModelState] = useState({
     state: false,
     details: null,
@@ -82,12 +84,16 @@ const ExperienceCelebrityModal = (props) => {
                 borderRadius: 10
               }}
               source={{
-                uri: 'https://abdulrahman.fleeti.com/save_file/uploads/provider/user/5bf637c8_60262ff8dbde39.10627959.jpg',
+                uri: props?.experienceDetail?.experience?.thumbnail,
               }}
             />
             <View style={{ marginLeft: 20 }}>
-              <Text style={{ color: '#0B2142', fontFamily: 'Axiforma SemiBold', fontSize: RFValue(14) }}>Video Shoutout</Text>
-              <Text style={{ color: '#420E92', fontFamily: 'Axiforma Bold', fontSize: RFValue(14) }}>AED 240</Text>
+              <Text style={{ color: '#0B2142', fontFamily: 'Axiforma SemiBold', fontSize: RFValue(14) }}>
+                {props?.experienceDetail?.experience?.title}
+              </Text>
+              <Text style={{ color: '#420E92', fontFamily: 'Axiforma Bold', fontSize: RFValue(14) }}>
+                AED{" "}{props?.experienceDetail?.experience?.price}
+              </Text>
             </View>
           </View>
         </View>
@@ -110,64 +116,128 @@ const ExperienceCelebrityModal = (props) => {
 
               // title="MD"
               source={{
-                uri:
-                  "https://abdulrahman.fleeti.com/save_file/uploads/provider/user/5bf637c8_60262ff8dbde39.10627959.jpg"
+                uri: props?.celebrityData?.profile_image,
               }}
             />
             <View style={{ marginLeft: 20, width: '70%' }}>
               <Text style={{
                 color: '#000000',
-                fontFamily: 'Axiforma Regular', 
+                fontFamily: 'Axiforma Regular',
                 fontSize: RFValue(12),
                 textAlign: 'left'
               }}>
-                Celebrate your fans everyday moments with a personalized birthday wish, graduation congrats and more.
+                {props?.celebrityData?.bio}
               </Text>
             </View>
           </View>
         </View>
         <View style={{ height: 1.3, width: '100%', backgroundColor: '#E6DFEE' }} />
-        <View style={{marginTop:20,marginLeft:20}}>
-        <Text style={{ color: '#000000', fontFamily: 'Axiforma SemiBold', fontSize: RFValue(12) }}>Video Shootouts</Text>
-        <Image
+        <View style={{ marginTop: 20, marginLeft: 20 }}>
+          <Text style={{ color: '#000000', fontFamily: 'Axiforma SemiBold', fontSize: RFValue(12) }}>Portfolio</Text>
+          {/* <View style={{
+            width: width * 0.6,
+            height: height * 0.16,
+            justifyContent:'center',
+            alignItems:'center' 
+          }}>
+            <Image
               style={{
-                width: width*0.6,
-                height: height*0.16,
-                borderRadius: 10
+                width: width * 0.6,
+                height: height * 0.16,
+                borderRadius: 10,
+                position: 'absolute'
               }}
               source={{
                 uri: 'https://abdulrahman.fleeti.com/save_file/uploads/provider/user/5bf637c8_60262ff8dbde39.10627959.jpg',
               }}
             />
-            <View style={{ height: 1.3, width: '100%', backgroundColor: '#E6DFEE',marginTop:25 }} />
-               <Text style={{
-                 color: '#000000', 
-                 fontFamily: 'Axiforma SemiBold',
-                  fontSize: RFValue(12),
-                  width:'90%',
-                  textAlign:'center',
-                  marginTop:10,
-                  color:'#420E92'
-                  }}>Total: <Text style={{fontSize: RFValue(16)}}>AED 240</Text></Text>
+            <Image
+              style={{
+                width: 40,
+                height: 40,
+                borderRadius: 10
+              }}
+              source={require('../assets/imgs/playbutton.png')}
+            />
+          </View> */}
+          <FlatList
+            data={props?.experienceDetail?.celebrity_porttfolio}
+            horizontal={true}
+            ListEmptyComponent={() => (
+              <Text style={{ color: '#000000' }}>The list is empty</Text>
+            )
+            }
+            renderItem={({ item }) =>
+              <View style={{
+                width: width * 0.6,
+                height: height * 0.16,
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginLeft:10
+               
+              }}>
+                <Image
+                  style={{
+                    width: width * 0.6,
+                    height: height * 0.16,
+                    borderRadius: 10,
+                    position: 'absolute'
+                  }}
+                  source={{
+                    uri: item?.thumbnail,
+                  }}
+                />
+                <Image
+                  style={{
+                    width: 40,
+                    height: 40,
+                    borderRadius: 10
+                  }}
+                  resizeMode="center"
+                  source={require('../assets/imgs/playbutton.png')}
+                />
+              </View>
+            }
+            //keyExtractor={(e) => e.id.toString()}
+            contentContainerStyle={{
+              marginTop: 10,
+              paddingRight:10
+             // marginLeft: width * 0.03
+            }}
+            // refreshControl={
+            //   <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
+            // }
+            keyExtractor={(item) => item.id}
+          />
+          <View style={{ height: 1.3, width: '100%', backgroundColor: '#E6DFEE', marginTop: 25 }} />
+          <Text style={{
+            color: '#000000',
+            fontFamily: 'Axiforma SemiBold',
+            fontSize: RFValue(12),
+            width: '90%',
+            textAlign: 'center',
+            marginTop: 10,
+            color: '#420E92'
+          }}>Total: <Text style={{ fontSize: RFValue(16) }}>AED{" "}{props?.experienceDetail?.experience?.price}</Text></Text>
         </View>
-        
+
         <View style={styles.ModalBody}>
           <TouchableOpacity
             onPress={() => { props.onPressContinue() }}
             style={{
-              height: heightConverter(20),
+              height: heightConverter(15),
               width: width * 0.9,
 
               justifyContent: 'center',
               alignItems: 'center',
-              marginTop: height * 0.06,
+              marginTop: height * 0.04,
               marginLeft: width * 0.04,
             }}
           >
             <View
 
               style={{
-                height: heightConverter(65),
+                height: heightConverter(55),
                 width: width * 0.9,
                 justifyContent: 'center',
                 alignItems: 'center',
@@ -177,7 +247,7 @@ const ExperienceCelebrityModal = (props) => {
 
 
             >
-           
+
               <Label primary font={16} bold style={{ color: "#ffffff" }}>
                 Pay Now
               </Label>
@@ -187,12 +257,15 @@ const ExperienceCelebrityModal = (props) => {
             primary
             headingtype="h3"
             bold
-            style={[styles.CloseBtn, { color: '#6F5F87',fontSize:RFValue(14) }]}
+            style={[styles.CloseBtn, { color: '#6F5F87', fontSize: RFValue(14) }]}
             onPress={() => {
-              navigation.navigate("Landing")
+              setModelState({
+                ...ModelState,
+                state: !ModelState.state,
+              });
             }}
           >
-           Close
+            Close
           </LabelButton>
         </View>
       </View>
