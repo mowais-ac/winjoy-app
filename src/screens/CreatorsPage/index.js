@@ -33,6 +33,7 @@ const index = ({ route, navigation }) => {
   const data = useSelector(state => state.app.creatorPageData);
   useEffect(() => {
     dispatch(GetCreatorPageData(creatorId));
+    console.log("creatorId",creatorId);
     console.log("daa", data); 
 
   }, []);

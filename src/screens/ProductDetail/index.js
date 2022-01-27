@@ -87,7 +87,9 @@ const ProductDetail = ({ props, navigation, route }) => {
 
             </LinearGradient>
             <View style={styles.upperView}>
-                <Card item={item} />
+                <Card imageUrl={item?.image} 
+           
+                />
             </View>
             <View style={styles.card}>
 
