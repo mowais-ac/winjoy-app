@@ -33,25 +33,87 @@ import LongButton from "../../Components/LongButton";
 import PaymentModals from "../../Components/PaymentModals";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Entypo from 'react-native-vector-icons/Entypo';
-
+import { SafeAreaView } from "react-native-safe-area-context";
+import Modals from "../../Components/Modals";
+import BuyLifeCongrats from "../../Components/BuyLifeCongrats";
 const { width, height } = Dimensions.get("window");
 
 const index = ({ navigation }) => {
   const ModalState = useRef();
-
-  const [Data, setData] = useState(null);
+  const SucessModalState = useRef();
+  const ModalStateError = useRef();
+  const [Data, setData] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
   const [total, setTotal] = useState(0);
+  const [activity, setActivity] = useState(false);
+  const [updateData, setUpdateData] = useState(false);
+  const [ModelState, setModelState] = useState({
+    state: false,
+    details: null,
+  });
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    setData(null);
+   GetData()
     wait(500).then(() => setRefreshing(false));
   }, []);
+  const PostData = async () => {
+    setActivity(true)
+    let dat = [];
+    let postData = {};
+    console.log("dataP", Data);
+    Data.forEach((element, index) => {
+      console.log("ele", element.id, index);
+      dat.push({
+        "is_from_experience": false,
+        "product_id": element.id
+      })
+    });
+    postData = {
+      "products": dat
+    };
+    console.log("dat", dat);
+    var Token = await EncryptedStorage.getItem("Token");
+    const requestOptions = {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${Token}`,
+      },
+      body: JSON.stringify(postData),
+    };
+    await fetch(`${Config.API_URL}/buy/product`, requestOptions)
+      .then((response) => response.json())
+      .then(async (res) => {
+        setActivity(false)
+        console.log("ress", res);
+        if (res.status === "error") {
+          ModalStateError.current(true, {
+            heading: "Error",
+            Error: res.message,
+            // array: res.errors ? Object.values(res.errors) : [],
+          });
 
+        }
+        else if(res?.message==="successfully buy product") {
+          SucessModalState.current(true)
+          await AsyncStorage.removeItem('ids');
+          setData([])
+          setUpdateData(!updateData)
+        }
+      })
+      .catch((e) => {
+        // setLoader(false)
+        setActivity(false)
+        alert(e)
+        console.log("error", e)
+      });
+  }
   useEffect(async () => {
     GetData()
-  },[]); 
+    
+  }, []);
   const GetData = async () => {
     let dat = await AsyncStorage.getItem('ids');
     //  let data=[1,2,3,4,5]
@@ -63,7 +125,7 @@ const index = ({ navigation }) => {
     console.log("dat", dat);
     let isActive = true;
     const check = async () => {
-      if (Data === null) {
+      if (Data.length<=0) {
         const Token = await EncryptedStorage.getItem("Token");
         const requestOptions = {
           method: "GET",
@@ -85,6 +147,7 @@ const index = ({ navigation }) => {
             console.log("total", total);
             if (!isActive) return;
             setData(res.data[0]);
+          
           });
       }
     };
@@ -100,15 +163,15 @@ const index = ({ navigation }) => {
 
     const index = array.indexOf(id);
     if (index > -1) {
-      array.splice(index, 1);
+      array?.splice(index, 1);
     }
 
     AsyncStorage.setItem('ids', JSON.stringify(array))
-    const filteredData = Data.filter(item => item.id !== id);
+    const filteredData = Data?.filter(item => item?.id !== id);
     setData(filteredData)
     let total = 0;
     filteredData.map(element => {
-      total = total + parseFloat(element.price);
+      total = total + parseFloat(element?.price);
     });
     setTotal(total)
   }
@@ -160,32 +223,39 @@ const index = ({ navigation }) => {
   };
 
   return (
-    <SafeArea>
-      <Background height={0.21} />
+    <SafeAreaView style={{ height: height }}>
+      <Background height={0.2} />
       <Header value={3} />
       <View style={styles.MainTop}>
         <UserInfo style={styles.header} OwnUser popup status />
       </View>
       {Data === null ? (
-        <ActivityIndicator size="large" color={Colors.BLACK} />
+        <Label primary bold headingtype="h4" style={{ marginTop: 15 }}>
+        No data
+      </Label>
       ) : (
         <>
-          {Data.length >= 1 && (
-            <Label primary bold headingtype="h4">
-              Cart
-            </Label>
-          )}
-          <View style={{ height: "70%" }}>
+
+          <View style={{ height: "60%" }}>
             <FlatList
               data={Data}
               renderItem={renderItem}
-              keyExtractor={(e) => e.id.toString()}
+              scrollEnabled={true}
+              keyExtractor={(e) => e.id.toString()} 
+              extraData={updateData}
               ListEmptyComponent={<NotFound text="Wish Lists" />}
+              ListHeaderComponent={() => 
+                
+                  <Label primary bold headingtype="h4" style={{ marginTop: 15 }}>
+                    Cart
+                  </Label>
+               
+              }
               refreshControl={
                 <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
               }
               contentContainerStyle={{
-                paddingBottom: height * 0.28,
+                paddingBottom: height * 0.06,
               }}
             />
           </View>
@@ -211,11 +281,14 @@ const index = ({ navigation }) => {
               <Text style={styles.text}>Gold Coin</Text>
 
             </View> */}
-            <PaymentModals ModalRef={ModalState} details total={total} />
-            <TouchableOpacity
+
+           {Data?(
+              <TouchableOpacity
               onPress={() => {
-                ModalState.current(true);
+                // ModalState.current(true);
+                PostData()
               }}
+              disabled={activity}
               style={{
                 height: heightConverter(55),
                 width: width - 25,
@@ -224,7 +297,7 @@ const index = ({ navigation }) => {
                 borderBottomLeftRadius: 10,
                 borderBottomRightRadius: 10,
                 justifyContent: 'center',
-                alignItems: 'center'
+                alignItems: 'center',
               }}
             >
               <LinearGradient
@@ -242,17 +315,45 @@ const index = ({ navigation }) => {
                 colors={["#420E92", "#E7003F"]}
 
               >
-                <Label primary font={16} bold style={{ color: "#ffffff" }}>
-                  Checkout
-                </Label>
+
+                {activity ? (
+                  <ActivityIndicator size="small" color={'#fff'} />
+                ) : (
+                  <Label primary font={16} bold style={{ color: "#ffffff" }}>
+                    Checkout
+                  </Label>
+                )}
               </LinearGradient>
             </TouchableOpacity>
+           ):(null)}
 
           </View>
         </>
       )}
+      <PaymentModals ModalRef={ModalState} details total={total} />
+      <Modals ModalRef={ModalStateError} Error onClose={() => {
+        setModelState({
+          ...ModelState,
+          state: !ModelState.state,
+        });
+      }} />
+      <BuyLifeCongrats ModalRef={SucessModalState}
+        heading={"Congratulations"}
+        description={"Products buyed"}
+        requestOnPress={() => {
 
-    </SafeArea>
+          SucessModalState.current(false)
+
+        }}
+        closeOnPress={() => {
+          SucessModalState.current(false)
+          setModelState({
+            ...ModelState,
+            state: !ModelState.state,
+          });
+        }}
+      />
+    </SafeAreaView>
   );
 };
 
@@ -313,7 +414,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     borderRadius: 10,
     padding: 10,
-    bottom: 0,
+    bottom: height * 0.01,
     left: 2,
     alignItems: 'center',
     elevation: 3,

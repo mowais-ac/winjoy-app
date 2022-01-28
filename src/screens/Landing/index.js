@@ -241,7 +241,6 @@ const index = (props) => {
               {loader ? (
                 <ActivityIndicator size="large" color="#fff" />
               ) : (
-               // null
                 <Carousel
                   layout={"default"}
                   resizeMode={"cover"}
@@ -323,12 +322,12 @@ const index = (props) => {
                 item={item}
                 onPress={() => {
                   item.id === 1 ? (
-                    navigation.navigate("TriviaJoy") 
+                    navigation.navigate("TriviaJoy")  
                   ) : item.id === 2 ? (
                     navigation.navigate("DealsJoy")
                   ) : (
                   //  navigation.navigate("FanJoy")
-                  alert("Under Construction")
+                  navigation.navigate("AllCreatorsPage")
                   )
                 }} />
               // </TouchableOpacity>

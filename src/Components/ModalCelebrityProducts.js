@@ -34,12 +34,13 @@ const ModalCelebrityProducts = (props) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const data = useSelector(state => state.app.winExperienceProductData);
+  const experienceID = useSelector(state => state.app.experienceID);
   const [ModelState, setModelState] = useState({
     state: false,
     details: null,
   });
 
-
+ 
   useEffect(() => {
     if (props.ModalRef) props.ModalRef.current = HandleChange;
   });
@@ -48,8 +49,7 @@ const ModalCelebrityProducts = (props) => {
     setModelState({ state, details, ForceSuccess });
   };
   useEffect(() => {
-    console.log("exper", props?.experienceId);
-    dispatch(ExperienceProductData(props?.experienceId));
+    dispatch(ExperienceProductData(experienceID));
     console.log("dataimage", data);
   }, []);
 
@@ -101,7 +101,7 @@ const ModalCelebrityProducts = (props) => {
                 <TrendingCards
 
 
-                  onPress={() => navigation.navigate("ExperienceProductDetail",{experienceId:props?.experienceId,productId: item?.id})} 
+                  onPress={() => navigation.navigate("ExperienceProductDetail",{experienceId:experienceID,productId: item?.id})} 
                   imageUrl={item.image}
                   title={item?.title}
                   price={item?.price}

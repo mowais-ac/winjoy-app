@@ -7,18 +7,18 @@ const API_URL = 'https://mocki.io/v1/48419bdb-1d76-45a1-89cb-3ac3fcc7f6ca';
 
 
 export const UpdateBell = (params) => {
-  return (dispatch) => {
-    dispatch(UpdateCount(params));
-  };
+    return (dispatch) => {
+        dispatch(UpdateCount(params));
+    };
 
-  function UpdateCount(count) {
-    return { type: types.UPDATE_BELL, count }; 
-  }
+    function UpdateCount(count) {
+        return { type: types.UPDATE_BELL, count };
+    }
 };
 
 
 export const getWalletData = () => {
-   
+
     try {
         return async dispatch => {
             const Token = await EncryptedStorage.getItem("Token");
@@ -28,12 +28,74 @@ export const getWalletData = () => {
                     "Content-Type": "multipart/form-data",
                     Accept: "application/json",
                     Authorization: `Bearer ${Token}`,
-                  },
+                },
             });
             const json = await result.json();
-            if (json&&json.status === "success") {
+            if (json && json.status === "success") {
                 dispatch({
                     type: types.GET_WALLET_DATA,
+                    payload: json
+                });
+            } else {
+                console.log('Unable to fetch!',json);
+            }
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const getLandingScreen = () => {
+
+    try {
+        return async dispatch => {
+            const Token = await EncryptedStorage.getItem("Token");
+            console.log("tokenR", Token);
+            const result = await fetch(`${Config.API_URL}/home`, {
+                method: 'GET',
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    Accept: "application/json",
+                    Authorization: `Bearer ${Token}`,
+                },
+            });
+            const json = await result.json();
+            console.log("json", json);
+            if (json && json.status === "success") {
+                dispatch({
+                    type: types.GET_LANDING_DATA,
+                    payload: json
+                });
+            } else {
+                console.log('Unable to fetch!');
+            }
+        }
+    } catch (error) {
+        console.log("error", error);
+    }
+}
+export const getProducts = (isClosing) => {
+    let check = ""
+    if (isClosing) {
+        check = "?is_closing_soon=" + isClosing
+    } else {
+        check = "";
+    }
+    try {
+        return async dispatch => {
+            const Token = await EncryptedStorage.getItem("Token");
+            const result = await fetch(`${Config.API_URL}/products/list/${check}`, {
+                method: 'GET',
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    Accept: "application/json",
+                    Authorization: `Bearer ${Token}`,
+                },
+            });
+            const json = await result.json();
+            if (json && json.status === "success") {
+                dispatch({
+                    type: types.GET_PRODUCTS_LIST,
                     payload: json
                 });
             } else {
@@ -44,65 +106,8 @@ export const getWalletData = () => {
         console.log(error);
     }
 }
-
-export const getLandingScreen = () => {
-   
-    try {
-        return async dispatch => {
-            const Token = await EncryptedStorage.getItem("Token");
-            console.log("tokenR",Token);
-            const result = await fetch(`${Config.API_URL}/home`, {
-                method: 'GET',
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                    Accept: "application/json",
-                    Authorization: `Bearer ${Token}`,
-                  },
-            });
-            const json = await result.json();
-            console.log("json",json);
-            if (json&&json.status === "success") {
-                dispatch({
-                    type: types.GET_LANDING_DATA,
-                    payload: json
-                });
-            } else {
-                console.log('Unable to fetch!');
-            }
-        }
-    } catch (error) {
-        console.log("error",error);
-    }
-}
-export const getProducts = () => {
-   
-    try {
-        return async dispatch => {
-            const Token = await EncryptedStorage.getItem("Token");
-            const result = await fetch(`${Config.API_URL}/products/list`, {
-                method: 'GET',
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                    Accept: "application/json",
-                    Authorization: `Bearer ${Token}`,
-                  },
-            });
-            const json = await result.json();
-            if (json&&json.status === "success") {
-                dispatch({
-                    type: types.GET_PRODUCTS_LIST,
-                    payload: json
-                });
-            } else {
-                console.log('Unable to fetch!');
-            }
-        }
-    } catch (error) {
-        console.log(error); 
-    }
-}
 export const getLiveShowPlans = () => {
-   
+
     try {
         return async dispatch => {
             const Token = await EncryptedStorage.getItem("Token");
@@ -112,12 +117,12 @@ export const getLiveShowPlans = () => {
                     "Content-Type": "multipart/form-data",
                     Accept: "application/json",
                     Authorization: `Bearer ${Token}`,
-                  },
+                },
             });
             const json = await result.json();
-            if (json&&json.status === "success") {
+            if (json && json.status === "success") {
                 dispatch({
-                    type: types.GET_LIVE_PLANS, 
+                    type: types.GET_LIVE_PLANS,
                     payload: json
                 });
             } else {
@@ -129,7 +134,7 @@ export const getLiveShowPlans = () => {
     }
 }
 export const getAllCreator = () => {
-   
+
     try {
         return async dispatch => {
             const Token = await EncryptedStorage.getItem("Token");
@@ -139,13 +144,13 @@ export const getAllCreator = () => {
                     "Content-Type": "multipart/form-data",
                     Accept: "application/json",
                     Authorization: `Bearer ${Token}`,
-                  },
+                },
             });
             const json = await result.json();
-           
-            if (json&&json.status === "success") {
+
+            if (json && json.status === "success") {
                 dispatch({
-                    type: types.GET_FANJOY_DATA, 
+                    type: types.GET_FANJOY_DATA,
                     payload: json
                 });
             } else {
@@ -156,7 +161,7 @@ export const getAllCreator = () => {
         console.log(error);
     }
 }
-export const GetGalleryData = (id) => {   
+export const GetGalleryData = (id) => {
     try {
         return async dispatch => {
             const Token = await EncryptedStorage.getItem("Token");
@@ -166,12 +171,12 @@ export const GetGalleryData = (id) => {
                     "Content-Type": "multipart/form-data",
                     Accept: "application/json",
                     Authorization: `Bearer ${Token}`,
-                  },
+                },
             });
             const json = await result.json();
-            if (json&&json.status === "success") {
+            if (json && json.status === "success") {
                 dispatch({
-                    type: types.GALLERY_DATA, 
+                    type: types.GALLERY_DATA,
                     payload: json
                 });
             } else {
@@ -182,7 +187,7 @@ export const GetGalleryData = (id) => {
         console.log(error);
     }
 }
-export const GetCreatorPageData = (id) => {   
+export const GetCreatorPageData = (id) => {
     try {
         return async dispatch => {
             const Token = await EncryptedStorage.getItem("Token");
@@ -192,23 +197,23 @@ export const GetCreatorPageData = (id) => {
                     "Content-Type": "multipart/form-data",
                     Accept: "application/json",
                     Authorization: `Bearer ${Token}`,
-                  },
+                },
             });
             const json = await result.json();
-            if (json&&json.status === "success") {
+            if (json && json.status === "success") {
                 dispatch({
-                    type: types.CREATOR_PAGE_DATA, 
+                    type: types.CREATOR_PAGE_DATA,
                     payload: json
                 });
             } else {
-                console.log('Unable to fetch!');
+                console.log('Unable to fetch!',json);
             }
         }
     } catch (error) {
         console.log(error);
     }
 }
-export const ExperienceProductData = (id) => {   
+export const ExperienceProductData = (id) => {
     try {
         return async dispatch => {
             const Token = await EncryptedStorage.getItem("Token");
@@ -218,12 +223,12 @@ export const ExperienceProductData = (id) => {
                     "Content-Type": "multipart/form-data",
                     Accept: "application/json",
                     Authorization: `Bearer ${Token}`,
-                  },
+                },
             });
             const json = await result.json();
-            if (json&&json.status === "success") {
+            if (json && json.status === "success") {
                 dispatch({
-                    type: types.WIN_EXPERIENCE_PRODUCT_DATA, 
+                    type: types.WIN_EXPERIENCE_PRODUCT_DATA,
                     payload: json
                 });
             } else {
@@ -234,7 +239,7 @@ export const ExperienceProductData = (id) => {
         console.log(error);
     }
 }
-export const ExperienceProductDetal = (expId,productId) => {   
+export const ExperienceProductDetal = (expId, productId) => {
     try {
         return async dispatch => {
             const Token = await EncryptedStorage.getItem("Token");
@@ -244,12 +249,12 @@ export const ExperienceProductDetal = (expId,productId) => {
                     "Content-Type": "multipart/form-data",
                     Accept: "application/json",
                     Authorization: `Bearer ${Token}`,
-                  },
+                },
             });
             const json = await result.json();
-            if (json&&json.status === "success") {
+            if (json && json.status === "success") {
                 dispatch({
-                    type: types.EXPERIENCE_PRODUCT_DETAILS, 
+                    type: types.EXPERIENCE_PRODUCT_DETAILS,
                     payload: json
                 });
             } else {
@@ -260,5 +265,34 @@ export const ExperienceProductDetal = (expId,productId) => {
         console.log(error);
     }
 }
+export const ExperienceDetals = (experience_id,celebrity_id) => {
+    console.log(experience_id,celebrity_id);
+    try {
+        return async dispatch => {
+            const Token = await EncryptedStorage.getItem("Token");
+            const result = await fetch(`${Config.API_URL}/experience/detail?experience_id=${experience_id}&celebrity_id=${celebrity_id}`, {
+                method: 'GET',
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    Accept: "application/json",
+                    Authorization: `Bearer ${Token}`,
+                },
+            });
+            const json = await result.json();
+            console.log("jsonS",json);
+            if (json && json.status === "success") {
+                dispatch({
+                    type: types.EXPERIENCE_DETAILS,
+                    payload: json
+                });
+            } else {
+                console.log('Unable to fetch!');
+            }
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 
 

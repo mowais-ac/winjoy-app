@@ -30,6 +30,7 @@ const index = ({ route, navigation }) => {
   const experienceId = useRef();
   const dispatch = useDispatch();
   const dispatch2 = useDispatch();
+  const dispatch3 = useDispatch();
   const data = useSelector(state => state.app.fanjoyData);
  // const [experienceId, setExperienceId] = useState();
   useEffect(() => {
@@ -184,7 +185,11 @@ const index = ({ route, navigation }) => {
               renderItem={({ item }) =>
                 <WinExperienceCard
                   onPress={() => {
-                    experienceId.current=item?.id;
+                    dispatch3({
+                      type: types.EXPERIENCE_ID,
+                      experienceID: item.id
+                      //  user: res.data.data,
+                    });
                     celebrityModalState.current(true)
                   }}
                   short_desc={item?.short_desc}
@@ -205,7 +210,7 @@ const index = ({ route, navigation }) => {
               keyExtractor={(item) => item.id}
             />
           </View>
-          <ModalCelebrityProducts ModalRef={celebrityModalState} details experienceId={experienceId.current}
+          <ModalCelebrityProducts ModalRef={celebrityModalState} details
             onPressContinue={() => {
 
               celebrityModalState.current(false)
