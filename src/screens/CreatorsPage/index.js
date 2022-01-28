@@ -149,6 +149,7 @@ const index = ({ route, navigation }) => {
                   <Text style={{ color: '#000000' }}>The list is empty</Text>
                 )
                 }
+                
                 renderItem={({ item }) =>
                   <SecondExperienceCard
                     onPress={() => {

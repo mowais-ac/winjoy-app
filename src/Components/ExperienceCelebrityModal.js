@@ -9,7 +9,8 @@ import {
   Alert,
   TouchableOpacity,
   Text,
-  FlatList
+  FlatList,
+  ActivityIndicator
 } from "react-native";
 import Label from "./Label";
 import LabelButton from "./LabelButton";
@@ -18,20 +19,25 @@ import LongButton from "./LongButton";
 import { useNavigation } from "@react-navigation/native";
 import EncryptedStorage from "react-native-encrypted-storage";
 import Config from "react-native-config";
-import { GetDate } from "../Constants/Functions";
+import { GetDate, JSONtoForm } from "../Constants/Functions";
 import ProfilePicture from "./ProfilePicture";
 import { RFValue } from "react-native-responsive-fontsize";
 import LinearGradient from "react-native-linear-gradient";
 import { heightConverter } from "./Helpers/Responsive";
 import { Avatar } from "react-native-elements";
+import Modals from "../Components/Modals";
+import BuyLifeCongrats from "../Components/BuyLifeCongrats";
 const { width, height } = Dimensions.get("window");
 
 const ExperienceCelebrityModal = (props) => {
   console.log("props.experienceDetail", props.experienceDetail);
+  const ModalStateError = useRef();
   const [ModelState, setModelState] = useState({
     state: false,
     details: null,
   });
+  const [activity, setActivity] = useState(false);
+  const SucessModalState = useRef();
   const ApproveRef = useRef();
   const DeclineRef = useRef();
 
@@ -44,6 +50,47 @@ const ExperienceCelebrityModal = (props) => {
   const HandleChange = (state, details = null, ForceSuccess = false) => {
     setModelState({ state, details, ForceSuccess });
   };
+  const BuyExperience = async () => {
+    setActivity(true)
+    const Token = await EncryptedStorage.getItem("Token");
+    const body = JSONtoForm({
+      celebrity_id: 12,
+      experience_id: 1
+    });
+    const requestOptions = {
+      method: "POST",
+      headers: {
+        "Content-Type": "multipart/form-data",
+        "Accept": "application/json",
+        Authorization: `Bearer ${Token}`,
+      },
+      body,
+    };
+
+    await fetch(`${Config.API_URL}/buy/experience`, requestOptions)
+      .then(async (response) => response.json())
+      .then(async (res) => {
+        setActivity(false)
+        console.log("resBuy", res);
+      
+        if(res?.order){
+          SucessModalState.current(true)
+         
+        }
+        else {
+          ModalStateError.current(true, {
+            heading: "Alert",
+           Error: res?.order?.status,
+          // array: res.errors ? Object.values(res.errors) : [],
+          });
+        }
+       
+      })
+      .catch((e) => {
+        Alert.alert("Error", e);
+
+      });
+  }
 
   return (
     <Modal
@@ -105,7 +152,7 @@ const ExperienceCelebrityModal = (props) => {
           marginTop: 10,
         }}>
           <View style={{
-            height: height * 0.18,
+            height: height * 0.15,
             width: width * 0.9,
             flexDirection: 'row',
             alignItems: 'center'
@@ -119,7 +166,7 @@ const ExperienceCelebrityModal = (props) => {
                 uri: props?.celebrityData?.profile_image,
               }}
             />
-            <View style={{ marginLeft: 20, width: '70%' }}>
+            <View style={{ marginLeft: 20, width: width*0.67, }}>
               <Text style={{
                 color: '#000000',
                 fontFamily: 'Axiforma Regular',
@@ -164,17 +211,20 @@ const ExperienceCelebrityModal = (props) => {
             data={props?.experienceDetail?.celebrity_porttfolio}
             horizontal={true}
             ListEmptyComponent={() => (
-              <Text style={{ color: '#000000' }}>The list is empty</Text>
+              <Text style={{ color: '#000000' }}>The list is empty</Text> 
             )
             }
+              ItemSeparatorComponent={
+            () => <View style={{ width: 12,}}/>
+        }
             renderItem={({ item }) =>
               <View style={{
                 width: width * 0.6,
                 height: height * 0.16,
                 justifyContent: 'center',
                 alignItems: 'center',
-                marginLeft:10
-               
+             
+
               }}>
                 <Image
                   style={{
@@ -201,8 +251,8 @@ const ExperienceCelebrityModal = (props) => {
             //keyExtractor={(e) => e.id.toString()}
             contentContainerStyle={{
               marginTop: 10,
-              paddingRight:10
-             // marginLeft: width * 0.03
+              paddingRight: 10
+              // marginLeft: width * 0.03
             }}
             // refreshControl={
             //   <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
@@ -223,7 +273,8 @@ const ExperienceCelebrityModal = (props) => {
 
         <View style={styles.ModalBody}>
           <TouchableOpacity
-            onPress={() => { props.onPressContinue() }}
+            onPress={() => { BuyExperience() }}
+            disabled={activity}
             style={{
               height: heightConverter(15),
               width: width * 0.9,
@@ -247,10 +298,14 @@ const ExperienceCelebrityModal = (props) => {
 
 
             >
+              {activity ? (
+                <ActivityIndicator size="small" color="#fff" />
+              ) : (
+                <Label primary font={16} bold style={{ color: "#ffffff" }}>
+                  Pay Now
+                </Label>
+              )}
 
-              <Label primary font={16} bold style={{ color: "#ffffff" }}>
-                Pay Now
-              </Label>
             </View>
           </TouchableOpacity>
           <LabelButton
@@ -268,6 +323,28 @@ const ExperienceCelebrityModal = (props) => {
             Close
           </LabelButton>
         </View>
+        <Modals ModalRef={ModalStateError} Error onClose={()=>{
+           setModelState({
+            ...ModelState,
+            state: !ModelState.state,
+          });
+        }}/>
+        <BuyLifeCongrats ModalRef={SucessModalState}
+        heading={"Congratulations"}
+        description={"successfully Buy Experience"}
+        requestOnPress={() => {
+
+          SucessModalState.current(false)
+
+        }}
+        closeOnPress={() => {
+          SucessModalState.current(false)
+          setModelState({
+            ...ModelState,
+            state: !ModelState.state,
+          });
+        }}
+      />
       </View>
     </Modal>
   );
@@ -283,8 +360,8 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.BG_MUTED,
   },
   ModalView: {
-    height: height * 0.77,
-    marginTop: height * 0.13,
+    height: height * 0.7,
+    marginTop: height * 0.17,
     borderTopLeftRadius: 37,
     borderTopRightRadius: 37,
     backgroundColor: Colors.WHITE,

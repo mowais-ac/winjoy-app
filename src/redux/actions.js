@@ -37,7 +37,7 @@ export const getWalletData = () => {
                     payload: json
                 });
             } else {
-                console.log('Unable to fetch!');
+                console.log('Unable to fetch!',json);
             }
         }
     } catch (error) {

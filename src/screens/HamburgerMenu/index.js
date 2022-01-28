@@ -614,7 +614,7 @@ const styles = StyleSheet.create({
   },
   bView: {
     backgroundColor: "rgba(0,0,0,0.4)",
-    height: heightPercentageToDP("34.5%"),
+    height: height*0.32,
   },
   flatListHeader: {
     marginTop: heightConverter(20),
@@ -640,8 +640,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   avatarView: {
-    width: widthConverter(65),
-    height: widthConverter(65),
+    width: height*0.09,
+    height: height*0.09,
     borderRadius: heightConverter(65),
     borderWidth: 3,
     alignItems: "center",

@@ -245,7 +245,7 @@ const index = ({ props, navigation }) => {
 
 const styles = StyleSheet.create({
   mainView: {
-    height: heightPercentageToDP('50'),
+    height:height*0.55,
     width: width,
 
     borderBottomLeftRadius: 20,
