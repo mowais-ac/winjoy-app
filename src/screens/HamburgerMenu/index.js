@@ -36,11 +36,13 @@ import LongButton from "../../Components/LongButton";
 import { AuthContext } from "../../Components/context";
 import I18n from 'react-native-i18n';
 import { RFValue } from "react-native-responsive-fontsize";
-import {useTranslation} from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import RNRestart from 'react-native-restart';
+import { WjBackground } from "../../Components";
 
 const index = ({ props, navigation }) => {
-  const {t, i18n} = useTranslation();
+  const { t, i18n } = useTranslation();
+  const [headerValue, setHeaderValue] = useState(0);
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(I18n.locale);
   const [items, setItems] = useState([
@@ -65,16 +67,50 @@ const index = ({ props, navigation }) => {
     console.log(userInfo);
   };
   let data2 = [
-    t("wallet"),
-    t("leaderboard"),
-    t("played_games"),
-    t("friends"),
-    t("my_order"),
-    t("view_profile"),
-    "Buy Lifes",
-    t("refer_&_Earn"),
-    t("logout"),
-  
+    {
+      name: t("wallet"),
+      icon: require('../../assets/imgs/humburgerIcons/wallet.png')
+    },
+    {
+      name: t("played_games"),
+      icon: require('../../assets/imgs/humburgerIcons/playedGames.png')
+
+    },
+    {
+      name: t("my_order"),
+      icon: require('../../assets/imgs/humburgerIcons/myOrders.png')
+
+    },
+    {
+      name: t("leaderboard"),
+      icon: require('../../assets/imgs/humburgerIcons/leaderBoard.png')
+
+    },
+    {
+      name: t("Buy Lives"),
+      icon: require('../../assets/imgs/humburgerIcons/buyLives.png')
+
+    },
+    {
+      name: t("refer_&_Earn"),
+      icon: require('../../assets/imgs/humburgerIcons/reffer.png')
+
+    },
+    {
+      name: t("view_profile"),
+      icon: require('../../assets/imgs/humburgerIcons/viewProfile.png')
+
+    },
+    {
+      name: t("friends"),
+      icon: require('../../assets/imgs/humburgerIcons/friends.png')
+
+    },
+    {
+      name: t("logout"),
+      icon: require('../../assets/imgs/humburgerIcons/logout.png')
+
+    },
   ];
   const MyFriends = async () => {
     const Token = await EncryptedStorage.getItem("Token");
@@ -93,9 +129,9 @@ const index = ({ props, navigation }) => {
         setFriendData(res.data[0]);
       });
   };
-  const languageRestart = async(item) => {
-  console.log("lang",item.value);
-   
+  const languageRestart = async (item) => {
+    console.log("lang", item.value);
+
     if (item.value === "ar") {
       if (I18nManager.isRTL) {
         I18nManager.forceRTL(false);
@@ -112,10 +148,29 @@ const index = ({ props, navigation }) => {
     MyFriends();
   }, []);
   return (
-    <ScrollView>
-      <LinearGradient colors={["#420E92", "#E7003F"]}>
-        <View style={{ height: 20 }} />
-        <Header back={true} height={20} />
+
+    <View style={{ backgroundColor: '#ffffff' }}>
+      <Header
+        noBell={true}
+        back={true}
+        style={{
+          position: 'absolute',
+          zIndex: 1000,
+          height: height * 0.06,
+          backgroundColor: headerValue !== 0 ? 'rgba(0,0,0,0.5)' : null,
+          width: '100%',
+          borderBottomRightRadius: 10,
+          borderBottomLeftRadius: 10,
+          paddingTop:height * 0.017,
+        }} />
+      <ScrollView
+        onScroll={(e) => {
+          setHeaderValue(e.nativeEvent.contentOffset.y)
+        }}
+      >
+        <WjBackground
+          style={{ height: height * 0.37, borderBottomRightRadius: 20, borderBottomLeftRadius: 20 }}
+        />
         <View style={styles.aView}>
           <View style={styles.bView}>
             <View style={styles.topView}>
@@ -136,7 +191,7 @@ const index = ({ props, navigation }) => {
                   bold
                   style={{ color: "#FFFFFF", marginTop: 8 }}
                 >
-                  {userData?.first_name} {userData?.last_name}
+                  {userData?.first_name?.charAt(0)?.toUpperCase() + userData?.first_name?.slice(1)} {userData?.last_name?.charAt(0)?.toUpperCase() + userData?.last_name?.slice(1)}
                 </Label>
                 <Label
                   primary
@@ -159,34 +214,36 @@ const index = ({ props, navigation }) => {
             </View>
             <View
               style={{
-                marginTop: 10,
+                marginTop: height * 0.012,
                 height: 1,
                 width: widthConverter(375),
-                backgroundColor: "#72407e",
+                backgroundColor: "rgba(255, 255, 255, 0.2)",
               }}
             />
-            <Text style={[styles.text, { color: "#ffffff", padding: 15, paddingTop: 10 }]}>
+            <Text style={[styles.text, { color: "#ffffff", paddingLeft: 15, paddingTop: height * 0.01, paddingBottom: 2, }]}>
               {t("my_friends")}
             </Text>
-            <FlatList
-              data={friendData}
-              horizontal={true}
-              renderItem={({ item, index }) => {
-                return (
-                  <ProfilePicture
-                    picture={item?.profile_image}
-                    id={item?.id}
-                    name={
-                      item?.first_name?.slice(0, 1) +
-                      item?.last_name?.slice(0, 1)
-                    }
-                    style={styles.avatarView}
-                  />
-                );
-              }}
-            />
+            <View style={{ height: height * 0.1, marginTop: height * 0.01 }}>
+              <FlatList
+                data={friendData}
+                horizontal={true}
+                renderItem={({ item, index }) => {
+                  return (
+                    <ProfilePicture
+                      picture={item?.profile_image}
+                      id={item?.id}
+                      name={
+                        item?.first_name?.slice(0, 1) +
+                        item?.last_name?.slice(0, 1)
+                      }
+                      style={styles.avatarView}
+                    />
+                  );
+                }}
+              />
+            </View>
             <View style={styles.footer}>
-              <Text style={styles.text}>{friendData.length} {friendData.length < 2 ? "Friend" : "Freinds"}</Text>
+              <Text style={[styles.text, { color: '#ffffff' }]}>{friendData.length} {friendData.length < 2 ? "Friend" : "Freinds"}</Text>
               <TouchableOpacity
                 onPress={() =>
                   navigation.navigate("TabsStack", {
@@ -217,7 +274,7 @@ const index = ({ props, navigation }) => {
                     marginTop: 5,
                     height: 1,
                     width: "100%",
-                    backgroundColor: "#994e7c",
+                    backgroundColor: "#E6DFEE",
                   }}
                 />
               );
@@ -226,7 +283,7 @@ const index = ({ props, navigation }) => {
               return (
                 <View
                   style={{
-                    width: widthPercentageToDP("90%"),
+                    width: width,
                     marginTop: 5,
 
                   }}
@@ -283,22 +340,23 @@ const index = ({ props, navigation }) => {
 
                     }}
                   >
-                    <View style={{ flexDirection: 'row' }}>
+                    <View style={{ flexDirection: 'row', marginLeft: width * 0.05 }}>
                       <Image
                         style={styles.iconImage}
-                        source={require('../../assets/imgs/wallet.png')}
+                        source={item?.icon}
+                        resizeMode='center'
                       />
                       <Text
                         style={[
                           styles.text,
                           {
-                            color: "#ffffff",
+                            color: "#0B2142",
                             height: heightPercentageToDP("5%"),
                             top: 10,
                           },
                         ]}
                       >
-                        {item}
+                        {item.name}
                       </Text>
                     </View>
                   </TouchableOpacity>
@@ -306,23 +364,32 @@ const index = ({ props, navigation }) => {
               );
             }}
           />
-          <View style={{ width: "93%", alignItems: 'center' }}>
+          <View
+            style={{
+              height: 1,
+              width: width,
+              backgroundColor: "#E6DFEE",
+            }}
+          />
+          <View style={{ width: "95%", alignItems: 'center', marginTop: 10 }}>
 
             <Text
               style={[
                 styles.text,
                 {
-                  color: "#ffff00",
+                  color: "#E7003F",
                   height: heightPercentageToDP("5%"),
                   width: "93%",
-                  fontSize: 22,
+                  fontSize: RFValue(16),
+                  fontFamily: 'Axiforma SemiBold'
                 },
               ]}
             >
               {t("setting")}
             </Text>
+
             <View style={styles.rowView}>
-              <View style={{ flexDirection: 'row', justifyContent: 'space-between', }}>
+              {/* <View style={{ flexDirection: 'row', justifyContent: 'space-between', }}>
                 <View style={styles.innerRow}>
                   <MaterialIcons name="language" size={23} color="#fff" style={{ marginTop: 6.5, marginRight: 7 }} />
                   <Text
@@ -348,11 +415,11 @@ const index = ({ props, navigation }) => {
                     setItems={setItems}
                     onSelectItem={(item) => {
                       i18n
-                      .changeLanguage(i18n.language === 'ar' ? 'en' : 'ar')
-                      .then(() => {
-                        I18nManager.forceRTL(i18n.language === 'ar');
-                        RNRestart.Restart();
-                      });
+                        .changeLanguage(i18n.language === 'ar' ? 'en' : 'ar')
+                        .then(() => {
+                          I18nManager.forceRTL(i18n.language === 'ar');
+                          RNRestart.Restart();
+                        });
                     }}
                     containerStyle={{
                       width: width * 0.25,
@@ -404,184 +471,147 @@ const index = ({ props, navigation }) => {
                     disableBorderRadius={false}
                   />
                 </View>
-                {/* <Text
-                  style={[
-
-                    styles.text,
-                    {
-                      color: "#ffffff",
-                      height: heightPercentageToDP("5%"),
-                      top: 10,
-                    },
-                  ]}
-                >
-                  English
-                </Text> */}
+                
+              </View> */}
+              <View style={styles.twoBtnView}>
+                <Text style={[styles.text, { color: '#E9E3F0' }]}>
+                  Language:{' '}
+                  <Text style={styles.text}>
+                    EN
+                  </Text>
+                </Text>
               </View>
-              <View style={{ flexDirection: 'row', justifyContent: 'space-between', }}>
-                <View style={styles.innerRow}>
-                  <MaterialCommunityIcons name="currency-usd-circle-outline" size={23} color="#fff" style={{ marginTop: 6.5, marginRight: 7 }} />
+              <View style={styles.twoBtnView}>
+                <Text style={[styles.text, { color: '#E9E3F0' }]}>
+                  Currency:{' '}
+                  <Text style={styles.text}>
+                    AED
+                  </Text>
+                </Text>
+              </View>
+            </View>
+            <View
+              style={{
+                // marginTop: height * 0.001,
+                height: 1,
+                width: width,
+                backgroundColor: "#E6DFEE",
+              }}
+            />
+
+
+            <View style={{ flexDirection: 'row', justifyContent: 'space-around', width: "100%", marginTop: height * 0.001 }}>
+              <Image
+                style={styles.bottomImage}
+                source={require('../../assets/imgs/humburgerIcons/insta.png')}
+                resizeMode='center'
+              />
+              <Image
+                style={styles.bottomImage}
+                source={require('../../assets/imgs/humburgerIcons/faceBook.png')}
+                resizeMode='center'
+              />
+              <Image
+                style={styles.bottomImage}
+                source={require('../../assets/imgs/humburgerIcons/whatsApp.png')}
+                resizeMode='center'
+              />
+              <Image
+                style={styles.bottomImage}
+                source={require('../../assets/imgs/humburgerIcons/linkedIn.png')}
+                resizeMode='center'
+              />
+              <Image
+                style={styles.bottomImage}
+                source={require('../../assets/imgs/humburgerIcons/twiter.png')}
+                resizeMode='center'
+              />
+            </View>
+            <View
+              style={{
+                marginTop: height * 0.001,
+                height: 1,
+                width: width,
+                backgroundColor: "#E6DFEE",
+              }}
+            />
+
+            <View style={{
+              justifyContent: 'space-around',
+              alignItems: 'center',
+              width: width,
+              height: height * 0.15,
+              marginTop: 5
+            }}>
+              <Text
+                style={[
+                  styles.text,
+                  {
+                    color: "#E7003F",
+                    width: width,
+                    fontSize: RFValue(16),
+                    fontFamily: 'Axiforma SemiBold',
+                    textAlign: 'center',
+                  },
+                ]}
+              >
+                Need Help?
+              </Text>
+              <View style={{
+                width: width * 0.9,
+                height: height * 0.058,
+                borderWidth: 1,
+                borderColor: '#E9E3F0',
+                borderRadius: height * 0.07,
+                flexDirection: 'row',
+                justifyContent: 'center',
+                marginTop: -10
+
+              }}>
+                <View style={[styles.bottomBtnView, {
+                  backgroundColor: '#E9E3F0',
+                  borderTopLeftRadius: height * 0.035,
+                  borderBottomLeftRadius: height * 0.035,
+                }]}>
                   <Text
                     style={[
                       styles.text,
                       {
-                        color: "#ffffff",
-                        height: heightPercentageToDP("5%"),
-                        top: 10,
+                        color: "#420E92",
+                        fontSize: RFValue(16),
+                        fontFamily: 'Axiforma SemiBold',
+                        textAlign: 'center'
                       },
                     ]}
                   >
-                    {t("curreny")}
+                    Call Us
                   </Text>
                 </View>
-                <View>
-                  <DropDownPicker
-                    open={open2}
-                    value={value2}
-                    items={items2}
-                    setOpen={setOpen2}
-                    setValue={setValue2}
-                    setItems={setItems2}
-                    zIndex={1000}
-                    containerStyle={{
-                      width: width * 0.25,
-                    }}
-
-                    textStyle={{
-                      fontSize: RFValue(14),
-                      fontFamily: "Axiforma-Regular",
-                      color: "#ffffff",
-                    }}
-                    dropDownContainerStyle={{
-                      backgroundColor: "#fff",
-                      marginTop: -height * 0.02,
-
-
-                    }}
-                    arrowIconStyle={{
-                      bottom: 8
-                    }}
-
-
-                    listItemLabelStyle={{
-                      color: '#000000',
-                      fontFamily: "Axiforma-Regular",
-
-                    }}
-                    labelStyle={{
-                      fontFamily: "Axiforma-Regular",
-                      color: "#ffffff",
-                      fontSize: RFValue(13),
-                      height: 22,
-                      bottom: 8
-
-                    }}
+                <View style={[styles.bottomBtnView, {
+                  borderTopRightRadius: height * 0.035,
+                  borderBottomRightRadius: height * 0.035,
+                }]}>
+                  <Text
                     style={[
-
                       styles.text,
                       {
-
-                        color: "#ffffff",
-                        //height: heightPercentageToDP("5%"),
-                        width: width * 0.2,
-
-                        backgroundColor: null,
-                        borderWidth: 0,
-                        marginTop: 5
+                        color: "#420E92",
+                        fontSize: RFValue(16),
+                        fontFamily: 'Axiforma SemiBold',
+                        textAlign: 'center'
                       },
                     ]}
-                    disableBorderRadius={false}
-                  />
+                  >
+                    Email Us
+                  </Text>
                 </View>
-                {/* <Text
-                  style={[
-                    styles.text,
-                    {
-                      color: "#ffffff",
-                      height: heightPercentageToDP("5%"),
-                      top: 10,
-                    },
-                  ]}
-                >
-                  AED
-                </Text> */}
               </View>
-            </View>
-            <Text
-              style={[
-                styles.text,
-                {
-                  color: "#ffff00",
-                  height: heightPercentageToDP("5%"),
-                  width: "93%",
-                  fontSize: 22,
-                },
-              ]}
-            >
-              {t("general")}
-
-            </Text>
-            <View style={styles.rowView}>
-              <View style={styles.innerRow}>
-                <Ionicons name="information-circle-outline" size={26} color="#fff" style={{ marginTop: 6.5, marginRight: 6 }} />
-                <Text
-                  style={[
-                    styles.text,
-                    {
-                      color: "#ffffff",
-                      height: heightPercentageToDP("5%"),
-                      top: 10,
-
-
-                    },
-                  ]}
-                >
-                  {t("how_it_works")}
-                </Text>
-              </View>
-              <View style={styles.innerRow}>
-                <Ionicons name="shirt-outline" size={23} color="#fff" style={{ marginTop: 6.5, marginRight: 7 }} />
-                <Text
-                  style={[
-                    styles.text,
-                    {
-                      color: "#ffffff",
-                      height: heightPercentageToDP("5%"),
-                      top: 10,
-
-                    },
-                  ]}
-                >
-                  {t("our_products")}
-                </Text>
-              </View>
-            </View>
-
-            <View style={{ flexDirection: 'row', justifyContent: 'space-around', width: "100%", paddingBottom: 10 }}>
-              <AntDesign name="instagram" size={28} color="#fff" />
-              <Feather name="facebook" size={28} color="#fff" />
-              <FontAwesome name="whatsapp" size={28} color="#fff" />
-              <Feather name="linkedin" size={28} color="#fff" />
-              <Feather name="twitter" size={28} color="#fff" />
-            </View>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-around', width: '100%', paddingBottom: 10 }}>
-              <LongButton
-                style={styles.Margin}
-                textstyle={{ color: "#eb2b5f" }}
-                text={t("call_us")}
-                font={16}
-              />
-              <LongButton
-                style={styles.Margin}
-                textstyle={{ color: "#eb2b5f" }}
-                text={t("email_us")}
-                font={16}
-              />
             </View>
           </View>
         </View>
-      </LinearGradient>
-    </ScrollView>
+      </ScrollView>
+    </View>
+
   );
 };
 
@@ -610,11 +640,12 @@ const styles = StyleSheet.create({
   aView: {
     alignItems: 'center',
     width: widthPercentageToDP("100%"),
-    marginTop: 10,
+    marginTop: height * 0.05,
+
   },
   bView: {
-    backgroundColor: "rgba(0,0,0,0.4)",
-    height: height*0.32,
+    // backgroundColor: "rgba(0,0,0,0.4)",
+    height: heightPercentageToDP("34.5%"),
   },
   flatListHeader: {
     marginTop: heightConverter(20),
@@ -626,7 +657,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
   },
   footer: {
-    height: heightConverter(40),
     width: widthPercentageToDP("100%"),
     paddingLeft: 15,
     paddingRight: 15,
@@ -640,8 +670,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   avatarView: {
-    width: height*0.09,
-    height: height*0.09,
+    width: widthConverter(65),
+    height: widthConverter(65),
     borderRadius: heightConverter(65),
     borderWidth: 3,
     alignItems: "center",
@@ -658,14 +688,17 @@ const styles = StyleSheet.create({
     marginLeft: 15,
   },
   text: {
-    fontFamily: "Axiforma-Regular",
-    color: "#ffffff",
+    fontFamily: "Axiformam Regular",
+    color: "#0B2142",
     fontSize: RFValue(13),
   },
   rowView: {
-    width: widthPercentageToDP("90%"),
+    width: width * 0.9,
+    justifyContent: 'space-between',
     // borderWidth:3
     //elevation:3,
+    flexDirection: 'row',
+
     marginBottom: 10,
     // backgroundColor: "rgba(128,0,128,0.5)",
     borderRadius: 10,
@@ -682,12 +715,31 @@ const styles = StyleSheet.create({
     marginTop: 6,
     marginRight: 10
   },
+  bottomImage: {
+    width: width * 0.2,
+    height: height * 0.1,
+    resizeMode: "contain",
+  },
   Margin: {
     height: height * 0.065,
     width: width * 0.36,
     backgroundColor: "#fcd9e2",
     borderRadius: 10
   },
+  twoBtnView: {
+    width: width * 0.4,
+    height: height * 0.05,
+    borderWidth: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderColor: '#E6DFEE',
+    borderRadius: height * 0.06,
+  },
+  bottomBtnView: {
+    width: width * 0.45,
+    height: height * 0.058,
+    justifyContent: 'center',
+  }
 });
 
 export default index;

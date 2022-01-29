@@ -20,22 +20,24 @@ import axios from "axios";
 import Config from "react-native-config";
 import { strings } from "../../i18n";
 import { RFValue } from "react-native-responsive-fontsize";
-import { getAllCreator } from '../../redux/actions';
+import { getAllCreator, ExperienceProductData } from '../../redux/actions';
 import { useDispatch, useSelector } from "react-redux";
 import types from '../../redux/types';
 import ModalCelebrityProducts from "../../Components/ModalCelebrityProducts";
 const { width, height } = Dimensions.get("window");
 const index = ({ route, navigation }) => {
   const celebrityModalState = useRef();
-  const experienceId = useRef();
   const dispatch = useDispatch();
   const dispatch2 = useDispatch();
   const dispatch3 = useDispatch();
+  const dispatch4 = useDispatch();
   const data = useSelector(state => state.app.fanjoyData);
- // const [experienceId, setExperienceId] = useState();
+  const expData = useSelector(state => state.app.winExperienceProductData);
+  // const [experienceId, setExperienceId] = useState();
   useEffect(() => {
     dispatch(getAllCreator());
-    console.log("datat", data);
+
+    console.log("dataimage", expData);
   }, []);
   const onPressCreator = (id) => {
     dispatch2({
@@ -190,6 +192,8 @@ const index = ({ route, navigation }) => {
                       experienceID: item.id
                       //  user: res.data.data,
                     });
+                    dispatch4(ExperienceProductData(item.id));
+                    console.log("expData", expData);
                     celebrityModalState.current(true)
                   }}
                   short_desc={item?.short_desc}
@@ -211,8 +215,8 @@ const index = ({ route, navigation }) => {
             />
           </View>
           <ModalCelebrityProducts ModalRef={celebrityModalState} details
+            expData={expData}
             onPressContinue={() => {
-
               celebrityModalState.current(false)
 
             }}

@@ -84,7 +84,7 @@ export const getProducts = (isClosing) => {
     try {
         return async dispatch => {
             const Token = await EncryptedStorage.getItem("Token");
-            const result = await fetch(`${Config.API_URL}/products/list/${check}`, {
+            const result = await fetch(`${Config.API_URL}/products/list${check}`, {
                 method: 'GET',
                 headers: {
                     "Content-Type": "multipart/form-data",
@@ -252,6 +252,7 @@ export const ExperienceProductDetal = (expId, productId) => {
                 },
             });
             const json = await result.json();
+            
             if (json && json.status === "success") {
                 dispatch({
                     type: types.EXPERIENCE_PRODUCT_DETAILS,
