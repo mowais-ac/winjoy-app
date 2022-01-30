@@ -11,6 +11,7 @@ import {
   FlatList,
   RefreshControl,
   ActivityIndicator,
+  Text
 } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import BackgroundRound from "../../Components/BackgroundRound";
@@ -84,7 +85,7 @@ const index = ({ props, navigation }) => {
           <LongButton
             onPress={() => {
               setIsClosing(false);
-              dispatch(getProducts(isClosing));
+              dispatch(getProducts(false));
               setUpdateData(!updateData)
               console.log("productsData1", productsData);
             }}
@@ -99,7 +100,7 @@ const index = ({ props, navigation }) => {
           <LongButton
             onPress={() => { 
               setIsClosing(true);
-              dispatch(getProducts(isClosing));
+              dispatch(getProducts(true));
               setUpdateData(!updateData)
               console.log("productsData2", productsData);
             }}
@@ -115,32 +116,41 @@ const index = ({ props, navigation }) => {
         </View>
         <View>
           {/* onPress={()=>navigation.navigate("SimpeStackScreen",{screen:"ProductDetail"})}> */}
-          {productsData?.data?.length === 0 ? (
-            <ActivityIndicator size="large" color={Colors.BLACK} />
-          ) : (
-            <>
-              {productsData?.data?.length >= 1 && (
+          
 
                 <FlatList
                   data={productsData?.data}
                   scrollEnabled={false}
                   extraData={updateData}
-                  renderItem={(item) =>
-                    <ChanceCard data={item}
+                  renderItem={({ item }) => (
+                    
+                    <ChanceCard 
+                    title={item.title}
+                    updated_stocks={item?.updated_stocks}
+                    stock={item?.stock}
+                    image={item?.image}
+                    description={item?.description}
+                    price={item?.price}
+                    data={item}
                       onPress={() =>
                         // console.log("item.item",item.item)
-                        navigation.navigate("ProductDetail", { data: item.item })
+                        navigation.navigate("ProductDetail", { data: item })
                       }
-                    />}
-                  keyExtractor={(e) => e.id.toString()}
+                    />
+                    )}
+                    keyExtractor={(item) => item.id}
+                    ListEmptyComponent={() => (
+                      <Text style={{ color: '#000000',top:100,textAlign:'center',width:width }}>The list is empty</Text>
+                    )
+                    }
+                  
                   contentContainerStyle={{
                     paddingBottom: height * 0.48,
                   }}
 
                 />
-              )}
-            </>
-          )}
+             
+       
         </View>
       </ScrollView>
     </SafeAreaView>

@@ -35,7 +35,7 @@ import Colors from "../../Constants/Colors";
 import LongButton from "../../Components/LongButton";
 import { useFocusEffect } from "@react-navigation/native";
 import { wait } from "../../Constants/Functions";
-
+import {useSelector } from "react-redux";
 const index = ({ props, navigation,route }) => {
   const [userData, setUserData] = useState([]);
   const [userInfo, setUserInfo] = useState();
@@ -45,12 +45,12 @@ const index = ({ props, navigation,route }) => {
   const routeSelected =route?.params?.selected;
   const [activity, setActivity] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const user = useSelector(state => state.app.userData);
   useEffect(async () => {
-    const userInfo = JSON.parse(await EncryptedStorage.getItem("User"));
-    if (JSON.stringify(Data) !== userInfo) {
-      setData(userInfo);
+    if (JSON.stringify(Data) !== user) {
+      setData(user);
     }
-    setUserInfo(userInfo);
+    setUserInfo(user);
     GetData();
     MyFriends();
   }, []);
@@ -310,7 +310,7 @@ const index = ({ props, navigation,route }) => {
                 return (
                   <TriviaCard
                     userData={item}
-                    onPress={() => navigation.navigate("HamburgerMenu")}
+                    //onPress={() => navigation.navigate("HamburgerMenu")}
                   />
                 );
               }}

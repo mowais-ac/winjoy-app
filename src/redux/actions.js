@@ -75,16 +75,11 @@ export const getLandingScreen = () => {
     }
 }
 export const getProducts = (isClosing) => {
-    let check = ""
-    if (isClosing) {
-        check = "?is_closing_soon=" + isClosing
-    } else {
-        check = "";
-    }
+  
     try {
         return async dispatch => {
             const Token = await EncryptedStorage.getItem("Token");
-            const result = await fetch(`${Config.API_URL}/products/list${check}`, {
+            const result = await fetch(`${Config.API_URL}/products/list?is_closing_soon=${isClosing}`, {
                 method: 'GET',
                 headers: {
                     "Content-Type": "multipart/form-data",
@@ -92,6 +87,7 @@ export const getProducts = (isClosing) => {
                     Authorization: `Bearer ${Token}`,
                 },
             });
+            console.log("result",result);
             const json = await result.json();
             if (json && json.status === "success") {
                 dispatch({

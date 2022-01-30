@@ -241,21 +241,22 @@ const index = (props) => {
               {loader ? (
                 <ActivityIndicator size="large" color="#fff" />
               ) : (
-                <Carousel
-                  layout={"default"}
-                  resizeMode={"cover"}
-                  loop={videoAction}
-                  autoplay={videoAction}
-                  autoplayInterval={3000}
+                // <Carousel
+                //   layout={"default"}
+                //   resizeMode={"cover"}
+                //   loop={videoAction}
+                //   autoplay={videoAction}
+                //   autoplayInterval={3000}
 
-                  // ref={ref => this.carousel = ref}
-                  data={LandingData?.banners}
-                  sliderWidth={width}
-                  itemWidth={width}
-                  renderItem={_renderItem}
-                  style={styles.ShoppingBanner}
-                  onSnapToItem={index => setActiveSlide(index)}
-                />
+                //   // ref={ref => this.carousel = ref}
+                //   data={LandingData?.banners}
+                //   sliderWidth={width}
+                //   itemWidth={width}
+                //   renderItem={_renderItem}
+                //   style={styles.ShoppingBanner}
+                //   onSnapToItem={index => setActiveSlide(index)}
+                // />
+                null
               
               )}
 
@@ -430,6 +431,7 @@ const index = (props) => {
                   name={item.user_name}
                   style={{ width: 150, marginRight: 20 }}
                   imageUrl={item?.image}
+                  fans={item?.fans}
                 />
               }
               //keyExtractor={(e) => e.id.toString()}

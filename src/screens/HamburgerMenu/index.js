@@ -169,7 +169,7 @@ const index = ({ props, navigation }) => {
         }}
       >
         <WjBackground
-          style={{ height: height * 0.37, borderBottomRightRadius: 20, borderBottomLeftRadius: 20 }}
+          style={{ height: height * 0.39, borderBottomRightRadius: 20, borderBottomLeftRadius: 20 }}
         />
         <View style={styles.aView}>
           <View style={styles.bView}>
@@ -223,7 +223,7 @@ const index = ({ props, navigation }) => {
             <Text style={[styles.text, { color: "#ffffff", paddingLeft: 15, paddingTop: height * 0.01, paddingBottom: 2, }]}>
               {t("my_friends")}
             </Text>
-            <View style={{ height: height * 0.1, marginTop: height * 0.01 }}>
+            <View style={{ height: height * 0.115, marginTop: height * 0.01 }}>
               <FlatList
                 data={friendData}
                 horizontal={true}
@@ -246,12 +246,8 @@ const index = ({ props, navigation }) => {
               <Text style={[styles.text, { color: '#ffffff' }]}>{friendData.length} {friendData.length < 2 ? "Friend" : "Freinds"}</Text>
               <TouchableOpacity
                 onPress={() =>
-                  navigation.navigate("TabsStack", {
-                    screen: "Profile",
-                    params: {
-                      screen: "ProfileScreen",
-                      params: { selected: 3 },
-                    },
+                  navigation.navigate("Profile", {
+                    selected: 3
                   })
                 }
               >
@@ -290,53 +286,46 @@ const index = ({ props, navigation }) => {
                 >
                   <TouchableOpacity
                     onPress={() => {
-                      if (item === "Friends") {
-                        navigation.navigate("Friends", {
+                      if (item.name === "Friends") {
+                        navigation.navigate("Profile", {
                           selected: 3
                         });
                       }
-                      if (item === "Wallet") {
+                      if (item.name === "Wallet") {
                         // navigation.navigate("BottomTabStack"); 
                         navigation.navigate("BottomTabStack", {
                           screen: "WALLET",
 
                         });
                       }
-                      if (item === "Leaderboard") {
-                        navigation.navigate("SimpeStackScreen", {
-                          screen: "LeaderBoard",
+                      if (item.name === "Leaderboard") {
+                        navigation.navigate("BottomTabStack", {
+                          screen: "WINNERS",
                         });
                       }
-                      if (item === "View profile") {
-                        navigation.navigate("TabsStack", {
-                          screen: "Profile",
-                          params: {
-                            screen: "ProfileScreen",
-                            params: { selected: 2 },
-                          },
+                      if (item.name === "View profile") {
+                        navigation.navigate("Profile", {
+                          selected: 2 
                         });
                       }
-                      if (item === "Played games") {
-                        navigation.navigate("TabsStack", {
-                          screen: "Profile",
-                          params: {
-                            screen: "ProfileScreen",
-                            params: { selected: 1 },
-                          },
+                      if (item.name === "Played games") {
+                        navigation.navigate("Profile", {
+                          selected: 1
                         });
                       }
-                      if (item === "My orders") {
+                      if (item.name === "My order") {
                         navigation.navigate("Orders");
                       }
-                      if (item === "Logout") {
+                      if (item.name === "Logout") {
                         signOut()
                       }
-                      if (item === "Settings") {
+                      if (item.name === "Settings") {
                         navigation.navigate("Settings")
                       }
-                      if (item === "Buy Lifes") {
+                      if (item.name === "Buy Lives") {
                         navigation.navigate("BuyLife")
                       }
+                    
 
                     }}
                   >
@@ -670,8 +659,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   avatarView: {
-    width: widthConverter(65),
-    height: widthConverter(65),
+    width: height*0.105,
+    height: height*0.105,
     borderRadius: heightConverter(65),
     borderWidth: 3,
     alignItems: "center",
