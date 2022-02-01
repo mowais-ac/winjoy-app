@@ -291,12 +291,12 @@ export const ExperienceDetals = (experience_id,celebrity_id) => {
         console.log(error);
     }
 }
-export const WinnersLastGame = () => {
+export const GameShowWinners = () => {
 
     try {
         return async dispatch => {
             const Token = await EncryptedStorage.getItem("Token");
-            const result = await fetch(`${Config.API_URL}/livegameshow/all/winners/list`, {
+            const result = await fetch(`${Config.API_URL}/gameshow/winners`, {
                 method: 'GET',
                 headers: {
                     "Content-Type": "multipart/form-data",
@@ -305,10 +305,64 @@ export const WinnersLastGame = () => {
                 },
             });
             const json = await result.json();
-            console.log("jsonS",json);
             if (json) {
                 dispatch({
-                    type: types.WINNERS_LAST_GAME,
+                    type: types.GAME_SHOW_WINNERS,
+                    payload: json
+                });
+            } else {
+                console.log('Unable to fetch!');
+            }
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+export const LuckyDrawWinnersAPI = () => {
+
+    try {
+        return async dispatch => {
+            const Token = await EncryptedStorage.getItem("Token");
+            const result = await fetch(`${Config.API_URL}/luckydraw/winners`, {
+                method: 'GET',
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    Accept: "application/json",
+                    Authorization: `Bearer ${Token}`,
+                },
+            });
+            const json = await result.json();
+            if (json) {
+                dispatch({
+                    type: types.LUCKY_DRAW_WINNERS,
+                    payload: json
+                });
+            } else {
+                console.log('Unable to fetch!');
+            }
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+export const LeaderBoardWinners = () => {
+
+    try {
+        return async dispatch => {
+            const Token = await EncryptedStorage.getItem("Token");
+            const result = await fetch(`${Config.API_URL}/leaderboard`, {
+                method: 'GET',
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    Accept: "application/json",
+                    Authorization: `Bearer ${Token}`,
+                },
+            });
+            const json = await result.json();
+            
+            if (json) {
+                dispatch({
+                    type: types.LEADER_BOARD_WINNERS,
                     payload: json
                 });
             } else {

@@ -17,6 +17,8 @@ import Config from "react-native-config";
 import axios from 'axios';
 import ProfilePicture from "../../Components/ProfilePicture";
 import { RFValue } from "react-native-responsive-fontsize";
+import dayjs from "dayjs";
+import { FormatNumber } from "../../Constants/Functions";
 
 const GameShow = (props) => {
 
@@ -43,11 +45,11 @@ const GameShow = (props) => {
         }}
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
-        data={[1, 2, 3]}
+        data={props?.lastWinners}
         renderItem={({ item }) => (
           <View style={{ width: width * 0.25, height: height * 0.2, justifyContent: 'center',marginLeft:3 }}>
             <ProfilePicture
-              picture={"https://abdulrahman.fleeti.com/save_file/uploads/provider/user/5bf637c8_60262ff8dbde39.10627959.jpg"}
+              picture={item?.user?.profile_image}
               // id={userInfo?.id || userData?.id}
               name={"waqar"}
               style={styles.avatarViewTop}
@@ -61,13 +63,13 @@ const GameShow = (props) => {
                 style={{ width: 20, height: 20, }}
               />
             </View>
-            <View style={{ width: width * 0.36, height: height * 0.08, justifyContent: 'center', }}>
-              <Text style={styles.text2}>
-                Waqar Hussain
+            <View style={{ width: width * 0.36, height: height * 0.08, justifyContent: 'center',marginLeft:-6 }}>
+              <Text style={[styles.text2,{textAlign:'center',width:width*0.29,}]}>
+              {item?.user?.first_name?.charAt(0)?.toUpperCase() + item?.user?.first_name?.slice(1)+" "+item?.user?.last_name?.charAt(0)?.toUpperCase() + item?.user?.last_name?.slice(1)}
               </Text>
 
-              <Text style={[styles.text2, { width: width * 0.25, color: "#420E92", textAlign:'center' }]}>
-                AED 12000
+              <Text style={[styles.text2, { width:width*0.29, color: "#420E92", textAlign:'center' }]}>
+                AED {FormatNumber(+(item?.price).toLocaleString())}
               </Text>
             </View>
           </View>
@@ -80,7 +82,7 @@ const GameShow = (props) => {
 
     
       <FlatList 
-        data={props?.winnersLastGame}
+        data={props?.pastWinners}
         contentContainerStyle={{}}
         // horizontal={true}
         ListHeaderComponent={() => 
@@ -94,10 +96,11 @@ const GameShow = (props) => {
           ({ item, index }) => {
             return (
               <GameShowWinnersCard
-                name={"Waqar Hussain"}
-                date={"january 20, 2022"}
-                ammount={item?.price}
-                profile_image={"https://abdulrahman.fleeti.com/save_file/uploads/provider/user/5bf637c8_60262ff8dbde39.10627959.jpg"}
+                name={item?.user?.first_name?.charAt(0)?.toUpperCase() + item?.user?.first_name?.slice(1)+" "+item?.user?.last_name?.charAt(0)?.toUpperCase() + item?.user?.last_name?.slice(1)}
+                date={dayjs(item.created_at).format('MMMM DD, YYYY')}
+  
+                ammount={FormatNumber(+(item?.price).toLocaleString())}
+                profile_image={item?.user?.profile_image}
               // onPress={()=>navigation.navigate("LastGameWinnerDetail")}
               />
             )

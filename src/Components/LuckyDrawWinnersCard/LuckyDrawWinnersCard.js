@@ -6,7 +6,7 @@ import LoaderImage from "../LoaderImage";
 import ProfilePicture from "../ProfilePicture";
 import styles from "./Styles";
 const { width, height } = Dimensions.get("window");
-function LuckyDrawWinnersCard({ onPress, date, profile_image, name, ammount }) {
+function LuckyDrawWinnersCard({ onPress, date, profile_image, name, prize_image }) {
 
   return (
     <TouchableOpacity
@@ -42,7 +42,7 @@ function LuckyDrawWinnersCard({ onPress, date, profile_image, name, ammount }) {
         </View>
 
         <Image
-              source={require('../../assets/imgs/redStar.png')}
+               source={{uri:prize_image}}
               style={{ width: 45, height: 45,}}
             />
 

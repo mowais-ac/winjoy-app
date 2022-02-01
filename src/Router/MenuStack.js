@@ -5,6 +5,7 @@ import Profile from "../screens/Profile";
 import EditProfile from "../screens/EditProfile";
 import BuyLife from "../screens/BuyLife";
 import Orders from "../screens/MyOrders/Orders";
+import LeaderBoard from "../screens/LeaderBoard";
 const Stack = createNativeStackNavigator();
 export default index = () => (
     <Stack.Navigator screenOptions={{
@@ -15,5 +16,6 @@ export default index = () => (
         <Stack.Screen name="EditProfile" component={EditProfile} />
         <Stack.Screen name="BuyLife" component={BuyLife} />
         <Stack.Screen name="Orders" component={Orders} />
+        <Stack.Screen name="LeaderBoard" component={LeaderBoard} />
     </Stack.Navigator>
 );

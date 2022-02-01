@@ -98,7 +98,7 @@ const index = ({ props, navigation }) => {
             shadowless
           />
           <LongButton
-            onPress={() => { 
+            onPress={() => {
               setIsClosing(true);
               dispatch(getProducts(1));
               setUpdateData(!updateData)
@@ -114,44 +114,44 @@ const index = ({ props, navigation }) => {
             shadowless
           />
         </View>
-        <View> 
+        <View>
           {/* onPress={()=>navigation.navigate("SimpeStackScreen",{screen:"ProductDetail"})}> */}
-          
 
-                <FlatList
-                  data={productsData?.data}
-                  scrollEnabled={false}
-                  extraData={updateData}
-                  renderItem={({ item }) => (
-                    
-                    <ChanceCard 
-                    title={item.product.title}
-                    updated_stocks={item?.updated_stocks}
-                    stock={item?.stock}
-                    image={item?.product?.image}
-                    description={item?.description}
-                    price={item?.product?.price}
-                    prize_title={item.prize_title}
-                    data={item}
-                      onPress={() =>
-                        // console.log("item.item",item.item)
-                        navigation.navigate("ProductDetail", { data: item })
-                      }
-                    />
-                    )}
-                    keyExtractor={(item) => item.id}
-                    ListEmptyComponent={() => (
-                      <Text style={{ color: '#000000',top:100,textAlign:'center',width:width }}>The list is empty</Text>
-                    )
-                    }
-                  
-                  contentContainerStyle={{
-                    paddingBottom: height * 0.48,
-                  }}
 
-                />
-             
-       
+          <FlatList
+            data={productsData?.data}
+            scrollEnabled={false}
+            extraData={updateData}
+            renderItem={({ item }) => (
+
+              <ChanceCard
+                title={item.product.title}
+                updated_stocks={item?.product?.updated_stocks}
+                stock={item?.product?.stock}
+                image={item?.product?.image}
+                description={item?.description}
+                price={item?.product?.price}
+                prize_title={item.prize_title}
+                data={item}
+                onPress={() =>
+                  // console.log("item.item",item.item)
+                  navigation.navigate("ProductDetail", { data: item })
+                }
+              />
+            )}
+            keyExtractor={(item) => item.id}
+            ListEmptyComponent={() => (
+              <Text style={{ color: '#000000', top: 100, textAlign: 'center', width: width }}>The list is empty</Text>
+            )
+            }
+
+            contentContainerStyle={{
+              paddingBottom: height * 0.48,
+            }}
+
+          />
+
+
         </View>
       </ScrollView>
     </SafeAreaView>

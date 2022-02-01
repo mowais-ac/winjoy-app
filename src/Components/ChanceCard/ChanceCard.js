@@ -8,16 +8,17 @@ import LoaderImage from "../LoaderImage";
 import Config from "react-native-config";
 import ProgressCircle from 'react-native-progress-circle';
 const { width, height } = Dimensions.get("window");
-function ChanceCard({ onPress, updated_stocks, stock, title, description ,image,price,prize_title}) {
+function ChanceCard({ onPress, updated_stocks, stock, title, description, image, price, prize_title }) {
+  console.log("stockk", stock);
   let progress = updated_stocks
     ? (updated_stocks / stock) * 100
     : 0;
- 
+
   return (
-    <TouchableOpacity
+    <View
       style={{
-        width: width - 25,
-        height: height * 0.56,
+        width: width * 0.94,
+        height: height * 0.53,
         backgroundColor: "#ffffff",
         marginLeft: 10,
         borderRadius: 10,
@@ -28,21 +29,23 @@ function ChanceCard({ onPress, updated_stocks, stock, title, description ,image,
         elevation: 3,
         marginBottom: 15,
       }}
-      onPress={onPress}
+
     >
       <View
         style={{
-          width: width - 25,
+          width: width * 0.95,
           height: height * 0.28,
           borderRadius: 10,
+          marginTop: height * 0.02
         }}>
         <LoaderImage
           source={{
-            uri:image,
+            uri: image,
           }}
           style={{
-            width: width - 25,
+            width: width * 0.95,
             height: height * 0.25,
+
           }}
 
           resizeMode="contain"
@@ -50,11 +53,11 @@ function ChanceCard({ onPress, updated_stocks, stock, title, description ,image,
       </View>
       <View style={{ borderBottomWidth: 1, borderBottomColor: "#e2ebed" }}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: width - 70, marginTop: 5, marginBottom: 5 }}>
-          <Text style={{ fontFamily: 'Axiforma-Regular', fontSize: 14,color:'grey' }}>
+          <Text style={{ fontFamily: 'Axiforma-Regular', fontSize: 14, color: 'grey' }}>
             {title}
           </Text>
           <Text style={{ fontFamily: 'Axiforma-SemiBold', fontSize: 14, color: "#E7003F" }}>
-           {price}
+            {price}
           </Text>
         </View>
       </View>
@@ -64,7 +67,7 @@ function ChanceCard({ onPress, updated_stocks, stock, title, description ,image,
             Get a chance to win
           </Text>
           <Text style={{ fontFamily: 'Axiforma-Regular', fontSize: 14, color: "#000000" }}>
-         {prize_title}
+            {prize_title}
           </Text>
         </View>
         <View>
@@ -94,9 +97,9 @@ function ChanceCard({ onPress, updated_stocks, stock, title, description ,image,
         </View>
 
       </View>
-      <View style={{ flexDirection: 'row', width: width - 90, justifyContent: 'space-around',marginTop:5 }}>
+      <View style={{ flexDirection: 'row', width: width - 90, justifyContent: 'space-around', marginTop: 5 }}>
         <TouchableOpacity
-          //onPress={() => {}}
+          onPress={onPress}
           style={{
             justifyContent: 'center',
             alignItems: 'center'
@@ -121,7 +124,7 @@ function ChanceCard({ onPress, updated_stocks, stock, title, description ,image,
           </View>
         </TouchableOpacity>
         <TouchableOpacity
-          //onPress={() => {}}
+          onPress={onPress}
           style={{
             justifyContent: 'center',
             alignItems: 'center'
@@ -146,16 +149,16 @@ function ChanceCard({ onPress, updated_stocks, stock, title, description ,image,
         </TouchableOpacity>
       </View>
       <Text style={{
-         fontFamily: 'Axiforma-Light',
-          fontSize: 13,
-           color: "#627482",
-           textAlign:'center',
-           marginTop:5 ,
-           width: width - 50,
-         }}>
-    {description}
+        fontFamily: 'Axiforma-Light',
+        fontSize: 13,
+        color: "#627482",
+        textAlign: 'center',
+        marginTop: 5,
+        width: width - 50,
+      }}>
+        {description}
       </Text>
-    </TouchableOpacity>
+    </View>
   );
 }
 

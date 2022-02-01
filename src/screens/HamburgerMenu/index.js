@@ -287,9 +287,7 @@ const index = ({ props, navigation }) => {
                         });
                       }
                       if (item.name === "Leaderboard") {
-                        navigation.navigate("BottomTabStack", {
-                          screen: "WINNERS",
-                        });
+                        navigation.navigate("LeaderBoard");
                       }
                       if (item.name === "View profile") {
                         navigation.navigate("Profile", {

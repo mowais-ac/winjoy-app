@@ -25,12 +25,13 @@ import BuyLifeLineModal from "../../Components/BuyLifeLineModal";
 import WatchAddModal from "../../Components/WatchAddModal";
 import RefferLifeLineModal from "../../Components/RefferLifeLineModal";
 import BuyLifeCongrats from "../../Components/BuyLifeCongrats";
-import { getLiveShowPlans, WinnersLastGame } from '../../redux/actions';
+import { GameShowWinners, LuckyDrawWinnersAPI } from '../../redux/actions';
 import LuckyDraw from "./LuckyDraw";
 const { width, height } = Dimensions.get("window");
 const index = ({ route, navigation }) => {
   const livePlans = useSelector(state => state.app.livePlans);
-  const winnersLastGame = useSelector(state => state.app.winnersLastGame);
+  const gameShowWinners = useSelector(state => state.app.gameShowWinners);
+  const luckyDrawWinners = useSelector(state => state.app.luckyDrawWinners);
   const ModalState = useRef();
   const AddModalState = useRef();
   const RefferModalState = useRef();
@@ -45,10 +46,11 @@ const index = ({ route, navigation }) => {
   const dispatch = useDispatch();
   const dispatch2 = useDispatch();
   useEffect(() => {
-    dispatch(getLiveShowPlans());
-    dispatch2(WinnersLastGame());
+    //  dispatch(getLiveShowPlans());
+    dispatch(GameShowWinners());
+    dispatch2(LuckyDrawWinnersAPI());
     //  dispatch(buyLivePlans());
-    console.log("winnersLastGame", winnersLastGame);
+    console.log("luckyDrawWinners", luckyDrawWinners);
   }, []);
 
   const onPressFirst = () => {
@@ -99,12 +101,14 @@ const index = ({ route, navigation }) => {
           <View style={{ width: '100%', alignItems: 'center', }}>
             {selected === 0 ? (
               <GameShow
-                winnersLastGame={winnersLastGame}
+                lastWinners={gameShowWinners?.winners}
+                pastWinners={gameShowWinners?.pastWinners}
               />
             ) : (
               <LuckyDraw
-                winnersLastGame={winnersLastGame}
+                winnersLastGame={luckyDrawWinners.winners}
               />
+
             )}
 
           </View>

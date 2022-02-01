@@ -17,29 +17,28 @@ import Config from "react-native-config";
 import axios from 'axios';
 import ProfilePicture from "../../Components/ProfilePicture";
 import { RFValue } from "react-native-responsive-fontsize";
+import dayjs from "dayjs";
 
 const LuckyDraw = (props) => {
 
   return (
     <View style={styles.mainView}>
       
-
-    
-
-    
       <FlatList 
         data={props?.winnersLastGame}
         contentContainerStyle={{}}
+        scrollEnabled={false}
         // horizontal={true}
      
         renderItem={
           ({ item, index }) => {
             return (
               <LuckyDrawWinnersCard
-                name={"Waqar Hussain"}
-                date={"january 20, 2022"}
+              name={item?.user?.first_name?.charAt(0)?.toUpperCase() + item?.user?.first_name?.slice(1)+" "+item?.user?.last_name?.charAt(0)?.toUpperCase() + item?.user?.last_name?.slice(1)}
+              date={dayjs(item.created_at).format('MMMM DD, YYYY')}
                 ammount={item?.price}
-                profile_image={"https://abdulrahman.fleeti.com/save_file/uploads/provider/user/5bf637c8_60262ff8dbde39.10627959.jpg"}
+                profile_image={item?.user?.profile_image}
+                prize_image={item?.prize_image?.prize_image}
               // onPress={()=>navigation.navigate("LastGameWinnerDetail")}
               />
             )
