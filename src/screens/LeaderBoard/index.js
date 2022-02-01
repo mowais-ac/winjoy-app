@@ -172,7 +172,7 @@ const index = ({ route, navigation }) => {
 
                         <View style={{ width: width * 0.36, height: height * 0.08, justifyContent: 'center', }}>
                           <Text style={styles.text}>
-                         dat23423
+                          @{item.user_name}
                           </Text>
                           <Text style={styles.text2}>
                             {item?.first_name?.charAt(0)?.toUpperCase() + item?.first_name?.slice(1)+" "+item?.last_name?.charAt(0)?.toUpperCase() + item?.last_name?.slice(1)}
@@ -180,7 +180,7 @@ const index = ({ route, navigation }) => {
 
                         </View>
 
-                        <Text style={[styles.text2, { width: width * 0.25, color: "#420E92" }]}>
+                        <Text style={[styles.text2, { width: width * 0.25, color: "#E7003F" }]}>
                           AED {item?.trivia_total_prize.toLocaleString()}
                         </Text>
 
