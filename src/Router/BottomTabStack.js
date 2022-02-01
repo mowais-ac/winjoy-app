@@ -5,8 +5,8 @@ import HomeStack from "./HomeStack";
 import ProductStack from "./ProductStack";
 import { Colors } from "../Constants/Index";
 import TabButton from "../Components/TabButton";
-import Winners from '../screens/Winners/Winners';
-import Draws from '../screens/Draws/Draws';
+import Winners from '../screens/Winners/index';
+import Profile from '../screens/Profile';
 import Wallet from '../screens/Wallet';
 import I18n from 'react-native-i18n';
 // I18n.locale = "ar";
@@ -44,7 +44,7 @@ export default function index() {
         component={Winners}
       />
       <Tab.Screen name={strings("bottom_tabs.wallet")} component={Wallet} />
-      <Tab.Screen name={strings("bottom_tabs.draws")} component={Draws} />
+      <Tab.Screen name={"PROFILE"} component={Profile} />
 
     </Tab.Navigator>
   );

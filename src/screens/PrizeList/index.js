@@ -85,7 +85,7 @@ const index = ({ props, navigation }) => {
           <LongButton
             onPress={() => {
               setIsClosing(false);
-              dispatch(getProducts(false));
+              dispatch(getProducts(0));
               setUpdateData(!updateData)
               console.log("productsData1", productsData);
             }}
@@ -100,7 +100,7 @@ const index = ({ props, navigation }) => {
           <LongButton
             onPress={() => { 
               setIsClosing(true);
-              dispatch(getProducts(true));
+              dispatch(getProducts(1));
               setUpdateData(!updateData)
               console.log("productsData2", productsData);
             }}
@@ -114,7 +114,7 @@ const index = ({ props, navigation }) => {
             shadowless
           />
         </View>
-        <View>
+        <View> 
           {/* onPress={()=>navigation.navigate("SimpeStackScreen",{screen:"ProductDetail"})}> */}
           
 
@@ -125,12 +125,13 @@ const index = ({ props, navigation }) => {
                   renderItem={({ item }) => (
                     
                     <ChanceCard 
-                    title={item.title}
+                    title={item.product.title}
                     updated_stocks={item?.updated_stocks}
                     stock={item?.stock}
-                    image={item?.image}
+                    image={item?.product?.image}
                     description={item?.description}
-                    price={item?.price}
+                    price={item?.product?.price}
+                    prize_title={item.prize_title}
                     data={item}
                       onPress={() =>
                         // console.log("item.item",item.item)

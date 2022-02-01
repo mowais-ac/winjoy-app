@@ -89,6 +89,7 @@ export const getProducts = (isClosing) => {
             });
             console.log("result",result);
             const json = await result.json();
+            console.log("jjson",json)
             if (json && json.status === "success") {
                 dispatch({
                     type: types.GET_PRODUCTS_LIST,
@@ -276,10 +277,38 @@ export const ExperienceDetals = (experience_id,celebrity_id) => {
                 },
             });
             const json = await result.json();
-            console.log("jsonS",json);
+            
             if (json && json.status === "success") {
                 dispatch({
                     type: types.EXPERIENCE_DETAILS,
+                    payload: json
+                });
+            } else {
+                console.log('Unable to fetch!');
+            }
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+export const WinnersLastGame = () => {
+
+    try {
+        return async dispatch => {
+            const Token = await EncryptedStorage.getItem("Token");
+            const result = await fetch(`${Config.API_URL}/livegameshow/all/winners/list`, {
+                method: 'GET',
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    Accept: "application/json",
+                    Authorization: `Bearer ${Token}`,
+                },
+            });
+            const json = await result.json();
+            console.log("jsonS",json);
+            if (json) {
+                dispatch({
+                    type: types.WINNERS_LAST_GAME,
                     payload: json
                 });
             } else {

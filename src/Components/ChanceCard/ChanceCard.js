@@ -8,7 +8,7 @@ import LoaderImage from "../LoaderImage";
 import Config from "react-native-config";
 import ProgressCircle from 'react-native-progress-circle';
 const { width, height } = Dimensions.get("window");
-function ChanceCard({ onPress, updated_stocks, stock, title, description ,image,price}) {
+function ChanceCard({ onPress, updated_stocks, stock, title, description ,image,price,prize_title}) {
   let progress = updated_stocks
     ? (updated_stocks / stock) * 100
     : 0;
@@ -50,7 +50,7 @@ function ChanceCard({ onPress, updated_stocks, stock, title, description ,image,
       </View>
       <View style={{ borderBottomWidth: 1, borderBottomColor: "#e2ebed" }}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: width - 70, marginTop: 5, marginBottom: 5 }}>
-          <Text style={{ fontFamily: 'Axiforma-Regular', fontSize: 14 }}>
+          <Text style={{ fontFamily: 'Axiforma-Regular', fontSize: 14,color:'grey' }}>
             {title}
           </Text>
           <Text style={{ fontFamily: 'Axiforma-SemiBold', fontSize: 14, color: "#E7003F" }}>
@@ -64,7 +64,7 @@ function ChanceCard({ onPress, updated_stocks, stock, title, description ,image,
             Get a chance to win
           </Text>
           <Text style={{ fontFamily: 'Axiforma-Regular', fontSize: 14, color: "#000000" }}>
-         abc
+         {prize_title}
           </Text>
         </View>
         <View>

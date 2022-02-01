@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   View,
   StyleSheet,
@@ -39,25 +39,13 @@ import { RFValue } from "react-native-responsive-fontsize";
 import { useTranslation } from 'react-i18next';
 import RNRestart from 'react-native-restart';
 import { WjBackground } from "../../Components";
-
+import SelectLanguageModal from "../../Components/SelectLanguageModal";
+import SelectCurrencyModal from "../../Components/SelectCurrencyModal";
 const index = ({ props, navigation }) => {
   const { t, i18n } = useTranslation();
   const [headerValue, setHeaderValue] = useState(0);
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(I18n.locale);
-  const [items, setItems] = useState([
-    { label: 'AR', value: 'ar' },
-    { label: 'EN', value: 'en' }
-  ]);
-
-  const [open2, setOpen2] = useState(false);
-  const [value2, setValue2] = useState("AED");
-  const [items2, setItems2] = useState([
-    { label: 'AED', value: 'AED' },
-    { label: 'PKR', value: 'PKR' }
-  ]);
-
-
+  const ModalStateLanguage = useRef();
+  const ModalStateCurrency = useRef();
   const [userData, setUserData] = useState([]);
   const [friendData, setFriendData] = useState([]);
   const { signOut } = React.useContext(AuthContext);
@@ -161,8 +149,8 @@ const index = ({ props, navigation }) => {
           width: '100%',
           borderBottomRightRadius: 10,
           borderBottomLeftRadius: 10,
-          paddingTop:height * 0.017,
-        }} />
+          paddingTop: height * 0.017,
+        }} /> 
       <ScrollView
         onScroll={(e) => {
           setHeaderValue(e.nativeEvent.contentOffset.y)
@@ -305,7 +293,7 @@ const index = ({ props, navigation }) => {
                       }
                       if (item.name === "View profile") {
                         navigation.navigate("Profile", {
-                          selected: 2 
+                          selected: 2
                         });
                       }
                       if (item.name === "Played games") {
@@ -325,7 +313,7 @@ const index = ({ props, navigation }) => {
                       if (item.name === "Buy Lives") {
                         navigation.navigate("BuyLife")
                       }
-                    
+
 
                     }}
                   >
@@ -378,106 +366,31 @@ const index = ({ props, navigation }) => {
             </Text>
 
             <View style={styles.rowView}>
-              {/* <View style={{ flexDirection: 'row', justifyContent: 'space-between', }}>
-                <View style={styles.innerRow}>
-                  <MaterialIcons name="language" size={23} color="#fff" style={{ marginTop: 6.5, marginRight: 7 }} />
-                  <Text
-                    style={[
-                      styles.text,
-                      {
-                        color: "#ffffff",
-                        height: heightPercentageToDP("5%"),
-                        top: 10,
-                      },
-                    ]}
-                  >
-                    {t("language")}
+
+              <TouchableOpacity
+                onPress={() => { ModalStateLanguage.current(true) }}
+              >
+                <View style={styles.twoBtnView}>
+                  <Text style={[styles.text, { color: '#E9E3F0' }]}>
+                    Language:{' '}
+                    <Text style={styles.text}>
+                      {i18n.language.toUpperCase()}
+                    </Text>
                   </Text>
                 </View>
-                <View>
-                  <DropDownPicker
-                    open={open}
-                    value={value}
-                    items={items}
-                    setOpen={setOpen}
-                    setValue={setValue}
-                    setItems={setItems}
-                    onSelectItem={(item) => {
-                      i18n
-                        .changeLanguage(i18n.language === 'ar' ? 'en' : 'ar')
-                        .then(() => {
-                          I18nManager.forceRTL(i18n.language === 'ar');
-                          RNRestart.Restart();
-                        });
-                    }}
-                    containerStyle={{
-                      width: width * 0.25,
-                    }}
-                    zIndex={2000}
-                    textStyle={{
-                      fontSize: RFValue(14),
-                      fontFamily: "Axiforma-Regular",
-                      color: "#ffffff",
-                    }}
-                    dropDownContainerStyle={{
-                      backgroundColor: "#fff",
-                      marginTop: -height * 0.02,
-
-
-                    }}
-                    arrowIconStyle={{
-                      marginTop: -height * 0.023
-                    }}
-
-
-                    listItemLabelStyle={{
-                      color: '#000000',
-                      fontFamily: "Axiforma-Regular",
-
-                    }}
-                    labelStyle={{
-                      fontFamily: "Axiforma-Regular",
-                      color: "#ffffff",
-                      fontSize: RFValue(13),
-
-                      marginTop: -height * 0.028
-
-                    }}
-                    style={[
-
-                      styles.text,
-                      {
-
-                        color: "#ffffff",
-                        //height: heightPercentageToDP("5%"),
-                        width: width * 0.2,
-
-                        backgroundColor: null,
-                        borderWidth: 0,
-                        marginTop: 5
-                      },
-                    ]}
-                    disableBorderRadius={false}
-                  />
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => { ModalStateCurrency.current(true) }}
+              >
+                <View style={styles.twoBtnView}>
+                  <Text style={[styles.text, { color: '#E9E3F0' }]}>
+                    Currency:{' '}
+                    <Text style={styles.text}>
+                      AED
+                    </Text>
+                  </Text>
                 </View>
-                
-              </View> */}
-              <View style={styles.twoBtnView}>
-                <Text style={[styles.text, { color: '#E9E3F0' }]}>
-                  Language:{' '}
-                  <Text style={styles.text}>
-                    EN
-                  </Text>
-                </Text>
-              </View>
-              <View style={styles.twoBtnView}>
-                <Text style={[styles.text, { color: '#E9E3F0' }]}>
-                  Currency:{' '}
-                  <Text style={styles.text}>
-                    AED
-                  </Text>
-                </Text>
-              </View>
+              </TouchableOpacity>
             </View>
             <View
               style={{
@@ -596,6 +509,8 @@ const index = ({ props, navigation }) => {
                 </View>
               </View>
             </View>
+            <SelectLanguageModal ModalRef={ModalStateLanguage} details />
+            <SelectCurrencyModal ModalRef={ModalStateCurrency} details />
           </View>
         </View>
       </ScrollView>
@@ -659,8 +574,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   avatarView: {
-    width: height*0.105,
-    height: height*0.105,
+    width: height * 0.105,
+    height: height * 0.105,
     borderRadius: heightConverter(65),
     borderWidth: 3,
     alignItems: "center",

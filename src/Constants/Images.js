@@ -46,6 +46,7 @@ const WishList = require("../assets/imgs/WishList.png");
 const Draws = require("../assets/imgs/bingo.png");
 const Wallet = require("../assets/imgs/wallet.png");
 const Leaderboard = require("../assets/imgs/tropy.png");
+const Profile = require("../assets/imgs/Profile.png");
 
 
 const PlusIcon = require("../assets/imgs/PlusIcon.png");
@@ -110,6 +111,7 @@ export default {
   Wallet,
   Leaderboard,
   PlusIcon,
+  Profile,
 
   RadioSelected,
   RadioDisabled,
