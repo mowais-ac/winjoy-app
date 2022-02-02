@@ -34,7 +34,7 @@ const NotFound = (props) => {
           <AddConnectionModal ModalRef={ConModalRef} DisplayAlert />
           <LongButton
             text={props.con ? "Add connection" : "Contact Support"}
-            textstyle={{color:props.con ? undefined : "white"}}
+            textstyle={{color:props.con ? undefined : "red"}}
             style={styles.Btn}
             shadowless
             onPress={() => {
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     marginTop: height * 0.01,
     width: width * 0.8,
     lineHeight: height * 0.025,
-    color:"#fff"
+    color:"red"
   },
   SmallBorder: {
     width: width * 0.15,
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
   },
   HeadingQuestion: {
     marginTop: height * 0.02,
-    color:"#fff"
+    color:"red"
   },
   Btn: {
     marginTop: height * 0.02,

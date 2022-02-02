@@ -241,19 +241,23 @@ const index = (props) => {
               {loader ? (
                 <ActivityIndicator size="large" color="#fff" />
               ) : (
-                <Carousel
-                  layout={"default"}
-                  resizeMode={"cover"}
-                  loop={videoAction}
-                  autoplay={videoAction}
-                  autoplayInterval={3000}
-                  data={LandingData?.banners}
-                  sliderWidth={width}
-                  itemWidth={width}
-                  renderItem={_renderItem}
-                  style={styles.ShoppingBanner}
-                  onSnapToItem={index => setActiveSlide(index)}
-                />
+                // <Carousel
+                //   layout={"default"}
+                //   resizeMode={"cover"}
+                //   loop={videoAction}
+                //   autoplay={videoAction}
+                //   autoplayInterval={3000}
+
+                //   // ref={ref => this.carousel = ref}
+                //   data={LandingData?.banners}
+                //   sliderWidth={width}
+                //   itemWidth={width}
+                //   renderItem={_renderItem}
+                //   style={styles.ShoppingBanner}
+                //   onSnapToItem={index => setActiveSlide(index)}
+                // />
+                null
+              
               )}
             </View>
 

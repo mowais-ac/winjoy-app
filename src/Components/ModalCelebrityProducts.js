@@ -33,13 +33,12 @@ const { width, height } = Dimensions.get("window");
 const ModalCelebrityProducts = (props) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const data = useSelector(state => state.app.winExperienceProductData);
+  const experienceID = useSelector(state => state.app.experienceID);
   const [ModelState, setModelState] = useState({
     state: false,
     details: null,
   });
-
-
+ 
   useEffect(() => {
     if (props.ModalRef) props.ModalRef.current = HandleChange;
   });
@@ -48,9 +47,7 @@ const ModalCelebrityProducts = (props) => {
     setModelState({ state, details, ForceSuccess });
   };
   useEffect(() => {
-    console.log("exper", props?.experienceId);
-    dispatch(ExperienceProductData(props?.experienceId));
-    console.log("dataimage", data);
+    
   }, []);
 
 
@@ -91,17 +88,15 @@ const ModalCelebrityProducts = (props) => {
 
         <View style={styles.ModalBody}>
           <FlatList
-            data={data?.experience?.products}
+            data={props?.expData?.experience?.products}
 
             style={{ paddingLeft: 12, }}
             numColumns={2}
 
             renderItem={({ item }) =>
               <>
-                <TrendingCards
-
-
-                  onPress={() => navigation.navigate("ExperienceProductDetail",{experienceId:props?.experienceId,productId: item?.id})} 
+                <TrendingCards 
+                  onPress={() => navigation.navigate("ExperienceProductDetail",{experienceId:experienceID,productId: item?.id})} 
                   imageUrl={item.image}
                   title={item?.title}
                   price={item?.price}

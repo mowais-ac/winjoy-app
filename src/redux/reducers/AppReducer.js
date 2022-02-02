@@ -15,8 +15,13 @@ const INITIAL_STATE = {
   creatorId: '',
   galleryData: [],
   creatorPageData: [],
-  winExperienceProductData:[],
-  expProductDetail:[]
+  winExperienceProductData: [],
+  expProductDetail: [],
+  experienceID: '',
+  experienceDetail: [],
+  gameShowWinners: [],
+  luckyDrawWinners: [],
+  leaderBoardWinners: [],
 };
 
 
@@ -54,10 +59,20 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, galleryData: action.payload };
     case types.CREATOR_PAGE_DATA:
       return { ...state, creatorPageData: action.payload };
-      case types.WIN_EXPERIENCE_PRODUCT_DATA:
-        return { ...state, winExperienceProductData: action.payload };
-        case types.EXPERIENCE_PRODUCT_DETAILS:
-        return { ...state, expProductDetail: action.payload};
+    case types.WIN_EXPERIENCE_PRODUCT_DATA:
+      return { ...state, winExperienceProductData: action.payload };
+    case types.EXPERIENCE_PRODUCT_DETAILS:
+      return { ...state, expProductDetail: action.payload };
+    case types.EXPERIENCE_ID:
+      return { ...state, experienceID: action.experienceID };
+    case types.EXPERIENCE_DETAILS:
+      return { ...state, experienceDetail: action.payload };
+    case types.GAME_SHOW_WINNERS:
+      return { ...state, gameShowWinners: action.payload };
+    case types.LUCKY_DRAW_WINNERS:
+      return { ...state, luckyDrawWinners: action.payload };
+    case types.LEADER_BOARD_WINNERS:
+      return { ...state, leaderBoardWinners: action.payload };
     default:
       return state;
   }

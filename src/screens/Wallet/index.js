@@ -125,6 +125,8 @@ const index = ({ props, navigation }) => {
             zIndex: 1000,
              backgroundColor:headerValue!==0?'rgba(0,0,0,0.5)':null,
               width: '100%',
+              height:height*0.07,
+              paddingTop:5,
               borderBottomRightRadius:10,
               borderBottomLeftRadius:10
                }}

@@ -440,7 +440,7 @@ const styles = StyleSheet.create({
     lineHeight: height * 0.03,
   },
   ProfileBtnMargin: {
-    marginTop: height * 0.03,
+    marginTop: height * 0.1,
   },
   ProfileBtn: {
     borderWidth: 2,

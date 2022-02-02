@@ -11,23 +11,27 @@ const { StyleSheet } = require('react-native');
 
 export default StyleSheet.create({
   mainView: {
-    borderWidth:2,
+    borderWidth:1,
     borderColor:'#fff',
-    width:'95%',
-    borderRadius:30,
+    width:width*0.95,
+    height:height*0.063,
+    borderRadius:height*0.068,
     flexDirection:'row',
-    height:height*0.07,
     justifyContent:'space-evenly',
     alignItems:'center',
 
   },
-
+  textView:{
+    width:width*0.475,
+    height:height*0.063,
+    borderRadius:height*0.068,
+    justifyContent:'center'
+  },
   text: {
     color:'#ffffff',
     fontFamily:'Axiforma SemiBold',
-    borderWidth:3,
-    width:width*0.3,
     textAlign:'center',
     fontSize:RFValue(13)
-  }
+  },
+  
 });

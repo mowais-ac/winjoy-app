@@ -74,9 +74,11 @@ const index = ({ route, navigation }) => {
           <View style={{ marginTop: height * 0.1, justifyContent: 'space-around', alignItems: 'center', flexDirection: 'row', width: width * 1, }}>
             <View style={{ flexDirection: 'row', }}>
               <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: width * 0.11, marginTop: 10 }}>
-                <Text style={[styles.headerText, { fontFamily: 'Axiforma Regular', fontSize: RFValue(12), }]}>
+             <TouchableOpacity onPress={()=>navigation.goBack()}>
+             <Text style={[styles.headerText, { fontFamily: 'Axiforma Regular', fontSize: RFValue(12), }]}>
                   Back
                 </Text>
+             </TouchableOpacity>
                 <View style={{ backgroundColor: '#FFFFFF', width: 1, height: 22, }} />
               </View>
 

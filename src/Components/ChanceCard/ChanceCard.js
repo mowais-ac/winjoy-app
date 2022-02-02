@@ -8,16 +8,17 @@ import LoaderImage from "../LoaderImage";
 import Config from "react-native-config";
 import ProgressCircle from 'react-native-progress-circle';
 const { width, height } = Dimensions.get("window");
-function ChanceCard({ options, onPress, reset, result, optionDisable, data }) {
-  let progress = data.item.updated_stocks
-    ? (data.item?.updated_stocks / data.item.stock) * 100
+function ChanceCard({ onPress, updated_stocks, stock, title, description, image, price, prize_title }) {
+  console.log("stockk", stock);
+  let progress = updated_stocks
+    ? (updated_stocks / stock) * 100
     : 0;
- 
+
   return (
-    <TouchableOpacity
+    <View
       style={{
-        width: width - 25,
-        height: height * 0.56,
+        width: width * 0.94,
+        height: height * 0.53,
         backgroundColor: "#ffffff",
         marginLeft: 10,
         borderRadius: 10,
@@ -28,21 +29,23 @@ function ChanceCard({ options, onPress, reset, result, optionDisable, data }) {
         elevation: 3,
         marginBottom: 15,
       }}
-      onPress={onPress}
+
     >
       <View
         style={{
-          width: width - 25,
+          width: width * 0.95,
           height: height * 0.28,
           borderRadius: 10,
+          marginTop: height * 0.02
         }}>
         <LoaderImage
           source={{
-            uri: data.item.image,
+            uri: image,
           }}
           style={{
-            width: width - 25,
+            width: width * 0.95,
             height: height * 0.25,
+
           }}
 
           resizeMode="contain"
@@ -50,11 +53,11 @@ function ChanceCard({ options, onPress, reset, result, optionDisable, data }) {
       </View>
       <View style={{ borderBottomWidth: 1, borderBottomColor: "#e2ebed" }}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: width - 70, marginTop: 5, marginBottom: 5 }}>
-          <Text style={{ fontFamily: 'Axiforma-Regular', fontSize: 14 }}>
-            Buy outwear jacket
+          <Text style={{ fontFamily: 'Axiforma-Regular', fontSize: 14, color: 'grey' }}>
+            {title}
           </Text>
           <Text style={{ fontFamily: 'Axiforma-SemiBold', fontSize: 14, color: "#E7003F" }}>
-            AED 240
+            {price}
           </Text>
         </View>
       </View>
@@ -64,7 +67,7 @@ function ChanceCard({ options, onPress, reset, result, optionDisable, data }) {
             Get a chance to win
           </Text>
           <Text style={{ fontFamily: 'Axiforma-Regular', fontSize: 14, color: "#000000" }}>
-          {data.item.luckydraw.gift_title}
+            {prize_title}
           </Text>
         </View>
         <View>
@@ -78,7 +81,7 @@ function ChanceCard({ options, onPress, reset, result, optionDisable, data }) {
           >
             <View style={{ justifyContent: 'center', alignItems: 'center', }}>
               <Text style={{ fontFamily: 'Axiforma-SemiBold', fontSize: 12, color: "#E7003F", lineHeight: 12, }}>
-                {data.item.updated_stocks || 0}
+                {updated_stocks || 0}
               </Text>
               <Text style={{ fontFamily: 'Axiforma-SemiBold', fontSize: 12, color: "#E7003F", lineHeight: 12 }}>
                 sold
@@ -87,16 +90,16 @@ function ChanceCard({ options, onPress, reset, result, optionDisable, data }) {
                 out of
               </Text>
               <Text style={{ fontFamily: 'Axiforma-SemiBold', fontSize: 12, color: "#E7003F", lineHeight: 14 }}>
-                {data.item.stock}
+                {stock}
               </Text>
             </View>
           </ProgressCircle>
         </View>
 
       </View>
-      <View style={{ flexDirection: 'row', width: width - 90, justifyContent: 'space-around',marginTop:5 }}>
+      <View style={{ flexDirection: 'row', width: width - 90, justifyContent: 'space-around', marginTop: 5 }}>
         <TouchableOpacity
-          //onPress={() => {}}
+          onPress={onPress}
           style={{
             justifyContent: 'center',
             alignItems: 'center'
@@ -121,7 +124,7 @@ function ChanceCard({ options, onPress, reset, result, optionDisable, data }) {
           </View>
         </TouchableOpacity>
         <TouchableOpacity
-          //onPress={() => {}}
+          onPress={onPress}
           style={{
             justifyContent: 'center',
             alignItems: 'center'
@@ -146,39 +149,16 @@ function ChanceCard({ options, onPress, reset, result, optionDisable, data }) {
         </TouchableOpacity>
       </View>
       <Text style={{
-         fontFamily: 'Axiforma-Light',
-          fontSize: 13,
-           color: "#627482",
-           textAlign:'center',
-           marginTop:5 ,
-           width: width - 50,
-         }}>
-        Max draw date 300 April 2021 or when the campaign
-        is sold out, whichever is earliest
+        fontFamily: 'Axiforma-Light',
+        fontSize: 13,
+        color: "#627482",
+        textAlign: 'center',
+        marginTop: 5,
+        width: width - 50,
+      }}>
+        {description}
       </Text>
-      {/* <Label notAlign primary font={16} dark style={{ color: "#000000" }}>
-        Get a chance to
-        <Label notAlign primary font={16} bold style={{ color: "#E7003F" }}>
-          {" "}
-          WIN
-        </Label>
-      </Label>
-      <Label notAlign primary font={16} dark style={{ color: "#000000" }}>
-        {data.item.luckydraw.gift_title}
-      </Label> */}
-      {/* <View style={styles.containerprogressBar}>
-        <LinearGradient
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 0 }}
-          colors={["#E7003F", "#420E92"]}
-          style={[styles.LinerGradientProgrees, { width: `${progress}%` }]}
-        />
-        <View style={styles.GreybarWidth} />
-      </View>
-      <Label primary font={11} dark style={{ color: "#000000", top: 9 }}>
-        {data.item.updated_stocks || 0} sold out of {data.item.stock}
-      </Label> */}
-    </TouchableOpacity>
+    </View>
   );
 }
 
