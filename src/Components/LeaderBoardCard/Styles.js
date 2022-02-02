@@ -15,8 +15,8 @@ export default StyleSheet.create({
     marginTop:20,
     flexDirection:'row',
     justifyContent:'space-between',
-    paddingLeft:15,
-    paddingRight:15,
+    paddingLeft:5,
+    paddingRight:30,
   },
   avatarView: {
     //position: 'absolute',
@@ -39,10 +39,19 @@ export default StyleSheet.create({
   },
   text:{
     fontFamily: "Axiforma Regular",
-    color:'#ffffff'
+    color:'#ffffff',
+    fontSize:10,
+    marginRight:60,
+    paddingLeft:4
+  
   },
   text2:{
     fontFamily: "Axiforma Regular",
-    color: "#FFFF00"
+    color: "#FFFF00",
+    fontSize:10,
+    marginLeft:30,
+   paddingRight:60
+    
+
   }
 });

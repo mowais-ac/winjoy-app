@@ -195,7 +195,7 @@ const UpComming = ({ props, navigation }) => {
         style={styles.mainView}
       >
 
-        <Text style={styles.heading}>
+        <Text style={[styles.heading,{marginTop:height*0.057}]}>
           Daily Challenge & Win
         </Text>
         <Label primary font={16} bold dark style={{ color: "#ffff", lineHeight: 27 }}>
@@ -243,9 +243,8 @@ const UpComming = ({ props, navigation }) => {
 
 const styles = StyleSheet.create({
   mainView: {
-    height: heightPercentageToDP('50'),
+    height: heightPercentageToDP(height*0.108),
     width: width,
-
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
     borderTopLeftRadius: 0,
@@ -260,7 +259,7 @@ const styles = StyleSheet.create({
     borderRadius: 20
   },
   btnView: {
-    marginTop: 10,
+    marginTop: 8.5,
     backgroundColor: '#ffffff',
     width: width - 200,
     height: heightConverter(60),
@@ -270,7 +269,7 @@ const styles = StyleSheet.create({
   heading: {
     color: "#ffff",
     fontFamily: "Axiforma-Regular",
-    fontSize: 35,
+    fontSize: 28,
     width: widthConverter(210),
     textAlign: 'center',
     lineHeight: heightConverter(40),

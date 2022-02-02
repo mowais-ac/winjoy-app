@@ -263,7 +263,7 @@ const index = (props) => {
           View All Prizes
         </Label>
         </TouchableOpacity>
-        <View style={{ marginBottom: height * 0.01 }} />
+        <View style={{ marginBottom: height * 0.008 }} />
       </LinearGradient>
       <HomeBottomList data = {winnerData}/>
       <View style={{ height: 20 }} />
@@ -274,12 +274,12 @@ const index = (props) => {
 const styles = StyleSheet.create({
   ShoppingBanner: {
     width: "100%",
-    height: height * 0.3,
+    height: height * 0.28,
     alignSelf: "center",
   },
   bgImageUpperView: {
     width: width * 1.01,
-    height: height * 0.3,
+    height: height * 0.31,
     backgroundColor: "rgba(231,0,63,0.15)",
     justifyContent: "flex-end",
     paddingLeft: 16,
@@ -294,7 +294,7 @@ const styles = StyleSheet.create({
   },
   GreybarWidth: {
     width: widthConverter(120),
-    height: 9,
+    height: 8,
     zIndex: -1,
     position: "absolute",
     backgroundColor: "#EADFE3",
@@ -310,7 +310,7 @@ const styles = StyleSheet.create({
     marginLeft: 2,
   },
   mainView: {
-    height: heightPercentageToDP("70"),
+    height: heightPercentageToDP(height*0.113),
     width: width,
 
     borderBottomLeftRadius: 20,

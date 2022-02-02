@@ -39,7 +39,7 @@ export default StyleSheet.create({
   },
   Margin: {
     height: height * 0.065,
-    width: width * 0.36,
+    width: width * 0.6,
     backgroundColor: "#fcd9e2",
     borderRadius:10
   },

@@ -4,26 +4,27 @@ import {
   heightConverter,
   widthConverter
 } from '../Helpers/Responsive';
+import { Dimensions } from "react-native"
 import { RFValue } from 'react-native-responsive-fontsize';
-
+const { width, height } = Dimensions.get("window");
 const { StyleSheet } = require('react-native');
 
 export default StyleSheet.create({
   mainView: {
     alignItems: 'center',
-  //  backgroundColor: '#f05b31',
+    //backgroundColor: '#f05b31',
     borderRadius: widthConverter(10),
-    height: heightPercentageToDP("22%"),
-    width: widthPercentageToDP("35%"),
+    height: heightPercentageToDP("20"),
+    width: widthPercentageToDP("33.5"),
     flexDirection: 'row',
     justifyContent: 'flex-end',
-    marginRight:10
- //   paddingRight: widthConverter(20),
+    marginRight: 8.5
+    //paddingRight: widthConverter(20),
   },
   textView: {
     alignItems: 'center',
-    marginLeft:15,
-    marginRight:15,
+    marginLeft: 15,
+    marginRight: 15,
   },
   commingSoonTxt: {
     fontFamily: "Axiforma-SemiBold",
@@ -31,11 +32,7 @@ export default StyleSheet.create({
     color: "#fff",
     lineHeight: heightConverter(30),
     width: widthPercentageToDP("40%"),
-    textAlign:'left',
- 
-
-
-
+    textAlign: 'left',
   },
 
   circularView: {
@@ -49,9 +46,10 @@ export default StyleSheet.create({
     position: 'absolute',
     bottom: heightConverter(55),
     right: 10,
-    bottom: 36
+    bottom: 36,
   },
   imageView: {
-    justifyContent: 'center'
+    justifyContent: 'center',
+
   },
 });

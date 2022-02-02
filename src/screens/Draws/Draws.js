@@ -94,7 +94,7 @@ const Draws = (props) => {
 const styles = StyleSheet.create({
   ShoppingBanner: {
     width: width * 1.01,
-    height: height * 0.245,
+    height: height * 0.345,
     marginTop: height * 0.015,
     resizeMode: "stretch",
     alignSelf: "center",

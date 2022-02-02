@@ -22,6 +22,7 @@ import axios from "axios";
 import dayjs from "dayjs"
 import socketIO from "socket.io-client";
 import Header from "../../Components/Header";
+import CountDown from 'react-native-countdown-component';
 const MYServer = "https://node-winjoyserver-deploy.herokuapp.com/";
 const index = ({ props, navigation }) => {
   const socket = socketIO(MYServer);
@@ -106,6 +107,7 @@ const index = ({ props, navigation }) => {
     });
 
   }
+
   const LiveStream = async () => {
     const Token = await EncryptedStorage.getItem("Token");
     const requestOptions = {
@@ -185,26 +187,26 @@ const index = ({ props, navigation }) => {
     });
 
   }
-
+const sec=new Date().getTime() / 1000;
 
   return (
     <ScrollView
       style={{ backgroundColor: "#ffffff" }}
     >
-       <Header style={{ top: 5, position: 'absolute', zIndex: 1000,left:0 }} />
+      <Header style={{ top: 5, position: 'absolute', zIndex: 1000, left: 0 }} />
       <LinearGradient
         colors={["#420E92", "#E7003F"]}
         style={styles.mainView}
       >
-       
-        <Text style={[styles.heading,{marginTop:40}]}>
+
+        <Text style={[styles.heading, { marginTop: height * 0.057 }]}>
           Daily Challenge & Win
         </Text>
-        <Label primary font={16} bold dark style={{ color: "#ffff", lineHeight: 27 }}>
-          Answer 12 simple questions and <Label primary font={16} bold dark style={{ color: "yellow", }}>
+        <Label primary font={15} bold dark style={{ color: "#ffff", lineHeight: 22 }}>
+          Answer 10 simple questions and <Label primary font={15} bold dark style={{ color: "yellow", }}>
             WIN
           </Label>
-          <Label primary font={20} bold dark style={{ color: "#ffff", }}>
+          <Label primary font={15} bold dark style={{ color: "#ffff", }}>
             {" "}amazing prizes
           </Label>
         </Label>
@@ -226,17 +228,90 @@ const index = ({ props, navigation }) => {
         <LinearGradient
           colors={["#FFFF13", "#A4FF00"]}
           style={styles.newGameView}
-          start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
-        >
-          <Label primary font={16} bold dark style={{ color: "#420E92", }}>
-            NEXT GAME
-          </Label>
-          <Label primary font={16} dark style={{ color: "#420E92", }}>
+          start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}>
+        
+          
+          {/* <Label primary font={16} dark style={{ color: "#420E92", }}>
             {dayjs(livegameData?.LivegameShow?.start_date).format('DD-MMMM-YYYY hh:mm a')}
-
+          </Label> */}
+         
+          
+          
+         <View style={{margin:12}}> 
+         <Label primary font={16} bold dark style={{ color: "#420E92", }}>
+          NEXT GAME
           </Label>
+          <CountDown
+        size={13}
+        until={sec}
+        onFinish={() => alert('won')}
+        digitStyle={{backgroundColor: 'white'}}
+        digitTxtStyle={{color: 'black'}}
+        timeLabelStyle={{color: 'red', fontWeight: 'bold'}}
+        separatorStyle={{color: 'black'}}
+        timeToShow={['D','H', 'M', 'S']}
+        timeLabels={{d: 'Days', h: 'Hours', m: 'Minutes', s: 'Seconds'}}
+        showSeparator
+      />
+          </View>
+
+       
         </LinearGradient>
       </LinearGradient>
+      <View style={styles.howitWorksbutton}>
+            <TouchableOpacity style={styles.howitWorksbuttonInner} >
+              <View><Image
+                style={{ width: 35, height: 35, }}
+                source={require('../../assets/play_icon.png')}
+              /></View>
+              <Text allowFontScaling={false} style={styles.howItWorks}>How It Works</Text>
+            </TouchableOpacity>
+          </View>
+
+      <LinearGradient
+        colors={["#fad7e8", "#c6dfe8"]}
+        // style={styles.newGameView}
+        start={{ x: 0, y: 1 }} end={{ x: 1, y: 0 }}
+      >
+         
+        <View
+          style={{
+            width: width * 0.990,
+            height: height * 0.13,
+            marginLeft: -1,
+            padding: 10,
+            top: height * 0.0009,
+            left: 2,
+            justifyContent: "center",
+            alignItems: "center",
+            marginBottom: height * 0.01,
+          }}>
+
+ 
+     
+
+
+          <View style={{ marginLeft: 1 }}>
+
+            <Label notAlign primary font={15} bold2 style={{ color: "#E7003F", paddingBottom: 8 }}>
+              Remaining lifes
+            </Label>
+            <Label notAlign primary font={10} dark style={{ color: "#000000" }}>
+              Stay in the game even with the wrong answer!
+            </Label>
+            <View style={styles.overlay}>
+              <Image
+                source={require('../../assets/heart-96.png')}
+                style={styles.overlayHeart} />
+              <Text style={{ position: 'absolute', color: "red" }}>15</Text>
+            </View>
+            {/* <Image style={{width:50,height:50}}
+  source={require("../../assets/white.png")}/> */}
+          </View>
+    
+        </View>
+      </LinearGradient>
+
       <HomeBottomList data={winnerData} />
       <View style={{ marginBottom: height * 0.05 }} />
     </ScrollView>
@@ -245,9 +320,8 @@ const index = ({ props, navigation }) => {
 
 const styles = StyleSheet.create({
   mainView: {
-    height: heightPercentageToDP('50'),
+    height: heightPercentageToDP(height * 0.108),
     width: width,
-
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
     borderTopLeftRadius: 0,
@@ -272,12 +346,60 @@ const styles = StyleSheet.create({
   heading: {
     color: "#ffff",
     fontFamily: "Axiforma-Regular",
-    fontSize: 35,
+    fontSize: 28,
     width: widthConverter(210),
     textAlign: 'center',
     lineHeight: heightConverter(40),
     marginTop: heightConverter(30)
-  }
+  },
+  overlay: {
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    width: width / 0.62,
+    height: height * 0.09
+  },
+  overlayHeart: {
+    tintColor: '#fff',
+  },
+  howitWorksbutton: {
+    width: '100%',
+    flex: 1,
+    padding: 10,
+  },
+  howitWorksbuttonInner: {
+    backgroundColor: '#420e92',
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 10,
+    borderRadius: 100,
+  },
+  howItWorks: {
+    color: '#ffffff',
+    fontSize: 15,
+    marginLeft: 10,
+  },
+  Section: {
+    marginTop: height * 0.03,
+    height: height * 0.168,
+    borderRadius: 3,
+
+    
+  },
+  box_no2:{
+    width: width * 0.109,
+    height:height * 0.062,
+    flexDirection:"row",
+    justifyContent:"center",
+    margin:height * 0.004,
+    
+  },
 });
 
 

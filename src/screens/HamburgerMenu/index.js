@@ -115,7 +115,7 @@ const index = ({ props, navigation }) => {
     <ScrollView>
       <LinearGradient colors={["#420E92", "#E7003F"]}>
         <View style={{ height: 20 }} />
-        <Header back={true} height={20} />
+        <Header back={true} height={25} />
         <View style={styles.aView}>
           <View style={styles.bView}>
             <View style={styles.topView}>
@@ -315,7 +315,7 @@ const index = ({ props, navigation }) => {
                   color: "#ffff00",
                   height: heightPercentageToDP("5%"),
                   width: "93%",
-                  fontSize: 22,
+                  fontSize: 16,
                 },
               ]}
             >
@@ -355,7 +355,7 @@ const index = ({ props, navigation }) => {
                       });
                     }}
                     containerStyle={{
-                      width: width * 0.25,
+                      width: width * 0.3,
                     }}
                     zIndex={2000}
                     textStyle={{
@@ -394,7 +394,7 @@ const index = ({ props, navigation }) => {
 
                         color: "#ffffff",
                         //height: heightPercentageToDP("5%"),
-                        width: width * 0.2,
+                        width: width * 0.5,
 
                         backgroundColor: null,
                         borderWidth: 0,
@@ -444,7 +444,7 @@ const index = ({ props, navigation }) => {
                     setItems={setItems2}
                     zIndex={1000}
                     containerStyle={{
-                      width: width * 0.25,
+                      width: width * 0.3,
                     }}
 
                     textStyle={{
@@ -480,10 +480,10 @@ const index = ({ props, navigation }) => {
 
                       styles.text,
                       {
-
+                      
                         color: "#ffffff",
                         //height: heightPercentageToDP("5%"),
-                        width: width * 0.2,
+                        width: width * 0.5,
 
                         backgroundColor: null,
                         borderWidth: 0,
@@ -514,7 +514,7 @@ const index = ({ props, navigation }) => {
                   color: "#ffff00",
                   height: heightPercentageToDP("5%"),
                   width: "93%",
-                  fontSize: 22,
+                  fontSize: 17,
                 },
               ]}
             >

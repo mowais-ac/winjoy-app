@@ -70,7 +70,7 @@ function ClosingSoon({ item }) {
           </View>
         )}
 
-        <View style={{ marginLeft: 20,alignContent:"center",justifyContent:"center" }}>
+        <View style={{ marginLeft:width*0.06,alignContent:"center",justifyContent:"center" }}>
           <Label notAlign primary font={12} bold style={{ color: "#E7003F" }}>
             Congratulations
           </Label>
@@ -118,7 +118,7 @@ const HomeBottomList = (props) => {
       </Label>
       <FlatList
         horizontal={true}
-        style={{ marginLeft: 1, minHeight: 50 }}
+        style={{ marginLeft:1, minHeight: 50 }}
         contentContainerStyle={{
           alignSelf: "flex-start",
           paddingRight: width * 0.03,

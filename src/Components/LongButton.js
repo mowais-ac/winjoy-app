@@ -118,11 +118,11 @@ const LongButton = React.forwardRef((props, ref) => {
   const GetData = () => {
     return (
       <>
-        <Text style={styles.IconStyle}>
+        <Text style={styles.IconStyle} allowFontScaling={false}>
           {Icon == "google" && <Icons.Google />}
         </Text>
         {!act.act ? (
-          <Text style={TextStyle}>{text}</Text>
+          <Text style={TextStyle} allowFontScaling={false}>{text}</Text>
         ) : (
           <ActivityIndicator size="large" color={Colors[act.col]} />
         )}
@@ -139,7 +139,7 @@ const LongButton = React.forwardRef((props, ref) => {
           style={[styles.Button, styles.border, imgstyle]}
        //   imageStyle={styles.border}
         >
-          {GetData()}
+        {GetData()}
         </View>
       ) : (
         GetData()

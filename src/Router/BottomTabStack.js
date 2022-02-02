@@ -25,7 +25,7 @@ export default function index() {
         style: { height: height * 0.08 },
         keyboardHidesTabBar: true,
       }}
-
+      
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           return (
@@ -39,10 +39,7 @@ export default function index() {
     >
       <Tab.Screen name={strings("bottom_tabs.home")} component={HomeStack} />
       <Tab.Screen name={strings("bottom_tabs.products")} component={ProductStack} />
-      <Tab.Screen
-        name={strings("bottom_tabs.winners")}
-        component={Winners}
-      />
+      <Tab.Screen name={strings("bottom_tabs.winners")} component={Winners}/>
       <Tab.Screen name={strings("bottom_tabs.wallet")} component={Wallet} />
       <Tab.Screen name={strings("bottom_tabs.draws")} component={Draws} />
 
@@ -50,7 +47,11 @@ export default function index() {
   );
 }
 const styles = StyleSheet.create({
-  iconView: { borderRadius: 30, width: width * 0.1, height: height * 0.05, justifyContent: 'center', alignItems: 'center' }
-
+  iconView: { 
+    borderRadius: 30, 
+  width: width * 0.15,
+   height: height * 0.05,
+   justifyContent: 'center',
+    alignItems: 'center' }
 
 });

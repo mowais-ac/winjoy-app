@@ -46,7 +46,7 @@
    
 
   "products":{
-    "do_not_miss_chance":"Don’t Miss a chace to",
+    "do_not_miss_chance":"Don’t Miss a chance to",
     "closing_soon":"Closing Soon",
     "all":"ALL",
     "buy_now":"Buy Now"
@@ -66,9 +66,9 @@
   },
   "bottom_tabs":{
     "home":"Home",
-    "products":"PRODUCTS",
-    "winners":"WINNERS",
-    "draws":"DRAWS",
-    "wallet":"WALLET"
+    "products":"Products",
+    "winners":"Winners",
+    "draws":"Draws",
+    "wallet":"Wallet"
   }
 }

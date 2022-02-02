@@ -79,12 +79,10 @@ const index = ({ route, navigation }) => {
                 <FanJoyCard
                   onPress={() => {
                     onPressCreator(item?.id)
-
                   }}
                   name={item?.first_name + " " + item?.first_name}
                   imageUrl={item?.profile_image}
                   fans={item.fans}
-
                   style={{ width: 150, marginRight: 20, height: 180 }}
                 />
               }
@@ -177,14 +175,13 @@ const index = ({ route, navigation }) => {
               horizontal={true}
               style={{ paddingLeft: 12 }}
               ItemSeparatorComponent={() => {
-
-                return (<View style={{ width: width * 0.03, }} />);
+              return (<View style={{ width: width * 0.03, }} />);
               }}
 
               renderItem={({ item }) =>
                 <WinExperienceCard
                   onPress={() => {
-                    experienceId.current=item?.id;
+                    // experienceId.current=item?.id;
                     celebrityModalState.current(true)
                   }}
                   short_desc={item?.short_desc}

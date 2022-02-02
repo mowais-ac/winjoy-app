@@ -228,16 +228,10 @@ const PreviousDraws = (props) => {
           data={productList}
           renderItem={({ item }) => (
             <TouchableOpacity
-              onPress={() =>
-                navigation.navigate("SimpeStackScreen",{screen:"ProductDetail",params:item})
-              }
-            >
+              onPress={() =>navigation.navigate("SimpeStackScreen",{screen:"ProductDetail",params:item})}>
               <ClosingSoon props={props} index={item.index} item={item} />
-            </TouchableOpacity>
-          )}
-          keyExtractor={(item) => item.id}
-          //   ListEmptyComponent={this.RenderEmptyContainerOnGoing()}
-        />
+            </TouchableOpacity>)}
+          keyExtractor={(item) => item.id} />
         <View
           style={{
             height: 1,
@@ -257,12 +251,9 @@ const PreviousDraws = (props) => {
             marginLeft: 10,
             marginTop: 10,
             marginBottom: 10,
-          }}
-        >
-          View All Prizes
-        </Label>
+          }}>View All Prizes</Label>
         </TouchableOpacity>
-        <View style={{ marginBottom: height * 0.01 }} />
+        <View style={{ marginBottom: height * 0.0081 }} />
       </LinearGradient>
       <HomeBottomList data = {winnerData}/>
       <View style={{ height: 20 }} />
@@ -273,7 +264,7 @@ const PreviousDraws = (props) => {
 const styles = StyleSheet.create({
   ShoppingBanner: {
     width: "100%",
-    height: height * 0.3,
+    height: height * 0.26,
     marginTop: height * 0.015,
     alignSelf: "center",
   },
@@ -310,7 +301,7 @@ const styles = StyleSheet.create({
     marginLeft: 2,
   },
   mainView: {
-    height: heightPercentageToDP("70"),
+    height: heightPercentageToDP(height*0.108),
     width: width,
 
     borderBottomLeftRadius: 20,

@@ -30,17 +30,12 @@ export default StyleSheet.create({
   },
   commingSoonTxt: {
     fontFamily: "Axiforma-SemiBold",
-    fontSize: 26,
+    fontSize: 15.5,
     color: "#fff",
-    lineHeight: heightConverter(30),
+    lineHeight: heightConverter(height*0.04),
     width: widthPercentageToDP("60%"),
     textAlign:'left',
- 
-
-
-
   },
-
   circularView: {
     alignItems: 'center',
     justifyContent: 'center',

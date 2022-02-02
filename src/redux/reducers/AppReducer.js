@@ -4,7 +4,6 @@ import types from '../types';
 const INITIAL_STATE = {
   lastGameData: {},
   userData: [],
-
   name: '',
   age: 0,
   walletData: [],
@@ -30,8 +29,7 @@ export default (state = INITIAL_STATE, action) => {
       };
     case types.USER_DATA:
       return {
-        ...state,
-        userData: action.userData,
+        ...state,userData: action.userData
       };
 
     case types.GET_WALLET_DATA:
@@ -59,7 +57,7 @@ export default (state = INITIAL_STATE, action) => {
       case types.WIN_EXPERIENCE_PRODUCT_DATA:
         return { ...state, winExperienceProductData: action.payload };
         case types.EXPERIENCE_PRODUCT_DETAILS:
-        return { ...state, expProductDetail: action.payload };
+        return { ...state, expProductDetail: action.payload};
     default:
       return state;
   }

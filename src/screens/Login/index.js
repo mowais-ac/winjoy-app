@@ -42,9 +42,9 @@ const index = ({ navigation }) => {
   const ButtonRef = useRef();
   const ModalState = useRef();
 
-  useEffect(() => {
+  // useEffect(() => {
 
-  }, []);
+  // }, []);
   const HandleLogin = async () => {
     console.log("Config.API_UR", Config.API_URL);
     if (

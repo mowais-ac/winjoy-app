@@ -16,29 +16,25 @@ export default StyleSheet.create({
     alignItems: 'center', 
     backgroundColor: '#f05b31',
     borderRadius: widthConverter(10),
-    height:145, 
+    height:146, 
     width: widthPercentageToDP("95%"),
     flexDirection: 'row',
     justifyContent: 'flex-end',
-
+    margin:9
  //   paddingRight: widthConverter(20),
   },
   textView: {
-    alignItems: 'center',
-    marginLeft:15,
-    marginRight:15,
+    alignItems:"center",
+    marginRight:40,
+    marginleft:20
   },
   commingSoonTxt: {
     fontFamily: "Axiforma-SemiBold",
-    fontSize: 26,
+    fontSize: 18,
     color: "#fff",
-    lineHeight: heightConverter(30),
+    lineHeight: heightConverter(31),
     width: widthPercentageToDP("40%"),
     textAlign:'left',
- 
-
-
-
   },
 
   circularView: {
@@ -59,7 +55,7 @@ export default StyleSheet.create({
   },
   Margin: {
     height: height * 0.06,
-    width: width * 0.4,
+    width: width * 0.31,
     backgroundColor: "#ffffff",
   },
 });

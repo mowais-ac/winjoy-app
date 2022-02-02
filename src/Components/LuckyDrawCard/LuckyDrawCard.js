@@ -14,12 +14,11 @@ function LuckyDrawCard({ style, onPress, finish, time, startIn }) {
           source={require('../../assets/imgs/luckydraw-results.png')}
         />
         <View style={styles.textView}>
-        <Text
-            style={[styles.commingSoonTxt, { color: '#D9FE51' }]} >
+        <Text style={[styles.commingSoonTxt, { color: '#D9FE51' }]} >
            LUCKY DRAW
           </Text>
-            <Text
-            style={[styles.commingSoonTxt,{fontFamily: "Axiforma-bold",}]}
+          <Text
+          style={[styles.commingSoonTxt,{fontFamily: "Axiforma-bold",}]}
           >
             RESULTS
           </Text>

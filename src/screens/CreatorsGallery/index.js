@@ -81,10 +81,7 @@ const index = ({ route, navigation }) => {
               </View>
 
               <View style={{ flexDirection: 'row', marginLeft: 10, width: width * 0.5, }}>
-
-
-
-                <Avatar
+              <Avatar
                   rounded
                   size={50}
 
@@ -144,7 +141,7 @@ const index = ({ route, navigation }) => {
         </LinearGradient>
         <GalleryViewModal ModalRef={ModalState} details
           index={index}
-          imageUrl={galleryData?.gallery[index]?.thumbnail}
+          // imageUrl={galleryData?.gallery[index]?.thumbnail}
           id={1}
           onPressNext={() => onPressNext()}
           onPressPrevious={() => onPressPrevious()}

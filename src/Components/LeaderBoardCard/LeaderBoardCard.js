@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { View, Text, TouchableWithoutFeedback, FlatList, TouchableOpacity } from "react-native";
+import { View, Text, TouchableWithoutFeedback, FlatList, TouchableOpacity,Dimensions } from "react-native";
 import { Avatar } from "react-native-elements/dist/avatar/Avatar";
 import Label from "../Label";
 import ProfilePicture from "../ProfilePicture";
 import styles from "./Styles";
-
+const { width, height } = Dimensions.get("window");
 function LeaderBoardCard({ onPress, fullname, profile_image,ammount }) {
  
   return (

@@ -135,7 +135,7 @@ const index = ({ props, navigation }) => {
           setHeaderValue(e.nativeEvent.contentOffset.y) 
       }}
       >
-        <View style={{ flexDirection: 'row', width: widthConverter(420), marginLeft: 25, marginTop: height*0.07 }}>
+        <View style={{ flexDirection: 'row', width: widthConverter(420), marginLeft: 25, marginTop: height*0.058 }}>
           <View style={styles.avatarView}>
             <ProfilePicture
               picture={userData?.profile_image}
@@ -147,15 +147,14 @@ const index = ({ props, navigation }) => {
           </View>
 
           <View style={{ width: widthConverter(250), marginLeft: widthConverter(8), marginTop: 2 }}>
-            <Text style={{ color: "#FFFFFF", marginTop: 8, fontFamily: "Axiforma-Bold", fontSize: 15 }}>
+            <Text style={{ color: "#FFFFFF", marginTop: 8, fontFamily: "Axiforma-Bold", fontSize: 14 }}>
               {userData?.first_name?.charAt(0).toUpperCase() + userData?.first_name.slice(1)} {userData?.last_name?.charAt(0).toUpperCase() + userData?.last_name.slice(1)}
             </Text>
             <Text
-
-              style={{ color: "#FFFFFF", marginTop: 2, fontFamily: "Axiforma-Bold", fontSize: 12 }}
+                 style={{ color: "#FFFFFF", marginTop: 2, fontFamily: "Axiforma-Bold", fontSize: 10 }}
             >
               {userData?.designation || "Senior Product Analyst"}
-              <Text style={{ color: "#e2acc7", fontFamily: "Axiforma-Regular", fontSize: 12 }}>
+              <Text style={{ color: "#e2acc7", fontFamily: "Axiforma-Regular", fontSize: 10 }}>
                 {" "}
                 at{" "}
               </Text>
@@ -170,13 +169,13 @@ const index = ({ props, navigation }) => {
             yourBalance={walletData?.wallet?.your_balance === null ? 0 : walletData?.wallet?.your_balance}
             onPressWithdraw={() => ModalState.current(true)}
           />
-          <WalletLastPlayedCard
+          {/* <WalletLastPlayedCard
             onPress={() => navigation.navigate("LastGameWinner")}
             noOfQuestions={walletData?.wallet?.no_of_question === null ? 0 : walletData?.wallet?.no_of_question}
             wonPrize={walletData?.wallet?.won_prize === null ? 0 : walletData?.wallet?.won_prize}
 
-          /> 
-          <View
+          />  */}
+          {/* <View
             style={{
               width: width - 25,
               height: heightConverter(500),
@@ -256,7 +255,7 @@ const index = ({ props, navigation }) => {
                 }}
               />
             </View>
-          </View>
+          </View> */}
         </View>
       </ScrollView>
       <WithDrawModal ModalRef={ModalState}

@@ -9,13 +9,13 @@ const TabButton = (props) => {
     switch (name) {
       case "Home":
         return Images.Home;
-      case "PRODUCTS":
+      case "Products":
         return Images.Product;
-      case "DRAWS":
+      case "Draws":
         return Images.Draws;
-      case "WALLET":
+      case "Wallet":
         return Images.Wallet;
-      case "WINNERS":
+      case "Winners":
         return Images.Leaderboard;
     }
   };
@@ -23,8 +23,8 @@ const TabButton = (props) => {
     <Image
       source={GetImage(props.name)}
       style={[{
-        width: width * 0.06,
-        height: height * 0.04,
+        width: width * 0.08,
+        height: height * 0.042,
         resizeMode: "contain",
       },
         // props.name === "Trophy" ? {

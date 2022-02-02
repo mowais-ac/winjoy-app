@@ -1,19 +1,19 @@
 import React from 'react';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 
-import {View, Text} from 'react-native';
+import {View, Text,Dimensions} from 'react-native';
 
 import {RFValue} from 'react-native-responsive-fontsize';
 import PreviousDraws from '../Screens/PreviousDraws';
 import UpComming from '../Screens/UpComming';
-
+const { width, height } = Dimensions.get("window");
 const Tab = createMaterialTopTabNavigator();
 
 function Tabs() {
   return (
     <View
       style={{
-        width:'100%',
+        width:width*0.99,
         flex: 1,
         paddingTop: 10,
         
@@ -27,23 +27,22 @@ function Tabs() {
                 justifyContent: 'flex-start',
                 alignItems: 'center',
                 height: 30,
-                
-                paddingLeft: 20,
+                width:152,
+                paddingLeft:24,
                 
               }}>
             
               <Text
-                style={{
-                  
+                style={{ 
                   fontFamily: 'Europa-Bold',
-                  fontSize: 14,
+                  fontSize: 10,
                   fontWeight: 'bold',
                   fontStyle: 'normal',
+                  alignItems: 'center',
                   letterSpacing: 0,
                   color: focused ? '#E7003F' : '#ffffff',
                   textTransform: 'uppercase',
-                  
-                }}>
+                  marginBottom:height*0.02}}>
                 {route.name}
               </Text>
             </View>
@@ -66,7 +65,8 @@ function Tabs() {
           },
          
           tabStyle: {
-            width: 170,
+            width: width*0.45,
+            height:height*0.06,
             justifyContent: 'center',
             alignItems: 'center',
             paddingVertical: 5,
@@ -75,7 +75,7 @@ function Tabs() {
             backgroundColor:'rgba(0,0,0,0)'
           },
           style: {
-            width: 360,
+            width: width*0.9,
             justifyContent: 'space-between',
             borderWidth: 1,
             borderColor:'#ffffff',
@@ -87,8 +87,8 @@ function Tabs() {
             
           },
           indicatorStyle: {
-            width: 187,
-            height: 48,
+            width: width*0.45,
+            height: height*0.06,
             borderRadius: 26.5,
             backgroundColor: '#ffffff',
             shadowColor: 'rgba(91, 102, 121, 0.15)',

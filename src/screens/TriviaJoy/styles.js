@@ -26,6 +26,7 @@ export default StyleSheet.create({
     flexDirection: 'row',
 
   },
+
   avatarView: {
     //position: 'absolute',
 

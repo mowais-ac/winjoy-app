@@ -9,7 +9,8 @@ import {
   ActivityIndicator,
   TouchableWithoutFeedback,
 } from "react-native";
-import Config from "react-native-config";
+import Config from 'react-native-config';
+import axios from "axios";
 
 import EncryptedStorage from "react-native-encrypted-storage";
 import { Colors } from "../Constants/Index";
@@ -25,7 +26,7 @@ const CountryModal = (props) => {
   const CloseModal = () => {
     setIsVisible(!IsVisible);
   };
-
+  
   useEffect(() => {
     let isActive = true;
     if (props.CountryRef) props.CountryRef.current = setIsVisible;
@@ -41,17 +42,26 @@ const CountryModal = (props) => {
             Authorization: `Bearer ${Token}`,
           },
         };
+        
+        // eslint-disable-next-line no-alert
+        // alert(Config.API_URL);
+        // console.log(`${Config.API_URL}/countries/list`);
+        
         await fetch(`${Config.API_URL}/countries/list`, requestOptions)
           .then(async (response) => response.json())
           .then(async (res) => {
             if (!isActive) return;
             setData(res.sort((a, b) => (a.name > b.name ? 1 : -1)));
+          }).catch((e) => {
+            console.log(e)
           });
       }
     };
+   
     check();
     return () => (isActive = false);
   });
+  
 
   const HandleTextChange = (t) => {
     if (!t || t === "") return setFiltered(null);

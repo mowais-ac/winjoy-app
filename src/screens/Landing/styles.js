@@ -17,9 +17,9 @@ export default StyleSheet.create({
     height: height * 0.3,
   },
   yellowBtn: {
-    marginTop: 7,
+    marginTop:1.2,
     width: widthPercentageToDP("95%"),
-    height: heightConverter(65),
+    height: heightConverter(height*0.11),
     justifyContent: 'space-between',
     paddingLeft: 8,
     alignItems: 'center',
@@ -78,10 +78,10 @@ export default StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 9,
-    height: 9,
+    height: 6,
   },
   GreybarWidth: {
-    width: widthConverter(120),
+    width: widthConverter(width*0.33),
     height: 9,
     zIndex: -1,
     position: "absolute",
@@ -94,7 +94,7 @@ export default StyleSheet.create({
     marginTop: 2,
     flexDirection: "row",
     alignItems: "center",
-    height: 3,
+    height:height*0.01,
     marginLeft: 2,
   },
   mainView: {
@@ -142,7 +142,7 @@ export default StyleSheet.create({
   },
   avatarBannerView: {
     width: "100%",
-    height: 160,
+    height:height*0.215,
     alignItems: 'center'
   },
   avatarBanner: {
@@ -150,15 +150,40 @@ export default StyleSheet.create({
     height: 130,
   },
   Margin: {
-    height: height * 0.035,
-    width: width * 0.3,
+    height: height * 0.045,
+    width:112,
     backgroundColor: "#ffffff",
   },
   wrap: {
-    width: width,
+    // width: width*0.6,
     height: height * 0.3,
     alignItems: 'center',
     justifyContent: 'center'
   },
-
+  Margin2: {
+    marginTop:height*0.011,
+    height: height * 0.078,
+    width: width * 0.96,
+    backgroundColor: "#ffffff",
+    right:18
+  },
+  howitWorksbutton: {
+    width: '100%',
+    flex: 1,
+    padding: 10,
+  },
+  howitWorksbuttonInner: {
+    backgroundColor: '#420e92',
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 10,
+    borderRadius: 100,
+  },
+  howItWorks: {
+    color: '#ffffff',
+    fontSize: 15,
+    marginLeft: 10,
+  }
 });

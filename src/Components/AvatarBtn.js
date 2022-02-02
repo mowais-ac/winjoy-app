@@ -6,7 +6,7 @@ import { Colors } from "../Constants/Index";
 import Label from "./Label";
 const { width, height } = Dimensions.get("window");
 const AvatarBtn = (props) => {
-  const { id, name, picture, style, fontm,size } = props;
+  const { id, name, picture, style, font,size } = props;
   return picture && picture !== null ? (
     <Avatar
       rounded
@@ -19,7 +19,7 @@ const AvatarBtn = (props) => {
       }}
     />
   ) : (
-    <View style={[styles.ProfileView, styles.ProfileBG, style]}>
+    <View style={[styles.ProfileView, styles.ProfileBG, styles.ProfilePicture]}>
       <Label adjustsFontSizeToFit={true} font={font || 18} bold style={styles.Text}>
         {name}
       </Label>
@@ -42,8 +42,9 @@ const styles = StyleSheet.create({
   ProfilePicture: {
     resizeMode: "contain",
     width: width * 0.14,
-    height: width * 0.14,
+    height: width * 0.145,
     borderRadius: 50,
+   
   },
   Text: {
     color: Colors.REDESH

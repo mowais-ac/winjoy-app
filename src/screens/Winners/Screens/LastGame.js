@@ -63,7 +63,7 @@ const LastGame = ({ props, navigation }) => {
 
         colors={["#5e064e", "#a1002d"]}
         style={{ alignItems: 'center', justifyContent: 'center', width: width, height: heightPercentageToDP("60%") }}>
-        <Label notAlign bold style={{ top: 5, color: "#FFFFFF", marginTop: 8, fontSize: 16 }}>
+        <Label notAlign bold style={{ top: 5, color: "#FFFFFF", marginTop: 8, fontSize: 13 }}>
           All Winners
         </Label>
         <FlatList

@@ -12,6 +12,8 @@ import {
   Text,
   Image
 } from "react-native";
+import GalleryViewModal from "../../Components/GalleryViewModal";
+import { TrendingCards } from "../../Components";
 import { connect, useDispatch, useSelector } from "react-redux";
 import { wait } from "../../Constants/Functions";
 import LoaderImage from "../../Components/LoaderImage";
@@ -31,7 +33,6 @@ import {
 } from "../../Components/Helpers/Responsive";
 import BackgroundRound from "../../Components/BackgroundRound";
 import Header from "../../Components/Header";
-
 import AvatarBtn from "../../Components/AvatarBtn";
 import { RFValue } from "react-native-responsive-fontsize";
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -42,22 +43,22 @@ import LongButton from "../../Components/LongButton";
 import { FanJoyCard, WjBackground } from "../../Components";
 import Carousel from 'react-native-snap-carousel';
 import Video from "react-native-video";
-import { getLandingScreen } from '../../redux/actions'; 
+import { getLandingScreen } from '../../redux/actions';
 import socketIO from "socket.io-client";
-import {useTranslation} from 'react-i18next';
+import { useTranslation } from 'react-i18next';
+import ModalCelebrityProducts1 from "../../Components/ModalCelebrityProducts1";
 const MYServer = "https://node-winjoyserver-deploy.herokuapp.com/";
+
 function ClosingSoon({ item }) {
   let progress = item.updated_stocks
     ? (item?.updated_stocks / item?.stock) * 100
     : 0;
 
-  // const ImgUrl = `${Config.PRODUCT_IMG}/${item.id}/${JSON.parse(item.image)[0]
-  //   }`;
-  return ( 
+  return (
     <View
       style={{
         width: width * 0.38,
-        height: heightConverter(190),
+        height: heightConverter(height * 0.43),
         backgroundColor: "#ffffff",
         marginLeft: 10,
         borderRadius: 10,
@@ -66,17 +67,16 @@ function ClosingSoon({ item }) {
     >
       <LoaderImage
         source={{
-         // uri: ImgUrl.replace("http://", "https://"),
-         uri:item?.image
+          // uri: ImgUrl.replace("http://", "https://"),
+          uri: item?.image
         }}
         style={{
           width: 120,
-          height: 90,
+          height: height * 0.15,
         }}
         resizeMode="contain"
       />
       <Label primary font={11} dark style={{ color: "#000000" }}>
-        Get a chance to
         <Label
           notAlign
           bold
@@ -89,12 +89,12 @@ function ClosingSoon({ item }) {
           WIN
         </Label>
       </Label>
-      <Label bold font={11} dark style={{ color: "#000000", width: "110%" }}>
-        {item.title}
-      </Label>
-      {/* <Label  bold font={11} dark style={{ color: "#000000", }}>
-      Edition
-      </Label> */}
+      <View style={{ height: height * 0.05 }}>
+        <Label bold font={10} dark style={{ color: "#000000", width: "120%" }}>
+          {item.title}
+        </Label>
+      </View>
+
       <View style={styles.containerprogressBar}>
         <LinearGradient
           start={{ x: 0, y: 0 }}
@@ -110,14 +110,9 @@ function ClosingSoon({ item }) {
     </View>
   );
 }
+
 const index = (props) => {
-  const {t, i18n} = useTranslation();
-  // const scrollY = new Animated.Value(0)
-  // const diffClamp = Animated.diffClamp(scrollY, 0, 45)
-  // const translateY = diffClamp.interpolate({
-  //   inputRange: [0, 45],
-  //   outputRange: [0, -45]
-  // })
+  const { t, i18n } = useTranslation();
   const [headerValue, setHeaderValue] = useState(0);
   const { Coins, navigation } = props;
   const [loader, setLoader] = useState(false);
@@ -134,6 +129,8 @@ const index = (props) => {
   const [videoAction, setVideoAction] = useState(true);
   const dispatch = useDispatch();
   const socket = socketIO(MYServer);
+  const ModalState = useRef()
+  const celebrityModalState = useRef();
   const onRefresh = React.useCallback(() => {
     // setBanners(null);
     setRefreshing(true);
@@ -144,33 +141,41 @@ const index = (props) => {
     initialLoad();
     wait(2000).then(() => setRefreshing(false));
   }, []);
+
+  const onPressvideo = () => {
+    return (celebrityModalState.current(true))
+  }
+
   const UpdateLandingDataOnce = () => {
     initialLoad();
     dispatch(getLandingScreen());
   };
   const initialLoad = () => {
-   
+
     var CurrentDate = dayjs().format("YYYY-MM-DDThh:mm:ss.000000Z");
     var duration = dayjs(LandingData?.gameshow?.start_date).diff(dayjs(CurrentDate), 'seconds');
     setTime(duration)
     setGameShowData(LandingData?.gameShow)
   }
+
   useFocusEffect(
     React.useCallback(() => {
       UpdateLandingDataOnce();
-      initialLoad();
-    }, [])
-  );
+      // initialLoad();
+    }, []));
+
   useEffect(() => {
     dispatch(getLandingScreen());
     setGameShowData(LandingData?.gameShow)
-  }, []);
+  },
+    []);
+
   function _renderItem({ item, index }) {
     //console.log("item.url",item.url);
     if (item.type === "image") {
       return (
         <View key={index}>
-          <Image source={{ uri:item.url }}
+          <Image source={{ uri: item.url }}
             resizeMode={"cover"}
             style={styles.ShoppingBanner}
           />
@@ -178,10 +183,14 @@ const index = (props) => {
       )
     } else {
       return (
-        <View key={index} style={{ backgroundColor: '#000000', borderBottomLeftRadius: 15, borderBottomRightRadius: 15 }}>
+        <View key={index} style={{
+          backgroundColor: '#000000',
+          borderBottomLeftRadius: 15,
+          borderBottomRightRadius: 15
+        }}>
           {item.url ? (
             <Video
-              source={{ uri:item.url }}  // Can be a URL or a local file.
+              source={{ uri: item.url }}  // Can be a URL or a local file.
               // ref={(ref) => { this.player = ref }}  // Store reference
               resizeMode={"cover"}
               paused={index !== activeSlide}
@@ -203,53 +212,41 @@ const index = (props) => {
       )
     }
   }
+  // const onPressWithdraw = ()=>{
+  //   ModalState.current(true)}
+
   return (
 
     <View>
-      {/* <Animated.View
-        style={{
-          transform: [
-            { translateY: translateY }
-          ],
-          elevation: 4,
-          zIndex: 100,
-        }}
-      > */}
-        <Header style={{
-           position: 'absolute',
-            zIndex: 1000,
-             backgroundColor:headerValue!==0?'rgba(0,0,0,0.5)':null,
-              width: '100%',
-              borderBottomRightRadius:10,
-              borderBottomLeftRadius:10
-               }} />
-      {/* </Animated.View> */}
+      <Header style={{
+        position: 'absolute',
+        zIndex: 1000,
+        backgroundColor: headerValue !== 0 ? 'rgba(0,0,0,0.5)' : null,
+        width: '100%',
+        borderBottomRightRadius: 10,
+        borderBottomLeftRadius: 10
+      }} />
       <ScrollView
-        onScroll={(e)=>{
-          setHeaderValue(e.nativeEvent.contentOffset.y) 
-      }}
+        onScroll={(e) => {
+          setHeaderValue(e.nativeEvent.contentOffset.y)
+        }}
         style={{ backgroundColor: "#f6f1f3" }}
         refreshControl={
           <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
-        }
-      >
+        }>
         <View style={{ width: '100%', alignItems: 'center', }}>
           <LinearGradient colors={["#5B0C86", "#E7003F"]} style={styles.mainView}>
-
 
             <View style={styles.wrap}>
               {loader ? (
                 <ActivityIndicator size="large" color="#fff" />
               ) : (
-               // null
                 <Carousel
                   layout={"default"}
                   resizeMode={"cover"}
                   loop={videoAction}
                   autoplay={videoAction}
                   autoplayInterval={3000}
-
-                  // ref={ref => this.carousel = ref}
                   data={LandingData?.banners}
                   sliderWidth={width}
                   itemWidth={width}
@@ -257,111 +254,97 @@ const index = (props) => {
                   style={styles.ShoppingBanner}
                   onSnapToItem={index => setActiveSlide(index)}
                 />
-              
               )}
-
             </View>
 
-
-
-            <View
-              style={styles.yellowBtn}
-            >
-
-              <View style={{ borderWidth: 2, borderColor: "#fff", borderRadius: 45 }}>
+            <View style={styles.yellowBtn}>
+              <View style={{ borderWidth: 2, borderColor: "#ffffff", borderRadius: 40 }}>
                 <AvatarBtn
                   picture={userData?.profile_image}
-                  // id={userInfo?.id}
-                  //  name={(name.slice(0, 1) + name.slice(0, 1))}
-                  size={50}
-                  font={28}
-
-                />
+                  size={height * 0.08}
+                  font={28} />
               </View>
 
               <TouchableOpacity onPress={() => navigation.navigate("WALLET")}>
                 <View style={styles.secondHeaderMiddleView}>
-                  <Text style={[styles.text, { color: '#fff', fontSize: RFValue(14) }]}>
+                  <Text allowFontScaling={false} style={[styles.text, { color: '#fff', fontSize: RFValue(12) }]}>
                     {userData?.first_name.charAt(0).toUpperCase() + userData?.first_name.slice(1)} {userData?.last_name.charAt(0).toUpperCase() + userData?.last_name.slice(1)}
                   </Text>
-                  <Text style={[styles.text, { color: '#fff', fontSize: RFValue(14) }]}>Your balance: <Text style={[styles.text, { color: '#ffff00', fontSize: RFValue(14) }]}>AED {userData.balance ? userData.balance : 0}</Text></Text>
+                  <Text allowFontScaling={false} style={[styles.text, { color: '#fff', fontSize: RFValue(12) }]}>Your balance: <Text allowFontScaling={false} style={[styles.text, { color: '#ffff00', fontSize: RFValue(14) }]}>AED {userData.balance ? userData.balance : 0}</Text></Text>
                 </View>
               </TouchableOpacity>
-              <Entypo name="chevron-thin-right" size={22} color="#fff" style={{ marginTop: 6.5, marginRight: 6 }} />
+              <Entypo name="chevron-thin-right" size={17} color="#fff" style={{ marginTop: 6.5, marginRight: 6 }} />
             </View>
-
           </LinearGradient>
 
+          <View style={styles.howitWorksbutton}>
+            <TouchableOpacity style={styles.howitWorksbuttonInner} onPress={onPressvideo}>
+              <View><Image
+                style={{ width: 35, height: 35, }}
+                source={require('../../assets/play_icon.png')}
+              /></View>
+              <Text allowFontScaling={false} style={styles.howItWorks}>How It Works</Text>
+            </TouchableOpacity>
+          </View>
 
-
+          <ModalCelebrityProducts1 ModalRef={celebrityModalState} details
+            onPressContinue={() => {
+              celebrityModalState.current(false)
+            }}/>
 
           <FlatList
             horizontal={true}
-            style={{ marginLeft: 1, minHeight: 50, width: '100%', }}
+            style={{ marginLeft: width * 0.01, width: '100%', }}
             contentContainerStyle={{
-
-              marginLeft: 10,
+              marginLeft: width * 0.02,
+              borderWidth: 2,
+              borderColor: '#00000',
               alignSelf: "flex-start",
               paddingRight: width * 0.04,
-
-
             }}
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}
             data={LandingData?.lowerBanner}
             renderItem={({ item }) => (
-
-              // <TouchableOpacity
-              //   onPress={() =>
-              //    // navigation.navigate("SimpeStackScreen", { screen: "ProductDetail", params: item })
-              //    alert("hii")
-              //   }
-              // >
               <TriviaNightCard
                 uri={item.url}
                 index={item.index}
                 item={item}
                 onPress={() => {
                   item.id === 1 ? (
-                    navigation.navigate("TriviaJoy") 
+                    navigation.navigate("TriviaJoy")
                   ) : item.id === 2 ? (
                     navigation.navigate("DealsJoy")
                   ) : (
-                  //  navigation.navigate("FanJoy")
-                  alert("Under Construction")
+                    //  navigation.navigate("FanJoy")
+                    alert("Under Construction")
                   )
-                }} />
-              // </TouchableOpacity>
-            )}
-            keyExtractor={(item) => item.id}
-          //   ListEmptyComponent={this.RenderEmptyContainerOnGoing()}
-          />
+                }} />)}
+            keyExtractor={(item) => item.id} />
+
           <HomeCard
-            //onPress={() => navigation.navigate("GameStack")} 
             onPress={() => navigation.navigate("GameStack", {
               screen: "Quiz",
               params: {
-                uri: LandingData?.gameShow?.live_stream?.key
+              uri: LandingData?.gameShow?.live_stream?.key
               }
             })}
-
-            //style={{ marginTop: 10, }}
             gameShowData={"hiii"}
-            time={time}
-          />
-          <View style={{ flexDirection: 'row', width: '90%', justifyContent: 'space-between', marginTop: 10, marginBottom: 10 }}>
-            <Text style={{ color: '#E7003F', fontSize: 16, fontFamily: "Axiforma Bold" }}>Shop to Win</Text>
+            time={time} />
 
+          <View style={{ flexDirection: 'row', width: '90%', justifyContent: 'space-between', marginTop: 10, marginBottom: 10 }}>
+            <Text allowFontScaling={false} style={{ color: '#E7003F', fontSize: 13, fontFamily: "Axiforma Bold" }}>Shop to Win</Text>
             <TouchableOpacity onPress={() => navigation.navigate("PRODUCTS", {
               screen: "PrizeList"
             })}>
-              <Text style={{ color: '#E7003F', fontSize: 16, fontFamily: "Axiforma Bold" }}>View all</Text>
+              <Text allowFontScaling={false} style={{ color: '#E7003F', fontSize: 13, fontFamily: "Axiforma Bold" }}>View all</Text>
             </TouchableOpacity>
-
           </View>
+
+
           <FlatList
             horizontal={true}
-            style={{ marginLeft: 1, minHeight: 50 }}
+            // style={{ marginLeft: 1, minHeight: 20 }}
             contentContainerStyle={{
               alignSelf: "flex-start",
               paddingRight: width * 0.04,
@@ -372,15 +355,12 @@ const index = (props) => {
             renderItem={({ item }) => (
               <TouchableOpacity
                 onPress={() =>
-                  navigation.navigate("PRODUCTS", { params: item })
-                }
-              >
+                  navigation.navigate("PRODUCTS", { params: item })}>
                 <ClosingSoon props={props} index={item.index} item={item} />
               </TouchableOpacity>
             )}
-            keyExtractor={(item) => item.id}
-          //   ListEmptyComponent={this.RenderEmptyContainerOnGoing()}
-          />
+            keyExtractor={(item) => item.id} />
+
           <View style={styles.avatarBannerView}>
             <Image
               style={styles.avatarBanner}
@@ -390,11 +370,11 @@ const index = (props) => {
             <LongButton
               style={[
                 styles.Margin,
-                { backgroundColor: "#ffffff", position: 'absolute', bottom: 48, right: 25, },
+                { flexdirection: "column", justifyContent: 'center', backgroundColor: "#ffffff", position: 'absolute', bottom: 46, right: 15, alignItems: "center" },
               ]}
               textstyle={{ color: "#000000", fontFamily: "Axiforma SemiBold", fontSize: 10 }}
               text="View Leaderboard"
-              font={10}
+              font={8}
               shadowless
               onPress={() => navigation.navigate("WINNERS", { screen: 'All Time' })}
             />
@@ -402,40 +382,39 @@ const index = (props) => {
           <LinearGradient
             start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
             colors={["#f8d7e8", "#c7dfe8"]}
-            style={{ width: '100%', justifyContent: 'center', paddingLeft: 20, paddingTop: 20, paddingBottom: 20 }}
+            style={{ width: '100%', justifyContent: 'center', paddingLeft: width * 0.03, paddingTop: height * 0.0090, paddingBottom: height * 0.02 }}
           >
-            <View style={{ width: "95%", flexDirection: 'row', justifyContent: 'space-between' }}>
+            <View style={{ width: "96%", flexDirection: 'row', justifyContent: 'space-between' }}>
               <View>
-                <Text style={{ color: '#E7003F', fontSize: 20, fontFamily: "Axiforma Bold" }}>FANJOY</Text>
-                <Text style={{ color: '#0B2142', fontSize: 16, fontFamily: "Axiforma Regular" }}>Products By Creators</Text>
+                <Text allowFontScaling={false} style={{ color: '#E7003F', fontSize: 19, fontFamily: "Axiforma Bold" }}>FANJOY</Text>
+                <Text allowFontScaling={false} style={{ color: '#0B2142', fontSize: 11.5, fontFamily: "Axiforma Regular" }}>Products By Creators</Text>
               </View>
               <LongButton
-                style={[
-                  styles.Margin,
-                  { backgroundColor: "#ffffff", },
-                ]}
-                textstyle={{ color: "#000000", fontFamily: "Axiforma SemiBold", fontSize: 14 }}
+                style={{ height: height * 0.055, width: width * 0.31, backgroundColor: "#ffffff" }}
+                textstyle={{ color: "#000000", fontFamily: "Axiforma SemiBold", fontSize: 10 }}
                 text="View all Stars"
-                font={16}
+                font={10}
                 shadowless
-                onPress={() => navigation.navigate("AllCreatorsPage")}
-              />
+                onPress={() => navigation.navigate("AllCreatorsPage")} />
             </View>
 
             <FlatList
-              data={LandingData?.funJoy}
+              data={LandingData?.products}
               horizontal={true}
+              style={{ paddingLeft: 12 }}
               renderItem={({ item }) =>
-                <FanJoyCard
+                <TrendingCards
                   onPress={() => navigation.navigate("AllCreatorsPage")}
-                  name={item.user_name}
-                  style={{ width: 150, marginRight: 20 }}
-                  imageUrl={item?.image}
+                  imageUrl={item.image}
+                  title={item?.title}
+                  price={item?.price}
+                  style={{ width: width * 0.38, height: height * 0.33, }}
+                  imageStyle={{ width: width * 0.35, height: height * 0.22, borderRadius: 15 }}
                 />
               }
               //keyExtractor={(e) => e.id.toString()}
               contentContainerStyle={{
-                marginTop: 20,
+                marginTop: 10,
               }}
               // refreshControl={
               //   <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
@@ -446,12 +425,11 @@ const index = (props) => {
 
           <LuckyDrawCard
             onPress={() => navigation.navigate("GameStack")}
-            style={{ marginTop: 15, }}
-          />
-          <View style={{ height: 10 }} />
+            style={{ marginTop: height * 0.017 }} />
+          <View style={{ height: height * 0.017 }} />
         </View>
       </ScrollView>
-    </View >
+    </View>
   );
 };
 
