@@ -15,13 +15,15 @@ import {
     widthPercentageToDP,
     heightPercentageToDP,
     heightConverter,
-} from "../../Components/Helpers/Responsive"; 
+} from "../../Components/Helpers/Responsive";
 import Header from "../../Components/Header";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { RFValue } from "react-native-responsive-fontsize";
+import dayjs from "dayjs";
 const ProductDetail = ({ props, navigation, route }) => {
-    const item = route.params.data; 
-    console.log("item", item);
-    let progress = (item.product.updated_stocks ? (item.product?.updated_stocks / item.stock) * 100 : 0);
+    const item = route?.params?.data;
+    console.log("itemmm", item);
+    let progress = (item?.product?.updated_stocks ? (item?.product?.updated_stocks / item?.stock) * 100 : 0);
     console.log("item", item?.product?.id);
     function uniqBy(a, key) {
         var seen = {};
@@ -54,108 +56,80 @@ const ProductDetail = ({ props, navigation, route }) => {
     return (
         <ScrollView>
 
-        <View style={{ height: heightPercentageToDP("100%") }}>
-           
-            <LinearGradient
-                style={styles.mainView}
-                colors={["#420E92", "#E7003F"]}
+            <View style={{ height: height }}>
 
-            >
-                <View style={{ height: 20 }} />
-                <Header back={true} />
+                <LinearGradient
+                    style={styles.mainView}
+                    colors={["#420E92", "#E7003F"]}
+
+                >
+                    <View style={{ height: 20 }} />
+                    <Header back={true} />
 
 
-                <View style={styles.bottomView}>
-                    <Label primary font={13} dark style={{ color: "#ffffff", marginTop: 9, marginBottom: 9, }}>
-                        {item.product.updated_stocks || 0} sold out of {item.product.stock}
+
+
+                </LinearGradient>
+                <View style={styles.upperView}>
+
+                    <Card
+                        imageUrl={item?.product?.image}
+                        updated_stocks={item?.product?.updated_stocks}
+                        stock={item?.product?.stock}
+                    />
+                </View>
+                <View style={styles.card}>
+                    <Text style={{ color: '#000000', fontFamily: 'Axiforma Regular', fontSize: 16 }}>Buy outwear jacket</Text>
+                    <View style={{ width: width * 0.95, height: 1, backgroundColor: '#E6DFEE', marginTop: 10 }} />
+                    <Label primary font={16} dark style={{ color: "#E7003F", marginTop: 30 }}>
+                        Get a chance to win
+
                     </Label>
-                    <View style={styles.containerprogressBar}>
-                        <LinearGradient
-                            start={{ x: 0, y: 0 }}
-                            end={{ x: 1, y: 0 }}
-                            colors={["#ff9000", "#e70100"]}
-                            style={[
-                                styles.LinerGradientProgrees,
-                                { width: `${progress > 99 ? 99 : progress}%` },
-                            ]}
-                        />
-                        <View style={styles.GreybarWidth} />
+                    <Label font={16} dark style={{ color: "#000000" }}>
+                        {item.prize_title}
+                    </Label>
+                    <Label font={12} light style={{ color: "#000000", height: height * 0.07, marginTop: height * 0.01, }}>
+                        Max draw date {dayjs(item?.end_date).format('MMMM DD, YYYY')} or when the campaign is sold out, which is earliest
+                    </Label> 
+                    <Text style={styles.closingTxt}> 
+                        Closing Soon
+                    </Text>
+                </View>
+                <View style={[styles.pdView, { top: height * 0.62, }]}>
+                    <Label notAlign primary font={16} bold style={{ color: "#E7003F" }}>
+                        Products Details
+                    </Label>
+                    <Label notAlign font={11} dark style={{ color: "#000000", lineHeight: 20 }}>
+                        {item?.product?.description}
+                    </Label>
+                </View>
+                <View style={styles.card2}>
+
+                    <View style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        width: widthPercentageToDP("83")
+                    }}>
+                        <View>
+                            <Text style={styles.metaText}>To enter in the lucky draw</Text>
+                            <Text style={[styles.metaText, { fontWeight: 'bold' }]}>Buy a {item?.product?.title}</Text>
+                        </View>
+                        <Text style={[styles.text, { fontWeight: 'bold', fontSize: RFValue(14) }]}>AED {+(item?.product?.price)?.toLocaleString()}</Text>
+
                     </View>
 
 
-                </View>
 
-            </LinearGradient>
-            <View style={styles.upperView}>
-                <Card imageUrl={item?.product?.image} 
-           
-                />
-            </View>
-            <View style={styles.card}>
 
-                <Label primary font={16} dark style={{ color: "#000000", marginTop: 30 }}>
-                    Get a chance to
-                    <Label notAlign primary font={16} bold style={{ color: "#E7003F" }}>
-                        {" "}WIN
-                    </Label>
-                </Label>
-                <Label font={16} dark style={{ color: "#000000" }}>
-                    {item.prize_title}
-                </Label>
-                <Text style={styles.closingTxt}>
-                    Closing Soon
-                </Text>
-            </View>
-            <View style={styles.pdView}>
-                <Label notAlign primary font={16} bold style={{ color: "#E7003F" }}>
-                    Products Details
-                </Label>
-                <Label notAlign font={11} dark style={{ color: "#000000", lineHeight: 20 }}>
-                    {item?.product?.description}
-                </Label>
-            </View>
-            <View style={styles.card2}>
 
-                <View style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    width: widthPercentageToDP("83")
-                }}>
-                    <Text style={styles.metaText}>To enter in the lucky draw</Text>
-                    <Text style={[styles.text, { fontWeight: 'bold' }]}>{+(item.product.price).toLocaleString()}</Text>
-
-                </View>
-                <View style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    width: widthPercentageToDP("83")
-                }}>
-                    <Text style={[styles.metaText, { fontWeight: 'bold' }]}>Buy a {item.title}</Text>
-                    <Text style={styles.text}>Gold Coin</Text>
-
-                </View>
-                <TouchableOpacity
-                    onPress={() => {
-                        // navigation.navigate("SimpeStackScreen", {
-                        //     screen: "Cart",
-                        //   })]
-                        SaveIdInfo()
-                    }}
-                    style={{
-                        height: heightConverter(55),
-                        width: width - 25,
-                        position: 'absolute',
-                        bottom: 0,
-                        borderBottomLeftRadius: 10,
-                        borderBottomRightRadius: 10,
-                        justifyContent: 'center',
-                        alignItems: 'center'
-                    }}
-                >
-                    <LinearGradient
-                        start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
+                    <TouchableOpacity
+                        onPress={() => {
+                            // navigation.navigate("SimpeStackScreen", {
+                            //     screen: "Cart",
+                            //   })]
+                            SaveIdInfo()
+                        }}
                         style={{
                             height: heightConverter(55),
                             width: width - 25,
@@ -166,18 +140,31 @@ const ProductDetail = ({ props, navigation, route }) => {
                             justifyContent: 'center',
                             alignItems: 'center'
                         }}
-                        colors={["#420E92", "#E7003F"]}
-
                     >
-                        <Label primary font={16} bold style={{ color: "#ffffff" }}>
-                            Add to Cart
-                        </Label>
-                    </LinearGradient>
-                </TouchableOpacity>
+                        <LinearGradient
+                            start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
+                            style={{
+                                height: heightConverter(55),
+                                width: width - 25,
+                                position: 'absolute',
+                                bottom: 0,
+                                borderBottomLeftRadius: 10,
+                                borderBottomRightRadius: 10,
+                                justifyContent: 'center',
+                                alignItems: 'center'
+                            }}
+                            colors={["#420E92", "#E7003F"]}
+
+                        >
+                            <Label primary font={16} bold style={{ color: "#ffffff" }}>
+                                Add to Cart
+                            </Label>
+                        </LinearGradient>
+                    </TouchableOpacity>
+
+                </View>
 
             </View>
-          
-        </View>
         </ScrollView>
 
     );
@@ -221,24 +208,26 @@ const styles = StyleSheet.create({
 
     },
     upperView: {
-        top: heightPercentageToDP('16%'),
+        top: height * 0.1,
         position: 'absolute',
 
     },
     card: {
-        width: width - 25,
-        height: height * 0.1,
+        width: width * 0.95,
+        height: height * 0.26,
         backgroundColor: '#ffffff',
         marginLeft: 10,
         borderRadius: 10,
         padding: 10,
-        top: height * 0.16,
+        top: height * 0.1,
         left: 2,
         justifyContent: 'center', alignItems: 'center',
         elevation: 3,
-        marginBottom: 15
+        marginBottom: 15,
+        paddingTop: height * 0.06
     },
     card2: {
+
         width: width - 25,
         height: height * 0.15,
         backgroundColor: '#ffffff',
@@ -263,7 +252,7 @@ const styles = StyleSheet.create({
         paddingTop: 6,
         paddingBottom: 6,
         borderRadius: 20,
-        top: heightConverter(2)
+        top: 0
     },
     pdView: {
         position: 'absolute',

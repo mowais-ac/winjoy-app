@@ -373,6 +373,61 @@ export const LeaderBoardWinners = () => {
         console.log(error);
     }
 }
+export const DealsJoyAPI = () => {
 
+    try {
+        return async dispatch => {
+            const Token = await EncryptedStorage.getItem("Token");
+            const result = await fetch(`${Config.API_URL}/dealsjoy/index`, {
+                method: 'GET',
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    Accept: "application/json",
+                    Authorization: `Bearer ${Token}`,
+                },
+            });
+            const json = await result.json();
+            
+            if (json) {
+                dispatch({
+                    type: types.DEALS_JOY,
+                    payload: json
+                });
+            } else {
+                console.log('Unable to fetch!');
+            }
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+export const TriviaJoyAPI = () => {
+
+    try {
+        return async dispatch => {
+            const Token = await EncryptedStorage.getItem("Token");
+            const result = await fetch(`${Config.API_URL}/triviajoy/index`, {
+                method: 'GET',
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    Accept: "application/json",
+                    Authorization: `Bearer ${Token}`,
+                },
+            });
+            const json = await result.json();
+            
+            if (json) {
+                dispatch({
+                    type: types.TRIVIA_JOY,
+                    payload: json
+                });
+            } else {
+                console.log('Unable to fetch!');
+            }
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
 
 

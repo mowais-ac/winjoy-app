@@ -27,6 +27,9 @@ export * from './LifeCardRefferAndVideo/LifeCardRefferAndVideo';
 export * from './RefferalTextInput/RefferalTextInput';
 export * from './WinExperienceCard/WinExperienceCard';
 export * from './LuckyDrawWinnersCard/LuckyDrawWinnersCard';
+export * from './ButtonWithRightIcon/ButtonWithRightIcon';
+
+
 
 
 

@@ -156,5 +156,6 @@ wrap:{
   height: height * 0.3,
   alignItems:'center',
   justifyContent:'center'
-}
+},
+
 });

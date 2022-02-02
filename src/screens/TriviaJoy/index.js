@@ -9,12 +9,14 @@ import {
   RefreshControl,
   ActivityIndicator,
   Text,
-  FlatList
+  FlatList,
+  ImageBackground
 } from "react-native";
+import { connect, useDispatch, useSelector } from "react-redux";
 import Label from "../../Components/Label";
 const { width, height } = Dimensions.get("window");
 import LinearGradient from "react-native-linear-gradient";
-import HomeBottomList from "../../Components/HomeBottomList";
+import TriviaJoyBottomList from "../../Components/TriviaJoyBottomList";
 import { heightConverter, heightPercentageToDP, widthConverter } from "../../Components/Helpers/Responsive";
 import EncryptedStorage from "react-native-encrypted-storage";
 import Config from "react-native-config";
@@ -22,242 +24,178 @@ import axios from "axios";
 import dayjs from "dayjs"
 import socketIO from "socket.io-client";
 import Header from "../../Components/Header";
+import { TriviaJoyAPI } from '../../redux/actions';
+import CountDown from "react-native-countdown-component";
+import { RFValue } from "react-native-responsive-fontsize";
+import WatchAddModal from "../../Components/WatchAddModal";
 const MYServer = "https://node-winjoyserver-deploy.herokuapp.com/";
 const index = ({ props, navigation }) => {
+  const dispatch = useDispatch();
+  const AddModalState = useRef();
+  const triviaJoyData = useSelector(state => state.app.triviaJoyData);
   const socket = socketIO(MYServer);
+  //const [time, setTime] = useState();
+  const [time, setTime] = useState(() => {
+    dispatch(TriviaJoyAPI());
+    var CurrentDate = dayjs().format("YYYY-MM-DDThh:mm:ss.000000Z");
+    var duration = dayjs(triviaJoyData?.start_date).diff(dayjs(CurrentDate), 'seconds');
+    return duration;
+  })
+  const [renderBtn, setRenderBtn] = useState(false);
+
   useEffect(() => {
+    dispatch(TriviaJoyAPI());
 
-
-
-    socket.on("start", msg => {
-      // alert("hii")
-      console.log("msgg", msg);
-    });
-    socket.on("startlivestream", msg => {
-      // alert("hii")
-      console.log("list", msg);
-    });
-    socket.on("sendStartlivegameshow", msg => {
-      // alert("hii")
-      console.log("game", msg);
-    });
-    // socket.on("start", msg => {
-    //  console.log("msg",msg);
-    //   // console.log("msg", msg);
-    // });
-
-    LiveStream()
-    PastWinner();
-    GameBtnStat()
   }, [])
-  const submitChatMessage = () => {
-    let dat = "waqarrr";
-    socket.emit('livestream', dat);
 
-  }
-  const [winnerData, setWinnerData] = useState([]);
-  const [navToQuiz, setNavToQuiz] = useState(false);
-  const [liveStreamUri, setLiveStreamUri] = useState("");
-  const [gameBtnText, setGameBtnText] = useState(true);
-  const [livegameData, setLivegameData] = useState([]);
-  const PastWinner = async () => {
-    const Token = await EncryptedStorage.getItem("Token");
-    const requestOptions = {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Accept: "application/json",
-        Authorization: `Bearer ${Token}`,
-      },
-    };
-    // alert(13123);
 
-    await axios.get(`${Config.API_URL}/livegameshow/all/winners/list`, requestOptions).then(response => {
-      let res = response;
-      setWinnerData(res?.data)
-    });
 
-  }
-
-  const StartGame = async () => {
-    const Token = await EncryptedStorage.getItem("Token");
-    const requestOptions = {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Accept: "application/json",
-        Authorization: `Bearer ${Token}`,
-      },
-    };
-    // alert(13123);
-
-    await axios.get(`${Config.API_URL}/livegameshow`, requestOptions).then(response => {
-      let res = response.data;
-      console.log("StartGame", res);
-      if (res.status === "success") {
-        if (res.message === "Game Show Available") {
-          setLivegameData(res)
-          LetBegain(res?.LivegameShow?.id)
-          //   navigation.navigate("SimpeStackScreen", { screen: "Quiz",
-          //  // params:{liveGameShowId: res.LivegameShow.id}
-          //  })
-        } else {
-          alert(res)
-        }
-      }
-    });
-
-  }
-  const LiveStream = async () => {
-    const Token = await EncryptedStorage.getItem("Token");
-    const requestOptions = {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Accept: "application/json",
-        Authorization: `Bearer ${Token}`,
-      },
-    };
-    // alert(13123);
-
-    await axios.get(`${Config.API_URL}/livestream/available`, requestOptions).then(response => {
-      let res = response.data;
-      console.log("reslink", res);
-      if (res) {
-        setLiveStreamUri(res?.livestream_url)
-      }
-
-    });
-
-  }
-  const LetBegain = async (Lid) => {
-    console.log("lid", Lid);
-    const Token = await EncryptedStorage.getItem("Token");
-    const requestOptions = {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Accept: "application/json",
-        Authorization: `Bearer ${Token}`,
-      },
-    };
-    // alert(13123);
-
-    await axios.get(`${Config.API_URL}/lets/begin?live_gameshow_id=${Lid}`, requestOptions).then(response => {
-      let res = response.data;
-      console.log("letbegain", res);
-      if (res.status === "success") {
-        if (res.message === "Welcome to Live Game Show") {
-          navigation.navigate("SimpeStackScreen", { screen: "Quiz", params: { selected: liveStreamUri } })
-
-        }
-      }
-      else if (res.status === "error") {
-        if (res.message === "Sorry! you have already played.") {
-
-          alert(res.message)
-        }
-        else {
-
-        }
-      }
-
-    });
-
-  }
-  const GameBtnStat = async () => {
-    const Token = await EncryptedStorage.getItem("Token");
-    const requestOptions = {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Accept: "application/json",
-        Authorization: `Bearer ${Token}`,
-      },
-    };
-    // alert(13123);
-
-    await axios.get(`${Config.API_URL}/user/game/status`, requestOptions).then(response => {
-      let res = response.data;
-      console.log("reee", res);
-      if (res.status === "success") {
-        if (res.message === "Welcome to Live Game Show.") {
-          setGameBtnText(true)
-        } else {
-          alert(res)
-        }
-      }
-    });
-
-  }
 
 
   return (
     <ScrollView
       style={{ backgroundColor: "#ffffff" }}
     >
-       <Header style={{ top: 5, position: 'absolute', zIndex: 1000,left:0 }} />
       <LinearGradient
-        colors={["#420E92", "#E7003F"]}
-        style={styles.mainView}
+        start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
+        colors={["#f8d7e8", "#c7dfe8"]}
       >
-       
-        <Text style={[styles.heading,{marginTop:40}]}>
-          Daily Challenge & Win
-        </Text>
-        <Label primary font={16} bold dark style={{ color: "#ffff", lineHeight: 27 }}>
-          Answer 12 simple questions and <Label primary font={16} bold dark style={{ color: "yellow", }}>
-            WIN
-          </Label>
-          <Label primary font={20} bold dark style={{ color: "#ffff", }}>
-            {" "}amazing prizes
-          </Label>
-        </Label>
-        {gameBtnText ? (
-          <TouchableOpacity
-            onPress={() => {
-              StartGame()
-              // submitChatMessage()
-            }
+        <Header style={{ top: 5, position: 'absolute', zIndex: 1000, left: 0 }} />
+        <LinearGradient
+          start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
+          colors={["#420E92", "#E7003F"]}
+          style={styles.mainView}
+        >
 
-            }>
-            <View style={styles.btnView}>
-              <Label primary font={16} bold dark style={{ color: "#EA245A", }}>
-                Let's Begin
+          <Text style={[styles.heading, { width: width * 0.8, marginTop: height * 0.08 }]}>
+            Daily Challenge &
+            <Text style={{ color: "#D9FE51" }}>
+              WIN
+            </Text>
+          </Text>
+          <Label primary font={16} bold dark style={{ color: "#ffff", lineHeight: 27 }}>
+            Answer 10 simple questions and WIN amazing prizes
+
+          </Label>
+
+          {renderBtn ? (
+            <TouchableOpacity
+              onPress={() => navigation.navigate("GameStack", {
+                screen: "Quiz",
+                params: {
+                  uri: triviaJoyData?.on_going_gameshow?.live_stream?.key
+                }
+              })}
+            >
+              <View
+                style={[styles.newGameView, { height: height * 0.12, backgroundColor: '#ffffff', borderRadius: 15, alignItems: 'center', }]}
+
+              >
+                <Label primary font={14} style={{ color: "#E61C54", width: width * 0.6, lineHeight: 30 }}>
+                  We are live now{'\n'}
+                  <Label primary font={18} bold style={{ color: "#420E92", width: width * 0.6, }}>
+                    Join Gameshow fast!
+                  </Label>
+                </Label>
+
+              </View>
+            </TouchableOpacity>
+          ) : (
+            <LinearGradient
+              colors={["#C3EE27", "#FEAE51"]}
+              style={styles.newGameView}
+
+            >
+              <Label primary font={RFValue(14)} bold dark style={{ color: "#420E92", }}>
+                Next Game
+              </Label>
+              <CountDown
+                style={{ marginTop: 6 }}
+                size={16}
+                until={time}
+                onFinish={() => setRenderBtn(true)}
+                digitStyle={{ borderColor: '#ffffff', borderWidth: 1, backgroundColor: '#ffffff', width: 50, height: 50, borderRadius: 40, marginLeft: 10 }}
+                digitTxtStyle={{ color: '#000000', fontSize: 18, fontFamily: 'Axiforma-Medium' }}
+                timeLabelStyle={{ color: '#000000', fontFamily: 'Axiforma Regular' }}
+                //separatorStyle={{paddingLeft: 5, paddingRight: 5, }}
+
+                timeToShow={['D', 'H', 'M', 'S']}
+                timeLabels={{ d: "days", h: "hours", m: "minutes", s: "seconds" }}
+              //showSeparator
+              />
+            </LinearGradient>
+          )}
+          <TouchableOpacity onPress={() => { AddModalState.current(true) }}>
+            <View style={{ flexDirection: 'row', marginTop: height * 0.03 }}>
+              <Image
+                style={{ width: 35, height: 35 }}
+                source={require('../../assets/imgs/circlePlaybtn.png')}
+              />
+              <Label primary font={RFValue(14)} bold dark style={{ color: "#ffff", width: width * 0.4 }}>
+                How it works
               </Label>
             </View>
           </TouchableOpacity>
-        ) : (null)}
-        <LinearGradient
-          colors={["#FFFF13", "#A4FF00"]}
-          style={styles.newGameView}
-          start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
-        >
-          <Label primary font={16} bold dark style={{ color: "#420E92", }}>
-            NEXT GAME
-          </Label>
-          <Label primary font={16} dark style={{ color: "#420E92", }}>
-            {dayjs(livegameData?.LivegameShow?.start_date).format('DD-MMMM-YYYY hh:mm a')}
-
-          </Label>
         </LinearGradient>
+        <View style={styles.viewLifeDetails}>
+          <View style={{ width: width, flexDirection: 'row', justifyContent: 'space-around', }}>
+            <View style={{ width: width * 0.6 }}>
+              <Label notAlign primary font={13} bold style={{ color: "#E61C54", width: width * 0.4 }}>
+                Buy/Earn Lives
+              </Label>
+              <Text style={{ color: '#000000' }}>
+                Stay in the game even after the wrong answer
+              </Text>
+            </View>
+            <ImageBackground
+              resizeMode="cover"
+              style={{ width: 100, height: 80, marginTop: 10, justifyContent: 'center', alignItems: 'center' }}
+              source={require('../../assets/imgs/pinkHeart.png')}
+            >
+
+              <Text style={{ color: "#E7003F", fontFamily: 'Axiforma SemiBold', fontSize: RFValue(20) }}>
+                {triviaJoyData?.lives}
+              </Text>
+            </ImageBackground>
+          </View>
+          <View style={{ width: width, height: 1, backgroundColor: '#ffffff', marginTop: height * 0.02 }} />
+          <TouchableOpacity
+            onPress={() => navigation.navigate("MenuStack", {
+              screen: "BuyLife",
+
+            })}>
+            <Label primary font={13} bold style={{ color: "#E61C54", marginTop: height * 0.02 }}>
+              View Detail
+            </Label>
+          </TouchableOpacity>
+        </View>
+        <View style={{ height: 20 }} />
+        <TriviaJoyBottomList data={triviaJoyData.banners} />
+        <View style={{ marginBottom: height * 0.05 }} />
       </LinearGradient>
-      <HomeBottomList data={winnerData} />
-      <View style={{ marginBottom: height * 0.05 }} />
+      <WatchAddModal ModalRef={AddModalState} details
+        video={"https://winjoy-assets.s3.amazonaws.com/banners/banner-3.mp4"}
+      // id={idVideoAdd}
+      // onPressContinue={onPressContinue} 
+      />
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   mainView: {
-    height:height*0.55,
+    height: height * 0.5,
     width: width,
-
-    borderBottomLeftRadius: 20,
-    borderBottomRightRadius: 20,
+    // borderBottomLeftRadius: 20,
+    // borderBottomRightRadius: 20,
     borderTopLeftRadius: 0,
     borderTopRightRadius: 0,
     alignItems: 'center'
   },
   newGameView: {
     marginTop: 10,
-    width: width - 25,
-    height: heightConverter(100),
+    width: width * 0.93,
+    height: height * 0.15,
     justifyContent: 'center',
     borderRadius: 20
   },
@@ -271,12 +209,20 @@ const styles = StyleSheet.create({
   },
   heading: {
     color: "#ffff",
-    fontFamily: "Axiforma-Regular",
-    fontSize: 35,
+    fontFamily: "Axiforma Bold",
+    fontSize: 30,
     width: widthConverter(210),
     textAlign: 'center',
     lineHeight: heightConverter(40),
     marginTop: heightConverter(30)
+  },
+  viewLifeDetails: {
+    backgroundColor: '#F6EEF1',
+    height: height * 0.22,
+    paddingTop: 10,
+    alignItems: 'center',
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
   }
 });
 

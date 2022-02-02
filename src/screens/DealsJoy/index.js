@@ -9,8 +9,9 @@ import {
   ActivityIndicator,
   FlatList,
   ImageBackground,
+  Image
 } from "react-native";
-import {  wait } from "../../Constants/Functions";
+import { wait } from "../../Constants/Functions";
 import LoaderImage from "../../Components/LoaderImage";
 import Label from "../../Components/Label";
 import { Colors } from "../../Constants/Index";
@@ -27,14 +28,20 @@ import {
   widthConverter,
 } from "../../Components/Helpers/Responsive";
 import Header from "../../Components/Header";
+import { DealsJoyAPI } from '../../redux/actions';
+import { connect, useDispatch, useSelector } from "react-redux";
+import Video from "react-native-video";
+import Carousel from "react-native-snap-carousel";
+import { ButtonWithRightIcon } from '../../Components'
+import WatchAddModal from "../../Components/WatchAddModal";
+
 function ClosingSoon({ item }) {
-  let progress = item.updated_stocks
+  console.log("itemCS", item);
+  let progress = item?.updated_stocks
     ? (item?.updated_stocks / item?.stock) * 100
     : 0;
 
-  const ImgUrl = `${Config.PRODUCT_IMG}/${item.id}/${
-    JSON.parse(item.image)[0]
-  }`;
+
   return (
     <View
       style={{
@@ -48,7 +55,7 @@ function ClosingSoon({ item }) {
     >
       <LoaderImage
         source={{
-          uri: ImgUrl.replace("http://", "https://"),
+          uri: item?.image,
         }}
         style={{
           width: 120,
@@ -91,117 +98,86 @@ function ClosingSoon({ item }) {
     </View>
   );
 }
-const index = (props) => {
-  const { Coins, navigation } = props;
+const index = ({ props, navigation }) => {
+  const dispatch = useDispatch();
+  const dealsJoyData = useSelector(state => state.app.dealsJoyData);
+  const [buffer, setBuffer] = useState(false);
+  const [videoAction, setVideoAction] = useState(true);
+  const [loader, setLoader] = useState(false);
+  const [activeSlide, setActiveSlide] = useState();
+  const AddModalState = useRef();
+  useEffect(() => {
+    dispatch(DealsJoyAPI());
+    console.log("dealsJoyData", dealsJoyData);
+  }, []);
+  function _renderItem({ item, index }) {
+    //console.log("item.url",item.url);
+    if (item.type === "image") {
+      return (
+        <View key={index}>
+          <Image source={{ uri: item.url }}
+            resizeMode={"cover"}
+            style={styles.ShoppingBanner}
+          />
+        </View>
+      )
+    } else {
+      return (
+        <View key={index} style={{ backgroundColor: '#000000', borderBottomLeftRadius: 15, borderBottomRightRadius: 15 }}>
+          {item.url ? (
+            <Video
+              source={{ uri: item.url }}  // Can be a URL or a local file.
+              // ref={(ref) => { this.player = ref }}  // Store reference
+              resizeMode={"cover"}
+              paused={index !== activeSlide}
+              //  onError={this.onVideoError}
+              minLoadRetryCount={2}
+              fullScreen={true}
+              ignoreSilentSwitch={"obey"}
+              onLoad={() => setBuffer(false)}
+              onLoadStart={() => setVideoAction(false)}
+              controls={false}
+              onEnd={() => setVideoAction(true)}
+              style={styles.ShoppingBanner}
+            />
 
-  const [Banners, setBanners] = useState(null);
-  const [refreshing, setRefreshing] = React.useState(false);
-  const [productList, setProductList] = React.useState([]);
-  const [winnerData, setWinnerData] = useState([]);
-  // const onRefresh = React.useCallback(() => {
-  //   // setBanners(null);
-  //   setRefreshing(true);
-  //   UpdateCoinsOnce();
-  //   wait(500).then(() => setRefreshing(false));
-  // }, []);
-  const UpdateCoinsOnce = () => {
-    initialLoad();
-    props.UpdateCoins(UpdateCoins());
-  };
-  const initialLoad = () => {
-    const check = async () => {
-      const Token = await EncryptedStorage.getItem("Token");
-      const requestOptions = {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Accept: "application/json",
-          Authorization: `Bearer ${Token}`,
-        },
-      };
-      // alert(13123);
-      await axios
-        .get(`${Config.API_URL}/banners`, requestOptions)
-        .then((response) => {
-          let res = response.data;
-          if (res.status && res.status.toLowerCase() === "success") {
-            setBanners(res.data);
-          }
-        });
-    };
-
-    check();
-  };
-  const ProductList = async () => {
-    const Token = await EncryptedStorage.getItem("Token");
-    const requestOptions = {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Accept: "application/json",
-        Authorization: `Bearer ${Token}`,
-      },
-    };
-    // alert(13123);
-    await axios
-      .get(`${Config.API_URL}/products/list`, requestOptions)
-      .then((response) => {
-        let res = response.data;
-        let arr = [];
-        if (res.status && res.status.toLowerCase() === "success") {
-          res.data.map((item) => {
-            console.log("item",item);
-            item.map((v, i) => {
-              arr.push(v);
-            });
-          });
-
-          setProductList(arr);
-        }
-      });
-  };
-  const PastWinner = async () => {
-    const Token = await EncryptedStorage.getItem("Token");
-    const requestOptions = {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Accept: "application/json",
-        Authorization: `Bearer ${Token}`,
-      },
-    }; 
-    // alert(13123);
-    
-    await axios.get(`${Config.API_URL}/luckydraw/winner`, requestOptions).then(response => {
-      let res = response;
-      setWinnerData(res?.data[0])
-    });
-  
+          ) : (
+            null
+          )}
+        </View>
+      )
+    }
   }
-  useFocusEffect(
-    React.useCallback(() => {
-    //  UpdateCoinsOnce();
-      initialLoad();
-      ProductList();
-      PastWinner();
-    }, [])
-  );
- 
   return (
     <ScrollView
       style={{ backgroundColor: "#ffffff" }}
-      // refreshControl={
-      //   <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
-      // }
+    // refreshControl={
+    //   <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
+    // }
     >
       <LinearGradient colors={["#5B0C86", "#E7003F"]} style={styles.mainView}>
-      <Header style={{ top: 5, position: 'absolute', zIndex: 1000,left:0 }} />
-        {Banners === null ? (
-          <ActivityIndicator size="large" color={Colors.BLACK} />
-        ) : (
-             <LoaderImage
-              source={{ uri: Banners[1].replace('http://', 'https://') }}
+        <Header style={{ top: 5, position: 'absolute', zIndex: 1000, left: 0 }} />
+        <View style={styles.wrap}>
+          {loader ? (
+            <ActivityIndicator size="large" color="#fff" />
+          ) : (
+            <Carousel
+              layout={"default"}
+              resizeMode={"cover"}
+              loop={videoAction}
+              autoplay={videoAction}
+              autoplayInterval={3000}
+
+              // ref={ref => this.carousel = ref}
+              data={dealsJoyData?.banners}
+              sliderWidth={width}
+              itemWidth={width}
+              renderItem={_renderItem}
               style={styles.ShoppingBanner}
-              resizeMode="contain"
-            /> 
-        )}
+              onSnapToItem={index => setActiveSlide(index)}
+            />
+          )}
+        </View>
 
         <Label
           notAlign
@@ -226,18 +202,27 @@ const index = (props) => {
           }}
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
-          data={productList}
+          data={dealsJoyData?.products}
           renderItem={({ item }) => (
             <TouchableOpacity
-              onPress={() =>
-                navigation.navigate("SimpeStackScreen",{screen:"ProductDetail",params:item})
-              }
+              onPress={() => {
+                navigation.navigate("BottomTabStack", {
+                  screen: "PRODUCTS",
+                  params: {
+                    screen: 'ProductDetail',
+                    params: {
+                      data: item
+                    },
+                  }
+                });
+              }}
             >
               <ClosingSoon props={props} index={item.index} item={item} />
             </TouchableOpacity>
+            // , { data: item }
           )}
           keyExtractor={(item) => item.id}
-          //   ListEmptyComponent={this.RenderEmptyContainerOnGoing()}
+        //   ListEmptyComponent={this.RenderEmptyContainerOnGoing()}
         />
         <View
           style={{
@@ -247,35 +232,56 @@ const index = (props) => {
             marginTop: 13,
           }}
         />
-        <TouchableOpacity onPress={()=>navigation.navigate("TabsStack", { screen: "Product" })}>
-        <Label
-          primary
-          font={16}
-          bold
-          dark
-          style={{
-            color: "#ffffff",
-            marginLeft: 10,
-            marginTop: 10,
-            marginBottom: 10,
-          }}
-        >
-          View All Prizes
-        </Label>
+        <TouchableOpacity onPress={() =>
+          navigation.navigate("BottomTabStack", {
+            screen: "PRODUCTS",
+
+          })
+        }>
+          <Label
+            primary
+            font={16}
+            bold
+            dark
+            style={{
+              color: "#ffffff",
+              marginLeft: 10,
+              marginTop: 10,
+              marginBottom: 10,
+            }}
+          >
+            View All Prizes
+          </Label>
         </TouchableOpacity>
         <View style={{ marginBottom: height * 0.01 }} />
       </LinearGradient>
-      <HomeBottomList data = {winnerData}/>
+      <View style={{ justifyContent: 'center', alignItems: 'center', height: height * 0.1 }}>
+        <ButtonWithRightIcon
+          btnStyle={{ backgroundColor: '#420E92' }}
+          text={"How it works"}
+          textStyle={{color:'#fff',fontFamily:'Axiforma SemiBold'}}
+          onPress={()=>AddModalState.current(true)} 
+        />
+      </View>
+      <HomeBottomList data={dealsJoyData?.winners_collection} />
       <View style={{ height: 20 }} />
+      <WatchAddModal ModalRef={AddModalState} details
+        video={"https://winjoy-assets.s3.amazonaws.com/banners/banner-3.mp4"}
+      // id={idVideoAdd}
+      // onPressContinue={onPressContinue} 
+      />
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   ShoppingBanner: {
-    width: "100%",
+    width: width,
     height: height * 0.3,
+    // marginTop: height * 0.015,
     alignSelf: "center",
+    borderBottomLeftRadius: 15,
+    borderBottomRightRadius: 15
   },
   bgImageUpperView: {
     width: width * 1.01,
@@ -318,6 +324,12 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 0,
     borderTopRightRadius: 0,
     overflow: "hidden",
+  },
+  wrap: {
+    width: width,
+    height: height * 0.3,
+    alignItems: 'center',
+    justifyContent: 'center'
   },
 });
 
