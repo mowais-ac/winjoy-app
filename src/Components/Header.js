@@ -96,7 +96,9 @@ const Header = (props) => {
         {!props.noBell && <Bell style={styles.Bell} value={props.value} />}
         <TouchableOpacity
           style={styles.Lines}
-          onPress={() => navigation.navigate("MenuStack")}
+          onPress={() => navigation.navigate("MenuStack", {
+            screen: "HamburgerMenu",
+          })} 
         >
           <Image source={Images.Lines} style={styles.Logo} />
         </TouchableOpacity>

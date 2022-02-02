@@ -11,6 +11,7 @@ import {
   FlatList,
   RefreshControl,
   ActivityIndicator,
+  Text
 } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import BackgroundRound from "../../Components/BackgroundRound";
@@ -84,7 +85,7 @@ const index = ({ props, navigation }) => {
           <LongButton
             onPress={() => {
               setIsClosing(false);
-              dispatch(getProducts(isClosing));
+              dispatch(getProducts(0));
               setUpdateData(!updateData)
               console.log("productsData1", productsData);
             }}
@@ -97,9 +98,9 @@ const index = ({ props, navigation }) => {
             shadowless
           />
           <LongButton
-            onPress={() => { 
+            onPress={() => {
               setIsClosing(true);
-              dispatch(getProducts(isClosing));
+              dispatch(getProducts(1));
               setUpdateData(!updateData)
               console.log("productsData2", productsData);
             }}
@@ -115,32 +116,42 @@ const index = ({ props, navigation }) => {
         </View>
         <View>
           {/* onPress={()=>navigation.navigate("SimpeStackScreen",{screen:"ProductDetail"})}> */}
-          {productsData?.data?.length === 0 ? (
-            <ActivityIndicator size="large" color={Colors.BLACK} />
-          ) : (
-            <>
-              {productsData?.data?.length >= 1 && (
 
-                <FlatList
-                  data={productsData?.data}
-                  scrollEnabled={false}
-                  extraData={updateData}
-                  renderItem={(item) =>
-                    <ChanceCard data={item}
-                      onPress={() =>
-                        // console.log("item.item",item.item)
-                        navigation.navigate("ProductDetail", { data: item.item })
-                      }
-                    />}
-                  keyExtractor={(e) => e.id.toString()}
-                  contentContainerStyle={{
-                    paddingBottom: height * 0.48,
-                  }}
 
-                />
-              )}
-            </>
-          )}
+          <FlatList
+            data={productsData?.data}
+            scrollEnabled={false}
+            extraData={updateData}
+            renderItem={({ item }) => (
+
+              <ChanceCard
+                title={item.product.title}
+                updated_stocks={item?.product?.updated_stocks}
+                stock={item?.product?.stock}
+                image={item?.product?.image}
+                description={item?.description}
+                price={item?.product?.price}
+                prize_title={item.prize_title}
+                data={item}
+                onPress={() =>
+                  // console.log("item.item",item.item)
+                  navigation.navigate("ProductDetail", { data: item })
+                }
+              />
+            )}
+            keyExtractor={(item) => item.id}
+            ListEmptyComponent={() => (
+              <Text style={{ color: '#000000', top: 100, textAlign: 'center', width: width }}>The list is empty</Text>
+            )
+            }
+
+            contentContainerStyle={{
+              paddingBottom: height * 0.48,
+            }}
+
+          />
+
+
         </View>
       </ScrollView>
     </SafeAreaView>

@@ -8,6 +8,7 @@ export * from './Card/Card';
 export * from './WalletBlanceCard/WalletBlanceCard';
 export * from './WalletLastPlayedCard/WalletLastPlayedCard';
 export * from './LeaderBoardCard/LeaderBoardCard';
+export * from './GameShowWinnersCard/GameShowWinnersCard';
 export * from './EliminateQuizOptions/EliminateQuizOptions';
 export * from './EliminateQuizResult/EliminateQuizResult';
 export * from './HomeCard/HomeCard';
@@ -25,6 +26,9 @@ export * from './LifeCard/LifeCard';
 export * from './LifeCardRefferAndVideo/LifeCardRefferAndVideo';
 export * from './RefferalTextInput/RefferalTextInput';
 export * from './WinExperienceCard/WinExperienceCard';
+export * from './LuckyDrawWinnersCard/LuckyDrawWinnersCard';
+
+
 
 
 

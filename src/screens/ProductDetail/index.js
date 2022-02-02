@@ -15,14 +15,14 @@ import {
     widthPercentageToDP,
     heightPercentageToDP,
     heightConverter,
-} from "../../Components/Helpers/Responsive";
+} from "../../Components/Helpers/Responsive"; 
 import Header from "../../Components/Header";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const ProductDetail = ({ props, navigation, route }) => {
     const item = route.params.data; 
     console.log("item", item);
-    let progress = (item.updated_stocks ? (item?.updated_stocks / item.stock) * 100 : 0);
-    console.log("item", item.id);
+    let progress = (item.product.updated_stocks ? (item.product?.updated_stocks / item.stock) * 100 : 0);
+    console.log("item", item?.product?.id);
     function uniqBy(a, key) {
         var seen = {};
         return a.filter(function (item) {
@@ -38,7 +38,7 @@ const ProductDetail = ({ props, navigation, route }) => {
                 favs = favs == null ? [] : JSON.parse(favs)
 
 
-                favs.push(item.id)
+                favs.push(item?.product?.id)
                 let uniqueArray = favs.filter(function (item, pos) {
                     return favs.indexOf(item) == pos;
                 });
@@ -67,7 +67,7 @@ const ProductDetail = ({ props, navigation, route }) => {
 
                 <View style={styles.bottomView}>
                     <Label primary font={13} dark style={{ color: "#ffffff", marginTop: 9, marginBottom: 9, }}>
-                        {item.updated_stocks || 0} sold out of {item.stock}
+                        {item.product.updated_stocks || 0} sold out of {item.product.stock}
                     </Label>
                     <View style={styles.containerprogressBar}>
                         <LinearGradient
@@ -87,7 +87,7 @@ const ProductDetail = ({ props, navigation, route }) => {
 
             </LinearGradient>
             <View style={styles.upperView}>
-                <Card imageUrl={item?.image} 
+                <Card imageUrl={item?.product?.image} 
            
                 />
             </View>
@@ -100,7 +100,7 @@ const ProductDetail = ({ props, navigation, route }) => {
                     </Label>
                 </Label>
                 <Label font={16} dark style={{ color: "#000000" }}>
-                    {item.luckydraw.gift_title}
+                    {item.prize_title}
                 </Label>
                 <Text style={styles.closingTxt}>
                     Closing Soon
@@ -111,7 +111,7 @@ const ProductDetail = ({ props, navigation, route }) => {
                     Products Details
                 </Label>
                 <Label notAlign font={11} dark style={{ color: "#000000", lineHeight: 20 }}>
-                    {item.description}
+                    {item?.product?.description}
                 </Label>
             </View>
             <View style={styles.card2}>
@@ -123,7 +123,7 @@ const ProductDetail = ({ props, navigation, route }) => {
                     width: widthPercentageToDP("83")
                 }}>
                     <Text style={styles.metaText}>To enter in the lucky draw</Text>
-                    <Text style={[styles.text, { fontWeight: 'bold' }]}>{+(item.price).toLocaleString()}</Text>
+                    <Text style={[styles.text, { fontWeight: 'bold' }]}>{+(item.product.price).toLocaleString()}</Text>
 
                 </View>
                 <View style={{

@@ -75,16 +75,11 @@ export const getLandingScreen = () => {
     }
 }
 export const getProducts = (isClosing) => {
-    let check = ""
-    if (isClosing) {
-        check = "?is_closing_soon=" + isClosing
-    } else {
-        check = "";
-    }
+  
     try {
         return async dispatch => {
             const Token = await EncryptedStorage.getItem("Token");
-            const result = await fetch(`${Config.API_URL}/products/list/${check}`, {
+            const result = await fetch(`${Config.API_URL}/products/list?is_closing_soon=${isClosing}`, {
                 method: 'GET',
                 headers: {
                     "Content-Type": "multipart/form-data",
@@ -92,7 +87,9 @@ export const getProducts = (isClosing) => {
                     Authorization: `Bearer ${Token}`,
                 },
             });
+            console.log("result",result);
             const json = await result.json();
+            console.log("jjson",json)
             if (json && json.status === "success") {
                 dispatch({
                     type: types.GET_PRODUCTS_LIST,
@@ -252,6 +249,7 @@ export const ExperienceProductDetal = (expId, productId) => {
                 },
             });
             const json = await result.json();
+            
             if (json && json.status === "success") {
                 dispatch({
                     type: types.EXPERIENCE_PRODUCT_DETAILS,
@@ -279,10 +277,92 @@ export const ExperienceDetals = (experience_id,celebrity_id) => {
                 },
             });
             const json = await result.json();
-            console.log("jsonS",json);
+            
             if (json && json.status === "success") {
                 dispatch({
                     type: types.EXPERIENCE_DETAILS,
+                    payload: json
+                });
+            } else {
+                console.log('Unable to fetch!');
+            }
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+export const GameShowWinners = () => {
+
+    try {
+        return async dispatch => {
+            const Token = await EncryptedStorage.getItem("Token");
+            const result = await fetch(`${Config.API_URL}/gameshow/winners`, {
+                method: 'GET',
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    Accept: "application/json",
+                    Authorization: `Bearer ${Token}`,
+                },
+            });
+            const json = await result.json();
+            if (json) {
+                dispatch({
+                    type: types.GAME_SHOW_WINNERS,
+                    payload: json
+                });
+            } else {
+                console.log('Unable to fetch!');
+            }
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+export const LuckyDrawWinnersAPI = () => {
+
+    try {
+        return async dispatch => {
+            const Token = await EncryptedStorage.getItem("Token");
+            const result = await fetch(`${Config.API_URL}/luckydraw/winners`, {
+                method: 'GET',
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    Accept: "application/json",
+                    Authorization: `Bearer ${Token}`,
+                },
+            });
+            const json = await result.json();
+            if (json) {
+                dispatch({
+                    type: types.LUCKY_DRAW_WINNERS,
+                    payload: json
+                });
+            } else {
+                console.log('Unable to fetch!');
+            }
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+export const LeaderBoardWinners = () => {
+
+    try {
+        return async dispatch => {
+            const Token = await EncryptedStorage.getItem("Token");
+            const result = await fetch(`${Config.API_URL}/leaderboard`, {
+                method: 'GET',
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    Accept: "application/json",
+                    Authorization: `Bearer ${Token}`,
+                },
+            });
+            const json = await result.json();
+            
+            if (json) {
+                dispatch({
+                    type: types.LEADER_BOARD_WINNERS,
                     payload: json
                 });
             } else {

@@ -24,7 +24,7 @@ import Section from "../../Components/Section";
 import UserInfo from "../../Components/UserInfo";
 import EncryptedStorage from "react-native-encrypted-storage";
 import Config from "react-native-config";
-import NotFound from "../../Components/NotFound";
+import NotFoundCart from "../../Components/NotFoundCart";
 import { wait } from "../../Constants/Functions";
 import LinearGradient from "react-native-linear-gradient";
 import { heightConverter, widthConverter, widthPercentageToDP } from "../../Components/Helpers/Responsive";
@@ -243,7 +243,7 @@ const index = ({ navigation }) => {
               scrollEnabled={true}
               keyExtractor={(e) => e.id.toString()} 
               extraData={updateData}
-              ListEmptyComponent={<NotFound text="Wish Lists" />}
+              ListEmptyComponent={<NotFoundCart text="Cart" />}
               ListHeaderComponent={() => 
                 
                   <Label primary bold headingtype="h4" style={{ marginTop: 15 }}>
@@ -259,6 +259,7 @@ const index = ({ navigation }) => {
               }}
             />
           </View>
+          {Data.length>0?(
           <View style={styles.card2}>
 
             <View style={{
@@ -282,7 +283,7 @@ const index = ({ navigation }) => {
 
             </View> */}
 
-           {Data?(
+           
               <TouchableOpacity
               onPress={() => {
                 // ModalState.current(true);
@@ -325,9 +326,10 @@ const index = ({ navigation }) => {
                 )}
               </LinearGradient>
             </TouchableOpacity>
-           ):(null)}
+          
 
           </View>
+           ):(null)}
         </>
       )}
       <PaymentModals ModalRef={ModalState} details total={total} />

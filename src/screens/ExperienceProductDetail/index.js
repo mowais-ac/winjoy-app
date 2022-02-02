@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import {
     View,
-    StyleSheet, 
+    StyleSheet,
     Dimensions,
     Text,
     TouchableOpacity,
@@ -21,18 +21,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ExperienceProductDetal } from '../../redux/actions';
 import { useDispatch, useSelector } from "react-redux";
 const ProductDetail = ({ props, navigation, route }) => {
-    const productId = route?.params?.productId; 
-    const experienceId = route?.params?.experienceId; 
+    const productId = route?.params?.productId;
+    const experienceId = route?.params?.experienceId;
     const dispatch = useDispatch();
     const data = useSelector(state => state?.app?.expProductDetail);
     useEffect(() => {
-        console.log("dataProd",data);
-        console.log("productIdd", productId);
-        console.log("experienceIdd", experienceId);
-        dispatch(ExperienceProductDetal(experienceId,productId));
-       
-    
-      }, []);
+        dispatch(ExperienceProductDetal(experienceId, productId));
+    }, []);
     let progress = (data?.products?.updated_stocks ? (data?.products?.updated_stocks / data?.products?.stock) * 100 : 0);
     //console.log("item", item?.id);
     // function uniqBy(a, key) {
@@ -66,106 +61,93 @@ const ProductDetail = ({ props, navigation, route }) => {
     return (
         <ScrollView>
 
-        <View style={{ height: heightPercentageToDP("100%") }}>
-           
-            <LinearGradient
-                style={styles.mainView}
-                colors={["#420E92", "#E7003F"]}
+            <View style={{ height: heightPercentageToDP("100%") }}>
 
-            >
-                <View style={{ height: 20 }} />
-                <Header back={true} />
+                <LinearGradient
+                    style={styles.mainView}
+                    colors={["#420E92", "#E7003F"]}
+
+                >
+                    <View style={{ height: 20 }} />
+                    <Header back={true} />
 
 
-                <View style={styles.bottomView}>
-                    <Label primary font={13} dark style={{ color: "#ffffff", marginTop: 9, marginBottom: 9, }}>
-                        {data?.products?.updated_stocks || 0} sold out of {data?.products?.stock}
-                    </Label>
-                    <View style={styles.containerprogressBar}>
-                        <LinearGradient
-                            start={{ x: 0, y: 0 }}
-                            end={{ x: 1, y: 0 }}
-                            colors={["#ff9000", "#e70100"]}
-                            style={[
-                                styles.LinerGradientProgrees,
-                                { width: `${progress > 99 ? 99 : progress}%` },
-                            ]}
-                        />
-                        <View style={styles.GreybarWidth} />
+                    <View style={styles.bottomView}>
+                        <Label primary font={13} dark style={{ color: "#ffffff", marginTop: 9, marginBottom: 9, }}>
+                            {data?.products?.updated_stocks || 0} sold out of {data?.products?.stock}
+                        </Label>
+                        <View style={styles.containerprogressBar}>
+                            <LinearGradient
+                                start={{ x: 0, y: 0 }}
+                                end={{ x: 1, y: 0 }}
+                                colors={["#ff9000", "#e70100"]}
+                                style={[
+                                    styles.LinerGradientProgrees,
+                                    { width: `${progress > 99 ? 99 : progress}%` },
+                                ]}
+                            />
+                            <View style={styles.GreybarWidth} />
+                        </View>
+
+
                     </View>
 
-
+                </LinearGradient>
+                <View style={styles.upperView}>
+                    <Card imageUrl={data?.products?.image} />
                 </View>
+                <View style={styles.card}>
 
-            </LinearGradient>
-            <View style={styles.upperView}>
-                <Card imageUrl={data?.products?.image} />
-            </View>
-            <View style={styles.card}>
-
-                <Label primary font={16} dark style={{ color: "#000000", marginTop: 30 }}>
-                    Get a chance to
-                    <Label notAlign primary font={16} bold style={{ color: "#E7003F" }}>
-                        {" "}WIN
+                    <Label primary font={16} dark style={{ color: "#000000", marginTop: 30 }}>
+                        Get a chance to
+                        <Label notAlign primary font={16} bold style={{ color: "#E7003F" }}>
+                            {" "}WIN
+                        </Label>
                     </Label>
-                </Label>
-                <Label font={16} dark style={{ color: "#000000" }}>
-                    {data?.products?.title}
-                </Label>
-                <Text style={styles.closingTxt}>
-                    Closing Soon
-                </Text>
-            </View>
-            <View style={styles.pdView}>
-                <Label notAlign primary font={16} bold style={{ color: "#E7003F" }}>
-                    Products Details
-                </Label>
-                <Label notAlign font={11} dark style={{ color: "#000000", lineHeight: 20 }}>
-                    {data?.products?.description}
-                </Label>
-            </View>
-            <View style={styles.card2}>
-
-                <View style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    width: widthPercentageToDP("83")
-                }}>
-                    <Text style={styles.metaText}>To enter in the lucky draw</Text>
-                    <Text style={[styles.text, { fontWeight: 'bold' }]}>{+(data?.products?.price)?.toLocaleString()}</Text>
-
+                    <Label font={16} dark style={{ color: "#000000" }}>
+                        {data?.products?.title}
+                    </Label>
+                    <Text style={styles.closingTxt}>
+                        Closing Soon
+                    </Text>
                 </View>
-                <View style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    width: widthPercentageToDP("83")
-                }}>
-                    <Text style={[styles.metaText, { fontWeight: 'bold' }]}>Buy a {data?.products?.title}</Text>
-                    <Text style={styles.text}>Gold Coin</Text>
-
+                <View style={styles.pdView}>
+                    <Label notAlign primary font={16} bold style={{ color: "#E7003F" }}>
+                        Products Details
+                    </Label>
+                    <Label notAlign font={11} dark style={{ color: "#000000", lineHeight: 20 }}>
+                        {data?.products?.description}
+                    </Label>
                 </View>
-                <TouchableOpacity
-                    onPress={() => {
-                        // navigation.navigate("SimpeStackScreen", {
-                        //     screen: "Cart",
-                        //   })]
-                       SaveIdInfo()
-                    }}
-                    style={{
-                        height: heightConverter(55),
-                        width: width - 25,
-                        position: 'absolute',
-                        bottom: 0,
-                        borderBottomLeftRadius: 10,
-                        borderBottomRightRadius: 10,
-                        justifyContent: 'center',
-                        alignItems: 'center'
-                    }}
-                >
-                    <LinearGradient
-                        start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
+                <View style={styles.card2}>
+
+                    <View style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        width: widthPercentageToDP("83")
+                    }}>
+                        <Text style={styles.metaText}>To enter in the lucky draw</Text>
+                        <Text style={[styles.text, { fontWeight: 'bold' }]}>{+(data?.products?.price)?.toLocaleString()}</Text>
+
+                    </View>
+                    <View style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        width: widthPercentageToDP("83")
+                    }}>
+                        <Text style={[styles.metaText, { fontWeight: 'bold' }]}>Buy a {data?.products?.title}</Text>
+                        <Text style={styles.text}>Gold Coin</Text>
+
+                    </View>
+                    <TouchableOpacity
+                        onPress={() => {
+                            // navigation.navigate("SimpeStackScreen", {
+                            //     screen: "Cart",
+                            //   })]
+                            SaveIdInfo()
+                        }}
                         style={{
                             height: heightConverter(55),
                             width: width - 25,
@@ -176,18 +158,31 @@ const ProductDetail = ({ props, navigation, route }) => {
                             justifyContent: 'center',
                             alignItems: 'center'
                         }}
-                        colors={["#420E92", "#E7003F"]}
-
                     >
-                        <Label primary font={16} bold style={{ color: "#ffffff" }}>
-                            Add to Cart
-                        </Label>
-                    </LinearGradient>
-                </TouchableOpacity>
+                        <LinearGradient
+                            start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
+                            style={{
+                                height: heightConverter(55),
+                                width: width - 25,
+                                position: 'absolute',
+                                bottom: 0,
+                                borderBottomLeftRadius: 10,
+                                borderBottomRightRadius: 10,
+                                justifyContent: 'center',
+                                alignItems: 'center'
+                            }}
+                            colors={["#420E92", "#E7003F"]}
+
+                        >
+                            <Label primary font={16} bold style={{ color: "#ffffff" }}>
+                                Add to Cart
+                            </Label>
+                        </LinearGradient>
+                    </TouchableOpacity>
+
+                </View>
 
             </View>
-          
-        </View>
         </ScrollView>
 
     );
