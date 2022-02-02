@@ -214,6 +214,7 @@ const index = ({ route, navigation }) => {
     })
       .then(async (response) => response.json())
       .then(async (res) => {
+        console.log("ress",res);
         if (res.status && res.status.toLowerCase() === "success") {
           await fetch(`${Config.API_URL}/user`, {
             ...requestOptions,

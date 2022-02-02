@@ -36,15 +36,16 @@ import AvatarBtn from "../../Components/AvatarBtn";
 import { RFValue } from "react-native-responsive-fontsize";
 import Entypo from 'react-native-vector-icons/Entypo';
 import styles from './styles';
-import { HomeCard, LuckyDrawCard, TriviaAvatar, ProductViewCard, TriviaNightCard } from '../../Components';
+import { HomeCard, LuckyDrawCard, TriviaAvatar, ProductViewCard, TriviaNightCard, ButtonWithRightIcon } from '../../Components';
 import dayjs from "dayjs"
 import LongButton from "../../Components/LongButton";
 import { FanJoyCard, WjBackground } from "../../Components";
 import Carousel from 'react-native-snap-carousel';
 import Video from "react-native-video";
-import { getLandingScreen } from '../../redux/actions'; 
+import { getLandingScreen } from '../../redux/actions';
 import socketIO from "socket.io-client";
-import {useTranslation} from 'react-i18next';
+import { useTranslation } from 'react-i18next';
+import WatchAddModal from "../../Components/WatchAddModal";
 const MYServer = "https://node-winjoyserver-deploy.herokuapp.com/";
 function ClosingSoon({ item }) {
   let progress = item.updated_stocks
@@ -53,7 +54,7 @@ function ClosingSoon({ item }) {
 
   // const ImgUrl = `${Config.PRODUCT_IMG}/${item.id}/${JSON.parse(item.image)[0]
   //   }`;
-  return ( 
+  return (
     <View
       style={{
         width: width * 0.38,
@@ -66,8 +67,8 @@ function ClosingSoon({ item }) {
     >
       <LoaderImage
         source={{
-         // uri: ImgUrl.replace("http://", "https://"),
-         uri:item?.image
+          // uri: ImgUrl.replace("http://", "https://"),
+          uri: item?.image
         }}
         style={{
           width: 120,
@@ -111,7 +112,7 @@ function ClosingSoon({ item }) {
   );
 }
 const index = (props) => {
-  const {t, i18n} = useTranslation();
+  const { t, i18n } = useTranslation();
   // const scrollY = new Animated.Value(0)
   // const diffClamp = Animated.diffClamp(scrollY, 0, 45)
   // const translateY = diffClamp.interpolate({
@@ -134,6 +135,7 @@ const index = (props) => {
   const [videoAction, setVideoAction] = useState(true);
   const dispatch = useDispatch();
   const socket = socketIO(MYServer);
+  const AddModalState = useRef();
   const onRefresh = React.useCallback(() => {
     // setBanners(null);
     setRefreshing(true);
@@ -149,7 +151,7 @@ const index = (props) => {
     dispatch(getLandingScreen());
   };
   const initialLoad = () => {
-   
+
     var CurrentDate = dayjs().format("YYYY-MM-DDThh:mm:ss.000000Z");
     var duration = dayjs(LandingData?.gameshow?.start_date).diff(dayjs(CurrentDate), 'seconds');
     setTime(duration)
@@ -170,7 +172,7 @@ const index = (props) => {
     if (item.type === "image") {
       return (
         <View key={index}>
-          <Image source={{ uri:item.url }}
+          <Image source={{ uri: item.url }}
             resizeMode={"cover"}
             style={styles.ShoppingBanner}
           />
@@ -181,7 +183,7 @@ const index = (props) => {
         <View key={index} style={{ backgroundColor: '#000000', borderBottomLeftRadius: 15, borderBottomRightRadius: 15 }}>
           {item.url ? (
             <Video
-              source={{ uri:item.url }}  // Can be a URL or a local file.
+              source={{ uri: item.url }}  // Can be a URL or a local file.
               // ref={(ref) => { this.player = ref }}  // Store reference
               resizeMode={"cover"}
               paused={index !== activeSlide}
@@ -215,19 +217,19 @@ const index = (props) => {
           zIndex: 100,
         }}
       > */}
-        <Header style={{
-           position: 'absolute',
-            zIndex: 1000,
-             backgroundColor:headerValue!==0?'rgba(0,0,0,0.5)':null,
-              width: '100%',
-              borderBottomRightRadius:10,
-              borderBottomLeftRadius:10
-               }} />
+      <Header style={{
+        position: 'absolute',
+        zIndex: 1000,
+        backgroundColor: headerValue !== 0 ? 'rgba(0,0,0,0.5)' : null,
+        width: '100%',
+        borderBottomRightRadius: 10,
+        borderBottomLeftRadius: 10
+      }} />
       {/* </Animated.View> */}
       <ScrollView
-        onScroll={(e)=>{
-          setHeaderValue(e.nativeEvent.contentOffset.y) 
-      }}
+        onScroll={(e) => {
+          setHeaderValue(e.nativeEvent.contentOffset.y)
+        }}
         style={{ backgroundColor: "#f6f1f3" }}
         refreshControl={
           <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
@@ -241,29 +243,23 @@ const index = (props) => {
               {loader ? (
                 <ActivityIndicator size="large" color="#fff" />
               ) : (
-                // <Carousel
-                //   layout={"default"}
-                //   resizeMode={"cover"}
-                //   loop={videoAction}
-                //   autoplay={videoAction}
-                //   autoplayInterval={3000}
+                <Carousel
+                  layout={"default"}
+                  resizeMode={"cover"}
+                  loop={videoAction}
+                  autoplay={videoAction}
+                  autoplayInterval={3000}
 
-                //   // ref={ref => this.carousel = ref}
-                //   data={LandingData?.banners}
-                //   sliderWidth={width}
-                //   itemWidth={width}
-                //   renderItem={_renderItem}
-                //   style={styles.ShoppingBanner}
-                //   onSnapToItem={index => setActiveSlide(index)}
-                // />
-                null
-              
+                  // ref={ref => this.carousel = ref}
+                  data={LandingData?.banners}
+                  sliderWidth={width}
+                  itemWidth={width}
+                  renderItem={_renderItem}
+                  style={styles.ShoppingBanner}
+                  onSnapToItem={index => setActiveSlide(index)}
+                />
               )}
-
             </View>
-
-
-
             <View
               style={styles.yellowBtn}
             >
@@ -292,12 +288,19 @@ const index = (props) => {
 
           </LinearGradient>
 
-
+          <View style={{ justifyContent: 'center', alignItems: 'center', height: height * 0.08,marginTop:10 }}>
+            <ButtonWithRightIcon
+              btnStyle={{ backgroundColor: '#420E92' }}
+              text={"How it works"}
+              textStyle={{ color: '#fff', fontFamily: 'Axiforma SemiBold' }}
+              onPress={() => AddModalState.current(true)}
+            />
+          </View>
 
 
           <FlatList
             horizontal={true}
-            style={{ marginLeft: 1, minHeight: 50, width: '100%', }}
+            style={{ marginLeft: 1,  width: '100%', }}
             contentContainerStyle={{
 
               marginLeft: 10,
@@ -323,12 +326,12 @@ const index = (props) => {
                 item={item}
                 onPress={() => {
                   item.id === 1 ? (
-                    navigation.navigate("TriviaJoy")  
+                    navigation.navigate("TriviaJoy")
                   ) : item.id === 2 ? (
                     navigation.navigate("DealsJoy")
                   ) : (
-                  //  navigation.navigate("FanJoy")
-                  navigation.navigate("AllCreatorsPage")
+                    //  navigation.navigate("FanJoy")
+                    navigation.navigate("AllCreatorsPage")
                   )
                 }} />
               // </TouchableOpacity>
@@ -451,6 +454,11 @@ const index = (props) => {
           />
           <View style={{ height: 10 }} />
         </View>
+        <WatchAddModal ModalRef={AddModalState} details
+        video={"https://winjoy-assets.s3.amazonaws.com/banners/banner-3.mp4"}
+      // id={idVideoAdd}
+      // onPressContinue={onPressContinue} 
+      />
       </ScrollView>
     </View >
   );
