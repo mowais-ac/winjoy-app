@@ -35,14 +35,14 @@ import Colors from "../../Constants/Colors";
 import LongButton from "../../Components/LongButton";
 import { useFocusEffect } from "@react-navigation/native";
 import { wait } from "../../Constants/Functions";
-import {useSelector } from "react-redux";
-const index = ({ props, navigation,route }) => {
+import { useSelector } from "react-redux";
+const index = ({ props, navigation, route }) => {
   const [userData, setUserData] = useState([]);
   const [userInfo, setUserInfo] = useState();
   const [selected, setSelected] = useState(1);
   const [friendData, setFriendData] = useState([]);
   const [Data, setData] = useState(null);
-  const routeSelected =route?.params?.selected;
+  const routeSelected = route?.params?.selected;
   const [activity, setActivity] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const user = useSelector(state => state.app.userData);
@@ -57,19 +57,19 @@ const index = ({ props, navigation,route }) => {
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    setFriendData([]);
-    setUserData([]);
+    GetData();
+    MyFriends();
     wait(500).then(() => setRefreshing(false));
   }, []);
 
   useFocusEffect(
-    React.useCallback(() => {    
-    if(routeSelected){ 
-    setSelected(routeSelected)
-  } 
+    React.useCallback(() => {
+      if (routeSelected) {
+        setSelected(routeSelected)
+      }
     }, [routeSelected])
-    );
-    
+  );
+
   const GetData = async () => {
     setActivity(true)
     const Token = await EncryptedStorage.getItem("Token");
@@ -98,19 +98,19 @@ const index = ({ props, navigation,route }) => {
 
     const Token = await EncryptedStorage.getItem("Token");
     const requestOptions = {
-        headers: {
-            "Content-Type": "multipart/form-data",
-            Accept: "application/json",
-            Authorization: `Bearer ${Token}`,
-        },
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Accept: "application/json",
+        Authorization: `Bearer ${Token}`,
+      },
     };
     // alert(13123);
     await axios.get(`${Config.API_URL}/accepted-connections/list`, requestOptions).then(response => {
-        let res = response.data;
-        setFriendData( res.data[0])
+      let res = response.data;
+      setFriendData(res.data[0])
     });
 
-}
+  }
   const GetField = (props) => {
     const { name, val, style } = props;
     return (
@@ -136,9 +136,9 @@ const index = ({ props, navigation,route }) => {
       <View style={styles.aView}>
         <View style={styles.avatarView}>
           <ProfilePicture
-            picture={userInfo?.profile_image}
+            picture={Config.Profile_URL + "/" + userInfo?.profile_image}
             id={userInfo?.id}
-           // name={(userInfo?.first_name.slice(0, 1) + userInfo?.last_name.slice(0, 1))}
+            // name={(userInfo?.first_name.slice(0, 1) + userInfo?.last_name.slice(0, 1))}
             style={styles.avatarView}
             font={28}
           />
@@ -197,15 +197,15 @@ const index = ({ props, navigation,route }) => {
                 <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
               }
               ListEmptyComponent={
-                activity?(
+                activity ? (
                   <ActivityIndicator size="large" color="#fff" />
-                ):(
+                ) : (
                   <NotFound
-                  text="Games"
-                  desc="You don't have win any Games yet "
-                  ConModal
-                />
-                ) 
+                    text="Games"
+                    desc="You don't have win any Games yet "
+                    ConModal
+                  />
+                )
               }
               ItemSeparatorComponent={() => {
                 return (
@@ -222,7 +222,7 @@ const index = ({ props, navigation,route }) => {
               renderItem={({ item, index }) => {
                 return (
                   <TriviaCard
-                    userInfo={userInfo}
+                    userInfo={user}
                     userData={item}
                     onPress={() => navigation.navigate("MenuStack")}
                   />
@@ -232,38 +232,38 @@ const index = ({ props, navigation,route }) => {
           </>
         ) : (null)}
         {selected === 2 ? (
-          <View style={{marginTop:10}}>
-            <Label  bold headingtype="h4">
-        Personal Details
-      </Label>
-      {Data === null ? (
-        <ActivityIndicator size="large" color={Colors.BLACK} />
-      ) : (
-        <>
-          <Section style={styles.Personal}>
-            <View style={{ marginTop: height * 0.005 }}>
-              <GetField name="First name" val={Data.first_name} />
-              <GetField name="Last name" val={Data.last_name} />
-              <GetField name="Username" val={Data.user_name} />
-              <GetField name="Email" val={Data.email} />
-              <GetField name="Country" val={Data.country} />
-              <GetField name="City" val={Data.city} />
-              <GetField name="Address" val={Data.address} />
-              <GetField name="Phone" val={Data.phone_no} />
-              <LongButton
-                light
-                shadowless
-                text="Edit"
-                style={styles.EditBtn}
-                onPress={() =>
-                  navigation.navigate("MenuStack", { screen: "EditProfile" })
-                }
-              />
-            </View>
-          </Section>         
-          </>
-           )}
-           </View>
+          <View style={{ marginTop: 10 }}>
+            <Label bold headingtype="h4">
+              Personal Details
+            </Label>
+            {Data === null ? (
+              <ActivityIndicator size="large" color={Colors.BLACK} />
+            ) : (
+              <>
+                <Section style={styles.Personal}>
+                  <View style={{ marginTop: height * 0.005 }}>
+                    <GetField name="First name" val={user?.first_name} />
+                    <GetField name="Last name" val={user?.last_name} />
+                    <GetField name="Username" val={user?.user_name} />
+                    <GetField name="Email" val={user?.email} />
+                    <GetField name="Country" val={user?.country} />
+                    <GetField name="City" val={user?.city} />
+                    <GetField name="Address" val={user?.address} />
+                    <GetField name="Phone" val={user?.phone_no} />
+                    <LongButton
+                      light
+                      shadowless
+                      text="Edit"
+                      style={styles.EditBtn}
+                      onPress={() =>
+                        navigation.navigate("MenuStack", { screen: "EditProfile" })
+                      }
+                    />
+                  </View>
+                </Section>
+              </>
+            )}
+          </View>
         ) : (null)}
         {selected === 3 ? (
           <>
@@ -284,15 +284,15 @@ const index = ({ props, navigation,route }) => {
                 <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
               }
               ListEmptyComponent={
-                activity?(
+                activity ? (
                   <ActivityIndicator size="large" color="#fff" />
-                ):(
+                ) : (
                   <NotFound
-                  text="Friends"
-                  desc="You don't have any Friend yet "
-                  ConModal
-                />
-                ) 
+                    text="Friends"
+                    desc="You don't have any Friend yet "
+                    ConModal
+                  />
+                )
               }
               ItemSeparatorComponent={() => {
                 return (
@@ -310,7 +310,7 @@ const index = ({ props, navigation,route }) => {
                 return (
                   <TriviaCard
                     userData={item}
-                    //onPress={() => navigation.navigate("HamburgerMenu")}
+                  //onPress={() => navigation.navigate("HamburgerMenu")}
                   />
                 );
               }}

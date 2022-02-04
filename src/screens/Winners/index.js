@@ -27,6 +27,7 @@ import RefferLifeLineModal from "../../Components/RefferLifeLineModal";
 import BuyLifeCongrats from "../../Components/BuyLifeCongrats";
 import { GameShowWinners, LuckyDrawWinnersAPI } from '../../redux/actions';
 import LuckyDraw from "./LuckyDraw";
+import { useFocusEffect } from "@react-navigation/native";
 const { width, height } = Dimensions.get("window");
 const index = ({ route, navigation }) => {
   const livePlans = useSelector(state => state.app.livePlans);
@@ -42,16 +43,25 @@ const index = ({ route, navigation }) => {
   const [lives, setLives] = useState();
   const [idVideoAdd, setIdVideoAdd] = useState();
   const [id, setId] = useState();
-  const [selected, setSelected] = useState(0);
+  const [selected, setSelected] = useState(0); 
   const dispatch = useDispatch();
   const dispatch2 = useDispatch();
+  const routeSelected =route?.params?.selected;
   useEffect(() => {
+    console.log("rrrr",routeSelected);
     //  dispatch(getLiveShowPlans());
     dispatch(GameShowWinners());
     dispatch2(LuckyDrawWinnersAPI());
     //  dispatch(buyLivePlans());
     console.log("luckyDrawWinners", luckyDrawWinners);
   }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      if (routeSelected) {
+        setSelected(routeSelected)
+      }
+    }, [routeSelected])
+  );
 
   const onPressFirst = () => {
     setSelected(0)

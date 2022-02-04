@@ -20,7 +20,7 @@ const AvatarBtn = (props) => {
     />
   ) : (
     <View style={[styles.ProfileView, styles.ProfileBG, style]}>
-      <Label adjustsFontSizeToFit={true} font={font || 18} bold style={styles.Text}>
+      <Label adjustsFontSizeToFit={true} font={18} bold style={styles.Text}>
         {name}
       </Label>
     </View>

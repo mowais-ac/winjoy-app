@@ -40,6 +40,7 @@ const index = ({ route, navigation }) => {
     console.log("dataimage", expData);
   }, []);
   const onPressCreator = (id) => {
+   // alert(id)
     dispatch2({
       type: types.CREATOR_ID,
       creatorId: id
@@ -109,7 +110,7 @@ const index = ({ route, navigation }) => {
                 <Text style={[styles.textHeading, { textAlign: 'center', marginLeft: 3 }]}>Trending Products</Text>
               </View>
 
-            </View>
+            </View> 
 
             <FlatList
               data={data?.products}

@@ -14,7 +14,7 @@ import { useNavigation } from "@react-navigation/native";
 import SmallPopup from "./SmallPopup";
 import EncryptedStorage from "react-native-encrypted-storage";
 import Config from "react-native-config";
-
+import {useSelector } from "react-redux";
 const { width, height } = Dimensions.get("window");
 
 const UserInfo = (props) => {
@@ -22,6 +22,7 @@ const UserInfo = (props) => {
   const navigation = useNavigation();
 
   const [Data, setData] = useState(null);
+  const userData = useSelector(state => state.app.userData);
 
   useEffect(() => {
     const check = async () => {
@@ -36,25 +37,25 @@ const UserInfo = (props) => {
   });
   return (
     <View style={props.style}>
-      {Data === null && props.OwnUser ? (
+      {userData === null && props.OwnUser ? (
         <ActivityIndicator size="large" color={Colors.WHITE} />
       ) : (
         <>
           <View style={styles.ProfilePictureContainer}>
             <ProfilePicture
-              picture={Data?.profile_image}
-              id={Data?.id}
-              name={Data?.first_name?.slice(0, 1) + Data?.last_name?.slice(0, 1)}
+              picture={Config?.Profile_URL+'/'+userData?.profile_image}
+              id={userData?.id}
+              name={userData?.first_name?.slice(0, 1) + userData?.last_name?.slice(0, 1)}
             />
           </View>
           <View style={styles.ProfileInfo}>
             <Label headingtype="h3" notAlign bold2>
               {props.OwnUser
-                ? `${Data.first_name} ${Data.last_name}`
+                ? `${userData?.first_name} ${userData?.last_name}`
                 : props.name}
             </Label>
             <Label notAlign>
-              @{props.OwnUser ? Data.user_name : props.user}
+              @{props.OwnUser ? userData?.user_name : props.user}
             </Label>
           </View>
           {pencil && (

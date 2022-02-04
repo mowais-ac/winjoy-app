@@ -26,15 +26,17 @@ import LabelButton from "../../Components/LabelButton";
 import CountryModal from "../../Components/CountryModal";
 import ValidateModal from "../../Components/ValidateModal";
 import GoBack from "../../Components/GoBack";
-import {useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import types from "../../redux/types";
 const { width, height } = Dimensions.get("window");
 
 const index = ({ route, navigation }) => {
+  const dispatch = useDispatch();
   const ReceivedType = route.params && route.params.ReceivedType;
   const [EditType, setEditType] = useState(ReceivedType || 0);
   const [OldUser, setOldUser] = useState(null);
   const userData = useSelector(state => state.app.userData);
-  useEffect(() => { 
+  useEffect(() => {
     let isActive = true;
     const check = async () => {
       if (OldUser === null && isActive) {
@@ -101,8 +103,9 @@ const index = ({ route, navigation }) => {
       address,
     };
     PerformApiFunc(JSONBody);
-
+    console.log("pictureref.current", pictureref.current);
     if (pictureref.current !== null) {
+      console.log("pictureref.current", pictureref.current);
       const Token = await EncryptedStorage.getItem("Token");
       const body = JSONtoForm({
         profile_image: `data:${pictureref?.current?.mime};base64, ${pictureref?.current?.data}`,
@@ -119,7 +122,7 @@ const index = ({ route, navigation }) => {
       await fetch(`${Config.API_URL}/update/user/profile-image`, requestOptions)
         .then(async (response) => response.json())
         .then(async (res) => {
-          console.log("respic",res)
+          console.log("respic", res)
           if (!res.status || res.status.toLowerCase() !== "success")
             Alert.alert("Error", "Profile image not updating");
         });
@@ -164,7 +167,7 @@ const index = ({ route, navigation }) => {
           Accept: "application/json",
           Authorization: `Bearer ${Token}`,
         },
-        body, 
+        body,
       };
       ButtonRef.current.SetActivity(true);
       await fetch(`${Config.API_URL}/user/password-change`, requestOptions)
@@ -214,33 +217,22 @@ const index = ({ route, navigation }) => {
     })
       .then(async (response) => response.json())
       .then(async (res) => {
-        console.log("ress",res);
-        if (res.status && res.status.toLowerCase() === "success") {
-          await fetch(`${Config.API_URL}/user`, {
-            ...requestOptions,
-            method: "GET",
-          })
-            .then(async (response) => response.json())
-            .then(async (res2) => {
-              console.log("res2",res);
-              if (
-                res.message === "Unauthenticated." ||
-                res.message === "Enter 6 Digit Code which sent on your email"
-              ) {
-                return false;
-              }
-              await EncryptedStorage.setItem("User", JSON.stringify(res2));
-            });
-          Alert.alert(res.status, res.message);
+        console.log("ress", res);
+        if (res.status === 'Success') {
+          dispatch({
+            type: types.USER_DATA,
+            userData: res?.user,
+            //  user: res.data.data,
+          });
+          alert(res.message)
 
+
+          ButtonRef.current.SetActivity(false);
           navigation.reset({
             index: 0,
-            routes: [{ name: "Splash" }],
+            routes: [{ name: "Profile" }],
           });
-        } else {
-          Alert.alert("Error", res.message);
         }
-        ButtonRef.current.SetActivity(false);
       })
       .catch((e) => {
         console.log(e);
@@ -412,13 +404,13 @@ const index = ({ route, navigation }) => {
             name="First Name"
             style={styles.PersonalBtn}
             ref={fname}
-            value={OldUser.first_name}
+            value={userData?.first_name}
           />
           <GetField
             name="Last Name"
             style={styles.PersonalBtn}
             ref={lname}
-            value={OldUser.last_name}
+            value={userData?.last_name}
           />
         </View>
         <GetField
@@ -426,7 +418,7 @@ const index = ({ route, navigation }) => {
           ref={uname}
           autoCapitalize="none"
           editable={false}
-          value={OldUser.user_name}
+          value={userData?.user_name}
         />
         <ValidateModal
           ModalRef={ValidateRef}
@@ -436,7 +428,7 @@ const index = ({ route, navigation }) => {
           <GetField
             name="Email"
             ref={emailref}
-            value={OldUser.email}
+            value={userData?.email}
             editable={false}
           />
         </TouchableOpacity>
@@ -444,7 +436,7 @@ const index = ({ route, navigation }) => {
           <GetField
             name="Phone Number"
             ref={phone_noref}
-            value={OldUser.phone_no}
+            value={userData?.phone_no}
             editable={false}
           />
         </TouchableOpacity>
@@ -455,12 +447,12 @@ const index = ({ route, navigation }) => {
         <GetField
           name="City"
           ref={cityref}
-          value={OldUser.city === "null" ? "N/A" : OldUser.city}
+          value={userData?.city === "null" ? "N/A" : userData?.city}
         />
         <GetField
           name="Address"
           ref={addressref}
-          value={OldUser.address === "null" ? "N/A" : OldUser.address}
+          value={userData?.address === "null" ? "N/A" : userData?.address}
         />
         <GetProfilePic />
       </>
@@ -469,21 +461,21 @@ const index = ({ route, navigation }) => {
   const Career = () => {
     return (
       <>
-        <GetField name="Designation" ref={dref} value={OldUser.designation} />
+        <GetField name="Designation" ref={dref} value={userData?.designation} />
         <GetField
           name="Company"
           ref={companyref}
-          value={OldUser.company_name}
+          value={userData?.company_name}
         />
         <GetField
           name="Office address"
           ref={oaddressref}
-          value={OldUser.office_address}
+          value={userData?.office_address}
         />
         <GetField
           name="Office phone"
           ref={ophoneref}
-          value={OldUser.office_no}
+          value={userData?.office_no}
         />
       </>
     );
@@ -505,7 +497,7 @@ const index = ({ route, navigation }) => {
         <Background height={0.2} />
         <Header value={3} />
         <View style={styles.MainTop}>
-          {OldUser !== null && (
+          {userData !== null && (
             <UserInfo style={styles.header} OwnUser popup status />
           )}
         </View>
@@ -529,7 +521,7 @@ const styles = StyleSheet.create({
   TopButtonsView: {
     width: width,
     flexDirection: "row",
-    justifyContent:"space-around"
+    justifyContent: "space-around"
   },
   TopButton: {
     width: width * 0.3,

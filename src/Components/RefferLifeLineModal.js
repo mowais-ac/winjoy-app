@@ -48,6 +48,7 @@ const RefferLifeLineModal = (props) => {
 
   const ModalState = useRef();
   const ModalStateError = useRef();
+  const totalLives = useRef();
   const livePlans = useSelector(state => state.app.livePlans);
   const dispatch = useDispatch();
   const [ModelState, setModelState] = useState({
@@ -238,6 +239,7 @@ const RefferLifeLineModal = (props) => {
         console.log("ress", res);
         if (res.status === "success") {
           dispatch(getLiveShowPlans());
+          totalLives.current=res?.lives
           SucessModalState.current(true)
         }
         else {
@@ -536,8 +538,8 @@ const RefferLifeLineModal = (props) => {
             <Modals ModalRef={ModalStateError} Error />
             <BuyLifeCongrats ModalRef={SucessModalState}
               heading={"Congratulations"}
-              description={"4 lives are ready to use. Feel free to play more games & win amazin prizes."}
-              requestOnPress={() => {
+              description={totalLives.current+" lives are ready to use. Feel free to play more games & win amazin prizes."}
+              requestOnPress={() => { 
 
                 SucessModalState.current(false)
 

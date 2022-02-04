@@ -47,6 +47,7 @@ const index = ({ navigation }) => {
   const [total, setTotal] = useState(0);
   const [activity, setActivity] = useState(false);
   const [updateData, setUpdateData] = useState(false);
+  const [listloader, setListloader] = useState(false);
   const [ModelState, setModelState] = useState({
     state: false,
     details: null,
@@ -58,7 +59,7 @@ const index = ({ navigation }) => {
     wait(500).then(() => setRefreshing(false));
   }, []);
   const PostData = async () => {
-    setActivity(true)
+    
     let dat = [];
     let postData = {};
     console.log("dataP", Data);
@@ -86,6 +87,8 @@ const index = ({ navigation }) => {
     await fetch(`${Config.API_URL}/buy/product`, requestOptions)
       .then((response) => response.json())
       .then(async (res) => {
+        setActivity(true)
+        console.log("reesss",res);
         setActivity(false)
         console.log("ress", res);
         if (res.status === "error") {
@@ -115,6 +118,7 @@ const index = ({ navigation }) => {
     
   }, []);
   const GetData = async () => {
+    setListloader(false)
     let dat = await AsyncStorage.getItem('ids');
     //  let data=[1,2,3,4,5]
     let ids = "";
@@ -124,7 +128,9 @@ const index = ({ navigation }) => {
     console.log("ids", ids);
     console.log("dat", dat);
     let isActive = true;
+    
     const check = async () => {
+      setListloader(true)
       if (Data.length<=0) {
         const Token = await EncryptedStorage.getItem("Token");
         const requestOptions = {
@@ -147,9 +153,10 @@ const index = ({ navigation }) => {
             console.log("total", total);
             if (!isActive) return;
             setData(res.data[0]);
-          
+            setListloader(false)
           });
       }
+      setListloader(false)
     };
     check();
 
@@ -196,10 +203,10 @@ const index = ({ navigation }) => {
               />
             </View>
             <View style={[styles.TextView, { width: width * 0.48 }]}>
-              <Label notAlign dark bold2 headingtype="h5" style={{ width: width * 0.48 }}>
+              <Label notAlign dark bold2 headingtype="h5" style={{ width: width * 0.48, }}>
                 {item.title}
               </Label>
-              <Label notAlign darkmuted bold headingtype="h6">
+              <Label notAlign darkmuted bold font={12} style={{ width: width * 0.5,height:height*0.05 }}>
                 {item.description}
               </Label>
               <Label
@@ -225,7 +232,7 @@ const index = ({ navigation }) => {
   return (
     <SafeAreaView style={{ height: height }}>
       <Background height={0.2} />
-      <Header value={3} />
+      <Header  value={3} />
       <View style={styles.MainTop}>
         <UserInfo style={styles.header} OwnUser popup status />
       </View>
@@ -243,11 +250,11 @@ const index = ({ navigation }) => {
               scrollEnabled={true}
               keyExtractor={(e) => e.id.toString()} 
               extraData={updateData}
-              ListEmptyComponent={<NotFoundCart text="Cart" />}
+              ListEmptyComponent={listloader?(<ActivityIndicator size="large" color="#000000" style={{marginTop:height*0.2}} />):(<NotFoundCart text="Cart" />)}
               ListHeaderComponent={() => 
                 
                   <Label primary bold headingtype="h4" style={{ marginTop: 15 }}>
-                    Cart
+                    Cart 
                   </Label>
                
               }

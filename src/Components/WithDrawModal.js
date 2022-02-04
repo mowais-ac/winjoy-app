@@ -8,7 +8,8 @@ import {
   TouchableWithoutFeedback,
   Alert,
   TouchableOpacity,
-  TextInput
+  TextInput,
+  ActivityIndicator
 } from "react-native";
 import Label from "./Label";
 import LabelButton from "./LabelButton";
@@ -24,9 +25,11 @@ import LinearGradient from "react-native-linear-gradient";
 import { heightConverter } from "./Helpers/Responsive";
 import { strings } from "../i18n";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
+import { useTranslation } from 'react-i18next';
 const { width, height } = Dimensions.get("window");
 
 const WithDrawModal = (props) => {
+  const { t, i18n } = useTranslation();
   const [ModelState, setModelState] = useState({
     state: false,
     details: null,
@@ -50,7 +53,7 @@ const WithDrawModal = (props) => {
       animationType="slide"
       transparent={true}
       visible={ModelState.state}
-      statusBarTranslucent={false}
+      statusBarTranslucent={false} 
       onRequestClose={() => {
         setModelState({
           ...ModelState,
@@ -78,7 +81,7 @@ const WithDrawModal = (props) => {
         <KeyboardAwareScrollView keyboardDismissMode="interactive">
           <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', marginTop: 20 }}>
             <Label notAlign primary font={16} bold2 style={{ color: "#E7003F", }}>
-              {strings("wallet.your_wallet")}
+              {t("your_wallet")}
             </Label>
 
             <Label notAlign primary font={18} dark style={{ color: "#0B2142" }}>
@@ -106,6 +109,7 @@ const WithDrawModal = (props) => {
 
             <TouchableOpacity
               onPress={() => { props.onPressWithDrawal() }}
+              disabled={props?.activity}
               style={{
                 height: heightConverter(20),
                 width: width * 0.9,
@@ -129,16 +133,20 @@ const WithDrawModal = (props) => {
 
 
               >
-                <Label primary font={16} bold style={{ color: "#ffffff" }}>
+               {props.activity?(
+                 <ActivityIndicator size="large" color="#ffffff" />
+               ):(
+                  <Label primary font={16} bold style={{ color: "#ffffff" }}>
                   REQUEST WITHDRAWAL
                 </Label>
+               )}
               </View>
             </TouchableOpacity>
             <Label primary notAlign headingtype="h3" bold2 font={16} style={{ marginTop: height * 0.06, color: '#000000', marginLeft: width * 0.04, }}>
               Your remaining balance will be
             </Label>
             <Label primary notAlign headingtype="h3" bold2 font={16} style={{ marginLeft: width * 0.04, }}>
-              AED 50
+              AED {props.yourBalance-props.ammount}
             </Label>
           </View>
         </KeyboardAwareScrollView>
@@ -289,7 +297,7 @@ const styles = StyleSheet.create({
   MarginLarge: {
     width: width * 0.65,
     paddingLeft: width * 0.06,
-    fontSize: RFValue(12),
-    color: Colors.PRIMARY_LABEL
+    fontSize: RFValue(14),
+    color: Colors.DARK_LABEL
   },
 });
