@@ -36,7 +36,7 @@ import AvatarBtn from "../../Components/AvatarBtn";
 import { RFValue } from "react-native-responsive-fontsize";
 import Entypo from 'react-native-vector-icons/Entypo';
 import styles from './styles';
-import { HomeCard, LuckyDrawCard, TriviaAvatar, ProductViewCard, TriviaNightCard, ButtonWithRightIcon } from '../../Components';
+import { HomeCard, LuckyDrawCard, TriviaAvatar, ProductViewCard, TriviaNightCard, ButtonWithRightIcon, TrendingCards } from '../../Components';
 import dayjs from "dayjs"
 import LongButton from "../../Components/LongButton";
 import { FanJoyCard, WjBackground } from "../../Components";
@@ -119,6 +119,7 @@ const index = (props) => {
   //   inputRange: [0, 45],
   //   outputRange: [0, -45]
   // })
+ 
   const [headerValue, setHeaderValue] = useState(0);
   const { Coins, navigation } = props;
   const [loader, setLoader] = useState(false);
@@ -164,6 +165,7 @@ const index = (props) => {
     }, [])
   );
   useEffect(() => {
+   
     dispatch(getLandingScreen());
     setGameShowData(LandingData?.gameShow)
   }, []);
@@ -278,9 +280,9 @@ const index = (props) => {
               <TouchableOpacity onPress={() => navigation.navigate("WALLET")}>
                 <View style={styles.secondHeaderMiddleView}>
                   <Text style={[styles.text, { color: '#fff', fontSize: RFValue(14) }]}>
-                    {userData?.first_name.charAt(0).toUpperCase() + userData?.first_name.slice(1)} {userData?.last_name.charAt(0).toUpperCase() + userData?.last_name.slice(1)}
+                    {userData?.first_name?.charAt(0).toUpperCase() + userData?.first_name?.slice(1)} {userData?.last_name?.charAt(0).toUpperCase() + userData?.last_name?.slice(1)}
                   </Text>
-                  <Text style={[styles.text, { color: '#fff', fontSize: RFValue(14) }]}>Your balance: <Text style={[styles.text, { color: '#ffff00', fontSize: RFValue(14) }]}>AED {userData.balance ? userData.balance : 0}</Text></Text>
+                  <Text style={[styles.text, { color: '#fff', fontSize: RFValue(14) }]}>Your balance: <Text style={[styles.text, { color: '#ffff00', fontSize: RFValue(14) }]}>AED {userData?.balance ? userData?.balance : 0}</Text></Text>
                 </View>
               </TouchableOpacity>
               <Entypo name="chevron-thin-right" size={22} color="#fff" style={{ marginTop: 6.5, marginRight: 6 }} />
@@ -288,7 +290,7 @@ const index = (props) => {
 
           </LinearGradient>
 
-          <View style={{ justifyContent: 'center', alignItems: 'center', height: height * 0.08,marginTop:10 }}>
+          <View style={{ justifyContent: 'center', alignItems: 'center', height: height * 0.08, marginTop: 10 }}>
             <ButtonWithRightIcon
               btnStyle={{ backgroundColor: '#420E92' }}
               text={"How it works"}
@@ -300,7 +302,7 @@ const index = (props) => {
 
           <FlatList
             horizontal={true}
-            style={{ marginLeft: 1,  width: '100%', }}
+            style={{ marginLeft: 1, width: '100%', }}
             contentContainerStyle={{
 
               marginLeft: 10,
@@ -405,7 +407,7 @@ const index = (props) => {
           <LinearGradient
             start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
             colors={["#f8d7e8", "#c7dfe8"]}
-            style={{ width: '100%', justifyContent: 'center', paddingLeft: 20, paddingTop: 20, paddingBottom: 20 }}
+            style={{ width: '100%', justifyContent: 'center', paddingLeft: 15, paddingTop: 20, paddingBottom: 20 }}
           >
             <View style={{ width: "95%", flexDirection: 'row', justifyContent: 'space-between' }}>
               <View>
@@ -426,20 +428,22 @@ const index = (props) => {
             </View>
 
             <FlatList
-              data={LandingData?.funJoy}
+              data={LandingData?.products}
               horizontal={true}
+              //   style={{ paddingLeft: 12 }}
               renderItem={({ item }) =>
-                <FanJoyCard
+                <TrendingCards
                   onPress={() => navigation.navigate("AllCreatorsPage")}
-                  name={item.user_name}
-                  style={{ width: 150, marginRight: 20 }}
-                  imageUrl={item?.image}
-                  fans={item?.fans}
+                  imageUrl={item.image}
+                  title={item?.title}
+                  price={item?.price}
+                  style={{ width: width * 0.38, height: height * 0.33, }}
+                  imageStyle={{ width: width * 0.35, height: height * 0.22, borderRadius: 15 }}
                 />
               }
               //keyExtractor={(e) => e.id.toString()}
               contentContainerStyle={{
-                marginTop: 20,
+                marginTop: 10,
               }}
               // refreshControl={
               //   <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
@@ -447,18 +451,20 @@ const index = (props) => {
               keyExtractor={(item) => item.id}
             />
           </LinearGradient>
-
-          <LuckyDrawCard
-            onPress={() => navigation.navigate("GameStack")}
-            style={{ marginTop: 15, }}
-          />
+          <TouchableOpacity onPress={()=>navigation.navigate('WINNERS', {
+                          selected: 1 
+                        })}> 
+            <LuckyDrawCard
+              style={{ marginTop: 15, }}
+            />
+          </TouchableOpacity>
           <View style={{ height: 10 }} />
         </View>
         <WatchAddModal ModalRef={AddModalState} details
-        video={"https://winjoy-assets.s3.amazonaws.com/banners/banner-3.mp4"}
-      // id={idVideoAdd}
-      // onPressContinue={onPressContinue} 
-      />
+          video={"https://winjoy-assets.s3.amazonaws.com/banners/banner-3.mp4"}
+        // id={idVideoAdd}
+        // onPressContinue={onPressContinue} 
+        />
       </ScrollView>
     </View >
   );

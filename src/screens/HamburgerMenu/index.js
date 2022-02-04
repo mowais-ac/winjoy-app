@@ -8,7 +8,8 @@ import {
   Text,
   FlatList,
   Image,
-  I18nManager
+  Linking,
+  Alert
 } from "react-native";
 import Label from "../../Components/Label";
 const { width, height } = Dimensions.get("window");
@@ -41,19 +42,16 @@ import RNRestart from 'react-native-restart';
 import { WjBackground } from "../../Components";
 import SelectLanguageModal from "../../Components/SelectLanguageModal";
 import SelectCurrencyModal from "../../Components/SelectCurrencyModal";
+import { connect, useDispatch, useSelector } from "react-redux";
 const index = ({ props, navigation }) => {
+  const userData = useSelector(state => state.app.userData);
   const { t, i18n } = useTranslation();
   const [headerValue, setHeaderValue] = useState(0);
   const ModalStateLanguage = useRef();
   const ModalStateCurrency = useRef();
-  const [userData, setUserData] = useState([]);
   const [friendData, setFriendData] = useState([]);
   const { signOut } = React.useContext(AuthContext);
-  const UserInfo = async () => {
-    const userInfo = JSON.parse(await EncryptedStorage.getItem("User"));
-    setUserData(userInfo);
-    console.log(userInfo);
-  };
+
   let data2 = [
     {
       name: t("wallet"),
@@ -117,24 +115,39 @@ const index = ({ props, navigation }) => {
         setFriendData(res.data[0]);
       });
   };
-  const languageRestart = async (item) => {
-    console.log("lang", item.value);
-
-    if (item.value === "ar") {
-      if (I18nManager.isRTL) {
-        I18nManager.forceRTL(false);
-      }
-    } else {
-      if (!I18nManager.isRTL) {
-        I18nManager.forceRTL(true);
-      }
-    }
-    RNRestart.Restart();
-  };
   useEffect(() => {
-    UserInfo();
     MyFriends();
   }, []);
+  const OpenWhatsApp = () => {
+    Linking.openURL(
+      'http://api.whatsapp.com/send?phone=971501235240'
+    );
+  };
+  const OpenInsta = () => {
+    let appUrl = "https://www.instagram.com/winjoyae?utm_medium=copy_link";
+    Linking.openURL(appUrl).then(supported => {
+      if (!supported) {
+        alert("not supported")
+      } else {
+        return Linking.openURL(appUrl);
+      }
+    }).catch(err => {
+      console.error(err);
+    });
+  };
+  const OpenFB = () => {
+    let appUrl = "https://www.facebook.com/winjoyae/";
+    Linking.openURL(appUrl).then(supported => {
+      if (!supported) {
+        alert("not supported")
+      } else {
+        return Linking.openURL(appUrl);
+      }
+    }).catch(err => {
+      console.error(err);
+    });
+  };
+
   return (
 
     <View style={{ backgroundColor: '#ffffff' }}>
@@ -150,7 +163,7 @@ const index = ({ props, navigation }) => {
           borderBottomRightRadius: 10,
           borderBottomLeftRadius: 10,
           paddingTop: height * 0.017,
-        }} /> 
+        }} />
       <ScrollView
         onScroll={(e) => {
           setHeaderValue(e.nativeEvent.contentOffset.y)
@@ -163,7 +176,7 @@ const index = ({ props, navigation }) => {
           <View style={styles.bView}>
             <View style={styles.topView}>
               <ProfilePicture
-                picture={userData?.profile_image}
+                picture={Config?.Profile_URL + "/" + userData?.profile_image}
                 id={userData?.id}
                 name={
                   userData?.first_name?.slice(0, 1) +
@@ -186,17 +199,17 @@ const index = ({ props, navigation }) => {
                   notAlign
                   font={14}
                   bold
-                  style={{ color: "#FFFFFF", marginTop: 6 }}
+                  style={{ color: "#FFFFFF", marginTop: 6, }}
                 >
-                  {userData?.designation} {"\n"}
+                  {userData?.designation}
                   <Label
                     primary
                     font={14}
                     style={{ color: "#e2acc7" }}
                   >
-                    {userData?.company_name ? " at \n" : null}
+                    {' '}at
                   </Label>
-                  {userData?.company_name}
+                  {' '}{userData?.company_name}
                 </Label>
               </View>
             </View>
@@ -305,9 +318,7 @@ const index = ({ props, navigation }) => {
                       if (item.name === "Logout") {
                         signOut()
                       }
-                      if (item.name === "Settings") {
-                        navigation.navigate("Settings")
-                      }
+
                       if (item.name === "Buy Lives") {
                         navigation.navigate("BuyLife")
                       }
@@ -339,16 +350,16 @@ const index = ({ props, navigation }) => {
               );
             }}
           />
-          <View
+          {/* <View
             style={{
               height: 1,
               width: width,
               backgroundColor: "#E6DFEE",
             }}
-          />
+          /> */}
           <View style={{ width: "95%", alignItems: 'center', marginTop: 10 }}>
 
-            <Text
+            {/* <Text
               style={[
                 styles.text,
                 {
@@ -361,8 +372,8 @@ const index = ({ props, navigation }) => {
               ]}
             >
               {t("setting")}
-            </Text>
-
+            </Text> */}
+            {/* 
             <View style={styles.rowView}>
 
               <TouchableOpacity
@@ -389,7 +400,7 @@ const index = ({ props, navigation }) => {
                   </Text>
                 </View>
               </TouchableOpacity>
-            </View>
+            </View> */}
             <View
               style={{
                 // marginTop: height * 0.001,
@@ -401,31 +412,39 @@ const index = ({ props, navigation }) => {
 
 
             <View style={{ flexDirection: 'row', justifyContent: 'space-around', width: "100%", marginTop: height * 0.001 }}>
-              <Image
-                style={styles.bottomImage}
-                source={require('../../assets/imgs/humburgerIcons/insta.png')}
-                resizeMode='center'
-              />
-              <Image
-                style={styles.bottomImage}
-                source={require('../../assets/imgs/humburgerIcons/faceBook.png')}
-                resizeMode='center'
-              />
-              <Image
-                style={styles.bottomImage}
-                source={require('../../assets/imgs/humburgerIcons/whatsApp.png')}
-                resizeMode='center'
-              />
+              <TouchableOpacity onPress={() => OpenInsta()}>
+                <Image
+                  style={styles.bottomImage}
+                  source={require('../../assets/imgs/humburgerIcons/insta.png')}
+                  resizeMode='center'
+                />
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => OpenFB()}>
+                <Image
+                  style={styles.bottomImage}
+                  source={require('../../assets/imgs/humburgerIcons/faceBook.png')}
+                  resizeMode='center'
+                />
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => OpenWhatsApp()}>
+                <Image
+                  style={styles.bottomImage}
+                  source={require('../../assets/imgs/humburgerIcons/whatsApp.png')}
+                  resizeMode='center'
+                />
+              </TouchableOpacity>
+              {/* <TouchableOpacity onPress={() => openLinkedIn()}>
               <Image
                 style={styles.bottomImage}
                 source={require('../../assets/imgs/humburgerIcons/linkedIn.png')}
                 resizeMode='center'
               />
+               </TouchableOpacity>
               <Image
                 style={styles.bottomImage}
                 source={require('../../assets/imgs/humburgerIcons/twiter.png')}
                 resizeMode='center'
-              />
+              /> */}
             </View>
             <View
               style={{
@@ -468,43 +487,51 @@ const index = ({ props, navigation }) => {
                 marginTop: -10
 
               }}>
-                <View style={[styles.bottomBtnView, {
-                  backgroundColor: '#E9E3F0',
-                  borderTopLeftRadius: height * 0.035,
-                  borderBottomLeftRadius: height * 0.035,
-                }]}>
-                  <Text
-                    style={[
-                      styles.text,
-                      {
-                        color: "#420E92",
-                        fontSize: RFValue(16),
-                        fontFamily: 'Axiforma SemiBold',
-                        textAlign: 'center'
-                      },
-                    ]}
-                  >
-                    Call Us
-                  </Text>
-                </View>
-                <View style={[styles.bottomBtnView, {
-                  borderTopRightRadius: height * 0.035,
-                  borderBottomRightRadius: height * 0.035,
-                }]}>
-                  <Text
-                    style={[
-                      styles.text,
-                      {
-                        color: "#420E92",
-                        fontSize: RFValue(16),
-                        fontFamily: 'Axiforma SemiBold',
-                        textAlign: 'center'
-                      },
-                    ]}
-                  >
-                    Email Us
-                  </Text>
-                </View>
+                <TouchableOpacity onPress={() =>
+                  Linking.openURL(`tel:+971501235240`)
+                }>
+                  <View style={[styles.bottomBtnView, {
+                    backgroundColor: '#E9E3F0',
+                    borderTopLeftRadius: height * 0.035,
+                    borderBottomLeftRadius: height * 0.035,
+                  }]}>
+                    <Text
+                      style={[
+                        styles.text,
+                        {
+                          color: "#420E92",
+                          fontSize: RFValue(16),
+                          fontFamily: 'Axiforma SemiBold',
+                          textAlign: 'center'
+                        },
+                      ]}
+                    >
+                      Call Us
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() =>
+                  Linking.openURL('mailto:support@winjoy.ae')
+                }>
+                  <View style={[styles.bottomBtnView, {
+                    borderTopRightRadius: height * 0.035,
+                    borderBottomRightRadius: height * 0.035,
+                  }]}>
+                    <Text
+                      style={[
+                        styles.text,
+                        {
+                          color: "#420E92",
+                          fontSize: RFValue(16),
+                          fontFamily: 'Axiforma SemiBold',
+                          textAlign: 'center'
+                        },
+                      ]}
+                    >
+                      Email Us
+                    </Text>
+                  </View>
+                </TouchableOpacity>
               </View>
             </View>
             <SelectLanguageModal ModalRef={ModalStateLanguage} details />

@@ -53,7 +53,7 @@ function WalletBlanceCard({ yourBalance, onPress, onPressWithdraw, result, optio
       </Label>
 
       <Label notAlign primary bold2  font={14} dark style={{ color: "#000000" }}>
-       {yourBalance}
+      AED {yourBalance}
       </Label>
     </View>
       <View

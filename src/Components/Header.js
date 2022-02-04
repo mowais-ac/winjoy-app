@@ -22,7 +22,6 @@ const { width, height } = Dimensions.get("window");
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {UpdateBell } from '../redux/actions';
 const Header = (props) => {
-
   const navigation = useNavigation();
 
   // const check = async () => {

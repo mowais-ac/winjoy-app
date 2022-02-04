@@ -415,12 +415,11 @@ export const TriviaJoyAPI = () => {
                 },
             });
             const json = await result.json();
-            
             if (json) {
                 dispatch({
                     type: types.TRIVIA_JOY,
                     payload: json
-                });
+                }); 
             } else {
                 console.log('Unable to fetch!');
             }

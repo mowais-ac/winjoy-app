@@ -23,10 +23,10 @@ import GalleryViewModal from "../../Components/GalleryViewModal";
 const { width, height } = Dimensions.get("window");
 const index = ({ route, navigation }) => {
   const dispatch = useDispatch();
+  const [index, setIndex] = useState(null);
   const creatorId = useSelector(state => state.app.creatorId);
   const galleryData = useSelector(state => state.app.galleryData);
   const [headerValue, setHeaderValue] = useState(0);
-  const [index, setIndex] = useState(null);
   const [fullImage, setFullImage] = useState("");
   const ModalState = useRef();
   useEffect(() => {
@@ -144,14 +144,19 @@ const index = ({ route, navigation }) => {
           </View>
 
         </LinearGradient>
-        <GalleryViewModal ModalRef={ModalState} details
-          index={index}
-          imageUrl={galleryData?.gallery[index]?.thumbnail}
-          id={1}
-          onPressNext={() => onPressNext()}
-          onPressPrevious={() => onPressPrevious()}
-        // onPressContinue={onPressContinue} 
-        />
+        {
+          galleryData?.gallery?(
+            <GalleryViewModal ModalRef={ModalState} details
+            index={index}
+            imageUrl={galleryData?.gallery[index]?.thumbnail}
+            id={1}
+            onPressNext={() => onPressNext()}
+            onPressPrevious={() => onPressPrevious()}
+          // onPressContinue={onPressContinue} 
+          />
+          ):(null)
+        }
+       
       </ScrollView>
     </SafeAreaView>
   );

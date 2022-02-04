@@ -31,25 +31,29 @@ import WatchAddModal from "../../Components/WatchAddModal";
 const MYServer = "https://node-winjoyserver-deploy.herokuapp.com/";
 const index = ({ props, navigation }) => {
   const dispatch = useDispatch();
-  const AddModalState = useRef();
+  const AddModalState = useRef(); 
   const triviaJoyData = useSelector(state => state.app.triviaJoyData);
   const socket = socketIO(MYServer);
   //const [time, setTime] = useState();
   const [time, setTime] = useState(() => {
     dispatch(TriviaJoyAPI());
-    var CurrentDate = dayjs().format("YYYY-MM-DDThh:mm:ss.000000Z");
-    var duration = dayjs(triviaJoyData?.start_date).diff(dayjs(CurrentDate), 'seconds');
+    var CurrentDate = new Date().toLocaleString()
+    var duration = dayjs(triviaJoyData?.upcoming_gameshow?.start_date).diff(dayjs(CurrentDate), 'seconds');
     return duration;
   })
   const [renderBtn, setRenderBtn] = useState(false);
 
   useEffect(() => {
     dispatch(TriviaJoyAPI());
-
+    console.log("triviaJoyData",triviaJoyData);
+    var date = new Date().toLocaleString()
+    console.log("daaate",date);
+    console.log("start",dayjs(triviaJoyData?.upcoming_gameshow?.start_date).format('MMMM DD, YYYY - HH:MM A'));
+    
   }, [])
 
 
-
+ 
 
 
   return (
@@ -110,11 +114,11 @@ const index = ({ props, navigation }) => {
                 Next Game
               </Label>
               <CountDown
-                style={{ marginTop: 6 }}
+                style={{ marginTop: 6}}
                 size={16}
                 until={time}
                 onFinish={() => setRenderBtn(true)}
-                digitStyle={{ borderColor: '#ffffff', borderWidth: 1, backgroundColor: '#ffffff', width: 50, height: 50, borderRadius: 40, marginLeft: 10 }}
+                digitStyle={{ borderColor: '#ffffff', borderWidth: 1, backgroundColor: '#ffffff', width: 50, height: 50, borderRadius: 40, marginLeft: 10, marginRight: 10 }}
                 digitTxtStyle={{ color: '#000000', fontSize: 18, fontFamily: 'Axiforma-Medium' }}
                 timeLabelStyle={{ color: '#000000', fontFamily: 'Axiforma Regular' }}
                 //separatorStyle={{paddingLeft: 5, paddingRight: 5, }}

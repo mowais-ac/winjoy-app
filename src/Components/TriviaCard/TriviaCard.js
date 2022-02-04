@@ -7,6 +7,7 @@ import styles from "./Styles";
 
 function TriviaCard({ onPress, userInfo, userData }) {
   const date = new Date(userData?.updated_at).toLocaleDateString()
+  
   return (
     <TouchableOpacity
       onPress={onPress}
@@ -14,7 +15,7 @@ function TriviaCard({ onPress, userInfo, userData }) {
       <View style={styles.mainView}>
         <View style={styles.avatarView}>
           <ProfilePicture
-            picture={userInfo?.profile_image || userData?.profile_image}
+            picture={userInfo?.profile_image || userData?.profile_image} 
             id={userInfo?.id || userData?.id}
            // name={(userInfo?.first_name.slice(0, 1) + userInfo?.last_name.slice(0, 1)) || (userData?.first_name.slice(0, 1) + userData?.last_name.slice(0, 1))}
             style={styles.avatarView}

@@ -52,6 +52,7 @@ const index = ({ props, navigation }) => {
   const ModalState2 = useRef()
   const ModalStateError = useRef()
   const [headerValue, setHeaderValue] = useState(0);
+  const [activity, setActivity] = useState(false);
 
   console.log("walletData", walletData);
   useEffect(() => {
@@ -63,6 +64,7 @@ const index = ({ props, navigation }) => {
 
   }, []);
   const HandleWithdraw = async () => {
+    setActivity(true)
     console.log("ammount", ammount);
     if (!ammount) {
       alert("hiii")
@@ -97,7 +99,7 @@ const index = ({ props, navigation }) => {
             ModalState.current(false)
             ModalState2.current(true)
           }
-
+          setActivity(false)
           // else {
           //   ModalState.current(true, {
           //     heading: "Error",
@@ -137,7 +139,7 @@ const index = ({ props, navigation }) => {
           setHeaderValue(e.nativeEvent.contentOffset.y) 
       }}
       >
-        <View style={{ flexDirection: 'row', width: widthConverter(420), marginLeft: 25, marginTop: height*0.06 }}>
+        <View style={{ flexDirection: 'row', width: widthConverter(420), marginLeft: 25, marginTop: height*0.06, }}>
           <View style={styles.avatarView}>
             <ProfilePicture
               picture={userData?.profile_image}
@@ -166,7 +168,7 @@ const index = ({ props, navigation }) => {
           </View>
         </View>
 
-        <View>
+        <View style={{paddingBottom:height*0.05}}>
 
           <WalletBlanceCard
             yourBalance={walletData?.wallet?.your_balance === null ? 0 : walletData?.wallet?.your_balance}
@@ -203,7 +205,7 @@ const index = ({ props, navigation }) => {
                 data={walletData?.transaction}
                 contentContainerStyle={{
                   //paddingBottom: height * 0.48,
-                  height: "100%"
+              
                 }}
                 scrollEnabled={true}
                 // ListEmptyComponent={
@@ -260,18 +262,21 @@ const index = ({ props, navigation }) => {
             </View>
           </View>
         </View>
-      </ScrollView>
+      </ScrollView> 
       <WithDrawModal ModalRef={ModalState}
         details
         onPressWithDrawal={() => onPress()}
         yourBalance={walletData?.wallet?.your_balance === null ? 0 : walletData?.wallet?.your_balance}
         AmmountHandleChange={(text) => setAmmount(text)}
+        ammount={ammount}
+        activity={activity}
       />
       <SuccessModal ModalRef={ModalState2}
         details
         requestOnPress={() => ModalState2.current(false)}
         closeOnPress={() => ModalState2.current(false)}
         yourBalance={walletData?.wallet?.your_balance === null ? 0 : walletData?.wallet?.your_balance}
+       
       />
       <Modals ModalRef={ModalStateError} Error />
     </SafeAreaView>

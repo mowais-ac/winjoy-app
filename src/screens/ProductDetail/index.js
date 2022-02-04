@@ -40,7 +40,7 @@ const ProductDetail = ({ props, navigation, route }) => {
                 favs = favs == null ? [] : JSON.parse(favs)
 
 
-                favs.push(item?.product?.id)
+                favs.push(item?.product?.id) 
                 let uniqueArray = favs.filter(function (item, pos) {
                     return favs.indexOf(item) == pos;
                 });

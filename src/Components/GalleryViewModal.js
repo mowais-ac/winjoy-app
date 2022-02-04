@@ -108,7 +108,7 @@ const WatchAddModal = (props) => {
         <LoaderImage
           source={{
             // uri: ImgUrl.replace("http://", "https://"),
-            uri: props.imageUrl
+            uri: props?.imageUrl
           }}
           style={{ width: width * 0.9, height: height * 0.48, borderRadius: 15, marginTop: 10 }}
           resizeMode="stretch"
@@ -128,7 +128,7 @@ const WatchAddModal = (props) => {
             />
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={props.onPressNext}
+            onPress={props?.onPressNext}
             style={{ width: 30, height: 30, justifyContent: 'center', alignItems: 'center' }}
           >
             <Image

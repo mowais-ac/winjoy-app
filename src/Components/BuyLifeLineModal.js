@@ -50,6 +50,7 @@ const BuyLifeLineModal = (props) => {
           },
         });
         const json = await result.json();
+        console.log("jsonjson",json);
         alert(json.message)
       
     } catch (error) {

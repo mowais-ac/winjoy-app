@@ -63,9 +63,7 @@ const Orders = ({ navigation }) => {
     return () => (isActive = false);
   });
   const renderItem = ({ item }) => {
-    const ImgUrl = `${Config.PRODUCT_IMG}/${item.products.id}/${
-      JSON.parse(item.products.image)[0]
-    }`;
+  
     return (
       <TouchableOpacity
         onPress={() => navigation.navigate("OrderDetails", { item })}
@@ -73,21 +71,26 @@ const Orders = ({ navigation }) => {
         <View>
           <Section style={styles.Section}>
             <View style={styles.SectionView}>
-              <View style={styles.ImageView}>
+              {/* <View style={styles.ImageView}>
                 <Image
                   source={{
                     uri: ImgUrl,
                   }}
                   style={styles.Image}
                 />
-              </View>
+              </View> */}
               <View style={styles.TextView}>
-                <Label notAlign dark bold2 headingtype="h4">
-                  {item.order_reference}
+              <View style={{flexDirection:'row'}}>
+              <Label notAlign dark bold2 headingtype="h4" style={{width:width*0.55}}>
+                  {item?.order_reference}
                 </Label>
-                <Label notAlign darkmuted bold headingtype="h5">
-                  {item.products.title}
-                </Label>
+                <Label notAlign darkmuted bold headingtype="h5" style={{width:width*0.55}}>
+                  {item?.status}
+                </Label> 
+              </View>
+                {/* <Label notAlign darkmuted bold headingtype="h5">
+                  {item?.products?.title}
+                </Label> */}
                 <Label
                   notAlign
                   primary

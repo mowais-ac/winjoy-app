@@ -158,7 +158,10 @@ const index = ({ route, navigation }) => {
                                     heading={"Refer Friends"}
                                     description={"Earn upto 10 lives"}
                                    
-                                    onPress={() => RefferModalState.current(true)}
+                                    onPress={() => {
+                                       
+                                        RefferModalState.current(true)
+                                    }}
                                 /> 
                                 ):null
 
@@ -184,12 +187,13 @@ const index = ({ route, navigation }) => {
                         onPressContinue={() => {
                             RefferModalState.current(false)
                             SucessModalState.current(true)
+                        
                         }}
                        
                     />
                     <BuyLifeCongrats ModalRef={SucessModalState}
                         heading={"Congratulations"}
-                        description={"4 lives are ready to use. Feel free to play more games & win amazin prizes."}
+                        description={"lives are ready to use. Feel free to play more games & win amazin prizes."}
                         requestOnPress={() => SucessModalState.current(false)}
                         closeOnPress={() => SucessModalState.current(false)}
                     />
