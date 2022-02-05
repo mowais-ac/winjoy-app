@@ -176,7 +176,7 @@ const index = ({ props, navigation }) => {
           <View style={styles.bView}>
             <View style={styles.topView}>
               <ProfilePicture
-                picture={Config?.Profile_URL + "/" + userData?.profile_image}
+                picture={userData?.profile_image}
                 id={userData?.id}
                 name={
                   userData?.first_name?.slice(0, 1) +
@@ -322,8 +322,11 @@ const index = ({ props, navigation }) => {
                       if (item.name === "Buy Lives") {
                         navigation.navigate("BuyLife")
                       }
+                      if (item.name === t("refer_&_Earn")) {
+                        navigation.navigate("RefferAndEarn")
+                      }
 
-
+                    
                     }}
                   >
                     <View style={{ flexDirection: 'row', marginLeft: width * 0.05 }}>

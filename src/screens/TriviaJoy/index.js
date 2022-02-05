@@ -30,7 +30,8 @@ import { RFValue } from "react-native-responsive-fontsize";
 import WatchAddModal from "../../Components/WatchAddModal";
 const MYServer = "https://node-winjoyserver-deploy.herokuapp.com/";
 const index = ({ props, navigation }) => {
-  const dispatch = useDispatch();
+  const userData = useSelector(state => state.app.userData);
+  const dispatch = useDispatch(); 
   const AddModalState = useRef(); 
   const triviaJoyData = useSelector(state => state.app.triviaJoyData);
   const socket = socketIO(MYServer);
@@ -45,7 +46,7 @@ const index = ({ props, navigation }) => {
 
   useEffect(() => {
     dispatch(TriviaJoyAPI());
-    console.log("triviaJoyData",triviaJoyData);
+    console.log("userData",userData);
     var date = new Date().toLocaleString()
     console.log("daaate",date);
     console.log("start",dayjs(triviaJoyData?.upcoming_gameshow?.start_date).format('MMMM DD, YYYY - HH:MM A'));
@@ -158,7 +159,7 @@ const index = ({ props, navigation }) => {
             >
 
               <Text style={{ color: "#E7003F", fontFamily: 'Axiforma SemiBold', fontSize: RFValue(20) }}>
-                {triviaJoyData?.lives}
+                {userData?.lives_count}
               </Text>
             </ImageBackground>
           </View>

@@ -46,6 +46,7 @@ const index = ({ props, navigation, route }) => {
   const [activity, setActivity] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const user = useSelector(state => state.app.userData);
+  
   useEffect(async () => {
     if (JSON.stringify(Data) !== user) {
       setData(user);
@@ -136,7 +137,7 @@ const index = ({ props, navigation, route }) => {
       <View style={styles.aView}>
         <View style={styles.avatarView}>
           <ProfilePicture
-            picture={Config.Profile_URL + "/" + userInfo?.profile_image}
+            picture={userInfo?.profile_image}
             id={userInfo?.id}
             // name={(userInfo?.first_name.slice(0, 1) + userInfo?.last_name.slice(0, 1))}
             style={styles.avatarView}

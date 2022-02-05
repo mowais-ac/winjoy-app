@@ -122,9 +122,17 @@ const index = ({ route, navigation }) => {
       await fetch(`${Config.API_URL}/update/user/profile-image`, requestOptions)
         .then(async (response) => response.json())
         .then(async (res) => {
-          console.log("respic", res)
+          console.log("respic", res.user)
+
           if (!res.status || res.status.toLowerCase() !== "success")
             Alert.alert("Error", "Profile image not updating");
+          else {
+            dispatch({
+              type: types.USER_DATA,
+              userData: res?.user,
+              //  user: res.data.data,
+            });
+          }
         });
     }
   };
@@ -230,7 +238,7 @@ const index = ({ route, navigation }) => {
           ButtonRef.current.SetActivity(false);
           navigation.reset({
             index: 0,
-            routes: [{ name: "Profile" }],
+            routes: [{ name: "MenuStack" }],
           });
         }
       })

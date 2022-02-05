@@ -8,7 +8,8 @@ import {
   TouchableWithoutFeedback,
   Alert,
   TouchableOpacity,
-  TextInput
+  TextInput,
+  ActivityIndicator
 } from "react-native";
 import Label from "./Label";
 import LabelButton from "./LabelButton";
@@ -22,9 +23,10 @@ import ProfilePicture from "./ProfilePicture";
 import { RFValue } from "react-native-responsive-fontsize";
 import LinearGradient from "react-native-linear-gradient";
 import { heightConverter } from "./Helpers/Responsive";
+import * as Progress from 'react-native-progress';
 const { width, height } = Dimensions.get("window");
 
-const BuyLifeCongrats = (props) => {
+const UseLifeLineModal = (props) => {
   const [ModelState, setModelState] = useState({
     state: false,
     details: null,
@@ -68,53 +70,91 @@ const BuyLifeCongrats = (props) => {
               width: 100,
               height: 100,
             }}
-            source={require('../assets/imgs/success.png')}
+            source={require('../assets/imgs/emoji.png')}
           />
         </View>
         <View style={styles.ModalBody}>
-          <Label primary headingtype="h1" bold2 style={{ color: "#420E92" }}>
-            {props.heading}
+          <Label primary headingtype="h3" bold2 style={styles.ModalHead}>
+            Wrong Answer
           </Label>
-          <Label primary headingtype="h1" font={16} style={{ color: "#0B2142", lineHeight: 25 }}>
-            {props.description}
+          <View style={[styles.SmallBorder, { width: width * 0.1 }]} />
+          <Label primary headingtype="h1" bold2 style={{ color: "#420e92", marginTop: 10 }}>
+            Use a life line
           </Label>
-          <TouchableOpacity
-            onPress={() => { props.closeOnPress() }}
-            style={{
-              height: heightConverter(20),
-              width: width * 0.9,
-
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginTop: height * 0.06,
-              marginLeft: width * 0.04,
-            }}
-          >
-            <View
-
+          <Label primary font={14} style={{ color: "#000000", marginTop: 10 }}>
+            You've 5 lives
+          </Label>
+          <Label primary headingtype="h1" bold2 style={{ color: "#420e92", marginTop: 5 }}>
+            {props.timeLeft}
+          </Label>
+   
+            <TouchableOpacity
+              onPress={() => { props.onPressContinueLifeLine() }}
+              disabled={props.availLifeActivity}
               style={{
-                height: heightConverter(55),
+                height: heightConverter(20),
                 width: width * 0.9,
+
                 justifyContent: 'center',
                 alignItems: 'center',
-                backgroundColor: '#420e92',
-                borderRadius: 40,
+                marginTop: height * 0.04,
+                marginLeft: width * 0.04,
               }}
-
-
             >
-              <Label primary font={16} bold style={{ color: "#ffffff" }}>
-               Close
-              </Label>
-            </View>
-          </TouchableOpacity> 
+              <View
+
+                style={{
+                  height: heightConverter(65),
+                  width: width * 0.9,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  backgroundColor: '#420e92',
+                  borderRadius: 40,
+                }}
+
+
+              >
+                {props.availLifeActivity ? (
+                  <ActivityIndicator size="small" color="#ffffff" />
+                ) : (
+                  <Label primary font={16} bold style={{ color: "#ffffff" }}>
+                    Use a Life line
+                  </Label>
+                )}
+
+              </View>
+              {/* <Progress.Bar
+             progress={props.timeLeft/3}
+             width={width*0.85}
+             height={height*0.06}
+             unfilledColor={'#420E92'}
+             borderRadius={height*0.05}
+             borderWidth={0}
+             color={"#9D0D5D"}
+              />
+              <Label primary font={14} bold style={{ color: "#ffffff",zIndex:100,position:'absolute' }}>
+              Using your life line {props.timeLeft} seconds
+              </Label> */}
+            </TouchableOpacity>
+    
+          <LabelButton
+            primary
+            headingtype="h3"
+            bold
+            style={[styles.CloseBtn, { color: '#420e92' }]}
+            onPress={() => {
+             props.onPressNotNow()
+            }}
+          >
+            Not now
+          </LabelButton>
         </View>
       </View>
     </Modal>
   );
 };
 
-export default BuyLifeCongrats;
+export default UseLifeLineModal;
 
 const styles = StyleSheet.create({
   MainView: {
@@ -125,7 +165,7 @@ const styles = StyleSheet.create({
   },
   ModalView: {
     height: height * 0.6,
-    marginTop: height * 0.45,
+    marginTop: height * 0.42,
     borderTopLeftRadius: 37,
     borderTopRightRadius: 37,
     backgroundColor: Colors.WHITE,
@@ -138,12 +178,12 @@ const styles = StyleSheet.create({
     marginTop: height * 0.02,
   },
   ModalHead: {
-    marginTop: height * 0.01,
+
 
   },
 
   ModalBody: {
-    marginTop: height * 0.04,
+    marginTop: height * 0.02,
     backgroundColor: Colors.WHITE,
     height: height * 0.3,
   },
