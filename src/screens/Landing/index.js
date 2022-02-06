@@ -158,7 +158,6 @@ const index = (props) => {
 
     var CurrentDate = new Date().toLocaleString()
     var duration = dayjs(LandingData?.gameShow?.start_date).diff(dayjs(CurrentDate), 'seconds');
-    console.log("duration",duration);
     setTime(duration)
     setGameShowData(LandingData?.gameShow)
   }
@@ -172,11 +171,9 @@ const index = (props) => {
 
     dispatch(getLandingScreen());
     setGameShowData(LandingData?.gameShow)
-    console.log("LandingData?.gameShow?.start_date",LandingData?.gameShow?.start_date);
   }, []);
   const LetBegin = () => {
     dispatch2(CheckGameEnterStatus());
-    console.log("gameEnterStatus", gameEnterStatus);
     if (gameEnterStatus.status === "success") {
       if (gameEnterStatus.message === "Welcome to Live Game Show") {
         navigation.navigate("GameStack", {
@@ -194,7 +191,6 @@ const index = (props) => {
 
   }
   function _renderItem({ item, index }) {
-    //console.log("item.url",item.url);
     if (item.type === "image") {
       return (
         <View key={index}>

@@ -48,12 +48,9 @@ const index = ({ route, navigation }) => {
   const dispatch2 = useDispatch();
   const routeSelected =route?.params?.selected;
   useEffect(() => {
-    console.log("rrrr",routeSelected);
     //  dispatch(getLiveShowPlans());
     dispatch(GameShowWinners());
     dispatch2(LuckyDrawWinnersAPI());
-    //  dispatch(buyLivePlans());
-    console.log("luckyDrawWinners", luckyDrawWinners);
   }, []);
   useFocusEffect(
     React.useCallback(() => {

@@ -103,9 +103,8 @@ const index = ({ route, navigation }) => {
       address,
     };
     PerformApiFunc(JSONBody);
-    console.log("pictureref.current", pictureref.current);
     if (pictureref.current !== null) {
-      console.log("pictureref.current", pictureref.current);
+
       const Token = await EncryptedStorage.getItem("Token");
       const body = JSONtoForm({
         profile_image: `data:${pictureref?.current?.mime};base64, ${pictureref?.current?.data}`,
@@ -122,8 +121,6 @@ const index = ({ route, navigation }) => {
       await fetch(`${Config.API_URL}/update/user/profile-image`, requestOptions)
         .then(async (response) => response.json())
         .then(async (res) => {
-          console.log("respic", res.user)
-
           if (!res.status || res.status.toLowerCase() !== "success")
             Alert.alert("Error", "Profile image not updating");
           else {
@@ -225,7 +222,6 @@ const index = ({ route, navigation }) => {
     })
       .then(async (response) => response.json())
       .then(async (res) => {
-        console.log("ress", res);
         if (res.status === 'Success') {
           dispatch({
             type: types.USER_DATA,

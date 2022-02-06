@@ -22,9 +22,7 @@ import { RFValue } from "react-native-responsive-fontsize";
 import dayjs from "dayjs";
 const ProductDetail = ({ props, navigation, route }) => {
     const item = route?.params?.data;
-    console.log("itemmm", item);
     let progress = (item?.product?.updated_stocks ? (item?.product?.updated_stocks / item?.stock) * 100 : 0);
-    console.log("item", item?.product?.id);
     function uniqBy(a, key) {
         var seen = {};
         return a.filter(function (item) {
@@ -44,12 +42,10 @@ const ProductDetail = ({ props, navigation, route }) => {
                 let uniqueArray = favs.filter(function (item, pos) {
                     return favs.indexOf(item) == pos;
                 });
-                console.log("uniqueArray", uniqueArray);
                 return AsyncStorage.setItem('ids', JSON.stringify(uniqueArray))
             })
 
         let dat = await AsyncStorage.getItem('ids');
-        console.log("dat", dat);
 
     }
 

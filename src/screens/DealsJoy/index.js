@@ -36,7 +36,6 @@ import { ButtonWithRightIcon } from '../../Components'
 import WatchAddModal from "../../Components/WatchAddModal";
 
 function ClosingSoon({ item }) {
-  console.log("itemCS", item);
   let progress = item?.updated_stocks
     ? (item?.updated_stocks / item?.stock) * 100
     : 0;
@@ -108,10 +107,8 @@ const index = ({ props, navigation }) => {
   const AddModalState = useRef();
   useEffect(() => {
     dispatch(DealsJoyAPI());
-    console.log("dealsJoyData", dealsJoyData);
   }, []);
   function _renderItem({ item, index }) {
-    //console.log("item.url",item.url);
     if (item.type === "image") {
       return (
         <View key={index}>

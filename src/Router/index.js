@@ -21,7 +21,6 @@ function index() {
     const [isLogedin, setIsLogedin] = useState(false);
 
     EncryptedStorage.getItem("Token").then((data) => {
-        console.log("dataAsy", data)
         if (data != null) setIsLogedin(true)
         else setIsLogedin(false)
     })
@@ -103,8 +102,6 @@ function index() {
         }),
         []
     );
-    console.log("state", state)
-    console.log("state.userToken", state.userToken);
     return (
         <AuthContext.Provider value={authContext}>
                     <NavigationContainer>

@@ -65,9 +65,6 @@ const index = ({ route, navigation }) => {
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(getLiveShowPlans());
-        //  dispatch(buyLivePlans());
-        console.log("liveplans", livePlans);
-        console.log("livePlansModal", livePlans.plan);
         let li = [];
         let idforFirst;
         livePlans?.plan?.forEach(element => {
@@ -76,7 +73,6 @@ const index = ({ route, navigation }) => {
                 li.push(element)
 
                 if (element.required_referrals === 1) {
-                    console.log("element", element.id);
                     idforFirst = element.id;
                 }
             }
@@ -95,9 +91,7 @@ const index = ({ route, navigation }) => {
         setTotalRef(item.required_referrals)
         setSelected(index)
         setId(item.id)
-        console.log("num", item.required_referrals);
         for (var i = 0; i < item?.required_referrals; ++i) {
-            console.log("i", i);
             li.push({
                 sr: i + 1,
                 status: false,
@@ -116,23 +110,13 @@ const index = ({ route, navigation }) => {
         //   li[index].status = false
         // }
         reff[index].name = name;
-        // if(reff[index].name===""){
-        //   setIsValid(index)
-        // }
-        console.log("reff", reff);
+       
     }
     const SettingNumber = (number, index) => {
         reff[index].phone_no = number
-        console.log("reff", reff);
-        // phoneArr[index] = number;
-        // console.log("phoneArr", phoneArr);
-
     }
 
-    // const SettingNumber = (text, index) => {
-    //   console.log("number",text,index);
-
-    //  }
+  
     const HandleClick = async () => {
 
         let validToPost = true;
@@ -143,14 +127,12 @@ const index = ({ route, navigation }) => {
             }
             else {
                 li[index].status = true;
-                console.log("chek", li[index].status);
             }
             if (element.phone_no !== "" && element.phone_no !== null && element.phone_no !== undefined && numericRegex.test(element?.phone_no) && element?.phone_no.length === 11) {
                 li[index].status2 = false;
             }
             else {
                 li[index].status2 = true;
-                console.log("chek2", li[index].status2);
             }
         });
         li?.forEach(element => {
@@ -221,7 +203,6 @@ const index = ({ route, navigation }) => {
             .then((response) => response.json())
             .then(async (res) => {
                 setLoader(false)
-                console.log("ress", res);
                 if (res.status === "success") {
                     dispatch(getLiveShowPlans());
                     totalLives.current = res?.lives

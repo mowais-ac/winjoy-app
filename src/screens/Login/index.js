@@ -46,9 +46,7 @@ const index = ({ navigation }) => {
 
   }, []);
   const HandleLogin = async () => {
-    console.log("Config.API_UR", Config.API_URL);
     if (
-      //      emailref.current.validateEmail() &&
       emailref.current.validatePhone() &&
       passref.current.ValidatePass() &&
       !ButtonRef.current.GetActivity()
@@ -76,7 +74,6 @@ const index = ({ navigation }) => {
       await fetch(`${Config.API_URL}/auth/login`, requestOptions)
         .then(async (response) => response.json())
         .then(async (res) => {
-          console.log("reslogin", res);
           ButtonRef.current.SetActivity(false);
           if (res?.data?.token) {
             dispatch({

@@ -61,8 +61,6 @@ const SelectCurrencyModal = (props) => {
     setModelState({ state, details, ForceSuccess });
   };
   const languageRestart = async (item) => {
-    console.log("lang", item.value);
-
     if (item.value === "ar") {
       if (I18nManager.isRTL) {
         I18nManager.forceRTL(false);

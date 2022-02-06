@@ -119,7 +119,6 @@ const BackgroundVideo = ({ route, navigation }) => {
         // alert(13123);
         await axios.get(`${Config.API_URL}/begin/game/questions/answers/list`, requestOptions).then(response => {
             let res = response.data;
-            console.log("resQuestion", res);
             questionRef.current = res;
             // setQuestion(res)
             setActivityScreen(false)
@@ -176,7 +175,6 @@ const BackgroundVideo = ({ route, navigation }) => {
                 setActivity(false)
             }
         })
-        console.log("aaaa", ans);
         //        setAnswer(ans)
         answer.current = ans;
         // setTimer(20)

@@ -54,18 +54,12 @@ const index = ({ props, navigation }) => {
   const [headerValue, setHeaderValue] = useState(0);
   const [activity, setActivity] = useState(false);
 
-  console.log("walletData", walletData);
+
   useEffect(() => {
     dispatch(getWalletData());
-    //  console.log("walletData",walletData);
-    // const userData = JSON.parse(await EncryptedStorage.getItem("User"));
-    // setuserData(userData);
-    // GetData();
-
   }, []);
   const HandleWithdraw = async () => {
     setActivity(true)
-    console.log("ammount", ammount);
     if (!ammount) {
       alert("hiii")
     } else {

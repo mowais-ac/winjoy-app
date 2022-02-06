@@ -36,8 +36,6 @@ const index = ({ route, navigation }) => {
   // const [experienceId, setExperienceId] = useState();
   useEffect(() => {
     dispatch(getAllCreator());
-
-    console.log("dataimage", expData);
   }, []);
   const onPressCreator = (id) => {
    // alert(id)
@@ -194,7 +192,6 @@ const index = ({ route, navigation }) => {
                       //  user: res.data.data,
                     });
                     dispatch4(ExperienceProductData(item.id));
-                    console.log("expData", expData);
                     celebrityModalState.current(true)
                   }}
                   short_desc={item?.short_desc}

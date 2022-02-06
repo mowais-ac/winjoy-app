@@ -62,9 +62,7 @@ const index = ({ navigation }) => {
     
     let dat = [];
     let postData = {};
-    console.log("dataP", Data);
     Data.forEach((element, index) => {
-      console.log("ele", element.id, index);
       dat.push({
         "is_from_experience": false,
         "product_id": element.id
@@ -73,7 +71,6 @@ const index = ({ navigation }) => {
     postData = {
       "products": dat
     };
-    console.log("dat", dat);
     var Token = await EncryptedStorage.getItem("Token");
     const requestOptions = {
       method: "POST",
@@ -88,9 +85,7 @@ const index = ({ navigation }) => {
       .then((response) => response.json())
       .then(async (res) => {
         setActivity(true)
-        console.log("reesss",res);
         setActivity(false)
-        console.log("ress", res);
         if (res.status === "error") {
           ModalStateError.current(true, {
             heading: "Error",
@@ -125,8 +120,6 @@ const index = ({ navigation }) => {
     JSON.parse(dat).map(element => {
       ids = ids + element + ",";
     });
-    console.log("ids", ids);
-    console.log("dat", dat);
     let isActive = true;
     
     const check = async () => {
@@ -145,12 +138,10 @@ const index = ({ navigation }) => {
           .then(async (response) => response.json())
           .then((res) => {
             let total = 0;
-            console.log("res", res.data[0]);
             res.data[0].map(element => {
               total = total + parseFloat(element.price);
             });
             setTotal(total)
-            console.log("total", total);
             if (!isActive) return;
             setData(res.data[0]);
             setListloader(false)
@@ -166,8 +157,6 @@ const index = ({ navigation }) => {
     let dat = await AsyncStorage.getItem('ids');
     //  let data=[1,2,3,4,5]
     let array = JSON.parse(dat);
-    console.log("array", array);
-
     const index = array.indexOf(id);
     if (index > -1) {
       array?.splice(index, 1);

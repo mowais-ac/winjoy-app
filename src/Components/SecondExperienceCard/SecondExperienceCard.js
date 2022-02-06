@@ -9,7 +9,6 @@ import Config from "react-native-config";
 import ProgressCircle from 'react-native-progress-circle'
 const { width, height } = Dimensions.get("window");
 function SecondExperienceCard({ style, onPress, heading, cover_photo, short_desc, price }) {
-  console.log("heading", heading);
   return (
     <TouchableOpacity
       onPress={onPress}

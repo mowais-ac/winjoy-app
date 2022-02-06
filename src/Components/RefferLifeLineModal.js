@@ -158,14 +158,12 @@ const RefferLifeLineModal = (props) => {
       }
       else {
         li[index].status = true;
-        console.log("chek", li[index].status);
       }
       if (element.phone_no !== "" && element.phone_no !== null && element.phone_no !== undefined && numericRegex.test(element?.phone_no) && element?.phone_no.length === 11) {
         li[index].status2 = false;
       }
       else {
         li[index].status2 = true;
-        console.log("chek2", li[index].status2);
       }
     });
     li?.forEach(element => {
@@ -219,9 +217,6 @@ const RefferLifeLineModal = (props) => {
   };
   const PostData = async (postData) => {
     setLoader(true)
-    console.log("postData", postData);
-    console.log("id", id);
-
     var Token = await EncryptedStorage.getItem("Token");
     const requestOptions = {
       method: "POST",
@@ -236,7 +231,6 @@ const RefferLifeLineModal = (props) => {
       .then((response) => response.json())
       .then(async (res) => {
         setLoader(false)
-        console.log("ress", res);
         if (res.status === "success") {
           dispatch(getLiveShowPlans());
           totalLives.current=res?.lives

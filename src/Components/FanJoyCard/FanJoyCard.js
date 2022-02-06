@@ -9,7 +9,6 @@ import Config from "react-native-config";
 import ProgressCircle from 'react-native-progress-circle'
 const { width, height } = Dimensions.get("window");
 function FanJoyCard({ style, onPress, name, fans, imageUrl }) {
-  console.log("name",name);
   return (
     <TouchableOpacity
       onPress={onPress}

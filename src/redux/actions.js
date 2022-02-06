@@ -41,7 +41,7 @@ export const getWalletData = () => {
             }
         }
     } catch (error) {
-        console.log(error);
+       alert(error)
     }
 }
 
@@ -50,7 +50,6 @@ export const getLandingScreen = () => {
     try {
         return async dispatch => {
             const Token = await EncryptedStorage.getItem("Token");
-            console.log("tokenR", Token);
             const result = await fetch(`${Config.API_URL}/home`, {
                 method: 'GET',
                 headers: {
@@ -60,7 +59,6 @@ export const getLandingScreen = () => {
                 },
             });
             const json = await result.json();
-            console.log("json", json);
             if (json && json.status === "success") {
                 dispatch({
                     type: types.GET_LANDING_DATA,
@@ -71,7 +69,7 @@ export const getLandingScreen = () => {
             }
         }
     } catch (error) {
-        console.log("error", error);
+       alert(error)
     }
 }
 export const getProducts = (isClosing) => {
@@ -87,9 +85,7 @@ export const getProducts = (isClosing) => {
                     Authorization: `Bearer ${Token}`,
                 },
             });
-            console.log("result",result);
             const json = await result.json();
-            console.log("jjson",json)
             if (json && json.status === "success") {
                 dispatch({
                     type: types.GET_PRODUCTS_LIST,

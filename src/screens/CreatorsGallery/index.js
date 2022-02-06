@@ -30,10 +30,7 @@ const index = ({ route, navigation }) => {
   const [fullImage, setFullImage] = useState("");
   const ModalState = useRef();
   useEffect(() => {
-    console.log("creatorId", creatorId);
     dispatch(GetGalleryData(creatorId));
-    console.log("galleryData", galleryData);
-
   }, []);
 
   const onPressNext = () => {

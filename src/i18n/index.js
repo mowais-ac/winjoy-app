@@ -3,7 +3,6 @@ import { initReactI18next } from 'react-i18next';
 import { I18nManager } from 'react-native';
 import en from '../../locales/en.json';
 import ar from '../../locales/ar.json'
-console.log("en",en.Change_language);
 // the translations
 // (tip move them in a JSON file and import them)
 const resources = {

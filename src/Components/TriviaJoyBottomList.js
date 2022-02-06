@@ -19,7 +19,7 @@ import { Colors } from "../Constants/Index";
 const { width, height } = Dimensions.get("window");
 
 function LiveHostCard({ item }) {
-  console.log("ioi", item);
+
   return (
   
 

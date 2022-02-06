@@ -27,7 +27,6 @@ const index = ({ route, navigation }) => {
   const email = route.params && route.params.email;
   const phone = route.params && route.params.phone;
   const token = route.params && route.params.token;
-  console.log("tok",token);
   const evref = useRef();
   const phvref = useRef();
   const ButtonRef = useRef();
@@ -55,7 +54,6 @@ const index = ({ route, navigation }) => {
       await fetch(`${Config.API_URL}/verify/otp`, requestOptions)
         .then(async (response) => response.json())
         .then(async (res) => {
-          console.log("res",res); 
           if (res.message && res.message === "Congrats!! Account verified") {
           //  return navigation.replace("Splash"); 
           signIn(token) 

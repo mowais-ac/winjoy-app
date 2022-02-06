@@ -9,7 +9,6 @@ import Config from "react-native-config";
 import ProgressCircle from 'react-native-progress-circle';
 const { width, height } = Dimensions.get("window");
 function ChanceCard({ onPress, updated_stocks, stock, title, description, image, price, prize_title }) {
-  console.log("stockk", stock);
   let progress = updated_stocks
     ? (updated_stocks / stock) * 100
     : 0;

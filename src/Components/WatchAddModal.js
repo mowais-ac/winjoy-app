@@ -54,7 +54,6 @@ const WatchAddModal = (props) => {
         },
       });
       const json = await result.json();
-      console.log("json",json);
       if(json.status==="success"){
         if(json.message==="Lives buy successfully"){
           setModelState({
@@ -70,7 +69,7 @@ const WatchAddModal = (props) => {
     
 
     } catch (error) {
-      console.log(error);
+      alert(error)
     }
   }
   useEffect(() => {
@@ -153,7 +152,6 @@ const WatchAddModal = (props) => {
           // }}
           onEnd={() => getData()}
           onProgress={e => {
-            console.log("e", e.playableDuration)
             setTimer(e.currentTime)
 
             setTotalTime(e.seekableDuration)

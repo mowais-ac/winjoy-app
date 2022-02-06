@@ -35,9 +35,6 @@ const index = ({ route, navigation }) => {
   const experienceDetail = useSelector(state => state.app.experienceDetail);
   useEffect(() => {
     dispatch(GetCreatorPageData(creatorId));
-    console.log("creatorId", creatorId);
-    console.log("daa", data);
-
   }, []);
 
   const onPressContinue = () => {
@@ -155,7 +152,6 @@ const index = ({ route, navigation }) => {
                     onPress={() => {
                       // alert(item.id)
                       dispatch2(ExperienceDetals(item?.id, data?.celebrity?.id));
-                      console.log("experienceDetail", experienceDetail);
                       ModalState.current(true)
                     }
                     }
