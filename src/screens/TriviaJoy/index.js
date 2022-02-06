@@ -24,16 +24,18 @@ import axios from "axios";
 import dayjs from "dayjs"
 import socketIO from "socket.io-client";
 import Header from "../../Components/Header";
-import { TriviaJoyAPI } from '../../redux/actions';
+import { TriviaJoyAPI, CheckGameEnterStatus } from '../../redux/actions';
 import CountDown from "react-native-countdown-component";
 import { RFValue } from "react-native-responsive-fontsize";
 import WatchAddModal from "../../Components/WatchAddModal";
 const MYServer = "https://node-winjoyserver-deploy.herokuapp.com/";
 const index = ({ props, navigation }) => {
   const userData = useSelector(state => state.app.userData);
-  const dispatch = useDispatch(); 
-  const AddModalState = useRef(); 
+  const dispatch = useDispatch();
+  const dispatch2 = useDispatch();
+  const AddModalState = useRef();
   const triviaJoyData = useSelector(state => state.app.triviaJoyData);
+  const gameEnterStatus = useSelector(state => state.app.gameEnterStatus);
   const socket = socketIO(MYServer);
   //const [time, setTime] = useState();
   const [time, setTime] = useState(() => {
@@ -46,15 +48,33 @@ const index = ({ props, navigation }) => {
 
   useEffect(() => {
     dispatch(TriviaJoyAPI());
-    console.log("userData",userData);
+    console.log("userData", userData);
     var date = new Date().toLocaleString()
-    console.log("daaate",date);
-    console.log("start",dayjs(triviaJoyData?.upcoming_gameshow?.start_date).format('MMMM DD, YYYY - HH:MM A'));
-    
+    console.log("daaate", date);
+    console.log("start", dayjs(triviaJoyData?.upcoming_gameshow?.start_date).format('MMMM DD, YYYY - HH:MM A'));
+
   }, [])
 
 
- 
+  const LetBegin = () => {
+    dispatch2(CheckGameEnterStatus());
+    console.log("gameEnterStatus", gameEnterStatus);
+    if (gameEnterStatus.status === "success") {
+      if (gameEnterStatus.message === "Welcome to Live Game Show") {
+
+        navigation.navigate("GameStack", {
+          screen: "Quiz",
+          params: {
+            uri: triviaJoyData?.on_going_gameshow?.live_stream?.key
+          }
+        })
+      } else {
+        alert("game not started yet!")
+      }
+    } else {
+      alert("game not started yet!")
+    }
+  }
 
 
   return (
@@ -85,12 +105,7 @@ const index = ({ props, navigation }) => {
 
           {renderBtn ? (
             <TouchableOpacity
-              onPress={() => navigation.navigate("GameStack", {
-                screen: "Quiz",
-                params: {
-                  uri: triviaJoyData?.on_going_gameshow?.live_stream?.key
-                }
-              })}
+              onPress={() => LetBegin()}
             >
               <View
                 style={[styles.newGameView, { height: height * 0.12, backgroundColor: '#ffffff', borderRadius: 15, alignItems: 'center', }]}
@@ -115,7 +130,7 @@ const index = ({ props, navigation }) => {
                 Next Game
               </Label>
               <CountDown
-                style={{ marginTop: 6}}
+                style={{ marginTop: 6 }}
                 size={16}
                 until={time}
                 onFinish={() => setRenderBtn(true)}

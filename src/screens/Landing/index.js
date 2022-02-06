@@ -144,8 +144,8 @@ const index = (props) => {
     // setBanners(null);
     setRefreshing(true);
     dispatch(getLandingScreen());
-    var CurrentDate = dayjs().format("YYYY-MM-DDThh:mm:ss.000000Z");
-    var duration = dayjs(LandingData?.gameshow?.start_date).diff(dayjs(CurrentDate), 'seconds');
+    var CurrentDate = new Date().toLocaleString()
+    var duration = dayjs(LandingData?.gameShow?.start_date).diff(dayjs(CurrentDate), 'seconds');
     setTime(duration)
     initialLoad();
     wait(2000).then(() => setRefreshing(false));
@@ -156,8 +156,9 @@ const index = (props) => {
   };
   const initialLoad = () => {
 
-    var CurrentDate = dayjs().format("YYYY-MM-DDThh:mm:ss.000000Z");
-    var duration = dayjs(LandingData?.gameshow?.start_date).diff(dayjs(CurrentDate), 'seconds');
+    var CurrentDate = new Date().toLocaleString()
+    var duration = dayjs(LandingData?.gameShow?.start_date).diff(dayjs(CurrentDate), 'seconds');
+    console.log("duration",duration);
     setTime(duration)
     setGameShowData(LandingData?.gameShow)
   }
@@ -171,6 +172,7 @@ const index = (props) => {
 
     dispatch(getLandingScreen());
     setGameShowData(LandingData?.gameShow)
+    console.log("LandingData?.gameShow?.start_date",LandingData?.gameShow?.start_date);
   }, []);
   const LetBegin = () => {
     dispatch2(CheckGameEnterStatus());
@@ -183,7 +185,11 @@ const index = (props) => {
             uri: LandingData?.gameShow?.live_stream?.key
           }
         })
+      }else{
+        alert("game not started yet!")
       }
+    }else{
+      alert("game not started yet!")
     }
 
   }
