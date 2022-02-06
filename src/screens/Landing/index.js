@@ -42,7 +42,7 @@ import LongButton from "../../Components/LongButton";
 import { FanJoyCard, WjBackground } from "../../Components";
 import Carousel from 'react-native-snap-carousel';
 import Video from "react-native-video";
-import { getLandingScreen } from '../../redux/actions';
+import { getLandingScreen, CheckGameEnterStatus } from '../../redux/actions';
 import socketIO from "socket.io-client";
 import { useTranslation } from 'react-i18next';
 import WatchAddModal from "../../Components/WatchAddModal";
@@ -119,7 +119,7 @@ const index = (props) => {
   //   inputRange: [0, 45],
   //   outputRange: [0, -45]
   // })
- 
+
   const [headerValue, setHeaderValue] = useState(0);
   const { Coins, navigation } = props;
   const [loader, setLoader] = useState(false);
@@ -132,9 +132,12 @@ const index = (props) => {
   const [activeSlide, setActiveSlide] = useState();
   const userData = useSelector(state => state.app.userData);
   const LandingData = useSelector(state => state.app.LandingData);
+  const gameEnterStatus = useSelector(state => state.app.gameEnterStatus);
+
   const [buffer, setBuffer] = useState(false);
   const [videoAction, setVideoAction] = useState(true);
   const dispatch = useDispatch();
+  const dispatch2 = useDispatch();
   const socket = socketIO(MYServer);
   const AddModalState = useRef();
   const onRefresh = React.useCallback(() => {
@@ -165,10 +168,25 @@ const index = (props) => {
     }, [])
   );
   useEffect(() => {
-   
+
     dispatch(getLandingScreen());
     setGameShowData(LandingData?.gameShow)
   }, []);
+  const LetBegin = () => {
+    dispatch2(CheckGameEnterStatus());
+    console.log("gameEnterStatus", gameEnterStatus);
+    if (gameEnterStatus.status === "success") {
+      if (gameEnterStatus.message === "Welcome to Live Game Show") {
+        navigation.navigate("GameStack", {
+          screen: "Quiz",
+          params: {
+            uri: LandingData?.gameShow?.live_stream?.key
+          }
+        })
+      }
+    }
+
+  }
   function _renderItem({ item, index }) {
     //console.log("item.url",item.url);
     if (item.type === "image") {
@@ -245,7 +263,6 @@ const index = (props) => {
               {loader ? (
                 <ActivityIndicator size="large" color="#fff" />
               ) : (
-                null
                 // <Carousel
                 //   layout={"default"}
                 //   resizeMode={"cover"}
@@ -261,6 +278,7 @@ const index = (props) => {
                 //   style={styles.ShoppingBanner}
                 //   onSnapToItem={index => setActiveSlide(index)}
                 // />
+                null
               )}
             </View>
             <View
@@ -344,12 +362,7 @@ const index = (props) => {
           />
           <HomeCard
             //onPress={() => navigation.navigate("GameStack")} 
-            onPress={() => navigation.navigate("GameStack", {
-              screen: "Quiz",
-              params: {
-                uri: LandingData?.gameShow?.live_stream?.key
-              }
-            })}
+            onPress={() => LetBegin()}
 
             //style={{ marginTop: 10, }}
             gameShowData={"hiii"}
@@ -452,9 +465,9 @@ const index = (props) => {
               keyExtractor={(item) => item.id}
             />
           </LinearGradient>
-          <TouchableOpacity onPress={()=>navigation.navigate('WINNERS', {
-                          selected: 1 
-                        })}> 
+          <TouchableOpacity onPress={() => navigation.navigate('WINNERS', {
+            selected: 1
+          })}>
             <LuckyDrawCard
               style={{ marginTop: 15, }}
             />

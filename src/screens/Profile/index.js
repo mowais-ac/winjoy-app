@@ -148,7 +148,7 @@ const index = ({ props, navigation, route }) => {
         <Label font={14} style={{ color: "#FFFFFF", marginTop: 8 }}>
           {userInfo?.first_name} {userInfo?.last_name}
         </Label>
-        <Label
+        {/* <Label
           primary
           font={14}
           bold
@@ -160,7 +160,7 @@ const index = ({ props, navigation, route }) => {
             at{" "}
           </Label>
           {userInfo?.company_name || "MicroSoft"}
-        </Label>
+        </Label> */}
 
         <View style={styles.flatListHeader}>
           <TouchableOpacity

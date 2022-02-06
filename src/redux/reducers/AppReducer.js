@@ -25,6 +25,7 @@ const INITIAL_STATE = {
   leaderBoardWinners: [],
   dealsJoyData: [],
   triviaJoyData: [],
+  gameEnterStatus:[]
 };
 
 
@@ -81,6 +82,8 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, dealsJoyData: action.payload };
       case types.TRIVIA_JOY:
         return { ...state, triviaJoyData: action.payload };
+        case types.GAME_ENTER_STATUS:
+          return { ...state, gameEnterStatus: action.payload };
     default:
       return state;
   }

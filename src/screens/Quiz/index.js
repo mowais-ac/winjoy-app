@@ -53,7 +53,6 @@ import types from '../../redux/types';
 const MYServer = "https://node-winjoyserver-deploy.herokuapp.com/";
 const { width, height } = Dimensions.get("window");
 let timer = () => { };
-let timer2 = () => { };
 const BackgroundVideo = ({ route, navigation }) => {
     const dispatch = useDispatch();
     const userData = useSelector(state => state.app.userData);
@@ -63,10 +62,6 @@ const BackgroundVideo = ({ route, navigation }) => {
     const [selected, setSelected] = useState(null);
     const [buffer, setBuffer] = useState(false);
     const [timeLeft, setTimeLeft] = useState(20);
-    const [timeLeft2, setTimeLeft2] = useState(3);
-    const [question, setQuestion] = useState([]);
-    //const [questionIncrement, setQuestionIncrement] = useState(0);
-    // const [answerId, setAnswerId] = useState(null);
     const [activityScreen, setActivityScreen] = useState(false);
     const [activity, setActivity] = useState(false);
     //  const [answer, setAnswer] = useState("");
@@ -82,10 +77,12 @@ const BackgroundVideo = ({ route, navigation }) => {
     const answer = useRef(null);
     const questionRef = useRef([]);
     const questionIncrement = useRef(0);
+    const livecheck = useRef(0);
     const attemptWrong = useRef(false);
     const ModalState = useRef();
     const userElimante = useRef(false);
     const LifeLineModalState = useRef();
+
     const startTimer = () => {
         timer = setTimeout(() => {
             if (timeLeft <= 0) {
@@ -102,27 +99,10 @@ const BackgroundVideo = ({ route, navigation }) => {
             setTimeLeft(timeLeft - 1);
         }, 1000)
     }
-    const useLifeLineTimer = () => {
-        timer2 = setTimeout(() => {
-            if (timeLeft2 <= 0) {
-                clearTimeout(timer2);
-                LifeLineModalState.current(false)
 
-                // if (timerFlag && gameShowCheck && !showResult) {
-                //     setDisableQuizOptions(true)
-                //     setTimerFlag(false)
-                //     ModalState.current(true);
-                // }
-                return false;
-
-            }
-            setTimeLeft2(timeLeft2 - 1);
-        }, 1000)
-    }
 
     useEffect(() => {
         startTimer();
-        useLifeLineTimer();
         return () => clearTimeout(timer);
     });
 
@@ -163,12 +143,13 @@ const BackgroundVideo = ({ route, navigation }) => {
             body,
         };
 
-        await fetch(`${Config.API_URL}/deduct_lives/4`, requestOptions)
+        await fetch(`${Config.API_URL}/deduct_lives/${questionRef.current[questionIncrement.current]?.live_gameshow_id}`, requestOptions)
             .then(async (response) => response.json())
             .then(async (res) => {
                 setAvailLifeActivity(false)
                 console.log("resUseLife", res);
                 if (res.message = "Live availed successfully") {
+
                     dispatch({
                         type: types.USER_DATA,
                         userData: res?.user,
@@ -177,12 +158,7 @@ const BackgroundVideo = ({ route, navigation }) => {
                     LifeLineModalState.current(false)
                 }
                 else {
-                    LifeLineModalState.current(false)
-                    setShowResult(true)
-                    if (userElimante.current === false) {
-                        ModalState.current(true);
-
-                    }
+                    ModalState.current(true);
                 }
 
 
@@ -197,80 +173,97 @@ const BackgroundVideo = ({ route, navigation }) => {
             if (item.is_correct === 1) {
                 console.log("item.answer", item.answer);
                 ans = item.answer;
+                setActivity(false)
             }
         })
         console.log("aaaa", ans);
         //        setAnswer(ans)
         answer.current = ans;
         // setTimer(20)
-        const Token = await EncryptedStorage.getItem("Token");
-        const body = JSONtoForm({
-            question: questionRef.current[questionIncrement.current]?.id,
-            answer: answerId.current,
-            live_gameshow_id: questionRef.current[questionIncrement.current]?.live_gameshow_id,
-        });
-        console.log("body", body);
-        const requestOptions = {
-            method: "POST",
-            headers: {
-                "Content-Type": "multipart/form-data",
-                Accept: "application/json",
-                Authorization: `Bearer ${Token}`,
-            },
-            body,
-        };
-
-        await fetch(`${Config.API_URL}/save/user/response`, requestOptions)
-            .then(async (response) => response.json())
-            .then(async (res) => {
-                console.log("saveRes", res)
-                if (res.status === "success") {
-                    if (res.message === "Congrats!! move to next question") {
-
-                    }
-                }
-                else if (res.status === "error") {
-                    if (res.message === "Wrong Answer!! Don't loose hope try next time") {
-                        setTimeLeft2(3)
-                        clearTimeout(timer2);
-                        useLifeLineTimer();
-                        LifeLineModalState.current(true)
-
-                        setTimeout(() => {
-                            ModalState.current(true);
-                        }, 5000);
-
-
-
-                        //  setShowResult(true)
-                        // if (userElimante.current === false) {
-                        //     setTimeout(() => {
-                        //         ModalState.current(true);
-                        //     }, 3000);
-                        // }
-
-
-                        //  navigation.navigate("WrongAnswer", { Tans: ans })
-                    }
-                }
-                // if (question[question.length - 1].id === question[questionIncrement]?.id) {
-                //     CheckResult()
-                // }
-                // else {
-                //     let inc = questionIncrement + 1;
-                //     setQuestionIncrement(inc)
-                // }
-
-
-                setActivity(false)
-                setSelected(null)
-
-            })
-            .catch((e) => {
-                setActivity(false)
-                alert("Error", e);
-
+        console.log("answerId.current ", answerId.current);
+        if (answerId.current === null || answerId.current === undefined) {
+            if (userElimante.current === true)
+                ModalState.current(false);
+            else
+                ModalState.current(true);
+        }
+        else {
+            const Token = await EncryptedStorage.getItem("Token");
+            const body = JSONtoForm({
+                question: questionRef.current[questionIncrement.current]?.id,
+                answer: answerId.current,
+                live_gameshow_id: questionRef.current[questionIncrement.current]?.live_gameshow_id,
             });
+            console.log("body", body);
+            const requestOptions = {
+                method: "POST",
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    Accept: "application/json",
+                    Authorization: `Bearer ${Token}`,
+                },
+                body,
+            };
+
+            await fetch(`${Config.API_URL}/save/user/response`, requestOptions)
+                .then(async (response) => response.json())
+                .then(async (res) => {
+                    console.log("saveRes", res)
+                    if (res.status === "success") {
+                        if (res.message === "Congrats!! move to next question") {
+
+                        }
+                    }
+                    else if (res.status === "error") {
+                        if (res.message === "Wrong Answer!! Don't loose hope try next time") {
+                            if (userElimante.current !== true) {
+                                ModalState.current(true);
+                                if (livecheck.current <= 4) {
+                                    LifeLineModalState.current(true)
+                                    livecheck.current = livecheck.current + 1;
+                                    console.log("livecheck", livecheck.current);
+                                } else {
+                                    ModalState.current(true);
+                                }
+                            }
+
+
+
+
+
+
+
+
+                            //  setShowResult(true)
+                            // if (userElimante.current === false) {
+                            //     setTimeout(() => {
+                            //         ModalState.current(true);
+                            //     }, 3000);
+                            // }
+
+
+                            //  navigation.navigate("WrongAnswer", { Tans: ans })
+                        }
+                    }
+                    // if (question[question.length - 1].id === question[questionIncrement]?.id) {
+                    //     CheckResult()
+                    // }
+                    // else {
+                    //     let inc = questionIncrement + 1;
+                    //     setQuestionIncrement(inc)
+                    // }
+
+
+                    setActivity(false)
+                    setSelected(null)
+
+                })
+                .catch((e) => {
+                    setActivity(false)
+                    alert("Error", e);
+
+                });
+        }
 
     }
 
@@ -289,17 +282,17 @@ const BackgroundVideo = ({ route, navigation }) => {
         userElimante.current = true;
     }
     const onPressContinueLifeLine = () => {
+        ModalState.current(false)
         DeductLive()
     }
     const onPressNotNow = () => {
         LifeLineModalState.current(false)
         ModalState.current(true)
     }
-    useEffect(() => {
-        // action on update of movies
-    }, [answerId]);
+    // useEffect(() => {
+    //     // action on update of movies
+    // }, [answerId]);
     useEffect(async () => {
-        // LifeLineModalState.current(true)
         console.log("uri", uri);
         socket.on("sendHideQuestion", msg => {
             console.log(msg);
@@ -360,6 +353,7 @@ const BackgroundVideo = ({ route, navigation }) => {
         });
 
         socket.on("sendHideAnswer", msg => {
+            // LifeLineModalState.current(true)
             setGameShowCheck(false)
 
         });
@@ -425,7 +419,7 @@ const BackgroundVideo = ({ route, navigation }) => {
                             </View>
                             <ImageBackground
                                 resizeMode="center"
-                                style={{ width: 60, height: 50, marginTop: height * 0.05, right: 10, position: 'absolute', justifyContent: 'center', alignItems: 'center' }}
+                                style={{ width: 60, height: 50, top: height * 0.05, right: 10, position: 'absolute', justifyContent: 'center', alignItems: 'center' }}
                                 source={require('../../assets/imgs/pinkHeart.png')}
                             >
 
@@ -447,10 +441,10 @@ const BackgroundVideo = ({ route, navigation }) => {
                                                 <Label primary font={26} bold dark style={{ color: "#FFFF13", }}>
                                                     Time's Up
                                                 </Label>
-                                                <Label primary font={16} bold dark style={{ color: "#FFFF13", }}>
+                                                <Label primary bold dark style={styles.questionTitle}>
                                                     Result
                                                 </Label>
-                                                <Label primary font={16} bold dark style={{ color: "#ffff", lineHeight: 28 }}>
+                                                <Label primary bold dark style={styles.questionTitle}>
                                                     {questionRef.current[questionIncrement.current]?.question}
                                                 </Label>
                                                 {/* </View> */}
@@ -482,10 +476,10 @@ const BackgroundVideo = ({ route, navigation }) => {
                                                         </View>
                                                     </ProgressCircle>
                                                 </View>
-                                                <Label primary font={16} bold dark style={{ color: "#FFFF13", }}>
-                                                    Question123
+                                                <Label primary bold dark style={styles.questionTitle}>
+                                                    Question
                                                 </Label>
-                                                <Label primary font={16} bold dark style={{ color: "#ffff", lineHeight: 28 }}>
+                                                 <Label primary bold dark style={styles.questionTitle}>
                                                     {questionRef.current[questionIncrement.current]?.question}
                                                 </Label>
                                                 {/* </View> */}
@@ -514,10 +508,10 @@ const BackgroundVideo = ({ route, navigation }) => {
                                                 <Label primary font={26} bold dark style={{ color: "#FFFF13", }}>
                                                     Time's Up
                                                 </Label>
-                                                <Label primary font={16} bold dark style={{ color: "#FFFF13", }}>
+                                                <Label primary bold dark style={styles.questionTitle}>
                                                     Result
                                                 </Label>
-                                                <Label primary font={16} bold dark style={{ color: "#ffff", lineHeight: 28 }}>
+                                                 <Label primary bold dark style={styles.questionTitle}>
                                                     {questionRef.current[questionIncrement.current]?.question}
                                                 </Label>
                                                 {/* </View> */}
@@ -553,10 +547,10 @@ const BackgroundVideo = ({ route, navigation }) => {
                                                         </View>
                                                     </ProgressCircle>
                                                 </View>
-                                                <Label primary font={16} bold dark style={{ color: "#FFFF13", }}>
+                                                <Label primary bold dark style={styles.questionTitle}>
                                                     Question
                                                 </Label>
-                                                <Label primary font={14} bold dark style={{ color: "#ffff", lineHeight: 28, height: 100 }}>
+                                                <Label primary font={14} bold dark style={{ color: "#ffff", lineHeight: 28, }}>
                                                     {questionRef.current[questionIncrement.current]?.question}
                                                 </Label>
                                                 {/* </View> */}
@@ -584,7 +578,7 @@ const BackgroundVideo = ({ route, navigation }) => {
             <UseLifeLineModal ModalRef={LifeLineModalState} details onPressContinueLifeLine={onPressContinueLifeLine}
                 onPressNotNow={onPressNotNow}
                 availLifeActivity={availLifeActivity}
-                timeLeft={timeLeft2}
+
             />
         </View>
     );
@@ -605,7 +599,7 @@ const styles = StyleSheet.create({
 
     },
     quizView: {
-        height: height - 370,
+        height: height * 0.6,
         width: "100%",
         position: "absolute",
         bottom: 0,
@@ -654,6 +648,11 @@ const styles = StyleSheet.create({
         color: Colors.LABEL,
         left: 4
     },
+    questionTitle: {
+        color: "#ffff",
+        lineHeight: 28,
+        fontSize:RFValue(14)
+    }
 
 });
 

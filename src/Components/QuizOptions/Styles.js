@@ -12,7 +12,7 @@ const { width, height } = Dimensions.get("window");
 export default StyleSheet.create({
   optionsViewMain: {
     position: 'absolute',
-    top: heightConverter(150),
+    bottom: height*0.05,
     left: widthPercentageToDP("7%")
 
 

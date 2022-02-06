@@ -428,5 +428,33 @@ export const TriviaJoyAPI = () => {
         console.log(error);
     }
 }
+export const CheckGameEnterStatus = () => {
+
+    try {
+        return async dispatch => {
+            const Token = await EncryptedStorage.getItem("Token");
+            const result = await fetch(`${Config.API_URL}/joinGameshow`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    Accept: "application/json",
+                    Authorization: `Bearer ${Token}`,
+                },
+            });
+            const json = await result.json();
+            if (json) {
+                dispatch({
+                    type: types.GAME_ENTER_STATUS,
+                    payload: json
+                }); 
+            } else {
+                console.log('Unable to fetch!');
+            }
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 
 

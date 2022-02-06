@@ -25,8 +25,9 @@ import LinearGradient from "react-native-linear-gradient";
 import { heightConverter } from "./Helpers/Responsive";
 import * as Progress from 'react-native-progress';
 const { width, height } = Dimensions.get("window");
-
+let timer = () => { };
 const UseLifeLineModal = (props) => {
+  const [timeLeft, setTimeLeft] = useState(5);
   const [ModelState, setModelState] = useState({
     state: false,
     details: null,
@@ -43,13 +44,36 @@ const UseLifeLineModal = (props) => {
   const HandleChange = (state, details = null, ForceSuccess = false) => {
     setModelState({ state, details, ForceSuccess });
   };
+  const startTimer = () => {
+    timer = setTimeout(() => {
+        if (timeLeft <= 0) {
+            clearTimeout(timer);
+            setModelState({
+              ...ModelState,
+              state: ModelState.state=false,
+            });
+            return false;
+
+        }
+        setTimeLeft(timeLeft - 1);
+    }, 1000)
+}
+useEffect(() => {
+  startTimer();
+  return () => clearTimeout(timer);
+});
 
   return (
     <Modal
       animationType="slide"
-      transparent={true}
+      transparent={true} 
       visible={ModelState.state}
       statusBarTranslucent={false}
+      onShow={()=>{
+        setTimeLeft(5)
+        clearTimeout(timer);
+        startTimer();
+      }}
       onRequestClose={() => {
         setModelState({
           ...ModelState,
@@ -85,7 +109,7 @@ const UseLifeLineModal = (props) => {
             You've 5 lives
           </Label>
           <Label primary headingtype="h1" bold2 style={{ color: "#420e92", marginTop: 5 }}>
-            {props.timeLeft}
+            {timeLeft}
           </Label>
    
             <TouchableOpacity
@@ -114,7 +138,7 @@ const UseLifeLineModal = (props) => {
 
 
               >
-                {props.availLifeActivity ? (
+                {props.availLifeActivity? (
                   <ActivityIndicator size="small" color="#ffffff" />
                 ) : (
                   <Label primary font={16} bold style={{ color: "#ffffff" }}>
@@ -164,8 +188,8 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.BG_MUTED,
   },
   ModalView: {
-    height: height * 0.6,
-    marginTop: height * 0.42,
+    height: height * 0.7,
+    marginTop: height * 0.35,
     borderTopLeftRadius: 37,
     borderTopRightRadius: 37,
     backgroundColor: Colors.WHITE,
