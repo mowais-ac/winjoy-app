@@ -146,7 +146,8 @@ const index = ({ props, navigation, route }) => {
         </View>
 
         <Label font={14} style={{ color: "#FFFFFF", marginTop: 8 }}>
-          {userInfo?.first_name} {userInfo?.last_name}
+        {userInfo?.first_name?.charAt(0).toUpperCase() + userInfo?.first_name?.slice(1)} {userInfo?.last_name?.charAt(0).toUpperCase() + userInfo?.last_name?.slice(1)}
+       
         </Label>
         {/* <Label
           primary
@@ -166,7 +167,7 @@ const index = ({ props, navigation, route }) => {
           <TouchableOpacity
             onPress={() => { setSelected(1) }}
           >
-            <Text style={[styles.text, { color: selected === 1 ? "#ffff00" : "#ffffff" }]}>Play Games</Text>
+            <Text style={[styles.text, { color: selected === 1 ? "#ffff00" : "#ffffff" }]}>Played Games</Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => { setSelected(2) }}

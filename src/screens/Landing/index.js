@@ -13,7 +13,7 @@ import {
   Image
 } from "react-native";
 import { connect, useDispatch, useSelector } from "react-redux";
-import { wait } from "../../Constants/Functions";
+import { FormatNumber, wait } from "../../Constants/Functions";
 import LoaderImage from "../../Components/LoaderImage";
 import Label from "../../Components/Label";
 import { Colors } from "../../Constants/Index";
@@ -182,10 +182,10 @@ const index = (props) => {
             uri: LandingData?.gameShow?.live_stream?.key
           }
         })
-      }else{
+      } else {
         alert("game not started yet!")
       }
-    }else{
+    } else {
       alert("game not started yet!")
     }
 
@@ -265,22 +265,22 @@ const index = (props) => {
               {loader ? (
                 <ActivityIndicator size="large" color="#fff" />
               ) : (
-                // <Carousel
-                //   layout={"default"}
-                //   resizeMode={"cover"}
-                //   loop={videoAction}
-                //   autoplay={videoAction}
-                //   autoplayInterval={3000}
+                <Carousel
+                  layout={"default"}
+                  resizeMode={"cover"}
+                  loop={videoAction}
+                  autoplay={videoAction}
+                  autoplayInterval={3000}
 
-                //   // ref={ref => this.carousel = ref}
-                //   data={LandingData?.banners}
-                //   sliderWidth={width}
-                //   itemWidth={width}
-                //   renderItem={_renderItem}
-                //   style={styles.ShoppingBanner}
-                //   onSnapToItem={index => setActiveSlide(index)}
-                // />
-                null
+                  // ref={ref => this.carousel = ref}
+                  data={LandingData?.banners}
+                  sliderWidth={width}
+                  itemWidth={width}
+                  renderItem={_renderItem}
+                  style={styles.ShoppingBanner}
+                  onSnapToItem={index => setActiveSlide(index)}
+                />
+
               )}
             </View>
             <View
@@ -303,7 +303,11 @@ const index = (props) => {
                   <Text style={[styles.text, { color: '#fff', fontSize: RFValue(14) }]}>
                     {userData?.first_name?.charAt(0).toUpperCase() + userData?.first_name?.slice(1)} {userData?.last_name?.charAt(0).toUpperCase() + userData?.last_name?.slice(1)}
                   </Text>
-                  <Text style={[styles.text, { color: '#fff', fontSize: RFValue(14) }]}>Your balance: <Text style={[styles.text, { color: '#ffff00', fontSize: RFValue(14) }]}>AED {userData?.balance ? userData?.balance : 0}</Text></Text>
+                  <Text style={[styles.text, { color: '#fff', fontSize: RFValue(14) }]}>Your balance: <Text style={[styles.text, { color: '#ffff00', fontSize: RFValue(14) }]}>
+                    AED {userData?.balance ?FormatNumber(+(userData?.balance).toLocaleString()) : 0}
+                    
+                  </Text>
+                  </Text>
                 </View>
               </TouchableOpacity>
               <Entypo name="chevron-thin-right" size={22} color="#fff" style={{ marginTop: 6.5, marginRight: 6 }} />

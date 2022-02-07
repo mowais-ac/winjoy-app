@@ -3,6 +3,7 @@ import { View, Image, Dimensions, TouchableOpacity } from "react-native";
 import styles from "./Styles";
 import Label from "../Label";
 import { useTranslation } from 'react-i18next';
+import { FormatNumber } from "../../Constants/Functions";
 const { width, height } = Dimensions.get("window");
 function WalletLastPlayedCard({ noOfQuestions, onPress, wonPrize, result, optionDisable, data }) {
   const { t } = useTranslation();
@@ -53,7 +54,7 @@ function WalletLastPlayedCard({ noOfQuestions, onPress, wonPrize, result, option
         <Label notAlign primary font={14} bold style={{ color: "#E7003F", marginTop:7}}>
         {t("won_prize")}
          <Label notAlign primary font={14} dark style={{ color: "#000000" }}>
-         {" "}AED {wonPrize}
+         {" "}AED {FormatNumber(+(wonPrize)?.toLocaleString())}
         </Label>
         </Label>
       </View>
