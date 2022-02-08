@@ -56,7 +56,7 @@ const InputField = React.forwardRef((props, ref) => {
     },
     validateVerify() {
       if (props.verify && props.maxLength) {
-        if (!val || val.length < props.maxLength) {
+        if (!val || val?.length < props.maxLength) {
           seterr("* Wrong Verify");
           return false;
         }
@@ -67,7 +67,7 @@ const InputField = React.forwardRef((props, ref) => {
       if (
         !val ||
         /^(?=.*[a-zA-Z])(?=.*\d).+$/.test(val) === false ||
-        val.length < 8
+        val?.length < 8
       ) {
         seterr("* Wrong Pass");
         return false;
@@ -75,7 +75,7 @@ const InputField = React.forwardRef((props, ref) => {
       return true;
     },
     ValidateOTP() {
-      if (!val || val.length < 6) {
+      if (!val || val?.length < 6) {
         seterr("* Wrong Code");
         return false;
       }

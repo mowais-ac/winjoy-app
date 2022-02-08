@@ -27,8 +27,8 @@ function TrendingCards({ imageStyle, style, onPress, title, price,imageUrl,mainV
         <View
           style={{ width: '100%', marginTop: height * 0.01 }}
         >
-          <Text style={{ color: '#eb3d6e', fontFamily: 'Axiforma SemiBold', textAlign: 'center', fontSize: RFValue(12), }}>AED {price}</Text>
-          <Text style={{ color: '#000000', fontFamily: 'Axiforma Regular', textAlign: 'center', fontSize: RFValue(12), marginTop: 4 }}>{title}</Text>
+          <Text style={{ color: '#eb3d6e', fontFamily: 'Axiforma-SemiBold', textAlign: 'center', fontSize: RFValue(12), }}>AED {price}</Text>
+          <Text style={{ color: '#000000', fontFamily: 'Axiforma-Regular', textAlign: 'center', fontSize: RFValue(12), marginTop: 4 }}>{title}</Text>
         </View>
       </View>
     </TouchableOpacity>

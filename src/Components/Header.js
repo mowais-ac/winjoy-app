@@ -54,7 +54,7 @@ const Header = (props) => {
   const UpdateValueOnce = async () => {
     let dat = await AsyncStorage.getItem('ids');
     let count = JSON.parse(dat);
-    props.UpdateBell(UpdateBell(count.length));
+    props.UpdateBell(UpdateBell(count?.length));
   };
 
   useEffect(() => {

@@ -12,14 +12,14 @@ const { width, height } = Dimensions.get("window");
 export default StyleSheet.create({
   optionsViewMain: {
     position: 'absolute', 
-    top: heightConverter(150),
+    bottom: height*0.05,
     left: widthPercentageToDP("7%")
 
 
   },
   optionView: {
     width: widthPercentageToDP("85%"),
-    height: heightConverter(30),
+    height: heightPercentageToDP('7%'),
     backgroundColor: '#ffffff',
     borderColor: '#ffffff',
     borderWidth: 2,

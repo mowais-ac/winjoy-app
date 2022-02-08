@@ -8,35 +8,19 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* winjoyTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* winjoyTests.m */; };
+		040A7B2327B256D900974791 /* Axiforma-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 04CE160827B1B02900872E94 /* Axiforma-Bold.ttf */; };
+		040A7B2427B256D900974791 /* Axiforma-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 04CE15F827B1A45A00872E94 /* Axiforma-Light.ttf */; };
+		040A7B2527B256D900974791 /* Axiforma-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 04CE15FB27B1A45A00872E94 /* Axiforma-Medium.ttf */; };
+		040A7B2627B256D900974791 /* Axiforma-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 04CE160A27B1B25600872E94 /* Axiforma-Bold.ttf */; };
+		040A7B2727B256D900974791 /* Axiforma-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 04CE15F727B1A45A00872E94 /* Axiforma-Regular.ttf */; };
+		040A7B2827B256D900974791 /* Axiforma-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 04CE15FC27B1A45A00872E94 /* Axiforma-SemiBold.ttf */; };
+		040A7B2927B256D900974791 /* ProximaNova-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 04CE15F927B1A45A00872E94 /* ProximaNova-Regular.ttf */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
-		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		478407C31D6A424886EB84E0 /* Axiforma Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 85DCF12253644AE9997822D9 /* Axiforma Bold.ttf */; };
-		CB9C6140D77A4D1DA869EA00 /* Axiforma Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0C880F1162EC424ABF4CDAEB /* Axiforma Light.ttf */; };
-		E4931219B13840EF83790DD5 /* Axiforma Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1BA6885702AC47789494E24B /* Axiforma Medium.ttf */; };
-		AAF884385C46409B9C6D3975 /* Axiforma Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1CA3BC00FDBC489F887A969E /* Axiforma Regular.ttf */; };
-		96B6D881B3FE4AEC92C1FE54 /* Axiforma SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 52DE7172ECEE48ECB6F17834 /* Axiforma SemiBold.ttf */; };
-		6FC12DE7A42D448A915D6859 /* Poppins Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4A0C39386BBE4B2F8861634F /* Poppins Regular.ttf */; };
-		0E599C32742C4A7BBBB1EAE3 /* ProximaNova Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 89D44192141C4D26A43D2A97 /* ProximaNova Regular.ttf */; };
-		3E488F30EB1C4D67993E57EA /* AntDesign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 62DAEBAC8C8548C3BE184797 /* AntDesign.ttf */; };
-		05D5849B1C1441C38E180F33 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 79F95DCD536D4424B21E9E6C /* Entypo.ttf */; };
-		3BDA8776D81E47F6B9F0E2F8 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E902EE15B4534D3CAC2D3B2B /* EvilIcons.ttf */; };
-		A5066379CA6E4D5C9777C36B /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3281F7B68DAD476A9A6B6114 /* Feather.ttf */; };
-		C1E8129D147045C9BEA02AD8 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5B1664CE1E2F41F7BDA3BF6A /* FontAwesome.ttf */; };
-		20419FA7106F44EA91C67CB9 /* FontAwesome5_Brands.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A57D785A9F3D481EAFFB8BD8 /* FontAwesome5_Brands.ttf */; };
-		61A64FE03A7742928864A4C9 /* FontAwesome5_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C36047E9E3814B518C701CB7 /* FontAwesome5_Regular.ttf */; };
-		F4393E60F7204A2FA56FCC1A /* FontAwesome5_Solid.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9798F9FDE1FA46B9B167CA05 /* FontAwesome5_Solid.ttf */; };
-		05585AF744864BA1885B4D73 /* Fontisto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5043B78341954586B6F4ABDF /* Fontisto.ttf */; };
-		68F200CCEE804641A5BA5A8A /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 32960991FE4044F9B79706B7 /* Foundation.ttf */; };
-		0BAD14D815984748B8865170 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BBBD72CF80794D1ABE803B9E /* Ionicons.ttf */; };
-		2A916F2037894DEAAA93CD92 /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 079A0E7EE5AE4386A52D5529 /* MaterialCommunityIcons.ttf */; };
-		972404EB8B354B3A900E8E6C /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 307F3E2EFE7649A9AD574C51 /* MaterialIcons.ttf */; };
-		A898C106BE4244D4BE5A4898 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F15858151B2841B0821331FC /* Octicons.ttf */; };
-		9F87133E00C04687BC105710 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 10D0228EABAE4B6497D8CEC3 /* SimpleLineIcons.ttf */; };
-		65662C93B2D945CCB5205E74 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BBC6CEE53CC34DC5B6C6B05D /* Zocial.ttf */; };
-		EDEDBE2124534CE08134E90B /* axiformaBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 740BFA54DA604394BDC752B6 /* axiformaBold.ttf */; };
-		69DE6F20E6E343768C561DDF /* Gotham Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = F81856CD201A4A06972DF6E5 /* Gotham Bold.otf */; };
+		AE05A7ABFBBDBE5E50D1CC21 /* libPods-winjoy-winjoyTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 26A47B2EA359F1DB8DC3CB78 /* libPods-winjoy-winjoyTests.a */; };
+		E582486D5F4531C3E099D557 /* libPods-winjoy.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DE006A2911557396E674CC77 /* libPods-winjoy.a */; };
+		8CC828E567A147F2AD8D4876 /* Poppins-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E76EE549D9EA42E591A37FA6 /* Poppins-Bold.ttf */; };
+		126A6DFA4AD7475AAEBAFB2C /* Poppins-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BEFF0ABCED1B4F3E8909BDE0 /* Poppins-Regular.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,39 +37,51 @@
 		00E356EE1AD99517003FC87E /* winjoyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = winjoyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* winjoyTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = winjoyTests.m; sourceTree = "<group>"; };
+		04CE15F727B1A45A00872E94 /* Axiforma-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Axiforma-Regular.ttf"; path = "../src/assets/fonts/Axiforma-Regular.ttf"; sourceTree = "<group>"; };
+		04CE15F827B1A45A00872E94 /* Axiforma-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Axiforma-Light.ttf"; path = "../src/assets/fonts/Axiforma-Light.ttf"; sourceTree = "<group>"; };
+		04CE15F927B1A45A00872E94 /* ProximaNova-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "ProximaNova-Regular.ttf"; path = "../src/assets/fonts/ProximaNova-Regular.ttf"; sourceTree = "<group>"; };
+		04CE15FB27B1A45A00872E94 /* Axiforma-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Axiforma-Medium.ttf"; path = "../src/assets/fonts/Axiforma-Medium.ttf"; sourceTree = "<group>"; };
+		04CE15FC27B1A45A00872E94 /* Axiforma-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Axiforma-SemiBold.ttf"; path = "../src/assets/fonts/Axiforma-SemiBold.ttf"; sourceTree = "<group>"; };
+		04CE160827B1B02900872E94 /* Axiforma-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Axiforma-Bold.ttf"; path = "../src/assets/fonts/Axiforma-Bold.ttf"; sourceTree = "<group>"; };
+		04CE160A27B1B25600872E94 /* Axiforma-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Axiforma-Bold.ttf"; path = "../src/assets/fonts/Axiforma-Bold.ttf"; sourceTree = "<group>"; };
+		079A0E7EE5AE4386A52D5529 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
+		0C880F1162EC424ABF4CDAEB /* Axiforma-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Axiforma-Light.ttf"; path = "../src/assets/fonts/Axiforma-Light.ttf"; sourceTree = "<group>"; };
+		10D0228EABAE4B6497D8CEC3 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* winjoy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = winjoy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = winjoy/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = winjoy/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = winjoy/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = winjoy/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = winjoy/main.m; sourceTree = "<group>"; };
+		1BA6885702AC47789494E24B /* Axiforma-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Axiforma-Medium.ttf"; path = "../src/assets/fonts/Axiforma-Medium.ttf"; sourceTree = "<group>"; };
+		1CA3BC00FDBC489F887A969E /* Axiforma-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Axiforma-Regular.ttf"; path = "../src/assets/fonts/Axiforma-Regular.ttf"; sourceTree = "<group>"; };
+		26A47B2EA359F1DB8DC3CB78 /* libPods-winjoy-winjoyTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-winjoy-winjoyTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		307F3E2EFE7649A9AD574C51 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
+		3281F7B68DAD476A9A6B6114 /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
+		32960991FE4044F9B79706B7 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
+		3BDC1AF882B4B1540A80D46A /* Pods-winjoy.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-winjoy.release.xcconfig"; path = "Target Support Files/Pods-winjoy/Pods-winjoy.release.xcconfig"; sourceTree = "<group>"; };
+		5043B78341954586B6F4ABDF /* Fontisto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Fontisto.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf"; sourceTree = "<group>"; };
+		52DE7172ECEE48ECB6F17834 /* Axiforma-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Axiforma-SemiBold.ttf"; path = "../src/assets/fonts/Axiforma-SemiBold.ttf"; sourceTree = "<group>"; };
+		5B1664CE1E2F41F7BDA3BF6A /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
+		62DAEBAC8C8548C3BE184797 /* AntDesign.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = AntDesign.ttf; path = "../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
+		66FD7407FA6C107D1994D03D /* Pods-winjoy-winjoyTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-winjoy-winjoyTests.release.xcconfig"; path = "Target Support Files/Pods-winjoy-winjoyTests/Pods-winjoy-winjoyTests.release.xcconfig"; sourceTree = "<group>"; };
+		75F30C03C1D5DE14B0C3AC0C /* Pods-winjoy.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-winjoy.debug.xcconfig"; path = "Target Support Files/Pods-winjoy/Pods-winjoy.debug.xcconfig"; sourceTree = "<group>"; };
+		79F95DCD536D4424B21E9E6C /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = winjoy/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		85DCF12253644AE9997822D9 /* Axiforma-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Axiforma-Bold.ttf"; path = "../src/assets/fonts/Axiforma-Bold.ttf"; sourceTree = "<group>"; };
+		89D44192141C4D26A43D2A97 /* ProximaNova-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "ProximaNova-Regular.ttf"; path = "../src/assets/fonts/ProximaNova-Regular.ttf"; sourceTree = "<group>"; };
+		9798F9FDE1FA46B9B167CA05 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
+		A57D785A9F3D481EAFFB8BD8 /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
+		BBBD72CF80794D1ABE803B9E /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
+		BBC6CEE53CC34DC5B6C6B05D /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
+		C36047E9E3814B518C701CB7 /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Regular.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
+		DB6C83D5442B48E2E8242799 /* Pods-winjoy-winjoyTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-winjoy-winjoyTests.debug.xcconfig"; path = "Target Support Files/Pods-winjoy-winjoyTests/Pods-winjoy-winjoyTests.debug.xcconfig"; sourceTree = "<group>"; };
+		DE006A2911557396E674CC77 /* libPods-winjoy.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-winjoy.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E902EE15B4534D3CAC2D3B2B /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		85DCF12253644AE9997822D9 /* Axiforma Bold.ttf */ = {isa = PBXFileReference; name = "Axiforma Bold.ttf"; path = "../src/assets/fonts/Axiforma Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		0C880F1162EC424ABF4CDAEB /* Axiforma Light.ttf */ = {isa = PBXFileReference; name = "Axiforma Light.ttf"; path = "../src/assets/fonts/Axiforma Light.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		1BA6885702AC47789494E24B /* Axiforma Medium.ttf */ = {isa = PBXFileReference; name = "Axiforma Medium.ttf"; path = "../src/assets/fonts/Axiforma Medium.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		1CA3BC00FDBC489F887A969E /* Axiforma Regular.ttf */ = {isa = PBXFileReference; name = "Axiforma Regular.ttf"; path = "../src/assets/fonts/Axiforma Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		52DE7172ECEE48ECB6F17834 /* Axiforma SemiBold.ttf */ = {isa = PBXFileReference; name = "Axiforma SemiBold.ttf"; path = "../src/assets/fonts/Axiforma SemiBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		4A0C39386BBE4B2F8861634F /* Poppins Regular.ttf */ = {isa = PBXFileReference; name = "Poppins Regular.ttf"; path = "../src/assets/fonts/Poppins Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		89D44192141C4D26A43D2A97 /* ProximaNova Regular.ttf */ = {isa = PBXFileReference; name = "ProximaNova Regular.ttf"; path = "../src/assets/fonts/ProximaNova Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		62DAEBAC8C8548C3BE184797 /* AntDesign.ttf */ = {isa = PBXFileReference; name = "AntDesign.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		79F95DCD536D4424B21E9E6C /* Entypo.ttf */ = {isa = PBXFileReference; name = "Entypo.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		E902EE15B4534D3CAC2D3B2B /* EvilIcons.ttf */ = {isa = PBXFileReference; name = "EvilIcons.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		3281F7B68DAD476A9A6B6114 /* Feather.ttf */ = {isa = PBXFileReference; name = "Feather.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		5B1664CE1E2F41F7BDA3BF6A /* FontAwesome.ttf */ = {isa = PBXFileReference; name = "FontAwesome.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		A57D785A9F3D481EAFFB8BD8 /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; name = "FontAwesome5_Brands.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		C36047E9E3814B518C701CB7 /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; name = "FontAwesome5_Regular.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		9798F9FDE1FA46B9B167CA05 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; name = "FontAwesome5_Solid.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		5043B78341954586B6F4ABDF /* Fontisto.ttf */ = {isa = PBXFileReference; name = "Fontisto.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		32960991FE4044F9B79706B7 /* Foundation.ttf */ = {isa = PBXFileReference; name = "Foundation.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		BBBD72CF80794D1ABE803B9E /* Ionicons.ttf */ = {isa = PBXFileReference; name = "Ionicons.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		079A0E7EE5AE4386A52D5529 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; name = "MaterialCommunityIcons.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		307F3E2EFE7649A9AD574C51 /* MaterialIcons.ttf */ = {isa = PBXFileReference; name = "MaterialIcons.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		F15858151B2841B0821331FC /* Octicons.ttf */ = {isa = PBXFileReference; name = "Octicons.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		10D0228EABAE4B6497D8CEC3 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; name = "SimpleLineIcons.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		BBC6CEE53CC34DC5B6C6B05D /* Zocial.ttf */ = {isa = PBXFileReference; name = "Zocial.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		740BFA54DA604394BDC752B6 /* axiformaBold.ttf */ = {isa = PBXFileReference; name = "axiformaBold.ttf"; path = "../src/assets/fonts/axiformaBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		F81856CD201A4A06972DF6E5 /* Gotham Bold.otf */ = {isa = PBXFileReference; name = "Gotham Bold.otf"; path = "../src/assets/fonts/Gotham Bold.otf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		F15858151B2841B0821331FC /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
+		E76EE549D9EA42E591A37FA6 /* Poppins-Bold.ttf */ = {isa = PBXFileReference; name = "Poppins-Bold.ttf"; path = "../src/assets/fonts/Poppins-Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		BEFF0ABCED1B4F3E8909BDE0 /* Poppins-Regular.ttf */ = {isa = PBXFileReference; name = "Poppins-Regular.ttf"; path = "../src/assets/fonts/Poppins-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,6 +89,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AE05A7ABFBBDBE5E50D1CC21 /* libPods-winjoy-winjoyTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -100,6 +97,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E582486D5F4531C3E099D557 /* libPods-winjoy.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -140,6 +138,8 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
+				DE006A2911557396E674CC77 /* libPods-winjoy.a */,
+				26A47B2EA359F1DB8DC3CB78 /* libPods-winjoy-winjoyTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -154,12 +154,20 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				04CE160827B1B02900872E94 /* Axiforma-Bold.ttf */,
+				04CE15F827B1A45A00872E94 /* Axiforma-Light.ttf */,
+				04CE15FB27B1A45A00872E94 /* Axiforma-Medium.ttf */,
+				04CE160A27B1B25600872E94 /* Axiforma-Bold.ttf */,
+				04CE15F727B1A45A00872E94 /* Axiforma-Regular.ttf */,
+				04CE15FC27B1A45A00872E94 /* Axiforma-SemiBold.ttf */,
+				04CE15F927B1A45A00872E94 /* ProximaNova-Regular.ttf */,
 				13B07FAE1A68108700A75B9A /* winjoy */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* winjoyTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BD55E4FF34D74871BA3939B7 /* Resources */,
+				A84A3EF72BF83B174A2EB8F9 /* Pods */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -175,16 +183,26 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		BD55E4FF34D74871BA3939B7 /* Resources */ = {
-			isa = "PBXGroup";
+		A84A3EF72BF83B174A2EB8F9 /* Pods */ = {
+			isa = PBXGroup;
 			children = (
-				85DCF12253644AE9997822D9 /* Axiforma Bold.ttf */,
-				0C880F1162EC424ABF4CDAEB /* Axiforma Light.ttf */,
-				1BA6885702AC47789494E24B /* Axiforma Medium.ttf */,
-				1CA3BC00FDBC489F887A969E /* Axiforma Regular.ttf */,
-				52DE7172ECEE48ECB6F17834 /* Axiforma SemiBold.ttf */,
-				4A0C39386BBE4B2F8861634F /* Poppins Regular.ttf */,
-				89D44192141C4D26A43D2A97 /* ProximaNova Regular.ttf */,
+				75F30C03C1D5DE14B0C3AC0C /* Pods-winjoy.debug.xcconfig */,
+				3BDC1AF882B4B1540A80D46A /* Pods-winjoy.release.xcconfig */,
+				DB6C83D5442B48E2E8242799 /* Pods-winjoy-winjoyTests.debug.xcconfig */,
+				66FD7407FA6C107D1994D03D /* Pods-winjoy-winjoyTests.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		BD55E4FF34D74871BA3939B7 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				85DCF12253644AE9997822D9 /* Axiforma-Bold.ttf */,
+				0C880F1162EC424ABF4CDAEB /* Axiforma-Light.ttf */,
+				1BA6885702AC47789494E24B /* Axiforma-Medium.ttf */,
+				1CA3BC00FDBC489F887A969E /* Axiforma-Regular.ttf */,
+				52DE7172ECEE48ECB6F17834 /* Axiforma-SemiBold.ttf */,
+				89D44192141C4D26A43D2A97 /* ProximaNova-Regular.ttf */,
 				62DAEBAC8C8548C3BE184797 /* AntDesign.ttf */,
 				79F95DCD536D4424B21E9E6C /* Entypo.ttf */,
 				E902EE15B4534D3CAC2D3B2B /* EvilIcons.ttf */,
@@ -201,12 +219,11 @@
 				F15858151B2841B0821331FC /* Octicons.ttf */,
 				10D0228EABAE4B6497D8CEC3 /* SimpleLineIcons.ttf */,
 				BBC6CEE53CC34DC5B6C6B05D /* Zocial.ttf */,
-				740BFA54DA604394BDC752B6 /* axiformaBold.ttf */,
-				F81856CD201A4A06972DF6E5 /* Gotham Bold.otf */,
+				E76EE549D9EA42E591A37FA6 /* Poppins-Bold.ttf */,
+				BEFF0ABCED1B4F3E8909BDE0 /* Poppins-Regular.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
-			path = "";
 		};
 /* End PBXGroup section */
 
@@ -215,9 +232,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "winjoyTests" */;
 			buildPhases = (
+				65D583089D5FF52C6BE0A6D5 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
+				25C4AFBE599F2ED2FFE343D5 /* [CP] Embed Pods Frameworks */,
+				D6955222C385954DC4697EF4 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -233,11 +253,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "winjoy" */;
 			buildPhases = (
+				4E7B5D3C83D75E802B509834 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
+				7A655A7203A3A80277D4F3D7 /* [CP] Embed Pods Frameworks */,
+				D4E84AFBE5E2A9350C949404 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -296,33 +319,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
-				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				478407C31D6A424886EB84E0 /* Axiforma Bold.ttf in Resources */,
-				CB9C6140D77A4D1DA869EA00 /* Axiforma Light.ttf in Resources */,
-				E4931219B13840EF83790DD5 /* Axiforma Medium.ttf in Resources */,
-				AAF884385C46409B9C6D3975 /* Axiforma Regular.ttf in Resources */,
-				96B6D881B3FE4AEC92C1FE54 /* Axiforma SemiBold.ttf in Resources */,
-				6FC12DE7A42D448A915D6859 /* Poppins Regular.ttf in Resources */,
-				0E599C32742C4A7BBBB1EAE3 /* ProximaNova Regular.ttf in Resources */,
-				3E488F30EB1C4D67993E57EA /* AntDesign.ttf in Resources */,
-				05D5849B1C1441C38E180F33 /* Entypo.ttf in Resources */,
-				3BDA8776D81E47F6B9F0E2F8 /* EvilIcons.ttf in Resources */,
-				A5066379CA6E4D5C9777C36B /* Feather.ttf in Resources */,
-				C1E8129D147045C9BEA02AD8 /* FontAwesome.ttf in Resources */,
-				20419FA7106F44EA91C67CB9 /* FontAwesome5_Brands.ttf in Resources */,
-				61A64FE03A7742928864A4C9 /* FontAwesome5_Regular.ttf in Resources */,
-				F4393E60F7204A2FA56FCC1A /* FontAwesome5_Solid.ttf in Resources */,
-				05585AF744864BA1885B4D73 /* Fontisto.ttf in Resources */,
-				68F200CCEE804641A5BA5A8A /* Foundation.ttf in Resources */,
-				0BAD14D815984748B8865170 /* Ionicons.ttf in Resources */,
-				2A916F2037894DEAAA93CD92 /* MaterialCommunityIcons.ttf in Resources */,
-				972404EB8B354B3A900E8E6C /* MaterialIcons.ttf in Resources */,
-				A898C106BE4244D4BE5A4898 /* Octicons.ttf in Resources */,
-				9F87133E00C04687BC105710 /* SimpleLineIcons.ttf in Resources */,
-				65662C93B2D945CCB5205E74 /* Zocial.ttf in Resources */,
-				EDEDBE2124534CE08134E90B /* axiformaBold.ttf in Resources */,
-				69DE6F20E6E343768C561DDF /* Gotham Bold.otf in Resources */,
+				040A7B2327B256D900974791 /* Axiforma-Bold.ttf in Resources */,
+				040A7B2427B256D900974791 /* Axiforma-Light.ttf in Resources */,
+				040A7B2527B256D900974791 /* Axiforma-Medium.ttf in Resources */,
+				040A7B2627B256D900974791 /* Axiforma-Bold.ttf in Resources */,
+				040A7B2727B256D900974791 /* Axiforma-Regular.ttf in Resources */,
+				040A7B2827B256D900974791 /* Axiforma-SemiBold.ttf in Resources */,
+				040A7B2927B256D900974791 /* ProximaNova-Regular.ttf in Resources */,
+				8CC828E567A147F2AD8D4876 /* Poppins-Bold.ttf in Resources */,
+				126A6DFA4AD7475AAEBAFB2C /* Poppins-Regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -342,6 +347,118 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nexport NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
+		};
+		25C4AFBE599F2ED2FFE343D5 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-winjoy-winjoyTests/Pods-winjoy-winjoyTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-winjoy-winjoyTests/Pods-winjoy-winjoyTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-winjoy-winjoyTests/Pods-winjoy-winjoyTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		4E7B5D3C83D75E802B509834 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-winjoy-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		65D583089D5FF52C6BE0A6D5 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-winjoy-winjoyTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7A655A7203A3A80277D4F3D7 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-winjoy/Pods-winjoy-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-winjoy/Pods-winjoy-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-winjoy/Pods-winjoy-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D4E84AFBE5E2A9350C949404 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-winjoy/Pods-winjoy-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-winjoy/Pods-winjoy-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-winjoy/Pods-winjoy-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D6955222C385954DC4697EF4 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-winjoy-winjoyTests/Pods-winjoy-winjoyTests-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-winjoy-winjoyTests/Pods-winjoy-winjoyTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-winjoy-winjoyTests/Pods-winjoy-winjoyTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
 		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -395,6 +512,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DB6C83D5442B48E2E8242799 /* Pods-winjoy-winjoyTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -421,6 +539,7 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 66FD7407FA6C107D1994D03D /* Pods-winjoy-winjoyTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
@@ -444,6 +563,7 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 75F30C03C1D5DE14B0C3AC0C /* Pods-winjoy.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -469,6 +589,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3BDC1AF882B4B1540A80D46A /* Pods-winjoy.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -523,6 +644,7 @@
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "arm64 ";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -588,6 +710,7 @@
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "arm64 ";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;

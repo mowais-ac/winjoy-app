@@ -29,7 +29,7 @@ export default StyleSheet.create({
   },
   text: {
     color:'#ffffff',
-    fontFamily:'Axiforma SemiBold',
+    fontFamily:'Axiforma-SemiBold',
     textAlign:'center',
     fontSize:RFValue(13)
   },

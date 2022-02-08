@@ -46,6 +46,7 @@ const index = ({ props, navigation, route }) => {
   const [activity, setActivity] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const user = useSelector(state => state.app.userData);
+  
   useEffect(async () => {
     if (JSON.stringify(Data) !== user) {
       setData(user);
@@ -136,7 +137,7 @@ const index = ({ props, navigation, route }) => {
       <View style={styles.aView}>
         <View style={styles.avatarView}>
           <ProfilePicture
-            picture={Config.Profile_URL + "/" + userInfo?.profile_image}
+            picture={userInfo?.profile_image}
             id={userInfo?.id}
             // name={(userInfo?.first_name.slice(0, 1) + userInfo?.last_name.slice(0, 1))}
             style={styles.avatarView}
@@ -145,9 +146,10 @@ const index = ({ props, navigation, route }) => {
         </View>
 
         <Label font={14} style={{ color: "#FFFFFF", marginTop: 8 }}>
-          {userInfo?.first_name} {userInfo?.last_name}
+        {userInfo?.first_name?.charAt(0).toUpperCase() + userInfo?.first_name?.slice(1)} {userInfo?.last_name?.charAt(0).toUpperCase() + userInfo?.last_name?.slice(1)}
+       
         </Label>
-        <Label
+        {/* <Label
           primary
           font={14}
           bold
@@ -159,13 +161,13 @@ const index = ({ props, navigation, route }) => {
             at{" "}
           </Label>
           {userInfo?.company_name || "MicroSoft"}
-        </Label>
+        </Label> */}
 
         <View style={styles.flatListHeader}>
           <TouchableOpacity
             onPress={() => { setSelected(1) }}
           >
-            <Text style={[styles.text, { color: selected === 1 ? "#ffff00" : "#ffffff" }]}>Play Games</Text>
+            <Text style={[styles.text, { color: selected === 1 ? "#ffff00" : "#ffffff" }]}>Played Games</Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => { setSelected(2) }}

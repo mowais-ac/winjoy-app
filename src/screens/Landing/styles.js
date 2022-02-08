@@ -27,7 +27,7 @@ export default StyleSheet.create({
 
   },
   secondHeaderMiddleView: {
-    width: width * 0.65
+    width: width * 0.6
   },
   avatarView: {
     //position: 'absolute',
@@ -53,7 +53,7 @@ export default StyleSheet.create({
     marginLeft: widthConverter(20),
   },
   Heading: {
-    fontFamily: 'Axiforma Bold',
+    fontFamily: 'Axiforma-Bold',
     color: '#fff',
     fontSize: RFValue(20)
   },

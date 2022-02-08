@@ -17,34 +17,64 @@ const Tab = createBottomTabNavigator();
 export default function index() {
   return (
     <Tab.Navigator
-      tabBarOptions={{
-        activeTintColor: Colors.REDESH,
-        inactiveTintColor: Colors.BLACK,
+   
+      screenOptions={{
+        headerShown: false,
+        tabBarActiveTintColor: Colors.REDESH,
+        tabBarInactiveTintColor: Colors.BLACK,
+        // tabBarStyle: {
+        //   position: 'absolute',
+        //   borderTopColor: 'rgba(0, 0, 0, .2)',
+        // },
         labelStyle: { fontFamily: "ProximaNova Regular" },
         tabStyle: { borderLeftColor: Colors.LIGHT_MUTED, borderLeftWidth: 3 },
         style: { height: height * 0.08 },
         keyboardHidesTabBar: true,
       }}
-
-      screenOptions={({ route }) => ({
-        tabBarIcon: ({ focused, color, size }) => {
-          return (
-            <View style={[styles.iconView, { backgroundColor: focused ? '#F4EDEF' : null }]}>
-              <TabButton name={route.name} />
-            </View>
-          );
-        },
-        headerShown: false
-      })}
+    
     >
-      <Tab.Screen name={strings("bottom_tabs.home")} component={HomeStack} />
-      <Tab.Screen name={strings("bottom_tabs.products")} component={ProductStack} />
+      <Tab.Screen name={strings("bottom_tabs.home")} component={HomeStack}
+        options={{
+          tabBarLabel: 'Home',
+          tabBarIcon: ({ color, size }) => (
+            <TabButton name={'Home'} />
+          ),
+        }}
+      />
+      <Tab.Screen name={strings("bottom_tabs.products")} component={ProductStack} 
+         options={{
+          tabBarLabel: 'PRODUCTS',
+          tabBarIcon: ({ color, size }) => (
+            <TabButton name={'PRODUCTS'} />
+          ),
+        }}
+      />
       <Tab.Screen
         name={strings("bottom_tabs.winners")}
         component={Winners}
+        options={{
+          tabBarLabel: 'WINNERS',
+          tabBarIcon: ({ color, size }) => (
+            <TabButton name={'WINNERS'} />
+          ),
+        }}
       />
-      <Tab.Screen name={strings("bottom_tabs.wallet")} component={Wallet} />
-      <Tab.Screen name={"PROFILE"} component={Profile} />
+      <Tab.Screen name={strings("bottom_tabs.wallet")} component={Wallet} 
+         options={{
+          tabBarLabel: 'WALLET',
+          tabBarIcon: ({ color, size }) => (
+            <TabButton name={'WALLET'} />
+          ),
+        }}
+      />
+      <Tab.Screen name={"PROFILE"} component={Profile} 
+          options={{
+            tabBarLabel: 'PROFILE',
+            tabBarIcon: ({ color, size }) => (
+              <TabButton name={'PROFILE'} />
+            ),
+          }}
+      />
 
     </Tab.Navigator>
   );

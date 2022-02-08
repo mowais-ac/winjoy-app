@@ -6,7 +6,6 @@ import CountDown from 'react-native-countdown-component';
 import LongButton from "../LongButton";
 function HomeCard({ style, onPress, gameShowData, time, startIn }) {
   const [renderBtn, setRenderBtn] = useState(false);
-  console.log("time", time);
   return (
       <View style={[styles.mainView, style]}>
         <Image
@@ -37,7 +36,7 @@ function HomeCard({ style, onPress, gameShowData, time, startIn }) {
               styles.Margin,
               { backgroundColor: null, bottom: -3, left: 0, borderWidth: 2, borderColor: '#fff' },
             ]}
-            textstyle={{ color: "#fff", fontFamily: "Axiforma SemiBold", fontSize: 14 }}
+            textstyle={{ color: "#fff", fontFamily: "Axiforma-SemiBold", fontSize: 14 }}
             text="Lets Begin"
             font={16}
             shadowless

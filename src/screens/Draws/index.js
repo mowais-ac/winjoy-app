@@ -43,8 +43,6 @@ const index = ({ route, navigation }) => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getLiveShowPlans());
-    //  dispatch(buyLivePlans());
-    console.log("liveplans", livePlans);
   }, []);
 
   const onPressFirst = () => {

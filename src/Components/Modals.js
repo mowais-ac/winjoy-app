@@ -278,7 +278,7 @@ const Modals = (props) => {
                 notAlign
                 text={details.Error}
               />
-              {details.array && details.array.length >= 1 && (
+              {details?.array && details?.array?.length >= 1 && (
                 <Label
                   dark
                   style={styles.RequestMsg}

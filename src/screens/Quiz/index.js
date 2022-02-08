@@ -16,6 +16,7 @@ import styled from "styled-components/native";
 import Video from "react-native-video";
 import Icon from 'react-native-vector-icons/Ionicons';
 import ElimanationModal from "../../Components/ElimanationModal";
+import UseLifeLineModal from "../../Components/UseLifeLineModal";
 // import React, { useState, useRef, useEffect } from "react";
 // import {
 //     StyleSheet,
@@ -47,18 +48,20 @@ import Colors from "../../Constants/Colors";
 import BackgroundRound from "../../Components/BackgroundRound";
 import socketIO from "socket.io-client";
 import ProgressCircle from 'react-native-progress-circle';
+import { connect, useDispatch, useSelector } from "react-redux";
+import types from '../../redux/types';
 const MYServer = "https://node-winjoyserver-deploy.herokuapp.com/";
 const { width, height } = Dimensions.get("window");
 let timer = () => { };
 const BackgroundVideo = ({ route, navigation }) => {
+    const dispatch = useDispatch();
+    const userData = useSelector(state => state.app.userData);
+    const [availLifeActivity, setAvailLifeActivity] = useState(false);
     const socket = socketIO(MYServer);
     const { uri } = route.params;
     const [selected, setSelected] = useState(null);
     const [buffer, setBuffer] = useState(false);
     const [timeLeft, setTimeLeft] = useState(20);
-    const [question, setQuestion] = useState([]);
-    //const [questionIncrement, setQuestionIncrement] = useState(0);
-    // const [answerId, setAnswerId] = useState(null);
     const [activityScreen, setActivityScreen] = useState(false);
     const [activity, setActivity] = useState(false);
     //  const [answer, setAnswer] = useState("");
@@ -74,27 +77,29 @@ const BackgroundVideo = ({ route, navigation }) => {
     const answer = useRef(null);
     const questionRef = useRef([]);
     const questionIncrement = useRef(0);
+    const livecheck = useRef(0);
     const attemptWrong = useRef(false);
     const ModalState = useRef();
     const userElimante = useRef(false);
+    const LifeLineModalState = useRef();
 
     const startTimer = () => {
         timer = setTimeout(() => {
             if (timeLeft <= 0) {
                 clearTimeout(timer);
 
-                // if (timerFlag&&gameShowCheck&&!showResult) {
-                //     console.log("hiii");
+                // if (timerFlag && gameShowCheck && !showResult) {
                 //     setDisableQuizOptions(true)
                 //     setTimerFlag(false)
-                //   //  ModalState.current(true);
-                //   }
+                //     ModalState.current(true);
+                // }
                 return false;
 
             }
             setTimeLeft(timeLeft - 1);
         }, 1000)
     }
+
 
     useEffect(() => {
         startTimer();
@@ -114,14 +119,14 @@ const BackgroundVideo = ({ route, navigation }) => {
         // alert(13123);
         await axios.get(`${Config.API_URL}/begin/game/questions/answers/list`, requestOptions).then(response => {
             let res = response.data;
-            console.log("resQuestion", res);
             questionRef.current = res;
             // setQuestion(res)
             setActivityScreen(false)
         });
 
     }
-    const CheckResult = async () => {
+    const DeductLive = async () => {
+        setAvailLifeActivity(true)
         ///Check Result
         const Token = await EncryptedStorage.getItem("Token");
         const body = JSONtoForm({
@@ -137,21 +142,23 @@ const BackgroundVideo = ({ route, navigation }) => {
             body,
         };
 
-        await fetch(`${Config.API_URL}/finish/gameshow`, requestOptions)
+        await fetch(`${Config.API_URL}/deduct_lives/${questionRef.current[questionIncrement.current]?.live_gameshow_id}`, requestOptions)
             .then(async (response) => response.json())
             .then(async (res) => {
-                console.log("res", res);
-                if (res === "Sorry! Try Next Time") {
-                    // navigation.navigate("WrongAnswer")
-                    // setShowResult(true)
-                } else if (res.status === "error") {
-                    alert("error")
-                    navigation.navigate("Landing")
+                setAvailLifeActivity(false)
+                console.log("resUseLife", res);
+                if (res.message = "Live availed successfully") {
+
+                    dispatch({
+                        type: types.USER_DATA,
+                        userData: res?.user,
+                        //  user: res.data.data,
+                    });
+                    LifeLineModalState.current(false)
                 }
                 else {
-                    navigation.navigate("Congrats", { data: res })
+                    ModalState.current(true);
                 }
-
 
 
             });
@@ -165,72 +172,96 @@ const BackgroundVideo = ({ route, navigation }) => {
             if (item.is_correct === 1) {
                 console.log("item.answer", item.answer);
                 ans = item.answer;
+                setActivity(false)
             }
         })
-        console.log("aaaa", ans);
         //        setAnswer(ans)
         answer.current = ans;
         // setTimer(20)
-        const Token = await EncryptedStorage.getItem("Token");
-        const body = JSONtoForm({
-            question: questionRef.current[questionIncrement.current]?.id,
-            answer: answerId.current,
-            live_gameshow_id: questionRef.current[questionIncrement.current]?.live_gameshow_id,
-        });
-        const requestOptions = {
-            method: "POST",
-            headers: {
-                "Content-Type": "multipart/form-data",
-                Accept: "application/json",
-                Authorization: `Bearer ${Token}`,
-            },
-            body,
-        };
-
-        await fetch(`${Config.API_URL}/save/user/response`, requestOptions)
-            .then(async (response) => response.json())
-            .then(async (res) => {
-                if (res.status === "success") {
-                    if (res.message === "Congrats!! move to next question") {
-
-                    }
-                }
-                else (res.status === "error")
-                {
-                    if (res.message === "Wrong Answer!! Don't loose hope try next time") {
-
-                        // let inc = questionIncrement.current + 1;
-                        // questionIncrement.current=inc;
-                        // setGameShowCheck(true)
-                        setShowResult(true)
-                        if (userElimante.current === false) {
-                            setTimeout(() => {
-                                ModalState.current(true);
-                            }, 3000);
-                        }
-
-
-                        //  navigation.navigate("WrongAnswer", { Tans: ans })
-                    }
-                }
-                // if (question[question.length - 1].id === question[questionIncrement]?.id) {
-                //     CheckResult()
-                // }
-                // else {
-                //     let inc = questionIncrement + 1;
-                //     setQuestionIncrement(inc)
-                // }
-
-
-                setActivity(false)
-                setSelected(null)
-
-            })
-            .catch((e) => {
-                setActivity(false)
-                alert("Error", e);
-
+        console.log("answerId.current ", answerId.current);
+        if (answerId.current === null || answerId.current === undefined) {
+            if (userElimante.current === true)
+                ModalState.current(false);
+            else
+                ModalState.current(true);
+        }
+        else {
+            const Token = await EncryptedStorage.getItem("Token");
+            const body = JSONtoForm({
+                question: questionRef.current[questionIncrement.current]?.id,
+                answer: answerId.current,
+                live_gameshow_id: questionRef.current[questionIncrement.current]?.live_gameshow_id,
             });
+            console.log("body", body);
+            const requestOptions = {
+                method: "POST",
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    Accept: "application/json",
+                    Authorization: `Bearer ${Token}`,
+                },
+                body,
+            };
+
+            await fetch(`${Config.API_URL}/save/user/response`, requestOptions)
+                .then(async (response) => response.json())
+                .then(async (res) => {
+                    console.log("saveRes", res)
+                    if (res.status === "success") {
+                        if (res.message === "Congrats!! move to next question") {
+
+                        }
+                    }
+                    else if (res.status === "error") {
+                        if (res.message === "Wrong Answer!! Don't loose hope try next time") {
+                            if (userElimante.current !== true) {
+                                ModalState.current(true);
+                                if (livecheck.current <= 4) {
+                                    LifeLineModalState.current(true)
+                                    livecheck.current = livecheck.current + 1;
+                                    console.log("livecheck", livecheck.current);
+                                } else {
+                                    ModalState.current(true);
+                                }
+                            }
+
+
+
+
+
+
+
+
+                            //  setShowResult(true)
+                            // if (userElimante.current === false) {
+                            //     setTimeout(() => {
+                            //         ModalState.current(true);
+                            //     }, 3000);
+                            // }
+
+
+                            //  navigation.navigate("WrongAnswer", { Tans: ans })
+                        }
+                    }
+                    // if (question[question.length - 1].id === question[questionIncrement]?.id) {
+                    //     CheckResult()
+                    // }
+                    // else {
+                    //     let inc = questionIncrement + 1;
+                    //     setQuestionIncrement(inc)
+                    // }
+
+
+                    setActivity(false)
+                    setSelected(null)
+
+                })
+                .catch((e) => {
+                    setActivity(false)
+                    alert("Error", e);
+
+                });
+        }
 
     }
 
@@ -248,9 +279,17 @@ const BackgroundVideo = ({ route, navigation }) => {
         ModalState.current(false)
         userElimante.current = true;
     }
-    useEffect(() => {
-        // action on update of movies
-    }, [answerId]);
+    const onPressContinueLifeLine = () => {
+        ModalState.current(false)
+        DeductLive()
+    }
+    const onPressNotNow = () => {
+        LifeLineModalState.current(false)
+        ModalState.current(true)
+    }
+    // useEffect(() => {
+    //     // action on update of movies
+    // }, [answerId]);
     useEffect(async () => {
         console.log("uri", uri);
         socket.on("sendHideQuestion", msg => {
@@ -262,8 +301,8 @@ const BackgroundVideo = ({ route, navigation }) => {
             console.log(msg);
         });
         socket.on("sendEndShow", msg => {
-            console.log("msg",msg);
-            navigation.navigate("BottomTabStack", { screen: "WINNERS" })  
+            console.log("msg", msg);
+            navigation.navigate("BottomTabStack", { screen: "WINNERS" })
         });
         socket.on("sendCount", msg => {
             setJoinedUsers(msg)
@@ -274,6 +313,7 @@ const BackgroundVideo = ({ route, navigation }) => {
             setGameShowCheck(true)
             setShowResult(true)
             SaveResponse()
+
         });
         socket.on("sendOnboarding", msg => {
             console.log(msg);
@@ -311,6 +351,7 @@ const BackgroundVideo = ({ route, navigation }) => {
         });
 
         socket.on("sendHideAnswer", msg => {
+            // LifeLineModalState.current(true)
             setGameShowCheck(false)
 
         });
@@ -374,6 +415,16 @@ const BackgroundVideo = ({ route, navigation }) => {
                                     <Text style={{ fontSize: 20, color: '#ffffff' }}>{joinedUsers}</Text>
                                 </View>
                             </View>
+                            <ImageBackground
+                                resizeMode="center"
+                                style={{ width: 60, height: 50, top: height * 0.05, right: 10, position: 'absolute', justifyContent: 'center', alignItems: 'center' }}
+                                source={require('../../assets/imgs/pinkHeart.png')}
+                            >
+
+                                <Text style={{ color: "#E7003F", fontFamily: 'Axiforma-SemiBold', fontSize: RFValue(15) }}>
+                                    {userData?.lives_count}
+                                </Text>
+                            </ImageBackground>
                             {gameShowCheck ? (
                                 userElimante.current ? (
                                     <LinearGradient style={styles.backgroundImage}
@@ -388,10 +439,10 @@ const BackgroundVideo = ({ route, navigation }) => {
                                                 <Label primary font={26} bold dark style={{ color: "#FFFF13", }}>
                                                     Time's Up
                                                 </Label>
-                                                <Label primary font={16} bold dark style={{ color: "#FFFF13", }}>
+                                                <Label primary bold dark style={styles.questionTitle}>
                                                     Result
                                                 </Label>
-                                                <Label primary font={16} bold dark style={{ color: "#ffff", lineHeight: 28 }}>
+                                                <Label primary bold dark style={styles.questionTitle}>
                                                     {questionRef.current[questionIncrement.current]?.question}
                                                 </Label>
                                                 {/* </View> */}
@@ -406,27 +457,27 @@ const BackgroundVideo = ({ route, navigation }) => {
                                             <View
                                                 style={styles.quizView}
                                             >
-                                              <View style={{width:'100%',justifyContent:'center',alignItems:'center'}}>
+                                                <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
                                                     <ProgressCircle
-                                                        percent={(timeLeft*100)/20}
+                                                        percent={(timeLeft * 100) / 20}
                                                         radius={35}
                                                         borderWidth={6}
-                                                        color={timeLeft<10?'red':'#490d8e'}
+                                                        color={timeLeft < 10 ? 'red' : '#490d8e'}
                                                         shadowColor="#d3d9dd"
                                                         bgColor="#fff"
                                                     >
                                                         <View style={{ justifyContent: 'center', alignItems: 'center', }}>
                                                             <Text style={{ fontFamily: 'Axiforma-SemiBold', fontSize: 12, color: "#E7003F", lineHeight: 12, }}>
-                                                            {timeLeft <= 0 ? "Time's Up" : timeLeft}
+                                                                {timeLeft <= 0 ? "Time's Up" : timeLeft}
                                                             </Text>
-                                                         
+
                                                         </View>
                                                     </ProgressCircle>
                                                 </View>
-                                                <Label primary font={16} bold dark style={{ color: "#FFFF13", }}>
+                                                <Label primary bold dark style={styles.questionTitle}>
                                                     Question
                                                 </Label>
-                                                <Label primary font={16} bold dark style={{ color: "#ffff", lineHeight: 28 }}>
+                                                 <Label primary bold dark style={styles.questionTitle}>
                                                     {questionRef.current[questionIncrement.current]?.question}
                                                 </Label>
                                                 {/* </View> */}
@@ -435,7 +486,7 @@ const BackgroundVideo = ({ route, navigation }) => {
                                                     //  onPressDone={onPressDone}
                                                     //  activity={activity}
                                                     optionSelected={selected}
-                                                    onPressOption={onPressOption} 
+                                                    onPressOption={onPressOption}
                                                     disableOption={true}
 
                                                 />
@@ -455,10 +506,10 @@ const BackgroundVideo = ({ route, navigation }) => {
                                                 <Label primary font={26} bold dark style={{ color: "#FFFF13", }}>
                                                     Time's Up
                                                 </Label>
-                                                <Label primary font={16} bold dark style={{ color: "#FFFF13", }}>
+                                                <Label primary bold dark style={styles.questionTitle}>
                                                     Result
                                                 </Label>
-                                                <Label primary font={16} bold dark style={{ color: "#ffff", lineHeight: 28 }}>
+                                                 <Label primary bold dark style={styles.questionTitle}>
                                                     {questionRef.current[questionIncrement.current]?.question}
                                                 </Label>
                                                 {/* </View> */}
@@ -477,27 +528,27 @@ const BackgroundVideo = ({ route, navigation }) => {
                                                 {/* <Label primary font={26} bold dark style={{ color: "#FFFF13", }}>
                                                     {timeLeft <= 0 ? "Time's Up" : timeLeft}
                                                 </Label> */}
-                                                <View style={{width:'100%',justifyContent:'center',alignItems:'center'}}>
+                                                <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
                                                     <ProgressCircle
-                                                        percent={(timeLeft*100)/20}
+                                                        percent={(timeLeft * 100) / 20}
                                                         radius={35}
                                                         borderWidth={6}
-                                                        color={timeLeft<10?'red':'#490d8e'}
+                                                        color={timeLeft < 10 ? 'red' : '#490d8e'}
                                                         shadowColor="#d3d9dd"
                                                         bgColor="#fff"
                                                     >
                                                         <View style={{ justifyContent: 'center', alignItems: 'center', }}>
                                                             <Text style={{ fontFamily: 'Axiforma-SemiBold', fontSize: 12, color: "#E7003F", lineHeight: 12, }}>
-                                                            {timeLeft <= 0 ? "Time's Up" : timeLeft}
+                                                                {timeLeft <= 0 ? "Time's Up" : timeLeft}
                                                             </Text>
-                                                         
+
                                                         </View>
                                                     </ProgressCircle>
                                                 </View>
-                                                <Label primary font={16} bold dark style={{ color: "#FFFF13", }}>
+                                                <Label primary bold dark style={styles.questionTitle}>
                                                     Question
                                                 </Label>
-                                                <Label primary font={14} bold dark style={{ color: "#ffff", lineHeight: 28,height:100 }}>
+                                                <Label primary font={14} bold dark style={{ color: "#ffff", lineHeight: 28, }}>
                                                     {questionRef.current[questionIncrement.current]?.question}
                                                 </Label>
                                                 {/* </View> */}
@@ -522,6 +573,11 @@ const BackgroundVideo = ({ route, navigation }) => {
                 </View>
             </Wrapper>
             <ElimanationModal ModalRef={ModalState} details onPressContinue={onPressContinue} />
+            <UseLifeLineModal ModalRef={LifeLineModalState} details onPressContinueLifeLine={onPressContinueLifeLine}
+                onPressNotNow={onPressNotNow}
+                availLifeActivity={availLifeActivity}
+
+            />
         </View>
     );
 }
@@ -541,7 +597,7 @@ const styles = StyleSheet.create({
 
     },
     quizView: {
-        height: height - 370,
+        height: height * 0.6,
         width: "100%",
         position: "absolute",
         bottom: 0,
@@ -590,6 +646,11 @@ const styles = StyleSheet.create({
         color: Colors.LABEL,
         left: 4
     },
+    questionTitle: {
+        color: "#ffff",
+        lineHeight: 28,
+        fontSize:RFValue(14)
+    }
 
 });
 

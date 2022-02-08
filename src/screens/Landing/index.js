@@ -10,10 +10,11 @@ import {
   FlatList,
   Animated,
   Text,
-  Image
+  Image,
+  ImageBackground
 } from "react-native";
 import { connect, useDispatch, useSelector } from "react-redux";
-import { wait } from "../../Constants/Functions";
+import { FormatNumber, wait } from "../../Constants/Functions";
 import LoaderImage from "../../Components/LoaderImage";
 import Label from "../../Components/Label";
 import { Colors } from "../../Constants/Index";
@@ -42,7 +43,7 @@ import LongButton from "../../Components/LongButton";
 import { FanJoyCard, WjBackground } from "../../Components";
 import Carousel from 'react-native-snap-carousel';
 import Video from "react-native-video";
-import { getLandingScreen } from '../../redux/actions';
+import { getLandingScreen, CheckGameEnterStatus } from '../../redux/actions';
 import socketIO from "socket.io-client";
 import { useTranslation } from 'react-i18next';
 import WatchAddModal from "../../Components/WatchAddModal";
@@ -119,7 +120,7 @@ const index = (props) => {
   //   inputRange: [0, 45],
   //   outputRange: [0, -45]
   // })
- 
+
   const [headerValue, setHeaderValue] = useState(0);
   const { Coins, navigation } = props;
   const [loader, setLoader] = useState(false);
@@ -132,17 +133,20 @@ const index = (props) => {
   const [activeSlide, setActiveSlide] = useState();
   const userData = useSelector(state => state.app.userData);
   const LandingData = useSelector(state => state.app.LandingData);
+  const gameEnterStatus = useSelector(state => state.app.gameEnterStatus);
+
   const [buffer, setBuffer] = useState(false);
   const [videoAction, setVideoAction] = useState(true);
   const dispatch = useDispatch();
+  const dispatch2 = useDispatch();
   const socket = socketIO(MYServer);
   const AddModalState = useRef();
   const onRefresh = React.useCallback(() => {
     // setBanners(null);
     setRefreshing(true);
     dispatch(getLandingScreen());
-    var CurrentDate = dayjs().format("YYYY-MM-DDThh:mm:ss.000000Z");
-    var duration = dayjs(LandingData?.gameshow?.start_date).diff(dayjs(CurrentDate), 'seconds');
+    var CurrentDate = new Date().toLocaleString()
+    var duration = dayjs(LandingData?.gameShow?.start_date).diff(dayjs(CurrentDate), 'seconds');
     setTime(duration)
     initialLoad();
     wait(2000).then(() => setRefreshing(false));
@@ -153,8 +157,8 @@ const index = (props) => {
   };
   const initialLoad = () => {
 
-    var CurrentDate = dayjs().format("YYYY-MM-DDThh:mm:ss.000000Z");
-    var duration = dayjs(LandingData?.gameshow?.start_date).diff(dayjs(CurrentDate), 'seconds');
+    var CurrentDate = new Date().toLocaleString()
+    var duration = dayjs(LandingData?.gameShow?.start_date).diff(dayjs(CurrentDate), 'seconds');
     setTime(duration)
     setGameShowData(LandingData?.gameShow)
   }
@@ -165,12 +169,29 @@ const index = (props) => {
     }, [])
   );
   useEffect(() => {
-   
+
     dispatch(getLandingScreen());
     setGameShowData(LandingData?.gameShow)
   }, []);
+  const LetBegin = () => {
+    dispatch2(CheckGameEnterStatus());
+    if (gameEnterStatus.status === "success") {
+      if (gameEnterStatus.message === "Welcome to Live Game Show") {
+        navigation.navigate("GameStack", {
+          screen: "Quiz",
+          params: {
+            uri: LandingData?.gameShow?.live_stream?.key
+          }
+        })
+      } else {
+        alert("game not started yet!")
+      }
+    } else {
+      alert("game not started yet!")
+    }
+
+  }
   function _renderItem({ item, index }) {
-    //console.log("item.url",item.url);
     if (item.type === "image") {
       return (
         <View key={index}>
@@ -260,13 +281,14 @@ const index = (props) => {
                   style={styles.ShoppingBanner}
                   onSnapToItem={index => setActiveSlide(index)}
                 />
+
               )}
             </View>
             <View
               style={styles.yellowBtn}
             >
 
-              <View style={{ borderWidth: 2, borderColor: "#fff", borderRadius: 45 }}>
+              <View style={{ borderWidth: 2, borderColor: "#fff", borderRadius: 45, }}>
                 <AvatarBtn
                   picture={userData?.profile_image}
                   // id={userInfo?.id}
@@ -278,14 +300,34 @@ const index = (props) => {
               </View>
 
               <TouchableOpacity onPress={() => navigation.navigate("WALLET")}>
-                <View style={styles.secondHeaderMiddleView}>
-                  <Text style={[styles.text, { color: '#fff', fontSize: RFValue(14) }]}>
-                    {userData?.first_name?.charAt(0).toUpperCase() + userData?.first_name?.slice(1)} {userData?.last_name?.charAt(0).toUpperCase() + userData?.last_name?.slice(1)}
-                  </Text>
-                  <Text style={[styles.text, { color: '#fff', fontSize: RFValue(14) }]}>Your balance: <Text style={[styles.text, { color: '#ffff00', fontSize: RFValue(14) }]}>AED {userData?.balance ? userData?.balance : 0}</Text></Text>
-                </View>
+              <View style={styles.secondHeaderMiddleView}>
+                <Text style={[styles.text, { color: '#fff', fontSize: RFValue(14) }]}>
+                  {userData?.first_name?.charAt(0).toUpperCase() + userData?.first_name?.slice(1)} {userData?.last_name?.charAt(0).toUpperCase() + userData?.last_name?.slice(1)}
+                </Text>
+                <Text style={[styles.text, { color: '#fff', fontSize: RFValue(14) }]}>Your balance: <Text style={[styles.text, { color: '#ffff00', fontSize: RFValue(14) }]}>
+                  AED {userData?.balance ? FormatNumber(+(userData?.balance).toLocaleString()) : 0}
+
+                </Text>
+                </Text>
+              </View>
+              </TouchableOpacity> 
+              <TouchableOpacity onPress={() => navigation.navigate("MenuStack", { screen: 'BuyLife' })}>
+              <ImageBackground
+                resizeMode="center"
+                style={{ width: 50, height: 40, justifyContent: 'center', alignItems: 'center' }}
+    
+                source={require('../../assets/imgs/pinkHeart.png')}
+              >
+
+                <Text style={{ color: "#E7003F", fontFamily: 'Axiforma-SemiBold', fontSize: RFValue(12) }}>
+                  {userData?.lives_count}
+                </Text>
+                
+              </ImageBackground>
               </TouchableOpacity>
-              <Entypo name="chevron-thin-right" size={22} color="#fff" style={{ marginTop: 6.5, marginRight: 6 }} />
+              {/* <TouchableOpacity onPress={() => navigation.navigate("WALLET")}>
+                <Entypo name="chevron-thin-right" size={22} color="#fff" style={{ marginTop: 6.5, marginRight: 6 }} />
+              </TouchableOpacity> */}
             </View>
 
           </LinearGradient>
@@ -314,7 +356,7 @@ const index = (props) => {
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}
             data={LandingData?.lowerBanner}
-            renderItem={({ item }) => (
+            renderItem={({ item, index }) => (
 
               // <TouchableOpacity
               //   onPress={() =>
@@ -327,9 +369,9 @@ const index = (props) => {
                 index={item.index}
                 item={item}
                 onPress={() => {
-                  item.id === 1 ? (
+                  index === 0 ? (
                     navigation.navigate("TriviaJoy")
-                  ) : item.id === 2 ? (
+                  ) : index === 1 ? (
                     navigation.navigate("DealsJoy")
                   ) : (
                     //  navigation.navigate("FanJoy")
@@ -343,24 +385,19 @@ const index = (props) => {
           />
           <HomeCard
             //onPress={() => navigation.navigate("GameStack")} 
-            onPress={() => navigation.navigate("GameStack", {
-              screen: "Quiz",
-              params: {
-                uri: LandingData?.gameShow?.live_stream?.key
-              }
-            })}
+            onPress={() => LetBegin()}
 
             //style={{ marginTop: 10, }}
             gameShowData={"hiii"}
             time={time}
           />
           <View style={{ flexDirection: 'row', width: '90%', justifyContent: 'space-between', marginTop: 10, marginBottom: 10 }}>
-            <Text style={{ color: '#E7003F', fontSize: 16, fontFamily: "Axiforma Bold" }}>Shop to Win</Text>
+            <Text style={{ color: '#E7003F', fontSize: 16, fontFamily: "Axiforma-Bold" }}>Shop to Win</Text>
 
             <TouchableOpacity onPress={() => navigation.navigate("PRODUCTS", {
               screen: "PrizeList"
             })}>
-              <Text style={{ color: '#E7003F', fontSize: 16, fontFamily: "Axiforma Bold" }}>View all</Text>
+              <Text style={{ color: '#E7003F', fontSize: 16, fontFamily: "Axiforma-Bold" }}>View all</Text>
             </TouchableOpacity>
 
           </View>
@@ -401,7 +438,7 @@ const index = (props) => {
               text="View Leaderboard"
               font={10}
               shadowless
-              onPress={() => navigation.navigate("WINNERS", { screen: 'All Time' })}
+              onPress={() => navigation.navigate("MenuStack", { screen: 'LeaderBoard' })}
             />
           </View>
           <LinearGradient
@@ -411,7 +448,7 @@ const index = (props) => {
           >
             <View style={{ width: "95%", flexDirection: 'row', justifyContent: 'space-between' }}>
               <View>
-                <Text style={{ color: '#E7003F', fontSize: 20, fontFamily: "Axiforma Bold" }}>FANJOY</Text>
+                <Text style={{ color: '#E7003F', fontSize: 20, fontFamily: "Axiforma-Bold" }}>FANJOY</Text>
                 <Text style={{ color: '#0B2142', fontSize: 16, fontFamily: "Axiforma Regular" }}>Products By Creators</Text>
               </View>
               <LongButton
@@ -451,9 +488,9 @@ const index = (props) => {
               keyExtractor={(item) => item.id}
             />
           </LinearGradient>
-          <TouchableOpacity onPress={()=>navigation.navigate('WINNERS', {
-                          selected: 1 
-                        })}> 
+          <TouchableOpacity onPress={() => navigation.navigate('WINNERS', {
+            selected: 1
+          })}>
             <LuckyDrawCard
               style={{ marginTop: 15, }}
             />

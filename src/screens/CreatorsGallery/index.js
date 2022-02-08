@@ -30,10 +30,7 @@ const index = ({ route, navigation }) => {
   const [fullImage, setFullImage] = useState("");
   const ModalState = useRef();
   useEffect(() => {
-    console.log("creatorId", creatorId);
     dispatch(GetGalleryData(creatorId));
-    console.log("galleryData", galleryData);
-
   }, []);
 
   const onPressNext = () => {
@@ -75,7 +72,7 @@ const index = ({ route, navigation }) => {
             <View style={{ flexDirection: 'row', }}>
               <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: width * 0.11, marginTop: 10 }}>
              <TouchableOpacity onPress={()=>navigation.goBack()}>
-             <Text style={[styles.headerText, { fontFamily: 'Axiforma Regular', fontSize: RFValue(12), }]}>
+             <Text style={[styles.headerText, { fontFamily: 'Axiforma-Regular', fontSize: RFValue(12), }]}>
                   Back
                 </Text>
              </TouchableOpacity>
@@ -96,7 +93,7 @@ const index = ({ route, navigation }) => {
                   }}
                 />
                 <View style={{}}>
-                  <Text style={[styles.headerText, { fontFamily: 'Axiforma Regular', fontSize: RFValue(12), right: 2 }]}>
+                  <Text style={[styles.headerText, { fontFamily: 'Axiforma-Regular', fontSize: RFValue(12), right: 2 }]}>
                     {galleryData?.user?.first_name}'s
                   </Text>
                   <Text style={[styles.headerText, { fontSize: RFValue(14), left: 3 }]}>Gallery</Text>
@@ -104,7 +101,7 @@ const index = ({ route, navigation }) => {
               </View>
             </View>
 
-            <Text style={[styles.headerText, { fontFamily: 'Axiforma Regular', fontSize: RFValue(10), marginTop: 10 }]}>{galleryData?.gallery?.length} found</Text>
+            <Text style={[styles.headerText, { fontFamily: 'Axiforma-Regular', fontSize: RFValue(10), marginTop: 10 }]}>{galleryData?.gallery?.length} found</Text>
           </View>
 
           <View style={{ width: '100%', alignItems: 'center', marginTop: 15, paddingBottom: 15 }}>

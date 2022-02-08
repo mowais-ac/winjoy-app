@@ -158,14 +158,12 @@ const RefferLifeLineModal = (props) => {
       }
       else {
         li[index].status = true;
-        console.log("chek", li[index].status);
       }
-      if (element.phone_no !== "" && element.phone_no !== null && element.phone_no !== undefined && numericRegex.test(element?.phone_no) && element?.phone_no.length === 11) {
+      if (element.phone_no !== "" && element.phone_no !== null && element.phone_no !== undefined && numericRegex.test(element?.phone_no) && element?.phone_no?.length === 11) {
         li[index].status2 = false;
       }
       else {
         li[index].status2 = true;
-        console.log("chek2", li[index].status2);
       }
     });
     li?.forEach(element => {
@@ -219,9 +217,6 @@ const RefferLifeLineModal = (props) => {
   };
   const PostData = async (postData) => {
     setLoader(true)
-    console.log("postData", postData);
-    console.log("id", id);
-
     var Token = await EncryptedStorage.getItem("Token");
     const requestOptions = {
       method: "POST",
@@ -236,7 +231,6 @@ const RefferLifeLineModal = (props) => {
       .then((response) => response.json())
       .then(async (res) => {
         setLoader(false)
-        console.log("ress", res);
         if (res.status === "success") {
           dispatch(getLiveShowPlans());
           totalLives.current=res?.lives
@@ -320,7 +314,7 @@ const RefferLifeLineModal = (props) => {
                   alignItems: 'center',
                   
                 }}>
-                  <Text style={[styles.mainTextHeading, { color: '#420E92',fontFamily: 'Axiforma Bold',}]}>Copy</Text>
+                  <Text style={[styles.mainTextHeading, { color: '#420E92',fontFamily: 'Axiforma-Bold',}]}>Copy</Text>
                 </View>
               </TouchableOpacity>
             </View>
@@ -705,10 +699,10 @@ const styles = StyleSheet.create({
     marginTop: height * 0.01
   },
   textHeading: {
-    color: '#6F5F87', fontFamily: 'Axiforma Bold', fontSize: RFValue(16), textAlign: 'center'
+    color: '#6F5F87', fontFamily: 'Axiforma-Bold', fontSize: RFValue(16), textAlign: 'center'
   },
   mainTextHeading: {
-    color: '#6F5F87', fontFamily: 'Axiforma Regular', fontSize: RFValue(16), textAlign: 'center', lineHeight: height * 0.03
+    color: '#6F5F87', fontFamily: 'Axiforma-Regular', fontSize: RFValue(16), textAlign: 'center', lineHeight: height * 0.03
   },
   refferBox: {
     width: width * 0.29,
@@ -730,9 +724,9 @@ const styles = StyleSheet.create({
 
 
   text: {
-    color: '#420E92', fontFamily: 'Axiforma Bold', fontSize: RFValue(14)
+    color: '#420E92', fontFamily: 'Axiforma-Bold', fontSize: RFValue(14)
   },
   descriptionText: {
-    color: '#000000', fontFamily: 'Axiforma Regular', fontSize: RFValue(13), textAlign: 'center', lineHeight: height * 0.03
+    color: '#000000', fontFamily: 'Axiforma-Regular', fontSize: RFValue(13), textAlign: 'center', lineHeight: height * 0.03
   }
 });

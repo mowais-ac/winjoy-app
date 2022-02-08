@@ -41,8 +41,6 @@ const index = ({ props, navigation }) => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getProducts(isClosing));
-    console.log("productsData", productsData);
-    // setProductData(productsData?.data[0]);
   }, []);
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -87,7 +85,6 @@ const index = ({ props, navigation }) => {
               setIsClosing(false);
               dispatch(getProducts(0));
               setUpdateData(!updateData)
-              console.log("productsData1", productsData);
             }}
             style={[styles.Margin,
             { backgroundColor: !isClosing ? "#fff" : null, borderWidth: isClosing ? 2 : null, borderColor: isClosing ? "#ffffff" : null }
@@ -102,7 +99,6 @@ const index = ({ props, navigation }) => {
               setIsClosing(true);
               dispatch(getProducts(1));
               setUpdateData(!updateData)
-              console.log("productsData2", productsData);
             }}
             style={[
               styles.Margin,
@@ -134,7 +130,6 @@ const index = ({ props, navigation }) => {
                 prize_title={item.prize_title}
                 data={item}
                 onPress={() =>
-                  // console.log("item.item",item.item)
                   navigation.navigate("ProductDetail", { data: item })
                 }
               />

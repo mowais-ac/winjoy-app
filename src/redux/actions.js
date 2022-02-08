@@ -41,7 +41,7 @@ export const getWalletData = () => {
             }
         }
     } catch (error) {
-        console.log(error);
+       alert(error)
     }
 }
 
@@ -50,7 +50,6 @@ export const getLandingScreen = () => {
     try {
         return async dispatch => {
             const Token = await EncryptedStorage.getItem("Token");
-            console.log("tokenR", Token);
             const result = await fetch(`${Config.API_URL}/home`, {
                 method: 'GET',
                 headers: {
@@ -60,7 +59,6 @@ export const getLandingScreen = () => {
                 },
             });
             const json = await result.json();
-            console.log("json", json);
             if (json && json.status === "success") {
                 dispatch({
                     type: types.GET_LANDING_DATA,
@@ -71,7 +69,7 @@ export const getLandingScreen = () => {
             }
         }
     } catch (error) {
-        console.log("error", error);
+       alert(error)
     }
 }
 export const getProducts = (isClosing) => {
@@ -87,9 +85,7 @@ export const getProducts = (isClosing) => {
                     Authorization: `Bearer ${Token}`,
                 },
             });
-            console.log("result",result);
             const json = await result.json();
-            console.log("jjson",json)
             if (json && json.status === "success") {
                 dispatch({
                     type: types.GET_PRODUCTS_LIST,
@@ -428,5 +424,33 @@ export const TriviaJoyAPI = () => {
         console.log(error);
     }
 }
+export const CheckGameEnterStatus = () => {
+
+    try {
+        return async dispatch => {
+            const Token = await EncryptedStorage.getItem("Token");
+            const result = await fetch(`${Config.API_URL}/joinGameshow`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    Accept: "application/json",
+                    Authorization: `Bearer ${Token}`,
+                },
+            });
+            const json = await result.json();
+            if (json) {
+                dispatch({
+                    type: types.GAME_ENTER_STATUS,
+                    payload: json
+                }); 
+            } else {
+                console.log('Unable to fetch!');
+            }
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 
 

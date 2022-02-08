@@ -22,7 +22,7 @@ export default StyleSheet.create({
     color: '#fff',
   },
   textHeading:{
-    fontFamily: 'Axiforma Bold', color: '#eb3d6e',
+    fontFamily: 'Axiforma-Bold', color: '#eb3d6e',
     fontSize:RFValue(13),
     marginLeft:20
   }

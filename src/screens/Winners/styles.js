@@ -11,19 +11,19 @@ export default StyleSheet.create({
     },
     headerText: {
         color: '#ffffff',
-        fontFamily: 'Axiforma SemiBold',
+        fontFamily: 'Axiforma-SemiBold',
         fontSize: RFValue(22)
     },
     subHeaderText: {
         color: '#FFFFFF',
-        fontFamily: 'Axiforma Regular'
+        fontFamily: 'Axiforma-Regular'
     },
     heading2Text: {
-        color: '#420E92', fontFamily: 'Axiforma Bold', fontSize: RFValue(15)
+        color: '#420E92', fontFamily: 'Axiforma-Bold', fontSize: RFValue(15)
     },
     text: {
         color: '#000000',
-         fontFamily: 'Axiforma Regular', 
+         fontFamily: 'Axiforma-Regular', 
          fontSize: RFValue(13),
          lineHeight:height*0.028,
          textAlign:'center',

@@ -42,8 +42,6 @@ const index = ({ route, navigation }) => {
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(getLiveShowPlans());
-        //  dispatch(buyLivePlans());
-        console.log("liveplans", livePlans);
     }, []);
 
 
@@ -77,7 +75,7 @@ const index = ({ route, navigation }) => {
                             source={require('../../assets/imgs/life.png')}
                         >
 
-                            <Text style={{ color: "#E7003F", fontFamily: 'Axiforma SemiBold', fontSize: RFValue(20) }}>
+                            <Text style={{ color: "#E7003F", fontFamily: 'Axiforma-SemiBold', fontSize: RFValue(20) }}>
                                 {livePlans?.total_lives === null ? 0 : livePlans?.total_lives}
                             </Text>
                         </ImageBackground>
@@ -111,7 +109,7 @@ const index = ({ route, navigation }) => {
                             )}
                             keyExtractor={(item) => item.id}
                         />
-                        <Text style={[styles.text, { color: '#420E92', fontFamily: "Axiforma Bold", marginTop: height * 0.035 }]}>
+                        <Text style={[styles.text, { color: '#420E92', fontFamily: "Axiforma-Bold", marginTop: height * 0.035 }]}>
                             OR
                         </Text>
                         <Text style={[styles.text, { color: '#420E92', marginTop: height * 0.035 }]}>

@@ -19,7 +19,7 @@ function LifeCard({ onPress,amount,lives }) {
         }}
         colors={["#420E92", "#E7003F"]}
       >
-        <Text style={{ color: '#fff', fontFamily: 'Axiforma SemiBold', fontSize: RFValue(12) }}>
+        <Text style={{ color: '#fff', fontFamily: 'Axiforma-SemiBold', fontSize: RFValue(12) }}>
           Buy
         </Text>
         <ImageBackground
@@ -28,7 +28,7 @@ function LifeCard({ onPress,amount,lives }) {
           source={require('../../assets/imgs/life.png')}
         >
 
-          <Text style={{ color: "#E7003F", fontFamily: 'Axiforma SemiBold', fontSize: RFValue(20) }}>{lives}</Text>
+          <Text style={{ color: "#E7003F", fontFamily: 'Axiforma-SemiBold', fontSize: RFValue(20) }}>{lives}</Text>
         </ImageBackground>
         <Text style={styles.text}>
          {amount} AED

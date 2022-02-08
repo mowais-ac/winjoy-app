@@ -43,7 +43,7 @@ const UserInfo = (props) => {
         <>
           <View style={styles.ProfilePictureContainer}>
             <ProfilePicture
-              picture={Config?.Profile_URL+'/'+userData?.profile_image}
+              picture={userData?.profile_image}
               id={userData?.id}
               name={userData?.first_name?.slice(0, 1) + userData?.last_name?.slice(0, 1)}
             />

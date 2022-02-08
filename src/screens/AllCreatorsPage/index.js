@@ -36,8 +36,6 @@ const index = ({ route, navigation }) => {
   // const [experienceId, setExperienceId] = useState();
   useEffect(() => {
     dispatch(getAllCreator());
-
-    console.log("dataimage", expData);
   }, []);
   const onPressCreator = (id) => {
    // alert(id)
@@ -169,7 +167,7 @@ const index = ({ route, navigation }) => {
             <View style={{ width: "100%", flexDirection: 'row', justifyContent: 'space-between', marginTop: 14 }}>
               <View>
                 <Text style={[styles.textHeading, { textAlign: 'center', marginLeft: 3 }]}>Win an Experience</Text>
-                <Text style={{ color: '#000000', fontFamily: 'Axiforma Regular', textAlign: 'center', fontSize: RFValue(12), marginTop: 4 }}>
+                <Text style={{ color: '#000000', fontFamily: 'Axiforma-Regular', textAlign: 'center', fontSize: RFValue(12), marginTop: 4 }}>
                   You just need to shop a product to win an amazing experience with your favourite stars.
                 </Text>
               </View>
@@ -194,7 +192,6 @@ const index = ({ route, navigation }) => {
                       //  user: res.data.data,
                     });
                     dispatch4(ExperienceProductData(item.id));
-                    console.log("expData", expData);
                     celebrityModalState.current(true)
                   }}
                   short_desc={item?.short_desc}

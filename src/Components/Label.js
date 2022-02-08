@@ -28,24 +28,24 @@ const Label = (props) => {
     text: {
       color: Colors.LABEL,
       width: width * 0.9,
-      fontFamily: "Axiforma Regular",
+      fontFamily: "Axiforma-Regular",
       fontSize: GetFontSize(props.headingtype),
     },
     light: {
-      fontFamily: "Axiforma Light",
+      fontFamily: "Axiforma-Light",
     },
     underline: { textDecorationLine: "underline" },
     centered: { textAlign: "center", alignSelf: "center" },
     bold: {
-      fontFamily: "Axiforma SemiBold",
+      fontFamily: "Axiforma-SemiBold",
     },
-    bold2: { fontFamily: "Axiforma Bold" },
+    bold2: { fontFamily: "Axiforma-Bold" },
     dark: { color: Colors.DARK_LABEL },
     primary: {
       color: Colors.REDESH,
     },
     medium: {
-      fontFamily: "Axiforma Medium",
+      fontFamily: "Axiforma-Medium",
     },
     ChangeFont: {
       fontSize: RFValue(parseInt(font)),

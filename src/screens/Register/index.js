@@ -20,6 +20,8 @@ import {
 import { Images } from "../../Constants/Index";
 import Modals from "../../Components/Modals";
 import GoBack from "../../Components/GoBack";
+import { useDispatch } from "react-redux";
+import types from '../../redux/types';
 
 const { width, height } = Dimensions.get("window");
 
@@ -34,6 +36,7 @@ const index = ({ navigation }) => {
   const cpassref = useRef();
   const Buttonref = useRef();
   const ModalState = useRef();
+  const dispatch = useDispatch();
 
   const HandleClick = async () => {
     let isnull = false;
@@ -66,7 +69,7 @@ const index = ({ navigation }) => {
       const password = passref.current.getText();
       const password_confirmation = cpassref.current.getText();
 
-      if (user_name.length < 10) {
+      if (user_name?.length < 10) {
         ModalState.current(true, {
           heading: "Error",
           Error: "Username must have atleast 10 characters",
@@ -84,7 +87,7 @@ const index = ({ navigation }) => {
         password_confirmation,
       ].filter((e) => e == null || e == "");
 
-      if (arr.length >= 1) return;
+      if (arr?.length >= 1) return;
 
       if (password !== password_confirmation) {
         passref.current.Error();
@@ -115,6 +118,7 @@ const index = ({ navigation }) => {
       await fetch(`${Config.API_URL}/auth/new_register`, requestOptions)
         .then((response) => response.json())
         .then(async (res) => {
+          console.log("res",res);
           if (res.status && res.status.toLowerCase() === "success") {
             await EncryptedStorage.setItem("Token", res.data.token);
             if (await IsVerified(res.data.token)) {

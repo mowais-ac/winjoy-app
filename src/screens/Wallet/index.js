@@ -54,18 +54,12 @@ const index = ({ props, navigation }) => {
   const [headerValue, setHeaderValue] = useState(0);
   const [activity, setActivity] = useState(false);
 
-  console.log("walletData", walletData);
+
   useEffect(() => {
     dispatch(getWalletData());
-    //  console.log("walletData",walletData);
-    // const userData = JSON.parse(await EncryptedStorage.getItem("User"));
-    // setuserData(userData);
-    // GetData();
-
   }, []);
   const HandleWithdraw = async () => {
     setActivity(true)
-    console.log("ammount", ammount);
     if (!ammount) {
       alert("hiii")
     } else {
@@ -175,15 +169,15 @@ const index = ({ props, navigation }) => {
             onPressWithdraw={() => ModalState.current(true)}
           />
           <WalletLastPlayedCard
-            onPress={() => navigation.navigate("LastGameWinner")}
-            noOfQuestions={walletData?.wallet?.no_of_question === null ? 0 : walletData?.wallet?.no_of_question}
+            onPress={() => navigation.navigate("WINNERS")} 
+            noOfQuestions={10}
             wonPrize={walletData?.wallet?.won_prize === null ? 0 : walletData?.wallet?.won_prize}
 
           /> 
           <View
             style={{
               width: width - 25,
-              height: heightConverter(500),
+              height: height*0.5,
               backgroundColor: "#ffffff",
               marginLeft: 10,
               borderRadius: 10,
@@ -197,7 +191,7 @@ const index = ({ props, navigation }) => {
             }}
           >
 
-            <View style={{ marginLeft: 30 }}>
+            <View style={{ marginLeft: 30,}}>
               <Label notAlign primary font={14} bold style={{ color: "#E7003F", }}>
                 {t("last_five_transcation")}
               </Label>

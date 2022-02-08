@@ -135,10 +135,10 @@ const ExperienceCelebrityModal = (props) => {
               }}
             />
             <View style={{ marginLeft: 20 }}>
-              <Text style={{ color: '#0B2142', fontFamily: 'Axiforma SemiBold', fontSize: RFValue(14) }}>
+              <Text style={{ color: '#0B2142', fontFamily: 'Axiforma-SemiBold', fontSize: RFValue(14) }}>
                 {props?.experienceDetail?.experience?.title}
               </Text>
-              <Text style={{ color: '#420E92', fontFamily: 'Axiforma Bold', fontSize: RFValue(14) }}>
+              <Text style={{ color: '#420E92', fontFamily: 'Axiforma-Bold', fontSize: RFValue(14) }}>
                 AED{" "}{props?.experienceDetail?.experience?.price}
               </Text>
             </View>
@@ -169,7 +169,7 @@ const ExperienceCelebrityModal = (props) => {
             <View style={{ marginLeft: 20, width: width*0.67, }}>
               <Text style={{
                 color: '#000000',
-                fontFamily: 'Axiforma Regular',
+                fontFamily: 'Axiforma-Regular',
                 fontSize: RFValue(12),
                 textAlign: 'left'
               }}>
@@ -180,7 +180,7 @@ const ExperienceCelebrityModal = (props) => {
         </View>
         <View style={{ height: 1.3, width: '100%', backgroundColor: '#E6DFEE' }} />
         <View style={{ marginTop: 20, marginLeft: 20 }}>
-          <Text style={{ color: '#000000', fontFamily: 'Axiforma SemiBold', fontSize: RFValue(12) }}>Portfolio</Text>
+          <Text style={{ color: '#000000', fontFamily: 'Axiforma-SemiBold', fontSize: RFValue(12) }}>Portfolio</Text>
           {/* <View style={{
             width: width * 0.6,
             height: height * 0.16,
@@ -262,7 +262,7 @@ const ExperienceCelebrityModal = (props) => {
           <View style={{ height: 1.3, width: '100%', backgroundColor: '#E6DFEE', marginTop: 25 }} />
           <Text style={{
             color: '#000000',
-            fontFamily: 'Axiforma SemiBold',
+            fontFamily: 'Axiforma-SemiBold',
             fontSize: RFValue(12),
             width: '90%',
             textAlign: 'center',

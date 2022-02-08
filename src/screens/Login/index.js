@@ -46,9 +46,7 @@ const index = ({ navigation }) => {
 
   }, []);
   const HandleLogin = async () => {
-    console.log("Config.API_UR", Config.API_URL);
     if (
-      //      emailref.current.validateEmail() &&
       emailref.current.validatePhone() &&
       passref.current.ValidatePass() &&
       !ButtonRef.current.GetActivity()
@@ -56,7 +54,7 @@ const index = ({ navigation }) => {
       const phone_no = emailref.current.getText();
       const password = passref.current.getText();
 
-      if ([phone_no, password].filter((e) => e == null || e == "").length >= 1)
+      if ([phone_no, password].filter((e) => e == null || e == "")?.length >= 1)
         return;
       ButtonRef.current.SetActivity(true);
       const body = JSONtoForm({
@@ -76,7 +74,6 @@ const index = ({ navigation }) => {
       await fetch(`${Config.API_URL}/auth/login`, requestOptions)
         .then(async (response) => response.json())
         .then(async (res) => {
-          console.log("reslogin", res);
           ButtonRef.current.SetActivity(false);
           if (res?.data?.token) {
             dispatch({
@@ -143,7 +140,7 @@ const index = ({ navigation }) => {
         <View style={styles.MainTop}>
           <Background height={1} design />
           <Image source={Images.Logo} style={styles.Logo} />
-          <Label bold headingtype="h2" style={styles.MarginLarge}>
+          <Label bold2 headingtype="h2" style={[styles.MarginLarge]}>
             {t("login_heading")}
           </Label>
           <Modals ModalRef={ModalState} Error />

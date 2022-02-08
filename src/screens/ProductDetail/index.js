@@ -22,9 +22,7 @@ import { RFValue } from "react-native-responsive-fontsize";
 import dayjs from "dayjs";
 const ProductDetail = ({ props, navigation, route }) => {
     const item = route?.params?.data;
-    console.log("itemmm", item);
     let progress = (item?.product?.updated_stocks ? (item?.product?.updated_stocks / item?.stock) * 100 : 0);
-    console.log("item", item?.product?.id);
     function uniqBy(a, key) {
         var seen = {};
         return a.filter(function (item) {
@@ -44,12 +42,10 @@ const ProductDetail = ({ props, navigation, route }) => {
                 let uniqueArray = favs.filter(function (item, pos) {
                     return favs.indexOf(item) == pos;
                 });
-                console.log("uniqueArray", uniqueArray);
                 return AsyncStorage.setItem('ids', JSON.stringify(uniqueArray))
             })
 
         let dat = await AsyncStorage.getItem('ids');
-        console.log("dat", dat);
 
     }
 
@@ -79,7 +75,7 @@ const ProductDetail = ({ props, navigation, route }) => {
                     />
                 </View>
                 <View style={styles.card}>
-                    <Text style={{ color: '#000000', fontFamily: 'Axiforma Regular', fontSize: 16 }}>Buy outwear jacket</Text>
+                    <Text style={{ color: '#000000', fontFamily: 'Axiforma-Regular', fontSize: 16 }}>Buy outwear jacket</Text>
                     <View style={{ width: width * 0.95, height: 1, backgroundColor: '#E6DFEE', marginTop: 10 }} />
                     <Label primary font={16} dark style={{ color: "#E7003F", marginTop: 30 }}>
                         Get a chance to win
@@ -244,7 +240,7 @@ const styles = StyleSheet.create({
     closingTxt: {
         color: '#ffffff',
         backgroundColor: '#e7003f',
-        fontFamily: "Axiforma Regular",
+        fontFamily: "Axiforma-Regular",
         fontWeight: 'bold',
         fontSize: 16,
         paddingLeft: 20,
@@ -263,11 +259,11 @@ const styles = StyleSheet.create({
     },
     metaText: {
         color: '#000000',
-        fontFamily: "Axiforma Regular",
+        fontFamily: "Axiforma-Regular",
     },
     text: {
         color: '#e7003f',
-        fontFamily: "Axiforma Regular",
+        fontFamily: "Axiforma-Regular",
     }
 });
 
