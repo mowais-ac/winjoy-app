@@ -24,9 +24,12 @@ import { getAllCreator, ExperienceProductData } from '../../redux/actions';
 import { useDispatch, useSelector } from "react-redux";
 import types from '../../redux/types';
 import ModalCelebrityProducts from "../../Components/ModalCelebrityProducts";
+import ExperienceCelebrityModal from "../../Components/ExperienceCelebrityModal";
 const { width, height } = Dimensions.get("window");
 const index = ({ route, navigation }) => {
   const celebrityModalState = useRef();
+  const ModalState = useRef();
+  
   const dispatch = useDispatch();
   const dispatch2 = useDispatch();
   const dispatch3 = useDispatch();
@@ -36,9 +39,10 @@ const index = ({ route, navigation }) => {
   // const [experienceId, setExperienceId] = useState();
   useEffect(() => {
     dispatch(getAllCreator());
+    console.log("data",data);
   }, []);
   const onPressCreator = (id) => {
-   // alert(id)
+    // alert(id)
     dispatch2({
       type: types.CREATOR_ID,
       creatorId: id
@@ -108,7 +112,7 @@ const index = ({ route, navigation }) => {
                 <Text style={[styles.textHeading, { textAlign: 'center', marginLeft: 3 }]}>Trending Products</Text>
               </View>
 
-            </View> 
+            </View>
 
             <FlatList
               data={data?.products}
@@ -116,7 +120,7 @@ const index = ({ route, navigation }) => {
               style={{ paddingLeft: 12 }}
               renderItem={({ item }) =>
                 <TrendingCards
-                  onPress={() => navigation.navigate("AllCreatorsPage")}
+                  onPress={() =>  navigation.navigate("ExperienceProductDetail", { productId: item?.id, experienceId: item.celebrity_id })}
                   imageUrl={item.image}
                   title={item?.title}
                   price={item?.price}
@@ -191,7 +195,7 @@ const index = ({ route, navigation }) => {
                       experienceID: item.id
                       //  user: res.data.data,
                     });
-                    console.log("id",item.id)
+                    console.log("id", item.id)
                     dispatch4(ExperienceProductData(item.id));
                     celebrityModalState.current(true)
                   }}
@@ -213,14 +217,20 @@ const index = ({ route, navigation }) => {
               keyExtractor={(item) => item.id}
             />
           </View>
-          <ModalCelebrityProducts ModalRef={celebrityModalState} details 
+          <ModalCelebrityProducts ModalRef={celebrityModalState} details
             expData={expData}
             onPressContinue={() => {
               celebrityModalState.current(false)
 
             }}
-
           />
+          {/* <ExperienceCelebrityModal
+            ModalRef={ModalState}
+            details
+            onPressContinue={onPressContinue}
+            experienceDetail={experienceDetail}
+            celebrityData={data.celebrity}
+          /> */}
         </LinearGradient>
       </ScrollView>
     </SafeAreaView>

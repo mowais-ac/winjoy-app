@@ -205,7 +205,7 @@ const index = ({ navigation }) => {
                 headingtype="h4"
                 style={styles.LessMargin}
               >
-                Total: {+(item.price).toLocaleString()}
+                Total: AED {+(item.price).toLocaleString()}
               </Label>
             </View>
             <TouchableOpacity onPress={() => RemoveItem(item.id)}>
@@ -265,7 +265,7 @@ const index = ({ navigation }) => {
               width: widthPercentageToDP("83")
             }}>
               <Text style={styles.metaText}>Total</Text>
-              <Text style={[styles.text, { fontWeight: 'bold' }]}>{total.toLocaleString()}</Text>
+              <Text style={[styles.text, { fontWeight: 'bold' }]}>{"AED "}{total.toLocaleString()}</Text>
 
             </View>
             {/* <View style={{

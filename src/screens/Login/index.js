@@ -36,6 +36,7 @@ const { width, height } = Dimensions.get("window");
 const index = ({ navigation }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const dispatch2 = useDispatch();
   const { signIn } = React.useContext(AuthContext);
   const emailref = useRef();
   const passref = useRef();
@@ -80,7 +81,12 @@ const index = ({ navigation }) => {
               type: types.USER_DATA,
               userData: res?.data?.user,
               //  user: res.data.data,
-            });
+            }); 
+            dispatch2({
+              type: types.TOTAL_LIVES,
+              totalLives: res?.data?.user?.lives_count,
+            
+            }); 
             await EncryptedStorage.setItem("Token", res.data.token);
             signIn(res.data.token)
             // navigation.replace("HomeStack");

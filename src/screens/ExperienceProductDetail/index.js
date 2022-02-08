@@ -27,6 +27,7 @@ const ProductDetail = ({ props, navigation, route }) => {
     const data = useSelector(state => state?.app?.expProductDetail);
     useEffect(() => {
         dispatch(ExperienceProductDetal(experienceId, productId));
+        console.log("dataExp", data);
     }, []);
     let progress = (data?.products?.updated_stocks ? (data?.products?.updated_stocks / data?.products?.stock) * 100 : 0);
     //console.log("item", item?.id);
@@ -71,30 +72,14 @@ const ProductDetail = ({ props, navigation, route }) => {
                     <View style={{ height: 20 }} />
                     <Header back={true} />
 
-
-                    <View style={styles.bottomView}>
-                        <Label primary font={13} dark style={{ color: "#ffffff", marginTop: 9, marginBottom: 9, }}>
-                            {data?.products?.updated_stocks || 0} sold out of {data?.products?.stock}
-                        </Label>
-                        <View style={styles.containerprogressBar}>
-                            <LinearGradient
-                                start={{ x: 0, y: 0 }}
-                                end={{ x: 1, y: 0 }}
-                                colors={["#ff9000", "#e70100"]}
-                                style={[
-                                    styles.LinerGradientProgrees,
-                                    { width: `${progress > 99 ? 99 : progress}%` },
-                                ]}
-                            />
-                            <View style={styles.GreybarWidth} />
-                        </View>
-
-
-                    </View>
-
                 </LinearGradient>
                 <View style={styles.upperView}>
-                    <Card imageUrl={data?.products?.image} />
+                    <Card
+                        imageUrl={data?.products?.image}
+                        stock={data?.products?.stock}
+                        updated_stocks={data?.products?.updated_stocks}
+
+                    />
                 </View>
                 <View style={styles.card}>
 
@@ -128,7 +113,7 @@ const ProductDetail = ({ props, navigation, route }) => {
                         width: widthPercentageToDP("83")
                     }}>
                         <Text style={styles.metaText}>To enter in the lucky draw</Text>
-                        <Text style={[styles.text, { fontWeight: 'bold' }]}>{+(data?.products?.price)?.toLocaleString()}</Text>
+                        <Text style={[styles.text, { fontWeight: 'bold' }]}>{"AED "}{+(data?.products?.price)?.toLocaleString()}</Text>
 
                     </View>
                     <View style={{
@@ -226,7 +211,7 @@ const styles = StyleSheet.create({
 
     },
     upperView: {
-        top: heightPercentageToDP('16%'),
+        top: heightPercentageToDP('8%'),
         position: 'absolute',
 
     },
@@ -237,7 +222,7 @@ const styles = StyleSheet.create({
         marginLeft: 10,
         borderRadius: 10,
         padding: 10,
-        top: height * 0.16,
+        top: height * 0.1,
         left: 2,
         justifyContent: 'center', alignItems: 'center',
         elevation: 3,
@@ -272,7 +257,7 @@ const styles = StyleSheet.create({
     },
     pdView: {
         position: 'absolute',
-        bottom: heightPercentageToDP("22"),
+        bottom: heightPercentageToDP("25"),
         height: heightPercentageToDP("25"),
         padding: 20,
 

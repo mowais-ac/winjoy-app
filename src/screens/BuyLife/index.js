@@ -30,6 +30,8 @@ import { getLiveShowPlans } from '../../redux/actions';
 const { width, height } = Dimensions.get("window");
 const index = ({ route, navigation }) => {
     const livePlans = useSelector(state => state.app.livePlans);
+    const totalLives = useSelector(state => state.app.totalLives);
+    
     const ModalState = useRef();
     const AddModalState = useRef();
     const RefferModalState = useRef();
@@ -41,6 +43,7 @@ const index = ({ route, navigation }) => {
     const [id, setId] = useState();
     const dispatch = useDispatch();
     useEffect(() => {
+        console.log("totalLives",totalLives);
         dispatch(getLiveShowPlans());
     }, []);
 
@@ -76,7 +79,7 @@ const index = ({ route, navigation }) => {
                         >
 
                             <Text style={{ color: "#E7003F", fontFamily: 'Axiforma-SemiBold', fontSize: RFValue(20) }}>
-                                {livePlans?.total_lives === null ? 0 : livePlans?.total_lives}
+                                {totalLives === null ? 0 : totalLives} 
                             </Text>
                         </ImageBackground>
                         <Text style={[styles.text, { color: '#420E92', marginTop: height * 0.035 }]}>

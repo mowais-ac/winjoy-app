@@ -39,7 +39,7 @@ const ModalCelebrityProducts = (props) => {
     details: null,
   }); 
  
-  useEffect(() => {
+  useEffect(() => { 
     if (props.ModalRef) props.ModalRef.current = HandleChange;
   });
 

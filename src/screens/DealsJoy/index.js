@@ -263,6 +263,7 @@ const index = ({ props, navigation }) => {
       <HomeBottomList data={dealsJoyData?.winners_collection} />
       <View style={{ height: 20 }} />
       <WatchAddModal ModalRef={AddModalState} details
+       cross={true}
         video={"https://winjoy-assets.s3.amazonaws.com/banners/banner-3.mp4"}
       // id={idVideoAdd}
       // onPressContinue={onPressContinue} 

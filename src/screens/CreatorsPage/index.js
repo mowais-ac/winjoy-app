@@ -34,6 +34,7 @@ const index = ({ route, navigation }) => {
   const data = useSelector(state => state.app.creatorPageData);
   const experienceDetail = useSelector(state => state.app.experienceDetail);
   useEffect(() => {
+    console.log("creatorId", creatorId);
     dispatch(GetCreatorPageData(creatorId));
   }, []);
 
@@ -115,7 +116,11 @@ const index = ({ route, navigation }) => {
                 }
                 renderItem={({ item }) =>
                   <TrendingCards
-                   // onPress={() => navigation.navigate("AllCreatorsPage")}
+                    // onPress={() => navigation.navigate("AllCreatorsPage")} 
+                    onPress={() => {
+                      navigation.navigate("ExperienceProductDetail", { productId: item?.id, experienceId: item.celebrity_id })
+                    }
+                    }
                     title={item?.title}
                     // description={item.description}
                     imageUrl={item?.image}
@@ -146,7 +151,7 @@ const index = ({ route, navigation }) => {
                   <Text style={{ color: '#000000' }}>The list is empty</Text>
                 )
                 }
-                
+
                 renderItem={({ item }) =>
                   <SecondExperienceCard
                     onPress={() => {
@@ -172,7 +177,7 @@ const index = ({ route, navigation }) => {
                 // }
                 keyExtractor={(item) => item.id}
               />
-            </View> 
+            </View>
           </View>
 
 

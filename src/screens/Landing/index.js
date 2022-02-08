@@ -134,7 +134,7 @@ const index = (props) => {
   const userData = useSelector(state => state.app.userData);
   const LandingData = useSelector(state => state.app.LandingData);
   const gameEnterStatus = useSelector(state => state.app.gameEnterStatus);
-
+  const totalLives = useSelector(state => state.app.totalLives);
   const [buffer, setBuffer] = useState(false);
   const [videoAction, setVideoAction] = useState(true);
   const dispatch = useDispatch();
@@ -295,7 +295,6 @@ const index = (props) => {
                   //  name={(name.slice(0, 1) + name.slice(0, 1))}
                   size={50}
                   font={28}
-
                 />
               </View>
 
@@ -320,7 +319,7 @@ const index = (props) => {
               >
 
                 <Text style={{ color: "#E7003F", fontFamily: 'Axiforma-SemiBold', fontSize: RFValue(12) }}>
-                  {userData?.lives_count}
+                  {totalLives?totalLives:0} 
                 </Text>
                 
               </ImageBackground>
@@ -499,6 +498,7 @@ const index = (props) => {
         </View>
         <WatchAddModal ModalRef={AddModalState} details
           video={"https://winjoy-assets.s3.amazonaws.com/banners/banner-3.mp4"}
+          cross={true}
         // id={idVideoAdd}
         // onPressContinue={onPressContinue} 
         />
