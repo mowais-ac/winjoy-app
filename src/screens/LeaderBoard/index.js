@@ -124,8 +124,8 @@ const index = ({ route, navigation }) => {
                       />
                     </View>
                    <View style={{width:width*0.25,alignItems:'center',marginTop:height*0.01}}>
-                   <Text style={{ fontSize: RFValue(9), color: '#ffffff', fontFamily: 'Axiforma SemiBold' }}>@{item?.user_name}</Text>
-                    <Text style={{ fontSize: RFValue(12), color: '#FFFF00', fontFamily: 'Axiforma Bold' }}>AED {FormatNumber(item?.trivia_total_prize)}</Text>
+                   <Text style={{ fontSize: RFValue(9), color: '#ffffff', fontFamily: 'Axiforma-SemiBold' }}>@{item?.user_name}</Text>
+                    <Text style={{ fontSize: RFValue(12), color: '#FFFF00', fontFamily: 'Axiforma-Bold' }}>AED {FormatNumber(item?.trivia_total_prize)}</Text>
                    </View> 
                   </View>
 

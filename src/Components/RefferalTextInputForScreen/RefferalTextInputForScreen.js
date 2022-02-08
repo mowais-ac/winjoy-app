@@ -30,7 +30,7 @@ function RefferalTextInputForScreen({ srNumber, onChangeName, onChangeNumber, va
             height: height * 0.06,
             width: width * 0.8,
             paddingLeft: 20,
-            color: '#000000', fontFamily: 'Axiforma Regular',
+            color: '#000000', fontFamily: 'Axiforma-Regular',
             borderWidth: 1, borderColor: validationBorderName ? 'red' : '#F2EFF5', borderTopLeftRadius: 10, borderTopRightRadius: 10, borderBottomWidth: 0.5, backgroundColor: '#ffffff'
           }}
           onChangeText={onChangeName}
@@ -46,7 +46,7 @@ function RefferalTextInputForScreen({ srNumber, onChangeName, onChangeNumber, va
             height: height * 0.06,
             width: width * 0.8,
             paddingLeft: 20,
-            color: '#000000', fontFamily: 'Axiforma Regular',
+            color: '#000000', fontFamily: 'Axiforma-Regular',
             borderWidth: 1, borderColor: validationBorderNumber ? 'red' : '#F2EFF5', borderBottomLeftRadius: 10, borderBottomRightRadius: 10, borderTopWidth: 0.5, backgroundColor: '#ffffff'
           }}
           maxLength={11}

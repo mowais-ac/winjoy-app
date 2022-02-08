@@ -244,7 +244,7 @@ const index = ({ props, navigation }) => {
               />
             </View>
             <View style={styles.footer}>
-              <Text style={[styles.text, { color: '#ffffff' }]}>{friendData.length} {friendData.length < 2 ? "Friend" : "Freinds"}</Text>
+              <Text style={[styles.text, { color: '#ffffff' }]}>{friendData?.length} {friendData?.length < 2 ? "Friend" : "Freinds"}</Text>
               <TouchableOpacity
                 onPress={() =>
                   navigation.navigate("Profile", {
@@ -370,7 +370,7 @@ const index = ({ props, navigation }) => {
                   height: heightPercentageToDP("5%"),
                   width: "93%",
                   fontSize: RFValue(16),
-                  fontFamily: 'Axiforma SemiBold'
+                  fontFamily: 'Axiforma-SemiBold'
                 },
               ]}
             >
@@ -472,7 +472,7 @@ const index = ({ props, navigation }) => {
                     color: "#E7003F",
                     width: width,
                     fontSize: RFValue(16),
-                    fontFamily: 'Axiforma SemiBold',
+                    fontFamily: 'Axiforma-SemiBold',
                     textAlign: 'center',
                   },
                 ]}
@@ -504,7 +504,7 @@ const index = ({ props, navigation }) => {
                         {
                           color: "#420E92",
                           fontSize: RFValue(16),
-                          fontFamily: 'Axiforma SemiBold',
+                          fontFamily: 'Axiforma-SemiBold',
                           textAlign: 'center'
                         },
                       ]}
@@ -526,7 +526,7 @@ const index = ({ props, navigation }) => {
                         {
                           color: "#420E92",
                           fontSize: RFValue(16),
-                          fontFamily: 'Axiforma SemiBold',
+                          fontFamily: 'Axiforma-SemiBold',
                           textAlign: 'center'
                         },
                       ]}

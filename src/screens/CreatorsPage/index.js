@@ -72,7 +72,7 @@ const index = ({ route, navigation }) => {
                   onPress={() => navigation.navigate("CreatorsGallery")}
                 >
                   <View style={{ height: height * 0.04, width: width * 0.25, borderWidth: 1, borderColor: '#fff', borderRadius: width * 0.2, justifyContent: 'center', alignItems: 'center' }}>
-                    <Text style={[styles.headerText, { fontFamily: 'Axiforma Regular', fontSize: RFValue(14) }]}>
+                    <Text style={[styles.headerText, { fontFamily: 'Axiforma-Regular', fontSize: RFValue(14) }]}>
                       Gallery
                     </Text>
                   </View>
@@ -81,7 +81,7 @@ const index = ({ route, navigation }) => {
               <Text
                 numberOfLines={3}
                 style={{
-                  fontFamily: 'Axiforma Regular',
+                  fontFamily: 'Axiforma-Regular',
                   color: '#3E324F',
                   width: width * 0.7,
                   textAlign: 'justify',
@@ -99,7 +99,7 @@ const index = ({ route, navigation }) => {
             <View style={{ width: '100%', marginLeft: 5, marginTop: 15, paddingBottom: 15, paddingTop: 15, backgroundColor: 'rgba(255, 255, 255, 0.3)' }}>
               <View style={{ width: "95%", flexDirection: 'row', justifyContent: 'space-between', marginTop: 14, marginLeft: width * 0.05 }}>
                 <View>
-                  <Text style={{ fontFamily: 'Axiforma Bold', color: '#eb3d6e', width: width * 0.9, textAlign: 'center', }}>
+                  <Text style={{ fontFamily: 'Axiforma-Bold', color: '#eb3d6e', width: width * 0.9, textAlign: 'center', }}>
                     Trending Products
                   </Text>
                 </View>
@@ -115,7 +115,7 @@ const index = ({ route, navigation }) => {
                 }
                 renderItem={({ item }) =>
                   <TrendingCards
-                    onPress={() => navigation.navigate("AllCreatorsPage")}
+                   // onPress={() => navigation.navigate("AllCreatorsPage")}
                     title={item?.title}
                     // description={item.description}
                     imageUrl={item?.image}
@@ -136,7 +136,7 @@ const index = ({ route, navigation }) => {
               />
             </View>
             <View style={{ width: '100%', marginLeft: 5, marginTop: 15, paddingBottom: 15, paddingTop: 15, }}>
-              <Text style={{ fontFamily: 'Axiforma Bold', color: '#eb3d6e', width: '100%', textAlign: 'center' }}>
+              <Text style={{ fontFamily: 'Axiforma-Bold', color: '#eb3d6e', width: '100%', textAlign: 'center' }}>
                 Buy experience with celebrities
               </Text>
               <FlatList

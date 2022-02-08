@@ -77,12 +77,12 @@ const styles = StyleSheet.create({
     borderRadius: 30
   },
   text: {
-    fontFamily: "Axiforma Regular",
+    fontFamily: "Axiforma-Regular",
     color: '#000000',
     fontSize: RFValue(12)
   },
   text2: {
-    fontFamily: "Axiforma SemiBold",
+    fontFamily: "Axiforma-SemiBold",
     color: "#000000",
     fontSize: RFValue(12),
    

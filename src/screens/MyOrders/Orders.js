@@ -119,7 +119,7 @@ const Orders = ({ navigation }) => {
         <ActivityIndicator size="large" color={Colors.BLACK} />
       ) : (
         <>
-          {Data.length >= 1 && (
+          {Data?.length >= 1 && (
             <Label primary bold headingtype="h4">
               Orders
             </Label>

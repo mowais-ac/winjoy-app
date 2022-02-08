@@ -12,12 +12,12 @@ export default StyleSheet.create({
       },  
       headerText:{
           color:'#D9FE51',
-          fontFamily:'Axiforma SemiBold',
+          fontFamily:'Axiforma-SemiBold',
           fontSize:RFValue(22)
       },
       subHeaderText:{
           color:'#FFFFFF',
-          fontFamily:'Axiforma Regular'
+          fontFamily:'Axiforma-Regular'
       },
       playBtn:{
           width:60,
@@ -25,7 +25,7 @@ export default StyleSheet.create({
           marginTop:15
       },
       textHeading:{
-        fontFamily: 'Axiforma Bold', color: '#eb3d6e', width: width*1,
+        fontFamily: 'Axiforma-Bold', color: '#eb3d6e', width: width*1,
         fontSize:RFValue(13),
         marginLeft:20
       }

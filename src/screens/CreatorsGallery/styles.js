@@ -13,12 +13,12 @@ export default StyleSheet.create({
     },
     headerText: {
         color: '#fff',
-        fontFamily: 'Axiforma SemiBold',
+        fontFamily: 'Axiforma-SemiBold',
         fontSize: RFValue(22)
     },
     subHeaderText: {
         color: '#FFFFFF',
-        fontFamily: 'Axiforma Regular'
+        fontFamily: 'Axiforma-Regular'
     },
     playBtn: {
         width: 60,

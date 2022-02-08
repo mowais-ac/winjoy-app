@@ -421,7 +421,7 @@ const BackgroundVideo = ({ route, navigation }) => {
                                 source={require('../../assets/imgs/pinkHeart.png')}
                             >
 
-                                <Text style={{ color: "#E7003F", fontFamily: 'Axiforma SemiBold', fontSize: RFValue(15) }}>
+                                <Text style={{ color: "#E7003F", fontFamily: 'Axiforma-SemiBold', fontSize: RFValue(15) }}>
                                     {userData?.lives_count}
                                 </Text>
                             </ImageBackground>

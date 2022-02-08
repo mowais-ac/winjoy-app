@@ -43,12 +43,12 @@ export default StyleSheet.create({
     shadowRadius: 9.51,
   },
   text:{
-    fontFamily: "Axiforma Regular",
+    fontFamily: "Axiforma-Regular",
     color:'#000000',
     fontSize:RFValue(12)
   },
   text2:{
-    fontFamily: "Axiforma SemiBold",
+    fontFamily: "Axiforma-SemiBold",
     color: "#000000",
     fontSize:RFValue(12)
   },

@@ -10,6 +10,6 @@ const { StyleSheet } = require('react-native');
 
 export default StyleSheet.create({
   text: {
-    color: '#fff', fontFamily: 'Axiforma Bold', fontSize: RFValue(15)
+    color: '#fff', fontFamily: 'Axiforma-Bold', fontSize: RFValue(15)
 },
 });

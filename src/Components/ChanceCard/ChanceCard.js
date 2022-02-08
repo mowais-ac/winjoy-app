@@ -79,16 +79,16 @@ function ChanceCard({ onPress, updated_stocks, stock, title, description, image,
             bgColor="#fff"
           >
             <View style={{ justifyContent: 'center', alignItems: 'center', }}>
-              <Text style={{ fontFamily: 'Axiforma SemiBold', fontSize: 12, color: "#E7003F", lineHeight: 12, }}>
+              <Text style={{ fontFamily: 'Axiforma-SemiBold', fontSize: 12, color: "#E7003F", lineHeight: 12, }}>
                 {updated_stocks || 0}
               </Text>
-              <Text style={{ fontFamily: 'Axiforma SemiBold', fontSize: 12, color: "#E7003F", lineHeight: 12 }}>
+              <Text style={{ fontFamily: 'Axiforma-SemiBold', fontSize: 12, color: "#E7003F", lineHeight: 12 }}>
                 sold
               </Text>
-              <Text style={{ fontFamily: 'Axiforma SemiBold', fontSize: 12, color: "#E7003F", lineHeight: 12 }}>
+              <Text style={{ fontFamily: 'Axiforma-SemiBold', fontSize: 12, color: "#E7003F", lineHeight: 12 }}>
                 out of
               </Text>
-              <Text style={{ fontFamily: 'Axiforma SemiBold', fontSize: 12, color: "#E7003F", lineHeight: 14 }}>
+              <Text style={{ fontFamily: 'Axiforma-SemiBold', fontSize: 12, color: "#E7003F", lineHeight: 14 }}>
                 {stock}
               </Text>
             </View>

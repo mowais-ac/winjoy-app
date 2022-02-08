@@ -32,7 +32,7 @@ export default StyleSheet.create({
     fontSize: RFValue(16), color: "#0032B5",
     lineHeight: heightConverter(30),
     textAlign: 'left',
-    fontFamily: "Axiforma Regular",
+    fontFamily: "Axiforma-Regular",
   },
   Margin: {
    

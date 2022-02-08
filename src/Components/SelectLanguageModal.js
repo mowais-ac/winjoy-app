@@ -96,7 +96,7 @@ const SelectLanguageModal = (props) => {
             <View
               style={[styles.optionView,{backgroundColor:lang==="en"?"#E6DFEE":"#ffffff",borderWidth:1,borderColor:"#E6DFEE"}]}
             >
-              <Label primary font={15} bold style={{ color:lang==="en"?"#420E92":"#0B2142", fontFamily: 'Axiforma Regular' }}>
+              <Label primary font={15} bold style={{ color:lang==="en"?"#420E92":"#0B2142", fontFamily: 'Axiforma-Regular' }}>
                 English
               </Label>
             </View>
@@ -105,7 +105,7 @@ const SelectLanguageModal = (props) => {
             <View
               style={[styles.optionView,{backgroundColor:lang==="ar"?"#E6DFEE":"#ffffff", borderWidth:1,borderColor:"#E6DFEE",marginTop:height*0.015}]}
             >
-              <Label primary font={15} bold style={{ color:lang==="ar"?"#420E92":'#0B2142', fontFamily: 'Axiforma Regular' }}>
+              <Label primary font={15} bold style={{ color:lang==="ar"?"#420E92":'#0B2142', fontFamily: 'Axiforma-Regular' }}>
                 Arabic
               </Label>
             </View>
@@ -315,10 +315,10 @@ const styles = StyleSheet.create({
     marginTop: height * 0.01
   },
   text: {
-    color: '#0B2142', fontFamily: 'Axiforma Bold', fontSize: RFValue(16)
+    color: '#0B2142', fontFamily: 'Axiforma-Bold', fontSize: RFValue(16)
   },
   descriptionText: {
-    color: '#000000', fontFamily: 'Axiforma Regular', fontSize: RFValue(13), textAlign: 'center', lineHeight: height * 0.03
+    color: '#000000', fontFamily: 'Axiforma-Regular', fontSize: RFValue(13), textAlign: 'center', lineHeight: height * 0.03
   },
   optionView: {
     height: height * 0.065,

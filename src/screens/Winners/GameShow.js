@@ -45,7 +45,7 @@ const GameShow = (props) => {
           }}
           ListEmptyComponent={() => (
             <View style={{ height: height * 0.16, width: width * 0.85, justifyContent: 'center', alignItems: 'center' }}>
-              <Text style={{ color: '#000000', fontFamily: 'Axiforma Bold', fontSize: RFValue(15) }}>No Winners Found</Text>
+              <Text style={{ color: '#000000', fontFamily: 'Axiforma-Bold', fontSize: RFValue(15) }}>No Winners Found</Text>
             </View>
           )
           }
@@ -145,12 +145,12 @@ const styles = StyleSheet.create({
     borderRadius: 30
   },
   text: {
-    fontFamily: "Axiforma Regular",
+    fontFamily: "Axiforma-Regular",
     color: '#000000',
     fontSize: RFValue(12)
   },
   text2: {
-    fontFamily: "Axiforma SemiBold",
+    fontFamily: "Axiforma-SemiBold",
     color: "#000000",
     fontSize: RFValue(12),
 

@@ -50,7 +50,7 @@ export default StyleSheet.create({
     marginLeft:widthConverter(20),
   },
   text: {
-    fontFamily: 'Axiforma Bold',
+    fontFamily: 'Axiforma-Bold',
     color: '#fff',
     fontSize: RFValue(20)
   },

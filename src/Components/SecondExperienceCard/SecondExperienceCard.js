@@ -22,8 +22,8 @@ function SecondExperienceCard({ style, onPress, heading, cover_photo, short_desc
           }}
         />
       </View>
-      <Text style={{ color: '#000000', fontFamily: 'Axiforma SemiBold',width:width*0.44,textAlign:'center' }}>{short_desc}</Text>
-      <Text style={{ color: 'blue', fontFamily: 'Axiforma Regular', textAlign: 'center',width:'85%', }}>{price} AED</Text>
+      <Text style={{ color: '#000000', fontFamily: 'Axiforma-SemiBold',width:width*0.44,textAlign:'center' }}>{short_desc}</Text>
+      <Text style={{ color: 'blue', fontFamily: 'Axiforma-Regular', textAlign: 'center',width:'85%', }}>{price} AED</Text>
     </TouchableOpacity>
   );
 }

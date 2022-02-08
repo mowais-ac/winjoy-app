@@ -11,19 +11,19 @@ export default StyleSheet.create({
     },
     headerText: {
         color: '#D9FE51',
-        fontFamily: 'Axiforma SemiBold',
+        fontFamily: 'Axiforma-SemiBold',
         fontSize: RFValue(22)
     },
     subHeaderText: {
         color: '#FFFFFF',
-        fontFamily: 'Axiforma Regular'
+        fontFamily: 'Axiforma-Regular'
     },
     heading2Text: {
-        color: '#420E92', fontFamily: 'Axiforma Bold', fontSize: RFValue(15)
+        color: '#420E92', fontFamily: 'Axiforma-Bold', fontSize: RFValue(15)
     },
     text: {
         color: '#000000',
-         fontFamily: 'Axiforma Regular', 
+         fontFamily: 'Axiforma-Regular', 
          fontSize: RFValue(13),
          lineHeight:height*0.028,
          textAlign:'center',
@@ -44,10 +44,10 @@ export default StyleSheet.create({
         marginTop: height * 0.01
       },
       textHeading: {
-        color: '#6F5F87', fontFamily: 'Axiforma Bold', fontSize: RFValue(16), textAlign: 'center'
+        color: '#6F5F87', fontFamily: 'Axiforma-Bold', fontSize: RFValue(16), textAlign: 'center'
       },
       mainTextHeading: {
-        color: '#6F5F87', fontFamily: 'Axiforma Regular', fontSize: RFValue(16), textAlign: 'center', lineHeight: height * 0.03
+        color: '#6F5F87', fontFamily: 'Axiforma-Regular', fontSize: RFValue(16), textAlign: 'center', lineHeight: height * 0.03
       },
       refferBox: {
         width: width * 0.29,
@@ -69,10 +69,10 @@ export default StyleSheet.create({
     
     
       text: {
-        color: '#420E92', fontFamily: 'Axiforma Bold', fontSize: RFValue(14)
+        color: '#420E92', fontFamily: 'Axiforma-Bold', fontSize: RFValue(14)
       },
       descriptionText: {
-        color: '#000000', fontFamily: 'Axiforma Regular', fontSize: RFValue(13), textAlign: 'center', lineHeight: height * 0.03
+        color: '#000000', fontFamily: 'Axiforma-Regular', fontSize: RFValue(13), textAlign: 'center', lineHeight: height * 0.03
       }
 
 });

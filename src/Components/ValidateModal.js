@@ -103,7 +103,7 @@ const ValidateModal = (props) => {
   const HandleConfirm = async () => {
     if (Buttonref.current.GetActivity()) return;
     const text = InputRef.current.getText();
-    if (text && text.length === 6) {
+    if (text && text?.length === 6) {
       Buttonref.current.SetActivity(true, "WHITE");
       const Token = await EncryptedStorage.getItem("Token");
       let body;

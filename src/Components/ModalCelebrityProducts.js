@@ -83,7 +83,7 @@ const ModalCelebrityProducts = (props) => {
         <View style={styles.SmallBorder} />
 
         <Text style={[styles.text, { textAlign: 'center', marginTop: height * 0.03, width: width * 0.8 }]}>
-          Buy one of the following and<Text style={{ fontFamily: 'Axiforma Bold' }}>{' '}WIN a dinner with{' '}</Text>John Omarosa
+          Buy one of the following and<Text style={{ fontFamily: 'Axiforma-Bold' }}>{' '}WIN a dinner with{' '}</Text>John Omarosa
         </Text>
 
         <View style={styles.ModalBody}>
@@ -268,10 +268,10 @@ const styles = StyleSheet.create({
     marginTop: height * 0.01
   },
   textHeading: {
-    color: '#6F5F87', fontFamily: 'Axiforma Bold', fontSize: RFValue(16), textAlign: 'center'
+    color: '#6F5F87', fontFamily: 'Axiforma-Bold', fontSize: RFValue(16), textAlign: 'center'
   },
   mainTextHeading: {
-    color: '#6F5F87', fontFamily: 'Axiforma Regular', fontSize: RFValue(16), textAlign: 'center', lineHeight: height * 0.03
+    color: '#6F5F87', fontFamily: 'Axiforma-Regular', fontSize: RFValue(16), textAlign: 'center', lineHeight: height * 0.03
   },
   refferBox: {
     width: width * 0.29,
@@ -293,9 +293,9 @@ const styles = StyleSheet.create({
 
 
   text: {
-    color: '#0B2142', fontFamily: 'Axiforma Regular', fontSize: RFValue(16), lineHeight: height * 0.035
+    color: '#0B2142', fontFamily: 'Axiforma-Regular', fontSize: RFValue(16), lineHeight: height * 0.035
   },
   descriptionText: {
-    color: '#000000', fontFamily: 'Axiforma Regular', fontSize: RFValue(13), textAlign: 'center', lineHeight: height * 0.03
+    color: '#000000', fontFamily: 'Axiforma-Regular', fontSize: RFValue(13), textAlign: 'center', lineHeight: height * 0.03
   }
 });

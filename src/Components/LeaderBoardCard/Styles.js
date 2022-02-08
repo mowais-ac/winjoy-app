@@ -38,11 +38,11 @@ export default StyleSheet.create({
     shadowRadius: 9.51,
   },
   text:{
-    fontFamily: "Axiforma Regular",
+    fontFamily: "Axiforma-Regular",
     color:'#ffffff'
   },
   text2:{
-    fontFamily: "Axiforma Regular",
+    fontFamily: "Axiforma-Regular",
     color: "#FFFF00"
   }
 });

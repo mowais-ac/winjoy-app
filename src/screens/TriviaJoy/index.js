@@ -136,7 +136,7 @@ const index = ({ props, navigation }) => {
                 onFinish={() => setRenderBtn(true)}
                 digitStyle={{ borderColor: '#ffffff', borderWidth: 1, backgroundColor: '#ffffff', width: 50, height: 50, borderRadius: 40, marginLeft: 10, marginRight: 10 }}
                 digitTxtStyle={{ color: '#000000', fontSize: 18, fontFamily: 'Axiforma-Medium' }}
-                timeLabelStyle={{ color: '#000000', fontFamily: 'Axiforma Regular' }}
+                timeLabelStyle={{ color: '#000000', fontFamily: 'Axiforma-Regular' }}
                 //separatorStyle={{paddingLeft: 5, paddingRight: 5, }}
 
                 timeToShow={['D', 'H', 'M', 'S']}
@@ -173,7 +173,7 @@ const index = ({ props, navigation }) => {
               source={require('../../assets/imgs/pinkHeart.png')}
             >
 
-              <Text style={{ color: "#E7003F", fontFamily: 'Axiforma SemiBold', fontSize: RFValue(20) }}>
+              <Text style={{ color: "#E7003F", fontFamily: 'Axiforma-SemiBold', fontSize: RFValue(20) }}>
                 {userData?.lives_count}
               </Text>
             </ImageBackground>
@@ -229,7 +229,7 @@ const styles = StyleSheet.create({
   },
   heading: {
     color: "#ffff",
-    fontFamily: "Axiforma Bold",
+    fontFamily: "Axiforma-Bold",
     fontSize: 30,
     width: widthConverter(210),
     textAlign: 'center',

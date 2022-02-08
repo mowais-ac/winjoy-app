@@ -35,8 +35,7 @@ const DeliveryModal = (props) => {
     const donate = DonateRef.current ? "yes" : "no";
 
     if (
-      [shipping_address, shipping_country].filter((e) => e == null || e == "")
-        .length >= 1
+      [shipping_address, shipping_country].filter((e) => e == null || e == "")?.length >= 1
     )
       return;
 

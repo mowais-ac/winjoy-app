@@ -10,7 +10,8 @@ import {
   FlatList,
   Animated,
   Text,
-  Image
+  Image,
+  ImageBackground
 } from "react-native";
 import { connect, useDispatch, useSelector } from "react-redux";
 import { FormatNumber, wait } from "../../Constants/Functions";
@@ -287,7 +288,7 @@ const index = (props) => {
               style={styles.yellowBtn}
             >
 
-              <View style={{ borderWidth: 2, borderColor: "#fff", borderRadius: 45 }}>
+              <View style={{ borderWidth: 2, borderColor: "#fff", borderRadius: 45, }}>
                 <AvatarBtn
                   picture={userData?.profile_image}
                   // id={userInfo?.id}
@@ -299,18 +300,34 @@ const index = (props) => {
               </View>
 
               <TouchableOpacity onPress={() => navigation.navigate("WALLET")}>
-                <View style={styles.secondHeaderMiddleView}>
-                  <Text style={[styles.text, { color: '#fff', fontSize: RFValue(14) }]}>
-                    {userData?.first_name?.charAt(0).toUpperCase() + userData?.first_name?.slice(1)} {userData?.last_name?.charAt(0).toUpperCase() + userData?.last_name?.slice(1)}
-                  </Text>
-                  <Text style={[styles.text, { color: '#fff', fontSize: RFValue(14) }]}>Your balance: <Text style={[styles.text, { color: '#ffff00', fontSize: RFValue(14) }]}>
-                    AED {userData?.balance ?FormatNumber(+(userData?.balance).toLocaleString()) : 0}
-                    
-                  </Text>
-                  </Text>
-                </View>
+              <View style={styles.secondHeaderMiddleView}>
+                <Text style={[styles.text, { color: '#fff', fontSize: RFValue(14) }]}>
+                  {userData?.first_name?.charAt(0).toUpperCase() + userData?.first_name?.slice(1)} {userData?.last_name?.charAt(0).toUpperCase() + userData?.last_name?.slice(1)}
+                </Text>
+                <Text style={[styles.text, { color: '#fff', fontSize: RFValue(14) }]}>Your balance: <Text style={[styles.text, { color: '#ffff00', fontSize: RFValue(14) }]}>
+                  AED {userData?.balance ? FormatNumber(+(userData?.balance).toLocaleString()) : 0}
+
+                </Text>
+                </Text>
+              </View>
+              </TouchableOpacity> 
+              <TouchableOpacity onPress={() => navigation.navigate("MenuStack", { screen: 'BuyLife' })}>
+              <ImageBackground
+                resizeMode="center"
+                style={{ width: 50, height: 40, justifyContent: 'center', alignItems: 'center' }}
+    
+                source={require('../../assets/imgs/pinkHeart.png')}
+              >
+
+                <Text style={{ color: "#E7003F", fontFamily: 'Axiforma-SemiBold', fontSize: RFValue(12) }}>
+                  {userData?.lives_count}
+                </Text>
+                
+              </ImageBackground>
               </TouchableOpacity>
-              <Entypo name="chevron-thin-right" size={22} color="#fff" style={{ marginTop: 6.5, marginRight: 6 }} />
+              {/* <TouchableOpacity onPress={() => navigation.navigate("WALLET")}>
+                <Entypo name="chevron-thin-right" size={22} color="#fff" style={{ marginTop: 6.5, marginRight: 6 }} />
+              </TouchableOpacity> */}
             </View>
 
           </LinearGradient>
@@ -339,7 +356,7 @@ const index = (props) => {
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}
             data={LandingData?.lowerBanner}
-            renderItem={({ item }) => (
+            renderItem={({ item, index }) => (
 
               // <TouchableOpacity
               //   onPress={() =>
@@ -352,9 +369,9 @@ const index = (props) => {
                 index={item.index}
                 item={item}
                 onPress={() => {
-                  item.id === 1 ? (
+                  index === 0 ? (
                     navigation.navigate("TriviaJoy")
-                  ) : item.id === 2 ? (
+                  ) : index === 1 ? (
                     navigation.navigate("DealsJoy")
                   ) : (
                     //  navigation.navigate("FanJoy")
@@ -375,12 +392,12 @@ const index = (props) => {
             time={time}
           />
           <View style={{ flexDirection: 'row', width: '90%', justifyContent: 'space-between', marginTop: 10, marginBottom: 10 }}>
-            <Text style={{ color: '#E7003F', fontSize: 16, fontFamily: "Axiforma Bold" }}>Shop to Win</Text>
+            <Text style={{ color: '#E7003F', fontSize: 16, fontFamily: "Axiforma-Bold" }}>Shop to Win</Text>
 
             <TouchableOpacity onPress={() => navigation.navigate("PRODUCTS", {
               screen: "PrizeList"
             })}>
-              <Text style={{ color: '#E7003F', fontSize: 16, fontFamily: "Axiforma Bold" }}>View all</Text>
+              <Text style={{ color: '#E7003F', fontSize: 16, fontFamily: "Axiforma-Bold" }}>View all</Text>
             </TouchableOpacity>
 
           </View>
@@ -421,7 +438,7 @@ const index = (props) => {
               text="View Leaderboard"
               font={10}
               shadowless
-              onPress={() => navigation.navigate("WINNERS", { screen: 'All Time' })}
+              onPress={() => navigation.navigate("MenuStack", { screen: 'LeaderBoard' })}
             />
           </View>
           <LinearGradient
@@ -431,7 +448,7 @@ const index = (props) => {
           >
             <View style={{ width: "95%", flexDirection: 'row', justifyContent: 'space-between' }}>
               <View>
-                <Text style={{ color: '#E7003F', fontSize: 20, fontFamily: "Axiforma Bold" }}>FANJOY</Text>
+                <Text style={{ color: '#E7003F', fontSize: 20, fontFamily: "Axiforma-Bold" }}>FANJOY</Text>
                 <Text style={{ color: '#0B2142', fontSize: 16, fontFamily: "Axiforma Regular" }}>Products By Creators</Text>
               </View>
               <LongButton

@@ -128,7 +128,7 @@ const index = ({ route, navigation }) => {
             else {
                 li[index].status = true;
             }
-            if (element.phone_no !== "" && element.phone_no !== null && element.phone_no !== undefined && numericRegex.test(element?.phone_no) && element?.phone_no.length === 11) {
+            if (element.phone_no !== "" && element.phone_no !== null && element.phone_no !== undefined && numericRegex.test(element?.phone_no) && element?.phone_no?.length === 11) {
                 li[index].status2 = false;
             }
             else {
@@ -254,7 +254,7 @@ const index = ({ route, navigation }) => {
                                 source={require('../../assets/imgs/life.png')}
                             >
 
-                                <Text style={{ color: "#E7003F", fontFamily: 'Axiforma SemiBold', fontSize: RFValue(20) }}>
+                                <Text style={{ color: "#E7003F", fontFamily: 'Axiforma-SemiBold', fontSize: RFValue(20) }}>
                                     {livePlans?.total_lives === null ? 0 : livePlans?.total_lives}
                                 </Text>
                             </ImageBackground>
@@ -314,7 +314,7 @@ const index = ({ route, navigation }) => {
                                                 alignItems: 'center',
 
                                             }}>
-                                                <Text style={[styles.mainTextHeading, { color: '#420E92', fontFamily: 'Axiforma Bold', }]}>Copy</Text>
+                                                <Text style={[styles.mainTextHeading, { color: '#420E92', fontFamily: 'Axiforma-Bold', }]}>Copy</Text>
                                             </View>
                                         </TouchableOpacity>
                                     </View>

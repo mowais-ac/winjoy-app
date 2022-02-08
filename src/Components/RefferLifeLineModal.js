@@ -159,7 +159,7 @@ const RefferLifeLineModal = (props) => {
       else {
         li[index].status = true;
       }
-      if (element.phone_no !== "" && element.phone_no !== null && element.phone_no !== undefined && numericRegex.test(element?.phone_no) && element?.phone_no.length === 11) {
+      if (element.phone_no !== "" && element.phone_no !== null && element.phone_no !== undefined && numericRegex.test(element?.phone_no) && element?.phone_no?.length === 11) {
         li[index].status2 = false;
       }
       else {
@@ -314,7 +314,7 @@ const RefferLifeLineModal = (props) => {
                   alignItems: 'center',
                   
                 }}>
-                  <Text style={[styles.mainTextHeading, { color: '#420E92',fontFamily: 'Axiforma Bold',}]}>Copy</Text>
+                  <Text style={[styles.mainTextHeading, { color: '#420E92',fontFamily: 'Axiforma-Bold',}]}>Copy</Text>
                 </View>
               </TouchableOpacity>
             </View>
@@ -699,10 +699,10 @@ const styles = StyleSheet.create({
     marginTop: height * 0.01
   },
   textHeading: {
-    color: '#6F5F87', fontFamily: 'Axiforma Bold', fontSize: RFValue(16), textAlign: 'center'
+    color: '#6F5F87', fontFamily: 'Axiforma-Bold', fontSize: RFValue(16), textAlign: 'center'
   },
   mainTextHeading: {
-    color: '#6F5F87', fontFamily: 'Axiforma Regular', fontSize: RFValue(16), textAlign: 'center', lineHeight: height * 0.03
+    color: '#6F5F87', fontFamily: 'Axiforma-Regular', fontSize: RFValue(16), textAlign: 'center', lineHeight: height * 0.03
   },
   refferBox: {
     width: width * 0.29,
@@ -724,9 +724,9 @@ const styles = StyleSheet.create({
 
 
   text: {
-    color: '#420E92', fontFamily: 'Axiforma Bold', fontSize: RFValue(14)
+    color: '#420E92', fontFamily: 'Axiforma-Bold', fontSize: RFValue(14)
   },
   descriptionText: {
-    color: '#000000', fontFamily: 'Axiforma Regular', fontSize: RFValue(13), textAlign: 'center', lineHeight: height * 0.03
+    color: '#000000', fontFamily: 'Axiforma-Regular', fontSize: RFValue(13), textAlign: 'center', lineHeight: height * 0.03
   }
 });

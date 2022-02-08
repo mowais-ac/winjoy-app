@@ -25,8 +25,8 @@ function ExperienceCard({ style, onPress, title, short_desc, imageUrl }) {
           colors={["rgba(0,0,128,0)","rgba(0,0,128,0)", "rgba(0,0,128,0.9)"]}
           style={[styles.bgView,style]}
         >
-          <Text style={{color:'#ffffff',fontFamily:'Axiforma SemiBold'}}>{title}</Text>
-          <Text style={{color:'#ffffff',fontFamily:'Axiforma Regular',textAlign:'center',width:'98%'}}>{short_desc}</Text>
+          <Text style={{color:'#ffffff',fontFamily:'Axiforma-SemiBold'}}>{title}</Text>
+          <Text style={{color:'#ffffff',fontFamily:'Axiforma-Regular',textAlign:'center',width:'98%'}}>{short_desc}</Text>
         </LinearGradient>
       </View>
     </TouchableOpacity>

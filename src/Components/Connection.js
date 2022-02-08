@@ -221,10 +221,10 @@ const Connection = (props) => {
     };
 
     const CustomHeight = Data
-      ? Data.length === 0
+      ? Data?.length === 0
         ? 0.65
-        : Data.length > 2
-        ? (Data.length > 7 ? 0.7 : Data.length * 0.1) + 0.15
+        : Data?.length > 2
+        ? (Data?.length > 7 ? 0.7 : Data?.length * 0.1) + 0.15
         : 0.35
       : 0.35;
 

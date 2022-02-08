@@ -25,8 +25,8 @@ function FanJoyCard({ style, onPress, name, fans, imageUrl }) {
           colors={["rgba(0,0,128,0)","rgba(0,0,128,0)", "rgba(0,0,128,0.9)"]}
           style={[styles.bgView,style]}
         >
-          <Text style={{color:'#ffffff',fontFamily:'Axiforma SemiBold'}}>{name}</Text>
-          <Text style={{color:'#ffffff',fontFamily:'Axiforma Regular'}}>{fans} Fans</Text>
+          <Text style={{color:'#ffffff',fontFamily:'Axiforma-SemiBold'}}>{name}</Text>
+          <Text style={{color:'#ffffff',fontFamily:'Axiforma-Regular'}}>{fans} Fans</Text>
         </LinearGradient>
       </View>
     </TouchableOpacity>

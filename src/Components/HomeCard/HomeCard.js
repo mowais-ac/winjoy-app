@@ -36,7 +36,7 @@ function HomeCard({ style, onPress, gameShowData, time, startIn }) {
               styles.Margin,
               { backgroundColor: null, bottom: -3, left: 0, borderWidth: 2, borderColor: '#fff' },
             ]}
-            textstyle={{ color: "#fff", fontFamily: "Axiforma SemiBold", fontSize: 14 }}
+            textstyle={{ color: "#fff", fontFamily: "Axiforma-SemiBold", fontSize: 14 }}
             text="Lets Begin"
             font={16}
             shadowless

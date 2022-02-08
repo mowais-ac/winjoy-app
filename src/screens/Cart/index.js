@@ -124,7 +124,7 @@ const index = ({ navigation }) => {
     
     const check = async () => {
       setListloader(true)
-      if (Data.length<=0) {
+      if (Data?.length<=0) {
         const Token = await EncryptedStorage.getItem("Token");
         const requestOptions = {
           method: "GET",
@@ -255,7 +255,7 @@ const index = ({ navigation }) => {
               }}
             />
           </View>
-          {Data.length>0?(
+          {Data?.length>0?(
           <View style={styles.card2}>
 
             <View style={{

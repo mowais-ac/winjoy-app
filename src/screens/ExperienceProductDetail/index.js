@@ -260,7 +260,7 @@ const styles = StyleSheet.create({
     closingTxt: {
         color: '#ffffff',
         backgroundColor: '#e7003f',
-        fontFamily: "Axiforma Regular",
+        fontFamily: "Axiforma-Regular",
         fontWeight: 'bold',
         fontSize: 16,
         paddingLeft: 20,
@@ -279,11 +279,11 @@ const styles = StyleSheet.create({
     },
     metaText: {
         color: '#000000',
-        fontFamily: "Axiforma Regular",
+        fontFamily: "Axiforma-Regular",
     },
     text: {
         color: '#e7003f',
-        fontFamily: "Axiforma Regular",
+        fontFamily: "Axiforma-Regular",
     }
 });
 

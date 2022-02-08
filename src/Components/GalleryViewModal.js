@@ -295,10 +295,10 @@ const styles = StyleSheet.create({
     marginTop: height * 0.01
   },
   text: {
-    color: '#420E92', fontFamily: 'Axiforma Bold', fontSize: RFValue(14)
+    color: '#420E92', fontFamily: 'Axiforma-Bold', fontSize: RFValue(14)
   },
   descriptionText: {
-    color: '#000000', fontFamily: 'Axiforma Regular', fontSize: RFValue(13), textAlign: 'center', lineHeight: height * 0.03
+    color: '#000000', fontFamily: 'Axiforma-Regular', fontSize: RFValue(13), textAlign: 'center', lineHeight: height * 0.03
   },
   backgroundVideo: {
     height: height * 0.3,

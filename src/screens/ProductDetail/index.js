@@ -75,7 +75,7 @@ const ProductDetail = ({ props, navigation, route }) => {
                     />
                 </View>
                 <View style={styles.card}>
-                    <Text style={{ color: '#000000', fontFamily: 'Axiforma Regular', fontSize: 16 }}>Buy outwear jacket</Text>
+                    <Text style={{ color: '#000000', fontFamily: 'Axiforma-Regular', fontSize: 16 }}>Buy outwear jacket</Text>
                     <View style={{ width: width * 0.95, height: 1, backgroundColor: '#E6DFEE', marginTop: 10 }} />
                     <Label primary font={16} dark style={{ color: "#E7003F", marginTop: 30 }}>
                         Get a chance to win
@@ -240,7 +240,7 @@ const styles = StyleSheet.create({
     closingTxt: {
         color: '#ffffff',
         backgroundColor: '#e7003f',
-        fontFamily: "Axiforma Regular",
+        fontFamily: "Axiforma-Regular",
         fontWeight: 'bold',
         fontSize: 16,
         paddingLeft: 20,
@@ -259,11 +259,11 @@ const styles = StyleSheet.create({
     },
     metaText: {
         color: '#000000',
-        fontFamily: "Axiforma Regular",
+        fontFamily: "Axiforma-Regular",
     },
     text: {
         color: '#e7003f',
-        fontFamily: "Axiforma Regular",
+        fontFamily: "Axiforma-Regular",
     }
 });
 

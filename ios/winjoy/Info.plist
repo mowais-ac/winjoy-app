@@ -53,13 +53,6 @@
 	<false/>
 	<key>UIAppFonts</key>
 	<array>
-		<string>Axiforma Bold.ttf</string>
-		<string>Axiforma Light.ttf</string>
-		<string>Axiforma Medium.ttf</string>
-		<string>Axiforma Regular.ttf</string>
-		<string>Axiforma SemiBold.ttf</string>
-		<string>Poppins Regular.ttf</string>
-		<string>ProximaNova Regular.ttf</string>
 		<string>AntDesign.ttf</string>
 		<string>Entypo.ttf</string>
 		<string>EvilIcons.ttf</string>
@@ -68,16 +61,21 @@
 		<string>FontAwesome5_Brands.ttf</string>
 		<string>FontAwesome5_Regular.ttf</string>
 		<string>FontAwesome5_Solid.ttf</string>
-		<string>Fontisto.ttf</string>
 		<string>Foundation.ttf</string>
 		<string>Ionicons.ttf</string>
-		<string>MaterialCommunityIcons.ttf</string>
 		<string>MaterialIcons.ttf</string>
-		<string>Octicons.ttf</string>
+		<string>MaterialCommunityIcons.ttf</string>
 		<string>SimpleLineIcons.ttf</string>
+		<string>Octicons.ttf</string>
 		<string>Zocial.ttf</string>
-		<string>axiformaBold.ttf</string>
-		<string>Gotham Bold.otf</string>
+		<string>Axiforma-Light.ttf</string>
+		<string>Axiforma-Medium.ttf</string>
+		<string>Axiforma-Regular.ttf</string>
+		<string>Axiforma-SemiBold.ttf</string>
+		<string>ProximaNova-Regular.ttf</string>
+		<string>Axiforma-Bold.ttf</string>
+		<string>Poppins-Bold.ttf</string>
+		<string>Poppins-Regular.ttf</string>
 	</array>
 </dict>
 </plist>

@@ -256,7 +256,7 @@ const index = ({ props, navigation }) => {
         <ButtonWithRightIcon
           btnStyle={{ backgroundColor: '#420E92' }}
           text={"How it works"}
-          textStyle={{color:'#fff',fontFamily:'Axiforma SemiBold'}}
+          textStyle={{color:'#fff',fontFamily:'Axiforma-SemiBold'}}
           onPress={()=>AddModalState.current(true)} 
         />
       </View>

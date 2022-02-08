@@ -30,7 +30,7 @@ const NotFoundCart = (props) => {
           <AddConnectionModal ModalRef={ConModalRef} DisplayAlert />
           <LongButton
             text={"Get Shopping"}
-            textstyle={{color:'#ffffff',fontFamily:'Axiforma Bold'}}
+            textstyle={{color:'#ffffff',fontFamily:'Axiforma-Bold'}}
             style={styles.Btn}
             shadowless
             onPress={() => {alert("test")}}

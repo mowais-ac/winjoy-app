@@ -54,7 +54,7 @@ const index = ({ navigation }) => {
       const phone_no = emailref.current.getText();
       const password = passref.current.getText();
 
-      if ([phone_no, password].filter((e) => e == null || e == "").length >= 1)
+      if ([phone_no, password].filter((e) => e == null || e == "")?.length >= 1)
         return;
       ButtonRef.current.SetActivity(true);
       const body = JSONtoForm({
@@ -140,7 +140,7 @@ const index = ({ navigation }) => {
         <View style={styles.MainTop}>
           <Background height={1} design />
           <Image source={Images.Logo} style={styles.Logo} />
-          <Label bold headingtype="h2" style={styles.MarginLarge}>
+          <Label bold2 headingtype="h2" style={[styles.MarginLarge]}>
             {t("login_heading")}
           </Label>
           <Modals ModalRef={ModalState} Error />

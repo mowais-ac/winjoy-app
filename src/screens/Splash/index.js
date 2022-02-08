@@ -34,7 +34,7 @@ export default function index({ navigation }) {
            height: height * 0.3,
            resizeMode: "contain",
        }} />
-       <Text style={{color:'#fff',fontFamily:'Axiforma Bold',fontSize:RFValue(35)}}>
+       <Text style={{color:'#fff',fontFamily:'Axiforma-Bold',fontSize:RFValue(35)}}>
         WINJOY
        </Text>
     </View>

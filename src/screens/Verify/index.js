@@ -20,6 +20,8 @@ import Config from "react-native-config";
 
 import { Colors, Images } from "../../Constants/Index";
 import GoBack from "../../Components/GoBack";
+import { useDispatch } from "react-redux";
+import types from '../../redux/types';
 
 const { width, height } = Dimensions.get("window");
 const index = ({ route, navigation }) => {
@@ -54,6 +56,7 @@ const index = ({ route, navigation }) => {
       await fetch(`${Config.API_URL}/verify/otp`, requestOptions)
         .then(async (response) => response.json())
         .then(async (res) => {
+          console.log("res",res);
           if (res.message && res.message === "Congrats!! Account verified") {
           //  return navigation.replace("Splash"); 
           signIn(token) 
@@ -70,9 +73,9 @@ const index = ({ route, navigation }) => {
   };
   return (
     <SafeAreaView>
+      <Background height={1} resize="stretch" design />
       <ScrollView>
         <View style={styles.MainTop}>
-          <Background height={0.87} resize="stretch" design />
           <Image source={Images.Logo} style={styles.Logo} />
           <Label bold headingtype="h1" style={styles.Heading}>
             Verify account

@@ -27,7 +27,7 @@ function WinExperienceCard({ imageStyle, style, onPress, short_desc, price,thumb
         <View
           style={{ width: '90%', alignItems: 'center', marginTop: height * 0.015 }}
         >
-          <Text style={{ color: '#000000', fontFamily: 'Axiforma SemiBold', textAlign: 'left', fontSize: RFValue(12), width: width*0.5, }}>
+          <Text style={{ color: '#000000', fontFamily: 'Axiforma-SemiBold', textAlign: 'left', fontSize: RFValue(12), width: width*0.5, }}>
             {short_desc}
           </Text>
         </View>

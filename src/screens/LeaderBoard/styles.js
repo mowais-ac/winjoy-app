@@ -11,7 +11,7 @@ export default StyleSheet.create({
     },
     headerText: {
         color: '#ffffff',
-        fontFamily: 'Axiforma SemiBold',
+        fontFamily: 'Axiforma-SemiBold',
         fontSize: RFValue(22)
     },
     avatarView: {
@@ -65,12 +65,12 @@ export default StyleSheet.create({
     
       },
       text:{
-        fontFamily: "Axiforma Regular",
+        fontFamily: "Axiforma-Regular",
         color:'#000000',
         fontSize:RFValue(12)
       },
       text2:{
-        fontFamily: "Axiforma SemiBold",
+        fontFamily: "Axiforma-SemiBold",
         color: "#000000",
         fontSize:RFValue(12)
       },
@@ -95,10 +95,10 @@ export default StyleSheet.create({
       },
     subHeaderText: {
         color: '#FFFFFF',
-        fontFamily: 'Axiforma Regular'
+        fontFamily: 'Axiforma-Regular'
     },
     heading2Text: {
-        color: '#420E92', fontFamily: 'Axiforma Bold', fontSize: RFValue(15)
+        color: '#420E92', fontFamily: 'Axiforma-Bold', fontSize: RFValue(15)
     },
 
     secondView: {
