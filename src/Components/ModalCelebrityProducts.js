@@ -37,7 +37,7 @@ const ModalCelebrityProducts = (props) => {
   const [ModelState, setModelState] = useState({
     state: false,
     details: null,
-  });
+  }); 
  
   useEffect(() => {
     if (props.ModalRef) props.ModalRef.current = HandleChange;
@@ -46,11 +46,7 @@ const ModalCelebrityProducts = (props) => {
   const HandleChange = (state, details = null, ForceSuccess = false) => {
     setModelState({ state, details, ForceSuccess });
   };
-  useEffect(() => {
-    
-  }, []);
-
-
+ 
 
 
   return (

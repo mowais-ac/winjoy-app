@@ -191,6 +191,7 @@ const index = ({ route, navigation }) => {
                       experienceID: item.id
                       //  user: res.data.data,
                     });
+                    console.log("id",item.id)
                     dispatch4(ExperienceProductData(item.id));
                     celebrityModalState.current(true)
                   }}
@@ -212,7 +213,7 @@ const index = ({ route, navigation }) => {
               keyExtractor={(item) => item.id}
             />
           </View>
-          <ModalCelebrityProducts ModalRef={celebrityModalState} details
+          <ModalCelebrityProducts ModalRef={celebrityModalState} details 
             expData={expData}
             onPressContinue={() => {
               celebrityModalState.current(false)

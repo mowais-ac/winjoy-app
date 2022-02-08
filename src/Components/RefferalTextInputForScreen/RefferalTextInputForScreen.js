@@ -19,16 +19,16 @@ function RefferalTextInputForScreen({ srNumber, onChangeName, onChangeNumber, va
       alignItems: 'center',
       justifyContent: 'space-between',
       flexDirection: 'row',
+      
 
 
 
     }}>
-      <Text style={[styles.descriptionText, { fontSize: RFValue(19), color: '#D9D0E0' }]}>{srNumber}</Text>
       <View style={{ width: width * 0.86, }}>
         <TextInput
           style={{
             height: height * 0.06,
-            width: width * 0.8,
+            width: width * 0.92,
             paddingLeft: 20,
             color: '#000000', fontFamily: 'Axiforma-Regular',
             borderWidth: 1, borderColor: validationBorderName ? 'red' : '#F2EFF5', borderTopLeftRadius: 10, borderTopRightRadius: 10, borderBottomWidth: 0.5, backgroundColor: '#ffffff'
@@ -44,7 +44,7 @@ function RefferalTextInputForScreen({ srNumber, onChangeName, onChangeNumber, va
         <TextInput
           style={{
             height: height * 0.06,
-            width: width * 0.8,
+            width: width * 0.92,
             paddingLeft: 20,
             color: '#000000', fontFamily: 'Axiforma-Regular',
             borderWidth: 1, borderColor: validationBorderNumber ? 'red' : '#F2EFF5', borderBottomLeftRadius: 10, borderBottomRightRadius: 10, borderTopWidth: 0.5, backgroundColor: '#ffffff'

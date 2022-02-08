@@ -172,7 +172,7 @@ const index = ({ route, navigation }) => {
                 // }
                 keyExtractor={(item) => item.id}
               />
-            </View>
+            </View> 
           </View>
 
 
