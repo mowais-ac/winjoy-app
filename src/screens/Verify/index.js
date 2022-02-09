@@ -17,11 +17,10 @@ import LongButton from "../../Components/LongButton";
 import { AuthContext } from "../../Components/context";
 import { GetUserDeviceDetails, JSONtoForm } from "../../Constants/Functions";
 import Config from "react-native-config";
-
+import types from '../../redux/types';
 import { Colors, Images } from "../../Constants/Index";
 import GoBack from "../../Components/GoBack";
 import { useDispatch } from "react-redux";
-import types from '../../redux/types';
 
 const { width, height } = Dimensions.get("window");
 const index = ({ route, navigation }) => {
@@ -32,7 +31,8 @@ const index = ({ route, navigation }) => {
   const evref = useRef();
   const phvref = useRef();
   const ButtonRef = useRef();
-
+  const dispatch = useDispatch();
+  const dispatch2 = useDispatch();
   const HandleClick = async () => {
     if (evref.current.validateVerify() && !ButtonRef.current.GetActivity()) {
       // phvref.current.validateVerify();
@@ -56,10 +56,18 @@ const index = ({ route, navigation }) => {
       await fetch(`${Config.API_URL}/verify/otp`, requestOptions)
         .then(async (response) => response.json())
         .then(async (res) => {
-          console.log("res",res);
+          console.log("res", res);
           if (res.message && res.message === "Congrats!! Account verified") {
-          //  return navigation.replace("Splash"); 
-          signIn(token) 
+            dispatch({
+              type: types.USER_DATA,
+              userData: res?.user,
+            });
+            dispatch2({
+              type: types.TOTAL_LIVES,
+              totalLives: 0,
+            }); 
+          //  return navigation.replace("Splash");
+            signIn(token)
           } else {
             Alert.alert("Error", res.message);
             ButtonRef.current.SetActivity(false);
@@ -102,7 +110,7 @@ const index = ({ route, navigation }) => {
             keyboardType="numeric"
             placeholderTextColor={Colors.MUTED}
           />
-          <Label style={styles.Margin3}>Phone verification</Label>
+          {/* <Label style={styles.Margin3}>Phone verification</Label>
           <InputField
             style={styles.MarginField}
             fieldstyle={styles.Text}
@@ -112,18 +120,18 @@ const index = ({ route, navigation }) => {
             ref={phvref}
             verify
             placeholderTextColor={Colors.MUTED}
-          />
+          /> */}
           <LongButton
             style={styles.Margin3}
             text="Verify"
             onPress={HandleClick}
             ref={ButtonRef}
-            textstyle={{color:'#fff'}}
+            textstyle={{ color: '#fff' }}
           />
         </View>
         <View>
           <GoBack
-            onPress={() => navigation.replace("Splash")} 
+            onPress={() => navigation.replace("Splash")}
             style={styles.Margin3}
           />
         </View>

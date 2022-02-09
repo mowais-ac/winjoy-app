@@ -72,12 +72,12 @@ export const getLandingScreen = () => {
        alert(error)
     }
 }
-export const getProducts = (isClosing) => {
+export const getProducts = (isClosing,cat) => {
   
     try {
         return async dispatch => {
             const Token = await EncryptedStorage.getItem("Token");
-            const result = await fetch(`${Config.API_URL}/products/list?is_closing_soon=${isClosing}`, {
+            const result = await fetch(`${Config.API_URL}/products/list?is_closing_soon=${isClosing}${cat}`, {
                 method: 'GET',
                 headers: {
                     "Content-Type": "multipart/form-data",
@@ -441,6 +441,33 @@ export const CheckGameEnterStatus = () => {
             if (json) {
                 dispatch({
                     type: types.GAME_ENTER_STATUS,
+                    payload: json
+                }); 
+            } else {
+                console.log('Unable to fetch!');
+            }
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+export const AllCreatorsList = () => {
+
+    try {
+        return async dispatch => {
+            const Token = await EncryptedStorage.getItem("Token");
+            const result = await fetch(`${Config.API_URL}/celebrity/list`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    Accept: "application/json",
+                    Authorization: `Bearer ${Token}`,
+                },
+            }); 
+            const json = await result.json();
+            if (json) {
+                dispatch({
+                    type: types.ALL_CREATORS_LIST,
                     payload: json
                 }); 
             } else {

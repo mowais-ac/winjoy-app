@@ -537,7 +537,7 @@ const index = ({ props, navigation }) => {
                 </TouchableOpacity>
               </View>
             </View>
-            <SelectLanguageModal ModalRef={ModalStateLanguage} details />
+            <SelectLanguageModal ModalRef={ModalStateLanguage} details /> 
             <SelectCurrencyModal ModalRef={ModalStateCurrency} details />
           </View>
         </View>

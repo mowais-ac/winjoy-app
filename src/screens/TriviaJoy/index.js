@@ -36,6 +36,7 @@ const index = ({ props, navigation }) => {
   const AddModalState = useRef();
   const triviaJoyData = useSelector(state => state.app.triviaJoyData);
   const gameEnterStatus = useSelector(state => state.app.gameEnterStatus);
+  const totalLives = useSelector(state => state.app.totalLives);
   const socket = socketIO(MYServer);
   //const [time, setTime] = useState();
   const [time, setTime] = useState(() => {
@@ -158,7 +159,7 @@ const index = ({ props, navigation }) => {
           </TouchableOpacity>
         </LinearGradient>
         <View style={styles.viewLifeDetails}>
-          <View style={{ width: width, flexDirection: 'row', justifyContent: 'space-around', }}>
+          <View style={{ width: width, flexDirection: 'row', justifyContent: 'space-around',alignItems:'center' }}>
             <View style={{ width: width * 0.6 }}>
               <Label notAlign primary font={13} bold style={{ color: "#E61C54", width: width * 0.4 }}>
                 Buy/Earn Lives
@@ -169,12 +170,12 @@ const index = ({ props, navigation }) => {
             </View>
             <ImageBackground
               resizeMode="cover"
-              style={{ width: 100, height: 80, marginTop: 10, justifyContent: 'center', alignItems: 'center' }}
+              style={{ width: 100, height: 80,  justifyContent: 'center', alignItems: 'center' }}
               source={require('../../assets/imgs/pinkHeart.png')}
             >
 
               <Text style={{ color: "#E7003F", fontFamily: 'Axiforma-SemiBold', fontSize: RFValue(20) }}>
-                {userData?.lives_count}
+              {totalLives?totalLives:0} 
               </Text>
             </ImageBackground>
           </View>
@@ -183,17 +184,20 @@ const index = ({ props, navigation }) => {
             onPress={() => navigation.navigate("MenuStack", {
               screen: "BuyLife",
 
-            })}>
-            <Label primary font={13} bold style={{ color: "#E61C54", marginTop: height * 0.02 }}>
+            })} 
+            style={{paddingVertical:14}}
+            >
+            <Label primary font={13} bold style={{ color: "#E61C54",}}>
               View Detail
             </Label>
           </TouchableOpacity>
         </View>
-        <View style={{ height: 20 }} />
+        
         <TriviaJoyBottomList data={triviaJoyData.banners} />
         <View style={{ marginBottom: height * 0.05 }} />
       </LinearGradient>
       <WatchAddModal ModalRef={AddModalState} details
+       cross={true}
         video={"https://winjoy-assets.s3.amazonaws.com/banners/banner-3.mp4"}
       // id={idVideoAdd}
       // onPressContinue={onPressContinue} 
@@ -238,7 +242,7 @@ const styles = StyleSheet.create({
   },
   viewLifeDetails: {
     backgroundColor: '#F6EEF1',
-    height: height * 0.22,
+    
     paddingTop: 10,
     alignItems: 'center',
     borderBottomLeftRadius: 20,

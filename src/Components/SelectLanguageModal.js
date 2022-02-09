@@ -8,7 +8,8 @@ import {
   TouchableWithoutFeedback,
   Alert,
   TouchableOpacity,
-  I18nManager
+  I18nManager,
+  ActivityIndicator
 } from "react-native";
 import Label from "./Label";
 import LabelButton from "./LabelButton";
@@ -22,8 +23,7 @@ import ProfilePicture from "./ProfilePicture";
 import { RFValue } from "react-native-responsive-fontsize";
 import LinearGradient from "react-native-linear-gradient";
 import { heightConverter } from "./Helpers/Responsive";
-import {useTranslation} from 'react-i18next';
-import RNRestart from 'react-native-restart';
+import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from "react-redux";
 const { width, height } = Dimensions.get("window");
 const SelectLanguageModal = (props) => {
@@ -32,33 +32,19 @@ const SelectLanguageModal = (props) => {
     details: null,
   });
   const [lang, setLang] = useState("");
-  const {t, i18n} = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const navigation = useNavigation();
 
   useEffect(() => {
     if (props.ModalRef) props.ModalRef.current = HandleChange;
   });
- 
-  
+
+
 
   const HandleChange = (state, details = null, ForceSuccess = false) => {
     setModelState({ state, details, ForceSuccess });
   };
-  const languageRestart = async(item) => {
-     
-      if (item.value === "ar") {
-        if (I18nManager.isRTL) {
-          I18nManager.forceRTL(false);
-        }
-      } else {
-        if (!I18nManager.isRTL) {
-          I18nManager.forceRTL(true);
-        }
-      }
-      RNRestart.Restart();
-    };
-
   return (
     <Modal
       animationType="slide"
@@ -73,7 +59,7 @@ const SelectLanguageModal = (props) => {
         if (props.onClose) props.onClose();
       }}
     >
-      <TouchableWithoutFeedback
+      {/* <TouchableWithoutFeedback
         onPress={() => {
           setModelState({
             ...ModelState,
@@ -81,9 +67,9 @@ const SelectLanguageModal = (props) => {
           });
           if (props.onClose) props.onClose();
         }}
-      >
-        <View style={styles.MainView} />
-      </TouchableWithoutFeedback>
+      > */}
+      <View style={styles.MainView} />
+      {/* </TouchableWithoutFeedback> */}
       <View style={styles.ModalView}>
         <View style={styles.SmallBorder} />
 
@@ -92,34 +78,27 @@ const SelectLanguageModal = (props) => {
         </Text>
 
         <View style={styles.ModalBody}>
-          <TouchableOpacity onPress={() => setLang("en")}>
+          <TouchableOpacity onPress={() => props.onPressLang("en")}>
             <View
-              style={[styles.optionView,{backgroundColor:lang==="en"?"#E6DFEE":"#ffffff",borderWidth:1,borderColor:"#E6DFEE"}]}
+              style={[styles.optionView, { backgroundColor: props.lang === "en" ? "#E6DFEE" : "#ffffff", borderWidth: 1, borderColor: "#E6DFEE" }]}
             >
-              <Label primary font={15} bold style={{ color:lang==="en"?"#420E92":"#0B2142", fontFamily: 'Axiforma-Regular' }}>
+              <Label primary font={15} bold style={{ color: props.lang === "en" ? "#420E92" : "#0B2142", fontFamily: 'Axiforma-Regular' }}>
                 English
               </Label>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => setLang("ar")}>
+          <TouchableOpacity onPress={() => props.onPressLang("ar")}>
             <View
-              style={[styles.optionView,{backgroundColor:lang==="ar"?"#E6DFEE":"#ffffff", borderWidth:1,borderColor:"#E6DFEE",marginTop:height*0.015}]}
+              style={[styles.optionView, { backgroundColor: props.lang === "ar" ? "#E6DFEE" : "#ffffff", borderWidth: 1, borderColor: "#E6DFEE", marginTop: height * 0.015 }]}
             >
-              <Label primary font={15} bold style={{ color:lang==="ar"?"#420E92":'#0B2142', fontFamily: 'Axiforma-Regular' }}>
+              <Label primary font={15} bold style={{ color: props.lang === "ar" ? "#420E92" : '#0B2142', fontFamily: 'Axiforma-Regular' }}>
                 Arabic
               </Label>
             </View>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => {
-              i18n
-              .changeLanguage(lang)
-              .then(() => {
-                I18nManager.forceRTL(i18n.language === 'ar');
-                RNRestart.Restart();
-              });
-             
-            }}
+            onPress={props.onSelect}
+            disabled={props.activityLang}
             style={{
               height: heightConverter(20),
               width: width * 0.9,
@@ -141,15 +120,17 @@ const SelectLanguageModal = (props) => {
                 backgroundColor: '#420e92',
                 borderRadius: 40,
               }}
-
-
             >
-              <Label primary font={16} bold style={{ color: "#ffffff" }}>
-                Select
-              </Label>
+              {props.activityLang ? (
+                <ActivityIndicator size="small" color="#ffffff" />
+              ) : (
+                <Label primary font={16} bold style={{ color: "#ffffff" }}>
+                  Select
+                </Label>
+              )}
             </View>
           </TouchableOpacity>
-          <LabelButton
+          {/* <LabelButton
             primary
             headingtype="h3"
             bold
@@ -162,7 +143,7 @@ const SelectLanguageModal = (props) => {
             }}
           >
             Not Now
-          </LabelButton>
+          </LabelButton> */}
         </View>
       </View>
     </Modal>

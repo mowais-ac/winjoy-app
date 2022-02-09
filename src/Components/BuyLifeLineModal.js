@@ -24,6 +24,7 @@ import LinearGradient from "react-native-linear-gradient";
 import { heightConverter } from "./Helpers/Responsive";
 
 import { useSelector, useDispatch } from "react-redux";
+import types from "../redux/types";
 const { width, height } = Dimensions.get("window");
 const BuyLifeLineModal = (props) => {
   const [ModelState, setModelState] = useState({
@@ -50,7 +51,12 @@ const BuyLifeLineModal = (props) => {
           },
         });
         const json = await result.json();
-        console.log("jsonjson",json);
+        dispatch({
+          type: types.TOTAL_LIVES, 
+          totalLives: json?.lives,
+        
+        }); 
+        console.log("jsonjson",json?.lives);
         alert(json.message)
       
     } catch (error) {

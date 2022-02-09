@@ -37,8 +37,10 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Modals from "../../Components/Modals";
 import BuyLifeCongrats from "../../Components/BuyLifeCongrats";
 const { width, height } = Dimensions.get("window");
-
+import { useDispatch } from 'react-redux';
+import types from "../../redux/types";
 const index = ({ navigation }) => {
+  const dispatch = useDispatch();
   const ModalState = useRef();
   const SucessModalState = useRef();
   const ModalStateError = useRef();
@@ -81,11 +83,12 @@ const index = ({ navigation }) => {
       },
       body: JSON.stringify(postData),
     };
-    await fetch(`${Config.API_URL}/buy/product`, requestOptions)
+    await fetch(`${Config.API_URL}/buy/product`, requestOptions) 
       .then((response) => response.json())
       .then(async (res) => {
         setActivity(true)
         setActivity(false)
+        console.log("re",res.user);
         if (res.status === "error") {
           ModalStateError.current(true, {
             heading: "Error",
@@ -95,6 +98,11 @@ const index = ({ navigation }) => {
 
         }
         else if(res?.message==="successfully buy product") {
+          dispatch({
+            type: types.USER_DATA,
+            userData: res.user,
+            //  user: res.data.data,
+          });
           SucessModalState.current(true)
           await AsyncStorage.removeItem('ids');
           setData([])
@@ -123,6 +131,7 @@ const index = ({ navigation }) => {
     let isActive = true;
     
     const check = async () => {
+      console.log("ids",ids);
       setListloader(true)
       if (Data?.length<=0) {
         const Token = await EncryptedStorage.getItem("Token");
@@ -137,6 +146,7 @@ const index = ({ navigation }) => {
         await fetch(`${Config.API_URL}/addtocart/products/collection?id=${ids}`, requestOptions)
           .then(async (response) => response.json())
           .then((res) => {
+            console.log("res",res);
             let total = 0;
             res.data[0].map(element => {
               total = total + parseFloat(element.price);
@@ -205,7 +215,7 @@ const index = ({ navigation }) => {
                 headingtype="h4"
                 style={styles.LessMargin}
               >
-                Total: {+(item.price).toLocaleString()}
+                Total: AED {+(item.price).toLocaleString()}
               </Label>
             </View>
             <TouchableOpacity onPress={() => RemoveItem(item.id)}>
@@ -265,7 +275,7 @@ const index = ({ navigation }) => {
               width: widthPercentageToDP("83")
             }}>
               <Text style={styles.metaText}>Total</Text>
-              <Text style={[styles.text, { fontWeight: 'bold' }]}>{total.toLocaleString()}</Text>
+              <Text style={[styles.text, { fontWeight: 'bold' }]}>{"AED "}{total.toLocaleString()}</Text>
 
             </View>
             {/* <View style={{

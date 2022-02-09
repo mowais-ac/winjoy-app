@@ -7,6 +7,7 @@ import CreatorsPage from "../screens/CreatorsPage";
 import AllCreatorsPage from "../screens/AllCreatorsPage";
 import CreatorsGallery from "../screens/CreatorsGallery";
 import ExperienceProductDetail from "../screens/ExperienceProductDetail";
+import AllCreatorsList from "../screens/AllCreatorsList";
 
 const Stack = createNativeStackNavigator();
 export default index = () => (
@@ -20,5 +21,8 @@ export default index = () => (
         <Stack.Screen name="AllCreatorsPage" component={AllCreatorsPage} />
         <Stack.Screen name="CreatorsGallery" component={CreatorsGallery} />
         <Stack.Screen name="ExperienceProductDetail" component={ExperienceProductDetail} />
+        <Stack.Screen name="AllCreatorsList" component={AllCreatorsList} />
+
+        
     </Stack.Navigator>
 );

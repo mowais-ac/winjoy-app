@@ -106,6 +106,7 @@ const index = ({ navigation }) => {
         password_confirmation,
         ...(await GetUserDeviceDetails()),
       });
+      console.log("Body",body);
       const requestOptions = {
         method: "POST",
         headers: {

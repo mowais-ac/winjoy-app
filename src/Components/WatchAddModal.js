@@ -8,7 +8,7 @@ import {
   TouchableWithoutFeedback,
   Alert,
   TouchableOpacity,
-  TextInput
+  Image
 } from "react-native";
 import Label from "./Label";
 import LabelButton from "./LabelButton";
@@ -37,7 +37,7 @@ const WatchAddModal = (props) => {
     state: false,
     details: null,
   });
-  const ApproveRef = useRef();
+  const ApproveRef = useRef(); 
   const DeclineRef = useRef();
 
   const navigation = useNavigation();
@@ -123,13 +123,28 @@ const WatchAddModal = (props) => {
         }}
       > */}
       <View style={styles.MainView}>
-        {/* <Entypo name="cross" size={30} color="#fff" onPress={() => {
-          setModelState({
-            ...ModelState,
-            state: !ModelState.state,
-          });
-
-        }} /> */}
+  {
+    props.cross?(
+      <TouchableOpacity
+      onPress={() => {
+        setModelState({
+          ...ModelState,
+          state: !ModelState.state,
+        });
+      }}
+      style={{ position: 'absolute',  right: 8,top:8 ,height:30,width:30,justifyContent:'center',alignItems:'center',}}
+      >
+      <Image
+        style={{
+          width: 15,
+          height: 20,
+        }}
+        resizeMode="center"
+        source={require('../assets/imgs/cross.png')}
+      />
+    </TouchableOpacity>
+    ):(null)
+  }
       </View>
       {/* </TouchableWithoutFeedback> */}
       <View style={styles.ModalView}>

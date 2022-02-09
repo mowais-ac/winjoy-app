@@ -8,6 +8,7 @@ import {
   Alert,
   TouchableWithoutFeedback,
   Keyboard,
+  I18nManager
 } from "react-native";
 import { AuthContext } from "../../Components/context";
 import Background from "../../Components/Background";
@@ -30,21 +31,75 @@ import { useTranslation } from 'react-i18next';
 import Config from "react-native-config";
 import EncryptedStorage from "react-native-encrypted-storage";
 import Modals from "../../Components/Modals";
+import SelectLanguageModal from "../../Components/SelectLanguageModal";
+import RNRestart from 'react-native-restart';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 const { width, height } = Dimensions.get("window");
 
 const index = ({ navigation }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const dispatch = useDispatch();
+  const dispatch2 = useDispatch();
   const { signIn } = React.useContext(AuthContext);
   const emailref = useRef();
   const passref = useRef();
   const ButtonRef = useRef();
   const ModalState = useRef();
-
+  const ModalStateLanguage = useRef();
+  const [lang, setLang] = useState("");
+  const tokenForLang = useRef("");
+  const activityLang = useRef(false);
   useEffect(() => {
 
   }, []);
+  const LanguageChange = () => {
+    LanguagePost()
+    i18n
+      .changeLanguage(lang)
+      .then(() => {
+        I18nManager.forceRTL(i18n.language === 'ar');
+        //  RNRestart.Restart();
+      });
+  }
+  const LanguagePost = async () => {
+    activityLang.current = true;
+    const body = JSONtoForm({
+      preferred_language: `+${lang}`,
+    });
+    const requestOptions = {
+      method: "POST",
+      headers: {
+        "Content-Type": "multipart/form-data",
+        "Accept": "application/json",
+        Authorization: `Bearer ${tokenForLang.current}`,
+      },
+      body,
+    };
+    await fetch(`${Config.API_URL}/user/update_language`, requestOptions)
+      .then(async (response) => response.json())
+      .then(async (res) => {
+        console.log("resLang", res);
+        if (res.message === "Language has been updated") {
+          dispatch({
+            type: types.USER_DATA,
+            userData: res?.user,
+            //  user: res.data.data,
+          });
+          dispatch2({
+            type: types.TOTAL_LIVES,
+            totalLives: res?.user?.lives_count,
+
+          });
+          await EncryptedStorage.setItem("Token", tokenForLang?.current);
+          signIn(tokenForLang?.current)
+          activityLang.current = false
+        }
+      })
+      .catch((e) => {
+        Alert.alert("Error", e);
+        activityLang.current = false
+      });
+  };
   const HandleLogin = async () => {
     if (
       emailref.current.validatePhone() &&
@@ -74,34 +129,44 @@ const index = ({ navigation }) => {
       await fetch(`${Config.API_URL}/auth/login`, requestOptions)
         .then(async (response) => response.json())
         .then(async (res) => {
+          tokenForLang.current = res.data.token;
           ButtonRef.current.SetActivity(false);
           if (res?.data?.token) {
-            dispatch({
-              type: types.USER_DATA,
-              userData: res?.data?.user,
-              //  user: res.data.data,
-            });
-            await EncryptedStorage.setItem("Token", res.data.token);
-            signIn(res.data.token)
-            // navigation.replace("HomeStack");
-            if (await IsSuspended(res.data.token))
-              return ModalState.current(true, {
-                heading: "Account suspended",
-                Error:
-                  "Your account has been inactive/suspended. Please contact support for further details.",
-              });
-            if (await IsVerified(res.data.token)) {
-              await EncryptedStorage.setItem("Token", res.data.token);
-              signIn(res.data.token)
-              //  navigation.replace("HomeStack");
-            }
-            else {
+            if (res?.data?.user?.preferred_language === null) {
+              ModalStateLanguage.current(true)
+            } else {
               dispatch({
                 type: types.USER_DATA,
-                userData: res?.data?.user, 
+                userData: res?.data?.user,
                 //  user: res.data.data,
               });
-              navigation.replace("Verify", { phone: phone_no, token: res.data.token });
+              dispatch2({
+                type: types.TOTAL_LIVES,
+                totalLives: res?.data?.user?.lives_count,
+
+              });
+              await EncryptedStorage.setItem("Token", res.data.token);
+              signIn(res.data.token)
+              // navigation.replace("HomeStack");
+              if (await IsSuspended(res.data.token))
+                return ModalState.current(true, {
+                  heading: "Account suspended",
+                  Error:
+                    "Your account has been inactive/suspended. Please contact support for further details.",
+                });
+              if (await IsVerified(res.data.token)) {
+                await EncryptedStorage.setItem("Token", res.data.token);
+                signIn(res.data.token)
+                //  navigation.replace("HomeStack");
+              }
+              else {
+                dispatch({
+                  type: types.USER_DATA,
+                  userData: res?.data?.user,
+                  //  user: res.data.data,
+                });
+                navigation.replace("Verify", { phone: phone_no, token: res.data.token });
+              }
             }
           }
           else if (
@@ -204,6 +269,11 @@ const index = ({ navigation }) => {
             Icon="google"
           /> */}
         </View>
+        <SelectLanguageModal ModalRef={ModalStateLanguage} details onPressLang={(la) => { setLang(la) }}
+          lang={lang}
+          onSelect={LanguageChange}
+          activityLang={activityLang.current}
+        />
       </SafeAreaView>
     </TouchableWithoutFeedback>
   );

@@ -51,7 +51,7 @@ const MYServer = "https://node-winjoyserver-deploy.herokuapp.com/";
 function ClosingSoon({ item }) {
   let progress = item.updated_stocks
     ? (item?.updated_stocks / item?.stock) * 100
-    : 0;
+    : 0; 
 
   // const ImgUrl = `${Config.PRODUCT_IMG}/${item.id}/${JSON.parse(item.image)[0]
   //   }`;
@@ -134,7 +134,7 @@ const index = (props) => {
   const userData = useSelector(state => state.app.userData);
   const LandingData = useSelector(state => state.app.LandingData);
   const gameEnterStatus = useSelector(state => state.app.gameEnterStatus);
-
+  const totalLives = useSelector(state => state.app.totalLives);
   const [buffer, setBuffer] = useState(false);
   const [videoAction, setVideoAction] = useState(true);
   const dispatch = useDispatch();
@@ -174,7 +174,14 @@ const index = (props) => {
     setGameShowData(LandingData?.gameShow)
   }, []);
   const LetBegin = () => {
-    dispatch2(CheckGameEnterStatus());
+    // dispatch2(CheckGameEnterStatus());
+    // console.log("gameEnterStatus",gameEnterStatus);
+    // navigation.navigate("GameStack", {
+    //   screen: "Quiz",
+    //   params: {
+    //     uri: LandingData?.gameShow?.live_stream?.key
+    //   }
+    // })
     if (gameEnterStatus.status === "success") {
       if (gameEnterStatus.message === "Welcome to Live Game Show") {
         navigation.navigate("GameStack", {
@@ -295,7 +302,6 @@ const index = (props) => {
                   //  name={(name.slice(0, 1) + name.slice(0, 1))}
                   size={50}
                   font={28}
-
                 />
               </View>
 
@@ -305,7 +311,7 @@ const index = (props) => {
                   {userData?.first_name?.charAt(0).toUpperCase() + userData?.first_name?.slice(1)} {userData?.last_name?.charAt(0).toUpperCase() + userData?.last_name?.slice(1)}
                 </Text>
                 <Text style={[styles.text, { color: '#fff', fontSize: RFValue(14) }]}>Your balance: <Text style={[styles.text, { color: '#ffff00', fontSize: RFValue(14) }]}>
-                  AED {userData?.balance ? FormatNumber(+(userData?.balance).toLocaleString()) : 0}
+                  AED {userData?.balance ? FormatNumber(+(userData?.balance)) : 0}
 
                 </Text>
                 </Text>
@@ -320,7 +326,7 @@ const index = (props) => {
               >
 
                 <Text style={{ color: "#E7003F", fontFamily: 'Axiforma-SemiBold', fontSize: RFValue(12) }}>
-                  {userData?.lives_count}
+                  {totalLives?totalLives:0} 
                 </Text>
                 
               </ImageBackground>
@@ -332,14 +338,7 @@ const index = (props) => {
 
           </LinearGradient>
 
-          <View style={{ justifyContent: 'center', alignItems: 'center', height: height * 0.08, marginTop: 10 }}>
-            <ButtonWithRightIcon
-              btnStyle={{ backgroundColor: '#420E92' }}
-              text={"How it works"}
-              textStyle={{ color: '#fff', fontFamily: 'Axiforma SemiBold' }}
-              onPress={() => AddModalState.current(true)}
-            />
-          </View>
+        
 
 
           <FlatList
@@ -383,6 +382,14 @@ const index = (props) => {
             keyExtractor={(item) => item.id}
           //   ListEmptyComponent={this.RenderEmptyContainerOnGoing()}
           />
+            <View style={{ justifyContent: 'center', alignItems: 'center',paddingBottom:15 }}>
+            <ButtonWithRightIcon
+              btnStyle={{ backgroundColor: '#420E92' }}
+              text={"How it works"}
+              textStyle={{ color: '#fff', fontFamily: 'Axiforma SemiBold' }}
+              onPress={() => AddModalState.current(true)}
+            />
+          </View>
           <HomeCard
             //onPress={() => navigation.navigate("GameStack")} 
             onPress={() => LetBegin()}
@@ -460,7 +467,7 @@ const index = (props) => {
                 text="View all Stars"
                 font={16}
                 shadowless
-                onPress={() => navigation.navigate("AllCreatorsPage")}
+                onPress={() => navigation.navigate("AllCreatorsList")}
               />
             </View>
 
@@ -499,6 +506,7 @@ const index = (props) => {
         </View>
         <WatchAddModal ModalRef={AddModalState} details
           video={"https://winjoy-assets.s3.amazonaws.com/banners/banner-3.mp4"}
+          cross={true}
         // id={idVideoAdd}
         // onPressContinue={onPressContinue} 
         />
