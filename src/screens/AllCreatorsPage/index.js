@@ -11,7 +11,7 @@ import {
   ScrollView
 } from "react-native";
 import Header from "../../Components/Header";
-import { ExperienceCard, WinExperienceCard, FanJoyCard, TrendingCards, WjBackground } from "../../Components";
+import { ExperienceCard, WinExperienceCard, FanJoyCard, WinningTrendingCard, TrendingCards, WjBackground, ButtonWithRightIcon } from "../../Components";
 import styles from "./styles";
 import LinearGradient from "react-native-linear-gradient";
 import EncryptedStorage from "react-native-encrypted-storage";
@@ -25,11 +25,13 @@ import { useDispatch, useSelector } from "react-redux";
 import types from '../../redux/types';
 import ModalCelebrityProducts from "../../Components/ModalCelebrityProducts";
 import ExperienceCelebrityModal from "../../Components/ExperienceCelebrityModal";
+import WatchAddModal from "../../Components/WatchAddModal";
 const { width, height } = Dimensions.get("window");
 const index = ({ route, navigation }) => {
   const celebrityModalState = useRef();
   const ModalState = useRef();
-  
+  const AddModalState = useRef(false);
+
   const dispatch = useDispatch();
   const dispatch2 = useDispatch();
   const dispatch3 = useDispatch();
@@ -39,7 +41,7 @@ const index = ({ route, navigation }) => {
   // const [experienceId, setExperienceId] = useState();
   useEffect(() => {
     dispatch(getAllCreator());
-    console.log("data",data);
+    console.log("data", data);
   }, []);
   const onPressCreator = (id) => {
     // alert(id)
@@ -63,16 +65,19 @@ const index = ({ route, navigation }) => {
           />
           <Header style={{ top: 0, position: "absolute", marginTop: 10 }} />
 
-          <View style={{ marginTop: 55, alignItems: 'center', }}>
+          <View style={{ marginTop: height * 0.08, alignItems: 'center', }}>
 
             <Text style={[styles.headerText]}>{strings("fan_joy.fan_joy")}</Text>
             <Text style={styles.subHeaderText}>{strings("fan_joy.created_by_stars")}</Text>
-            <Image
-              style={styles.playBtn}
-              source={require('../../assets/imgs/playRound.png')}
+          </View>
+          <View style={{ width: width, alignItems: 'center', marginTop: height * 0.06, paddingVertical: 10 }}>
+            <ButtonWithRightIcon
+              btnStyle={{ backgroundColor: '#420E92', borderRadius: 30 }}
+              text={"How it works"}
+              textStyle={{ color: '#fff', fontFamily: 'Axiforma SemiBold' }}
+              onPress={() => AddModalState.current(true)}
             />
           </View>
-
           <View style={{ width: '100%', alignItems: 'center', }}>
             <Text style={styles.textHeading}>
               Creators
@@ -91,7 +96,7 @@ const index = ({ route, navigation }) => {
                   imageUrl={item?.profile_image}
                   fans={item.fans}
 
-                  style={{ width: 150, marginRight: 20, height: 180 }}
+                  style={{ width: width * 0.4, height: height * 0.25, marginRight: 10, }}
                 />
               }
               //keyExtractor={(e) => e.id.toString()}
@@ -105,40 +110,66 @@ const index = ({ route, navigation }) => {
             />
           </View>
           <View
-            style={{ width: '100%', height: height * 0.39, justifyContent: 'center', marginTop: 10, backgroundColor: 'rgba(255, 255, 255, 0.3)' }}
+            style={{ width: '100%', height: height * 0.33, justifyContent: 'center', marginTop: 10, backgroundColor: 'rgba(255, 255, 255, 0.3)' }}
           >
-            <View style={{ width: "100%", flexDirection: 'row', justifyContent: 'space-between', marginTop: 14 }}>
+            <View style={{ width: "100%", flexDirection: 'row', justifyContent: 'space-between', }}>
               <View>
                 <Text style={[styles.textHeading, { textAlign: 'center', marginLeft: 3 }]}>Trending Products</Text>
               </View>
 
             </View>
 
-            <FlatList
-              data={data?.products}
-              horizontal={true}
-              style={{ paddingLeft: 12 }}
-              renderItem={({ item }) =>
-                <TrendingCards
-                  onPress={() =>  navigation.navigate("ExperienceProductDetail", { productId: item?.id, experienceId: item.celebrity_id })}
-                  imageUrl={item.image}
-                  title={item?.title}
-                  price={item?.price}
-                  style={{ width: width * 0.38, height: height * 0.33, }}
-                  imageStyle={{ width: width * 0.35, height: height * 0.22, borderRadius: 15 }}
-                />
-              }
-              //keyExtractor={(e) => e.id.toString()}
-              contentContainerStyle={{
-                marginTop: 10,
-              }}
-              // refreshControl={
-              //   <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
-              // }
-              keyExtractor={(item) => item.id}
-            />
+            <View>
+              <FlatList
+                data={data?.products}
+                horizontal={true}
+                style={{ paddingLeft: 12 }}
+                renderItem={({ item }) =>
+                  // <TrendingCards
+                  //   onPress={() =>  navigation.navigate("ExperienceProductDetail", { productId: item?.id, experienceId: item.celebrity_id })}
+                  //   imageUrl={item.image}
+                  //   title={item?.title}
+                  //   price={item?.price}
+                  //   style={{ width: width * 0.38, height: height * 0.33, }}
+                  //   imageStyle={{ width: width * 0.35, height: height * 0.22, borderRadius: 15 }}
+                  // />
+                  <>
+                    {item?.is_win ? (
+                      <WinningTrendingCard
+                        onPress={() => navigation.navigate("ExperienceProductDetail", { productId: item?.id, experienceId: item.celebrity_id })}
+                        imageUrl={item?.experience_product?.featured_image}
+                        title={item?.experience_product?.title}
+                        price={item?.price}
+                        updated_stocks={item?.updated_stocks}
+                        stock={item?.stock}
+                        trending={true}
+                      />
+                    ) : (
+                      <WinningTrendingCard
+                        onPress={() => navigation.navigate("ExperienceProductDetail", { productId: item?.id, experienceId: item.celebrity_id })}
+                        imageUrl={item?.image}
+                        title={item?.title}
+                        price={item?.price}
+                        updated_stocks={item?.updated_stocks}
+                        stock={item?.stock}
+                      />
+                    )}
+                  </>
+
+                }
+                //keyExtractor={(e) => e.id.toString()}
+                contentContainerStyle={{
+                  marginTop: 10,
+
+                }}
+                // refreshControl={
+                //   <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
+                // }
+                keyExtractor={(item) => item.id}
+              />
+            </View>
           </View>
-          <View style={{ width: '100%', alignItems: 'center', marginTop: 15, paddingBottom: 15 }}>
+          <View style={{ width: '100%', alignItems: 'center', marginTop: 15, paddingBottom: 10 }}>
             <Text style={styles.textHeading}>
               Buy experience with celebrities
             </Text>
@@ -149,14 +180,15 @@ const index = ({ route, navigation }) => {
               renderItem={({ item }) =>
                 <ExperienceCard
                   onPress={() => navigation.navigate("AllCreatorsPage")}
-                  imageUrl={item.thumbnail}
+                  imageUrl={item?.celebrity?.profile_image}
                   title={item?.title}
                   short_desc={item?.short_desc}
-                  style={{ width: width * 0.4, marginRight: 20, height: 190 }}
+                  style={{ width: width * 0.4, height: height * 0.25, marginRight: 10, }}
                 />
               }
               //keyExtractor={(e) => e.id.toString()}
               contentContainerStyle={{
+                paddingRight: 10,
                 marginTop: 10,
               }}
               // refreshControl={
@@ -199,8 +231,7 @@ const index = ({ route, navigation }) => {
                     dispatch4(ExperienceProductData(item.id));
                     celebrityModalState.current(true)
                   }}
-                  short_desc={item?.short_desc}
-                  price={item?.price}
+                  short_desc={item?.title}
                   thumbnail={item?.thumbnail}
                   style={{ height: height * 0.32, backgroundColor: '#fff', borderRadius: 15, }}
                   imageStyle={{ width: width * 0.6, height: height * 0.18, borderRadius: 15, borderBottomLeftRadius: 0, borderBottomRightRadius: 0, }}
@@ -232,6 +263,12 @@ const index = ({ route, navigation }) => {
             celebrityData={data.celebrity}
           /> */}
         </LinearGradient>
+        <WatchAddModal ModalRef={AddModalState} details
+          video={"https://winjoy-assets.s3.amazonaws.com/banners/banner-3.mp4"}
+          cross={true}
+        // id={idVideoAdd}
+        // onPressContinue={onPressContinue} 
+        />
       </ScrollView>
     </SafeAreaView>
   );

@@ -26,7 +26,8 @@ const INITIAL_STATE = {
   dealsJoyData: [],
   triviaJoyData: [],
   gameEnterStatus: [],
-  totalLives: ''
+  totalLives: '',
+  allCreatorsList: []
 };
 
 
@@ -87,6 +88,8 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, gameEnterStatus: action.payload };
     case types.TOTAL_LIVES:
       return { ...state, totalLives: action.totalLives };
+    case types.ALL_CREATORS_LIST:
+      return { ...state, allCreatorsList: action.payload };
     default:
       return state;
   }

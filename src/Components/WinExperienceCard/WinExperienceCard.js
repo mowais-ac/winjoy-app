@@ -9,7 +9,7 @@ import Config from "react-native-config";
 import ProgressCircle from 'react-native-progress-circle'
 import { RFValue } from "react-native-responsive-fontsize";
 const { width, height } = Dimensions.get("window");
-function WinExperienceCard({ imageStyle, style, onPress, short_desc, price,thumbnail }) {
+function WinExperienceCard({ imageStyle, style, onPress, short_desc,thumbnail }) {
   return (
     <View
       // onPress={onPress}

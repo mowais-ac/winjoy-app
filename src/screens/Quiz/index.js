@@ -56,6 +56,7 @@ let timer = () => { };
 const BackgroundVideo = ({ route, navigation }) => {
     const dispatch = useDispatch();
     const userData = useSelector(state => state.app.userData);
+    const totalLives = useSelector(state => state.app.totalLives);
     const [availLifeActivity, setAvailLifeActivity] = useState(false);
     const socket = socketIO(MYServer);
     const { uri } = route.params;
@@ -77,7 +78,6 @@ const BackgroundVideo = ({ route, navigation }) => {
     const answer = useRef(null);
     const questionRef = useRef([]);
     const questionIncrement = useRef(0);
-    const livecheck = useRef(0);
     const attemptWrong = useRef(false);
     const ModalState = useRef();
     const userElimante = useRef(false);
@@ -148,12 +148,12 @@ const BackgroundVideo = ({ route, navigation }) => {
                 setAvailLifeActivity(false)
                 console.log("resUseLife", res);
                 if (res.message = "Live availed successfully") {
-
                     dispatch({
-                        type: types.USER_DATA,
-                        userData: res?.user,
-                        //  user: res.data.data,
-                    });
+                        type: types.TOTAL_LIVES, 
+                        totalLives: res?.lives,
+                      
+                      }); 
+                
                     LifeLineModalState.current(false)
                 }
                 else {
@@ -172,7 +172,7 @@ const BackgroundVideo = ({ route, navigation }) => {
             if (item.is_correct === 1) {
                 console.log("item.answer", item.answer);
                 ans = item.answer;
-                setActivity(false)
+               // setActivity(false)
             }
         })
         //        setAnswer(ans)
@@ -209,21 +209,23 @@ const BackgroundVideo = ({ route, navigation }) => {
                     console.log("saveRes", res)
                     if (res.status === "success") {
                         if (res.message === "Congrats!! move to next question") {
-
+                            setActivity(false)
                         }
                     }
                     else if (res.status === "error") {
                         if (res.message === "Wrong Answer!! Don't loose hope try next time") {
-                            if (userElimante.current !== true) {
-                                ModalState.current(true);
-                                if (livecheck.current <= 4) {
-                                    LifeLineModalState.current(true)
-                                    livecheck.current = livecheck.current + 1;
-                                    console.log("livecheck", livecheck.current);
-                                } else {
-                                    ModalState.current(true);
-                                }
-                            }
+                            setActivity(false)
+                                setTimeout(() => {
+                                    if (userElimante.current !== true) {
+                                        ModalState.current(true);
+                                        if (questionIncrement.current <= 4) {
+                                            LifeLineModalState.current(true)
+                                        } else {
+                                            ModalState.current(true);
+                                        }
+                                    }
+                                }, 3000);
+                          
 
 
 
@@ -302,7 +304,7 @@ const BackgroundVideo = ({ route, navigation }) => {
         });
         socket.on("sendEndShow", msg => {
             console.log("msg", msg);
-            navigation.navigate("BottomTabStack", { screen: "WINNERS" })
+            navigation.navigate("BottomTabStack", { screen: "WINNERS" }) 
         });
         socket.on("sendCount", msg => {
             setJoinedUsers(msg)
@@ -422,7 +424,7 @@ const BackgroundVideo = ({ route, navigation }) => {
                             >
 
                                 <Text style={{ color: "#E7003F", fontFamily: 'Axiforma-SemiBold', fontSize: RFValue(15) }}>
-                                    {userData?.lives_count}
+                                   {totalLives}
                                 </Text>
                             </ImageBackground>
                             {gameShowCheck ? (

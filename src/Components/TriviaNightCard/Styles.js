@@ -13,7 +13,7 @@ export default StyleSheet.create({
     alignItems: 'center',
   //  backgroundColor: '#f05b31',
     borderRadius: widthConverter(10),
-    height: heightPercentageToDP("22%"),
+    height: heightPercentageToDP("20%"),
     width: widthPercentageToDP("35%"),
     flexDirection: 'row',
     justifyContent: 'flex-end',

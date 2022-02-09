@@ -21,6 +21,7 @@ const DEALS_JOY = "DEALS_JOY";
 const TRIVIA_JOY = "TRIVIA_JOY";
 const GAME_ENTER_STATUS = "GAME_ENTER_STATUS";
 const TOTAL_LIVES = "TOTAL_LIVES";
+const ALL_CREATORS_LIST = "ALL_CREATORS_LIST";
 const types = {
   LAST_GAME_DATA,
   USER_DATA,
@@ -43,7 +44,8 @@ const types = {
   DEALS_JOY,
   TRIVIA_JOY,
   GAME_ENTER_STATUS,
-  TOTAL_LIVES
+  TOTAL_LIVES,
+  ALL_CREATORS_LIST
 };
 
 export default types;

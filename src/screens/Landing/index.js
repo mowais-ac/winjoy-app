@@ -51,7 +51,7 @@ const MYServer = "https://node-winjoyserver-deploy.herokuapp.com/";
 function ClosingSoon({ item }) {
   let progress = item.updated_stocks
     ? (item?.updated_stocks / item?.stock) * 100
-    : 0;
+    : 0; 
 
   // const ImgUrl = `${Config.PRODUCT_IMG}/${item.id}/${JSON.parse(item.image)[0]
   //   }`;
@@ -175,6 +175,13 @@ const index = (props) => {
   }, []);
   const LetBegin = () => {
     dispatch2(CheckGameEnterStatus());
+    console.log("gameEnterStatus",gameEnterStatus);
+    navigation.navigate("GameStack", {
+      screen: "Quiz",
+      params: {
+        uri: LandingData?.gameShow?.live_stream?.key
+      }
+    })
     if (gameEnterStatus.status === "success") {
       if (gameEnterStatus.message === "Welcome to Live Game Show") {
         navigation.navigate("GameStack", {
@@ -304,7 +311,7 @@ const index = (props) => {
                   {userData?.first_name?.charAt(0).toUpperCase() + userData?.first_name?.slice(1)} {userData?.last_name?.charAt(0).toUpperCase() + userData?.last_name?.slice(1)}
                 </Text>
                 <Text style={[styles.text, { color: '#fff', fontSize: RFValue(14) }]}>Your balance: <Text style={[styles.text, { color: '#ffff00', fontSize: RFValue(14) }]}>
-                  AED {userData?.balance ? FormatNumber(+(userData?.balance).toLocaleString()) : 0}
+                  AED {userData?.balance ? FormatNumber(+(userData?.balance)) : 0}
 
                 </Text>
                 </Text>
@@ -331,14 +338,7 @@ const index = (props) => {
 
           </LinearGradient>
 
-          <View style={{ justifyContent: 'center', alignItems: 'center', height: height * 0.08, marginTop: 10 }}>
-            <ButtonWithRightIcon
-              btnStyle={{ backgroundColor: '#420E92' }}
-              text={"How it works"}
-              textStyle={{ color: '#fff', fontFamily: 'Axiforma SemiBold' }}
-              onPress={() => AddModalState.current(true)}
-            />
-          </View>
+        
 
 
           <FlatList
@@ -382,6 +382,14 @@ const index = (props) => {
             keyExtractor={(item) => item.id}
           //   ListEmptyComponent={this.RenderEmptyContainerOnGoing()}
           />
+            <View style={{ justifyContent: 'center', alignItems: 'center',paddingBottom:15 }}>
+            <ButtonWithRightIcon
+              btnStyle={{ backgroundColor: '#420E92' }}
+              text={"How it works"}
+              textStyle={{ color: '#fff', fontFamily: 'Axiforma SemiBold' }}
+              onPress={() => AddModalState.current(true)}
+            />
+          </View>
           <HomeCard
             //onPress={() => navigation.navigate("GameStack")} 
             onPress={() => LetBegin()}
@@ -459,7 +467,7 @@ const index = (props) => {
                 text="View all Stars"
                 font={16}
                 shadowless
-                onPress={() => navigation.navigate("AllCreatorsPage")}
+                onPress={() => navigation.navigate("AllCreatorsList")}
               />
             </View>
 
