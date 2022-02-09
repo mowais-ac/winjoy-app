@@ -174,14 +174,14 @@ const index = (props) => {
     setGameShowData(LandingData?.gameShow)
   }, []);
   const LetBegin = () => {
-    dispatch2(CheckGameEnterStatus());
-    console.log("gameEnterStatus",gameEnterStatus);
-    navigation.navigate("GameStack", {
-      screen: "Quiz",
-      params: {
-        uri: LandingData?.gameShow?.live_stream?.key
-      }
-    })
+    // dispatch2(CheckGameEnterStatus());
+    // console.log("gameEnterStatus",gameEnterStatus);
+    // navigation.navigate("GameStack", {
+    //   screen: "Quiz",
+    //   params: {
+    //     uri: LandingData?.gameShow?.live_stream?.key
+    //   }
+    // })
     if (gameEnterStatus.status === "success") {
       if (gameEnterStatus.message === "Welcome to Live Game Show") {
         navigation.navigate("GameStack", {
