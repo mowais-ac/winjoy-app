@@ -66,7 +66,7 @@ const BackgroundVideo = ({ route, navigation }) => {
     const [activityScreen, setActivityScreen] = useState(false);
     const [activity, setActivity] = useState(false);
     //  const [answer, setAnswer] = useState("");
-    const [liveStream, setLiveStream] = useState(false);
+    const [liveStream, setLiveStream] = useState(true);
     const [gameShowCheck, setGameShowCheck] = useState(false);
     const [showResult, setShowResult] = useState(false);
     // const [selectedAns, setSelectedAns] = useState("");
@@ -317,11 +317,11 @@ const BackgroundVideo = ({ route, navigation }) => {
             SaveResponse()
 
         });
-        socket.on("sendOnboarding", msg => {
-            console.log(msg);
-            setLiveStream(true)
+        // socket.on("sendOnboarding", msg => {
+        //     console.log(msg);
+        //     setLiveStream(true)
 
-        });
+        // });
         socket.on("sendStartlivegameshow", msg => {
             console.log("questionIncrement", questionIncrement);
             Questions()

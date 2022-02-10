@@ -2,6 +2,7 @@ import { SET_USER_NAME, SET_USER_AGE, INCREASE_AGE, GET_CITIES } from '../action
 import types from '../types';
 
 const INITIAL_STATE = {
+  counter: "",  
   lastGameData: {},
   userData: [],
 
@@ -33,6 +34,12 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
+    case types.CART_COUNTER:
+      return {
+        ...state,
+        counter: action.counter
+
+      };
     case types.LAST_GAME_DATA:
       return {
         ...state,
@@ -90,6 +97,7 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, totalLives: action.totalLives };
     case types.ALL_CREATORS_LIST:
       return { ...state, allCreatorsList: action.payload };
+     
     default:
       return state;
   }

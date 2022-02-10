@@ -5,12 +5,14 @@ import { Images } from "../Constants/Index";
 import Label from "./Label";
 
 import { useNavigation } from "@react-navigation/native";
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 
 const { width, height } = Dimensions.get("window");
 
 const Bell = (props) => {
   const navigation = useNavigation();
+  const counter = useSelector(state => state.app.counter);
+  console.log("counter",counter);
   const { Bell } = props;
   console.log("bell",Bell);
   return (
@@ -18,15 +20,15 @@ const Bell = (props) => {
       <TouchableOpacity
         style={[styles.Main, props.style]}
         onPress={() =>
-          navigation.navigate("Cart")
+          navigation.navigate("Cart") 
         }
       > 
         <Image source={Images.Bell} style={styles.Bell} />
-        {+Bell?.count >= 1 && ( 
+        {+counter >= 1 && ( 
           <>
             <Image source={Images.BellPop} style={styles.Pop} />
             <Label notAlign bold style={styles.Label} font={10}>
-              {Bell.count > 9 ? 9 : Bell.count}
+              {counter > 9 ? 9 : counter}
             </Label>
           </>
         )}

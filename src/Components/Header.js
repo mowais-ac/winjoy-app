@@ -15,7 +15,7 @@ import { Colors } from "../Constants/Index";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import EncryptedStorage from "react-native-encrypted-storage";
 import Config from "react-native-config";
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import BackIcon from 'react-native-vector-icons/Ionicons';
 import { heightConverter, widthConverter } from "./Helpers/Responsive";
 const { width, height } = Dimensions.get("window");
@@ -51,15 +51,15 @@ const Header = (props) => {
   //     })
   //     .catch((e) => console.log(e));
   // };
-  const UpdateValueOnce = async () => {
-    let dat = await AsyncStorage.getItem('ids');
-    let count = JSON.parse(dat);
-    props.UpdateBell(UpdateBell(count?.length));
-  };
+  // const UpdateValueOnce = async () => {
+  //   let dat = await AsyncStorage.getItem('ids');
+  //   let count = JSON.parse(dat);
+  //   props.UpdateBell(UpdateBell(count?.length));
+  // };
 
-  useEffect(() => {
-    UpdateValueOnce();
-  }, []);
+  // useEffect(() => {
+  //   UpdateValueOnce();
+  // }, []);
   return (
     <View style={props.style}>
       <View style={[styles.Container, { height: props.height }]}>
@@ -149,17 +149,17 @@ const styles = StyleSheet.create({
 });
 
 
-const mapStateToProps = (state) => {
-  const { Bell } = state;
-  return {
-    Bell,
-  };
-};
+// const mapStateToProps = (state) => {
+//   const { Bell } = state;
+//   return {
+//     Bell,
+//   };
+// };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    UpdateBell: (data) => dispatch(data),
-  };
-};
+// const mapDispatchToProps = (dispatch) => {
+//   return {
+//     UpdateBell: (data) => dispatch(data),
+//   };
+// };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default Header;
