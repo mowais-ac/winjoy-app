@@ -41,6 +41,7 @@ import { useDispatch } from 'react-redux';
 import types from "../../redux/types";
 const index = ({ navigation }) => {
   const dispatch = useDispatch();
+  const dispatch2 = useDispatch();
   const ModalState = useRef();
   const SucessModalState = useRef();
   const ModalStateError = useRef();
@@ -103,8 +104,12 @@ const index = ({ navigation }) => {
             userData: res.user,
             //  user: res.data.data,
           });
+          dispatch2({
+            type: types.CART_COUNTER, 
+            counter:"",
+          }); 
           SucessModalState.current(true)
-          await AsyncStorage.removeItem('ids');
+          await AsyncStorage.removeItem('ids'); 
           setData([])
           setUpdateData(!updateData)
         }
@@ -178,8 +183,13 @@ const index = ({ navigation }) => {
     let total = 0;
     filteredData.map(element => {
       total = total + parseFloat(element?.price);
-    });
+    }); 
     setTotal(total)
+    console.log("Data?.length",Data?.length);
+    dispatch2({
+      type: types.CART_COUNTER, 
+      counter:filteredData?.length,
+    }); 
   }
   const renderItem = ({ item }) => {
     const ImgUrl = item.image;

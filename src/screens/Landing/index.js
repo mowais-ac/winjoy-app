@@ -174,7 +174,7 @@ const index = (props) => {
     setGameShowData(LandingData?.gameShow)
   }, []);
   const LetBegin = () => {
-    // dispatch2(CheckGameEnterStatus());
+     dispatch2(CheckGameEnterStatus());
     // console.log("gameEnterStatus",gameEnterStatus);
     // navigation.navigate("GameStack", {
     //   screen: "Quiz",

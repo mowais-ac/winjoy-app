@@ -20,10 +20,12 @@ import Header from "../../Components/Header";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ExperienceProductDetal } from '../../redux/actions';
 import { useDispatch, useSelector } from "react-redux";
+import types from "../../redux/types";
 const ProductDetail = ({ props, navigation, route }) => {
     const productId = route?.params?.productId;
     const experienceId = route?.params?.experienceId;
     const dispatch = useDispatch();
+    const dispatch2 = useDispatch();
     const data = useSelector(state => state?.app?.expProductDetail);
     useEffect(() => {
         dispatch(ExperienceProductDetal(experienceId, productId));
@@ -50,7 +52,10 @@ const ProductDetail = ({ props, navigation, route }) => {
                 let uniqueArray = favs.filter(function (item, pos) {
                     return favs.indexOf(item) == pos;
                 });
-                console.log("uniqueArray", uniqueArray);
+                dispatch2({
+                    type: types.CART_COUNTER, 
+                    counter:uniqueArray?.length,
+                  }); 
                 return AsyncStorage.setItem('ids', JSON.stringify(uniqueArray))
             })
 

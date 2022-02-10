@@ -16,11 +16,14 @@ import {
     heightPercentageToDP,
     heightConverter,
 } from "../../Components/Helpers/Responsive";
+import { connect, useDispatch, useSelector } from "react-redux";
 import Header from "../../Components/Header";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { RFValue } from "react-native-responsive-fontsize";
 import dayjs from "dayjs";
+import types from "../../redux/types";
 const ProductDetail = ({ props, navigation, route }) => {
+    const dispatch = useDispatch(); 
     const item = route?.params?.data;
     let progress = (item?.product?.updated_stocks ? (item?.product?.updated_stocks / item?.stock) * 100 : 0);
     function uniqBy(a, key) {
@@ -42,6 +45,10 @@ const ProductDetail = ({ props, navigation, route }) => {
                 let uniqueArray = favs.filter(function (item, pos) {
                     return favs.indexOf(item) == pos;
                 });
+                dispatch({
+                    type: types.CART_COUNTER, 
+                    counter:uniqueArray?.length,
+                  }); 
                 return AsyncStorage.setItem('ids', JSON.stringify(uniqueArray))
             })
 
