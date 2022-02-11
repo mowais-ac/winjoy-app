@@ -9,7 +9,8 @@ import {
   FlatList,
   Text,
   ScrollView,
-  ImageBackground
+  ImageBackground,
+  ActivityIndicator
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import Header from "../../Components/Header";
@@ -33,6 +34,7 @@ const index = ({ route, navigation }) => {
   const livePlans = useSelector(state => state.app.livePlans);
   const gameShowWinners = useSelector(state => state.app.gameShowWinners);
   const luckyDrawWinners = useSelector(state => state.app.luckyDrawWinners);
+  const loading = useSelector(state => state.event.loading);
   const ModalState = useRef();
   const AddModalState = useRef();
   const RefferModalState = useRef();
@@ -48,6 +50,7 @@ const index = ({ route, navigation }) => {
   const dispatch2 = useDispatch();
   const routeSelected =route?.params?.selected;
   useEffect(() => {
+    console.log("loading",loading);
     //  dispatch(getLiveShowPlans());
     dispatch(GameShowWinners());
     dispatch2(LuckyDrawWinnersAPI());
@@ -105,7 +108,11 @@ const index = ({ route, navigation }) => {
               secondText={"Lucky Draw"}
             />
           </View>
-          <View style={{ width: '100%', alignItems: 'center', }}>
+          <View style={{ width: '100%', alignItems: 'center',}}>
+          {loading?(
+           <ActivityIndicator size="large" color="#000000" />
+          ):(
+            <>
             {selected === 0 ? (
               <GameShow
                 lastWinners={gameShowWinners?.winners}
@@ -117,6 +124,8 @@ const index = ({ route, navigation }) => {
               />
 
             )}
+          </>
+          )}
 
           </View>
         </ScrollView>

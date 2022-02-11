@@ -50,11 +50,13 @@ import socketIO from "socket.io-client";
 import ProgressCircle from 'react-native-progress-circle';
 import { connect, useDispatch, useSelector } from "react-redux";
 import types from '../../redux/types';
+import { GameShowWinners} from '../../redux/actions';
 const MYServer = "https://node-winjoyserver-deploy.herokuapp.com/";
 const { width, height } = Dimensions.get("window");
 let timer = () => { };
 const BackgroundVideo = ({ route, navigation }) => {
     const dispatch = useDispatch();
+    const dispatch2 = useDispatch();
     const userData = useSelector(state => state.app.userData);
     const totalLives = useSelector(state => state.app.totalLives);
     const [availLifeActivity, setAvailLifeActivity] = useState(false);
@@ -62,7 +64,7 @@ const BackgroundVideo = ({ route, navigation }) => {
     const { uri } = route.params;
     const [selected, setSelected] = useState(null);
     const [buffer, setBuffer] = useState(false);
-    const [timeLeft, setTimeLeft] = useState(20);
+    const [timeLeft, setTimeLeft] = useState(10);
     const [activityScreen, setActivityScreen] = useState(false);
     const [activity, setActivity] = useState(false);
     //  const [answer, setAnswer] = useState("");
@@ -304,6 +306,7 @@ const BackgroundVideo = ({ route, navigation }) => {
         });
         socket.on("sendEndShow", msg => {
             console.log("msg", msg);
+            dispatch2(GameShowWinners());
             navigation.navigate("BottomTabStack", { screen: "WINNERS" }) 
         });
         socket.on("sendCount", msg => {
@@ -326,7 +329,7 @@ const BackgroundVideo = ({ route, navigation }) => {
             console.log("questionIncrement", questionIncrement);
             Questions()
             setGameShowCheck(true)
-            setTimeLeft(20)
+            setTimeLeft(10)
             clearTimeout(timer);
             startTimer();
             setTimerFlag(true)
@@ -344,7 +347,7 @@ const BackgroundVideo = ({ route, navigation }) => {
                 setGameShowCheck(true)
                 setDisableQuizOptions(false)
                 setShowResult(false)
-                setTimeLeft(20)
+                setTimeLeft(10)
                 clearTimeout(timer);
                 startTimer();
 
@@ -388,7 +391,7 @@ const BackgroundVideo = ({ route, navigation }) => {
                             // key={keyS}
                             source={{
                                 uri: uri
-                                // uri: "http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4"
+                                // uri:'https://c75a7e79204e539d.mediapackage.us-east-1.amazonaws.com/out/v1/c09d0b5beca54ffcb2e4d920b465d589/index.m3u8'
                             }}
                             // onReadyForDisplay={readyToDisplay}
                             style={styles.backgroundVideo}
@@ -461,10 +464,11 @@ const BackgroundVideo = ({ route, navigation }) => {
                                             >
                                                 <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
                                                     <ProgressCircle
-                                                        percent={(timeLeft * 100) / 20}
+                                                        percent={(timeLeft * 100) / 10}
+                                                      
                                                         radius={35}
                                                         borderWidth={6}
-                                                        color={timeLeft < 10 ? 'red' : '#490d8e'}
+                                                        color={timeLeft < 5 ? 'red' : '#490d8e'}
                                                         shadowColor="#d3d9dd"
                                                         bgColor="#fff"
                                                     >
@@ -477,7 +481,7 @@ const BackgroundVideo = ({ route, navigation }) => {
                                                     </ProgressCircle>
                                                 </View>
                                                 <Label primary bold dark style={styles.questionTitle}>
-                                                    Question
+                                                    Question  {questionIncrement.current+1}
                                                 </Label>
                                                  <Label primary bold dark style={styles.questionTitle}>
                                                     {questionRef.current[questionIncrement.current]?.question}
@@ -532,12 +536,14 @@ const BackgroundVideo = ({ route, navigation }) => {
                                                 </Label> */}
                                                 <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
                                                     <ProgressCircle
-                                                        percent={(timeLeft * 100) / 20}
+                                                        percent={(timeLeft * 100) / 10}
                                                         radius={35}
                                                         borderWidth={6}
-                                                        color={timeLeft < 10 ? 'red' : '#490d8e'}
+                                                        color={timeLeft < 5 ? 'red' : '#490d8e'}
                                                         shadowColor="#d3d9dd"
                                                         bgColor="#fff"
+                                                        
+                                                
                                                     >
                                                         <View style={{ justifyContent: 'center', alignItems: 'center', }}>
                                                             <Text style={{ fontFamily: 'Axiforma-SemiBold', fontSize: 12, color: "#E7003F", lineHeight: 12, }}>
@@ -548,7 +554,7 @@ const BackgroundVideo = ({ route, navigation }) => {
                                                     </ProgressCircle>
                                                 </View>
                                                 <Label primary bold dark style={styles.questionTitle}>
-                                                    Question
+                                                    Question  {questionIncrement.current+1}
                                                 </Label>
                                                 <Label primary font={14} bold dark style={{ color: "#ffff", lineHeight: 28, }}>
                                                     {questionRef.current[questionIncrement.current]?.question}

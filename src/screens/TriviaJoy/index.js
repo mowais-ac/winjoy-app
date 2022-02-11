@@ -27,7 +27,7 @@ import Header from "../../Components/Header";
 import { TriviaJoyAPI, CheckGameEnterStatus } from '../../redux/actions';
 import CountDown from "react-native-countdown-component";
 import { RFValue } from "react-native-responsive-fontsize";
-import WatchAddModal from "../../Components/WatchAddModal";
+import HowItWorkModal from "../../Components/HowItWorkModal";
 const MYServer = "https://node-winjoyserver-deploy.herokuapp.com/";
 const index = ({ props, navigation }) => {
   const userData = useSelector(state => state.app.userData);
@@ -50,6 +50,7 @@ const index = ({ props, navigation }) => {
   useEffect(() => {
     dispatch(TriviaJoyAPI());
     console.log("userData", userData);
+    console.log("triviaJoyData", triviaJoyData.on_going_gameshow);
     var date = new Date().toLocaleString()
     console.log("daaate", date);
     console.log("start", dayjs(triviaJoyData?.upcoming_gameshow?.start_date).format('MMMM DD, YYYY - HH:MM A'));
@@ -104,7 +105,7 @@ const index = ({ props, navigation }) => {
 
           </Label>
 
-          {renderBtn ? (
+          {triviaJoyData?.on_going_gameshow!==null&&renderBtn? (
             <TouchableOpacity
               onPress={() => LetBegin()}
             >
@@ -196,7 +197,7 @@ const index = ({ props, navigation }) => {
         <TriviaJoyBottomList data={triviaJoyData.banners} />
         <View style={{ marginBottom: height * 0.05 }} />
       </LinearGradient>
-      <WatchAddModal ModalRef={AddModalState} details
+      <HowItWorkModal ModalRef={AddModalState} details
        cross={true}
         video={"https://winjoy-assets.s3.amazonaws.com/banners/banner-3.mp4"}
       // id={idVideoAdd}

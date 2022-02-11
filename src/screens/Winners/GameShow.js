@@ -57,7 +57,8 @@ const GameShow = (props) => {
               <ProfilePicture
                 picture={item?.user?.profile_image}
                 // id={userInfo?.id || userData?.id}
-                name={"waqar"}
+                name={item?.user?.first_name?.charAt(0).toUpperCase()} 
+              // name={userInfo?.first_name?.charAt(0).toUpperCase()}
                 style={styles.avatarViewTop}
               />
               <View style={{

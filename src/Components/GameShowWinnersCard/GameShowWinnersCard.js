@@ -17,7 +17,7 @@ function GameShowWinnersCard({ onPress, date, profile_image, name, ammount }) {
           <ProfilePicture
             picture={profile_image}
             // id={userInfo?.id || userData?.id}
-            name={name}
+            name={name.charAt(0).toUpperCase()}
             style={styles.avatarView}
           />
           <View style={{

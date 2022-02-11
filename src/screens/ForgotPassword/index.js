@@ -6,6 +6,7 @@ import {
   Dimensions,
   ScrollView,
   Alert,
+  SafeAreaView
 } from "react-native";
 
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
@@ -59,58 +60,60 @@ const index = ({ navigation }) => {
             Buttonref.current.SetActivity(false);
           }
         })
- 
+
         .catch((e) => console.log(e));
     }
   };
   return (
-    
-   <>
-    <Background height={1} design />
-    <ScrollView>
-     
-      <KeyboardAwareScrollView keyboardDismissMode="interactive">
-        <View style={styles.MainTop}>
-          
-          <Image source={Images.Logo} style={styles.Logo} />
-          <Modals ModalRef={ModalRef} Error />
-          <Label bold headingtype="h1" style={styles.Heading}>
-            Reset your password
-          </Label>
-          <Label
-            light
-            style={[styles.MarginLarge, { lineHeight: height * 0.03 }]}
-          >
-            A link will be sent to your email using which you can reset your
-            password
-          </Label>
-          <Label
-            light
-            style={[styles.MarginLarge, { lineHeight: height * 0.03 }]}
-          >
-            Enter your email below to get the link
-          </Label>
-          <InputField
-            style={styles.Margin}
-            placeholder="test@domain.com"
-            ref={emailref}
-            Icon="user"
-            autoCapitalize="none"
-            keyboardType="email-address"
-            textContentType="emailAddress"
-          />
-          <LongButton
-            style={styles.MarginLarge}
-            text="Get link"
-            font={17}
-            onPress={HandleClick}
-            ref={Buttonref}
-            textstyle={{color:'#fff'}}
-          />
-        </View>
-        {/* <GoBack style={styles.MarginLarge} /> */}
-      </KeyboardAwareScrollView>
-    </ScrollView></>
+
+    <SafeAreaView>
+      <Background height={1} design />
+      <ScrollView>
+
+        <KeyboardAwareScrollView keyboardDismissMode="interactive">
+
+          <View style={styles.MainTop}>
+            <GoBack />
+            <Image source={Images.Logo} style={styles.Logo} />
+            <Modals ModalRef={ModalRef} Error />
+            <Label bold headingtype="h1" style={styles.Heading}>
+              Reset your password
+            </Label>
+            <Label
+              light
+              style={[styles.MarginLarge, { lineHeight: height * 0.03 }]}
+            >
+              A link will be sent to your email using which you can reset your
+              password
+            </Label>
+            <Label
+              light
+              style={[styles.MarginLarge, { lineHeight: height * 0.03 }]}
+            >
+              Enter your email below to get the link
+            </Label>
+            <InputField
+              style={styles.Margin}
+              placeholder="test@domain.com"
+              ref={emailref}
+              Icon="user"
+              autoCapitalize="none"
+              keyboardType="email-address"
+              textContentType="emailAddress"
+            />
+            <LongButton
+              style={styles.MarginLarge}
+              text="Get link"
+              font={17}
+              onPress={HandleClick}
+              ref={Buttonref}
+              textstyle={{ color: '#fff' }}
+            />
+          </View>
+          {/* <GoBack style={styles.MarginLarge} /> */}
+        </KeyboardAwareScrollView>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 

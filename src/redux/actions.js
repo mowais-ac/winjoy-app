@@ -72,12 +72,13 @@ export const getLandingScreen = () => {
        alert(error)
     }
 }
-export const getProducts = (isClosing,cat) => {
-  
+export const getProducts = (link) => { 
+  console.log("link",link);
     try {
         return async dispatch => {
+            dispatch({ type: types.SHOW_LOADER }); 
             const Token = await EncryptedStorage.getItem("Token");
-            const result = await fetch(`${Config.API_URL}/products/list?is_closing_soon=${isClosing}${cat}`, {
+            const result = await fetch(`${Config.API_URL}/products/list${link}`, {
                 method: 'GET',
                 headers: {
                     "Content-Type": "multipart/form-data",
@@ -85,7 +86,10 @@ export const getProducts = (isClosing,cat) => {
                     Authorization: `Bearer ${Token}`,
                 },
             });
+            console.log("result",result);
             const json = await result.json();
+            console.log("json",json);
+            dispatch({ type: types.HIDE_LOADER }); 
             if (json && json.status === "success") {
                 dispatch({
                     type: types.GET_PRODUCTS_LIST,
@@ -291,6 +295,7 @@ export const GameShowWinners = () => {
 
     try {
         return async dispatch => {
+            dispatch({ type: types.SHOW_LOADER }); 
             const Token = await EncryptedStorage.getItem("Token");
             const result = await fetch(`${Config.API_URL}/gameshow/winners`, {
                 method: 'GET',
@@ -301,6 +306,7 @@ export const GameShowWinners = () => {
                 },
             });
             const json = await result.json();
+            dispatch({ type: types.HIDE_LOADER }); 
             if (json) {
                 dispatch({
                     type: types.GAME_SHOW_WINNERS,

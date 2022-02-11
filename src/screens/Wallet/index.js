@@ -242,7 +242,7 @@ const index = ({ props, navigation }) => {
 
                       }}>
                         <Text style={styles.text}>
-                          {item?.amount}
+                         AED {item?.amount}
                         </Text>
                         <Text style={styles.text2}>
                           {dayjs(item.transaction_date).format('DD MMM, YYYY')}

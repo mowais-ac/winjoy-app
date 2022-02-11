@@ -33,7 +33,7 @@ import { connect, useDispatch, useSelector } from "react-redux";
 import Video from "react-native-video";
 import Carousel from "react-native-snap-carousel";
 import { ButtonWithRightIcon } from '../../Components'
-import WatchAddModal from "../../Components/WatchAddModal";
+import HowItWorkModal from "../../Components/HowItWorkModal";
 
 function ClosingSoon({ item }) {
   let progress = item?.updated_stocks
@@ -262,7 +262,7 @@ const index = ({ props, navigation }) => {
       </View>
       <HomeBottomList data={dealsJoyData?.winners_collection} />
       <View style={{ height: 20 }} />
-      <WatchAddModal ModalRef={AddModalState} details
+      <HowItWorkModal ModalRef={AddModalState} details
        cross={true}
         video={"https://winjoy-assets.s3.amazonaws.com/banners/banner-3.mp4"}
       // id={idVideoAdd}

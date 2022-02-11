@@ -8,7 +8,8 @@ import {
   Alert,
   FlatList,
   Text,
-  ScrollView
+  ScrollView,
+  TouchableOpacity
 } from "react-native";
 import Header from "../../Components/Header";
 import { ExperienceCard, WinExperienceCard, FanJoyCard, WinningTrendingCard, TrendingCards, WjBackground, ButtonWithRightIcon } from "../../Components";
@@ -26,6 +27,7 @@ import types from '../../redux/types';
 import ModalCelebrityProducts from "../../Components/ModalCelebrityProducts";
 import ExperienceCelebrityModal from "../../Components/ExperienceCelebrityModal";
 import WatchAddModal from "../../Components/WatchAddModal";
+import Label from "../../Components/Label";
 const { width, height } = Dimensions.get("window");
 const index = ({ route, navigation }) => {
   const celebrityModalState = useRef();
@@ -61,7 +63,7 @@ const index = ({ route, navigation }) => {
           colors={["#f8d7e8", "#c7dfe8"]}
         >
           <WjBackground
-            style={{ height: 155, borderBottomRightRadius: 20, borderBottomLeftRadius: 20 }}
+            style={{ height: height*0.24, borderBottomRightRadius: 20, borderBottomLeftRadius: 20 }}
           />
           <Header style={{ top: 0, position: "absolute", marginTop: 10 }} />
 
@@ -69,16 +71,35 @@ const index = ({ route, navigation }) => {
 
             <Text style={[styles.headerText]}>{strings("fan_joy.fan_joy")}</Text>
             <Text style={styles.subHeaderText}>{strings("fan_joy.created_by_stars")}</Text>
+            <View
+                style={{
+                  height: 1,
+                  width: width * 1,
+                  backgroundColor: "rgba(178, 190, 181,0.5)",
+                  marginTop: height * 0.02,
+                }} 
+              />
+              <TouchableOpacity onPress={() => { AddModalState.current(true) }}>
+                <View style={{ flexDirection: 'row', marginTop: height * 0.015, }}>
+                  <Image
+                    style={{ width: 30, height: 30 }}
+                    source={require('../../assets/imgs/circlePlaybtn.png')}
+                  />
+                  <Label primary font={RFValue(13)} bold dark style={{ color: "#ffff", width: width * 0.4 }}>
+                    How it works
+                  </Label>
+                </View>
+              </TouchableOpacity>
           </View>
-          <View style={{ width: width, alignItems: 'center', marginTop: height * 0.06, paddingVertical: 10 }}>
+          {/* <View style={{ width: width, alignItems: 'center', marginTop: height * 0.06, paddingVertical: 10 }}>
             <ButtonWithRightIcon
               btnStyle={{ backgroundColor: '#420E92', borderRadius: 30 }}
               text={"How it works"}
-              textStyle={{ color: '#fff', fontFamily: 'Axiforma SemiBold' }}
+              textStyle={{ color: '#fff', fontFamily: 'Axiforma-SemiBold' }}
               onPress={() => AddModalState.current(true)}
             />
-          </View>
-          <View style={{ width: '100%', alignItems: 'center', }}>
+          </View> */}
+          <View style={{ width: '100%', alignItems: 'center',marginTop:height*0.03 }}>
             <Text style={styles.textHeading}>
               Creators
             </Text>

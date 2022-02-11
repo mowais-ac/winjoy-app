@@ -12,12 +12,9 @@ target 'winjoy' do
     :hermes_enabled => false
   )
 
-  pod 'react-native-config', :path => '../node_modules/react-native-config'
-
-  pod 'react-native-sensitive-info', :path => '../node_modules/react-native-sensitive-info'
 
 
-  pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
+
 
   target 'winjoyTests' do
     inherit! :complete
