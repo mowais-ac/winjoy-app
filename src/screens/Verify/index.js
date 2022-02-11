@@ -84,6 +84,7 @@ const index = ({ route, navigation }) => {
       <Background height={1} resize="stretch" design />
       <ScrollView>
         <View style={styles.MainTop}>
+        <GoBack />
           <Image source={Images.Logo} style={styles.Logo} />
           <Label bold headingtype="h1" style={styles.Heading}>
             Verify account

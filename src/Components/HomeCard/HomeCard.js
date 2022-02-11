@@ -1,85 +1,116 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableWithoutFeedback, StyleSheet, Image, } from "react-native";
+import { View, Text, Dimensions, TouchableWithoutFeedback, StyleSheet, Image, } from "react-native";
 import { widthConverter } from "../Helpers/Responsive";
 import styles from "./Styles";
 import CountDown from 'react-native-countdown-component';
 import LongButton from "../LongButton";
-function HomeCard({ style, onPress, gameShowData, time, startIn }) {
+import Carousel from 'react-native-snap-carousel';
+function HomeCard({ style, onPress, gameShowData, time, images }) {
+  console.log("images", images);
+  const { width, height } = Dimensions.get("window");
   const [renderBtn, setRenderBtn] = useState(false);
-  return (
-      <View style={[styles.mainView, style]}>
+  function _renderItem({ item, index }) {
+    console.log("test", item.url);
+    return (
+      <View key={index}>
         <Image
-          style={[styles.mainView, { position: 'absolute', overlayColor: 'white', }]}
-          source={require('../../assets/imgs/trivia-coming-soon.gif')}
+          style={[styles.mainView, { overlayColor: '#f6f1f3' }]}
+          source={{ uri: item.url }}
         />
-        <View style={styles.textView}>
-          {!renderBtn ? (
+      </View>
+    )
+  }
+  return (
+    <View style={[styles.mainView, style]}>
+      <View style={[styles.mainView, { position: 'absolute', overlayColor: '#f6f1f3' }]}>
+        <Carousel
+          layout={"default"}
+          resizeMode={"cover"}
+          loop={true}
+          autoplay={true}
+          autoplayInterval={3000}
+
+          // ref={ref => this.carousel = ref}
+          data={images}
+          sliderWidth={width}
+          itemWidth={width}
+          renderItem={_renderItem}
+          style={styles.mainView}
+        // onSnapToItem={index => setActiveSlide(index)}
+        />
+      </View>
+      {/* <Image
+          style={[styles.mainView, { position: 'absolute', overlayColor: '#f6f1f3', }]}
+          source={{uri:image}}
+        /> */}
+      <View style={styles.textView}>
+        {!renderBtn ? (
           <>
             <Text
-            style={styles.commingSoonTxt}
-          >
-            LIVE
-          </Text>
-          <Text
-            style={[styles.commingSoonTxt, { color: '#D9FE51' }]} >
-           TRIVIA
-          </Text>
-          {!gameShowData?(
-              <Text
-              style={[styles.commingSoonTxt,{fontSize: 16}]}
+              style={styles.commingSoonTxt}
             >
-              {gameShowData}
+              LIVE
             </Text>
-          ):(
-            <LongButton
-            style={[
-              styles.Margin,
-              { backgroundColor: null, bottom: -3, left: 0, borderWidth: 2, borderColor: '#fff' },
-            ]}
-            textstyle={{ color: "#fff", fontFamily: "Axiforma-SemiBold", fontSize: 14 }}
-            text="Lets Begin"
-            font={16}
-            shadowless
-            onPress={onPress}
-          />
-          )}
-          </>
-          ) : (
-            <>
+            <Text
+              style={[styles.commingSoonTxt, { color: '#D9FE51' }]} >
+              TRIVIA
+            </Text>
+            {!gameShowData ? (
               <Text
-                style={styles.commingSoonTxt}
+                style={[styles.commingSoonTxt, { fontSize: 16 }]}
               >
-                TRIVIA
+                {gameShowData}
               </Text>
-              <Text
-                style={[styles.commingSoonTxt, { color: '#D9FE51' }]} >
-                COMING
-              </Text>
-              <Text
-                style={[styles.commingSoonTxt, { color: '#D9FE51' }]} >
-                SOON
-              </Text>
-              <CountDown
-                style={{ marginTop: 6 }}
-                size={16}
-                until={time}
-                onFinish={()=>setRenderBtn(true)}
-                digitStyle={{ borderColor: '#D9FE51', borderWidth: 1 }}
-                digitTxtStyle={{ color: '#D9FE51', fontSize: 18, fontFamily: 'Axiforma-Medium' }}
-                timeLabelStyle={{ color: 'red', }}
-                separatorStyle={{ color: '#D9FE51', paddingLeft: 5, paddingRight: 5 }}
-                timeToShow={['H', 'M', 'S']}
-                timeLabels={{ m: null, s: null }}
-                showSeparator
+            ) : (
+              <LongButton
+                style={[
+                  styles.Margin,
+                  { backgroundColor: null, bottom: -3, left: 0, borderWidth: 2, borderColor: '#fff' },
+                ]}
+                textstyle={{ color: "#fff", fontFamily: "Axiforma-SemiBold", fontSize: 14 }}
+                text="Lets Begin"
+                font={16}
+                shadowless
+                onPress={onPress}
               />
-            </>
-          )}
+            )}
+          </>
+        ) : (
+          <>
+            <Text
+              style={styles.commingSoonTxt}
+            >
+              TRIVIA
+            </Text>
+            <Text
+              style={[styles.commingSoonTxt, { color: '#D9FE51' }]} >
+              COMING
+            </Text>
+            <Text
+              style={[styles.commingSoonTxt, { color: '#D9FE51' }]} >
+              SOON
+            </Text>
+            <CountDown
+              style={{ marginTop: 6 }}
+              size={16}
+              until={time}
+              onFinish={() => setRenderBtn(true)}
+              digitStyle={{ borderColor: '#D9FE51', borderWidth: 1 }}
+              digitTxtStyle={{ color: '#D9FE51', fontSize: 18, fontFamily: 'Axiforma-Medium' }}
+              timeLabelStyle={{ color: 'red', }}
+              separatorStyle={{ color: '#D9FE51', paddingLeft: 5, paddingRight: 5 }}
+              timeToShow={['H', 'M', 'S']}
+              timeLabels={{ m: null, s: null }}
+              showSeparator
+            />
+          </>
+        )}
 
 
-        </View>
       </View>
+    </View>
 
-  
+
   );
 }
 

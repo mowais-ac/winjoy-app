@@ -8,7 +8,9 @@ import {
   FlatList,
   RefreshControl,
   Text,
-  TouchableOpacity
+  TouchableOpacity,
+  Platform,
+  ActivityIndicator
 } from "react-native";
 import BackgroundRound from "../../Components/BackgroundRound";
 import Header from "../../Components/Header";
@@ -28,22 +30,26 @@ const index = ({ props, navigation }) => {
   const productsData = useSelector(state => state?.app?.productsData);
   const [headerValue, setHeaderValue] = useState(0);
   const [updateData, setUpdateData] = useState(false);
-  const [selected, setSelected] = useState(0);
+  const [selected, setSelected] = useState(null);
+  const [link, setLink] = useState("");
+  const loading = useSelector(state => state.event.loading);
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getProducts(isClosing));
+    dispatch(getProducts("?is_closing_soon=0"));
+    setIsClosing(false);
   }, []);
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     dispatch(getProducts(isClosing));
     wait(500).then(() => setRefreshing(false));
   }, []);
-const CategoryFunc=(index,id)=>{
-  setSelected(index)
-  let cat=`&category=${id}`
-  dispatch(getProducts(isClosing,cat));
-  setUpdateData(!updateData)
-}
+  const CategoryFunc = (index, id) => {
+    let link = `?is_closing_soon=${isClosing ? 1 : 0}&category=${id}`
+    setSelected(index)
+    console.log("linkkk", link);
+    dispatch(getProducts(link));
+    setUpdateData(!updateData)
+  }
   return (
     <SafeAreaView>
       <BackgroundRound height={0.3} />
@@ -53,7 +59,8 @@ const CategoryFunc=(index,id)=>{
         backgroundColor: headerValue !== 0 ? 'rgba(0,0,0,0.5)' : null,
         width: '100%',
         borderBottomRightRadius: 10,
-        borderBottomLeftRadius: 10
+        borderBottomLeftRadius: 10,
+        top: Platform.OS === "android" ? 0 : height * 0.038,
       }} />
       <ScrollView
         refreshControl={
@@ -78,9 +85,10 @@ const CategoryFunc=(index,id)=>{
         >
           <LongButton
             onPress={() => {
+              dispatch(getProducts("?is_closing_soon=0"));
               setIsClosing(false);
-              dispatch(getProducts(0));
               setUpdateData(!updateData)
+              setSelected(null)
             }}
             style={[styles.Margin,
             { backgroundColor: !isClosing ? "#fff" : null, borderWidth: isClosing ? 2 : null, borderColor: isClosing ? "#ffffff" : null }
@@ -92,9 +100,10 @@ const CategoryFunc=(index,id)=>{
           />
           <LongButton
             onPress={() => {
+              dispatch(getProducts("?is_closing_soon=1"));
               setIsClosing(true);
-              dispatch(getProducts(1));
               setUpdateData(!updateData)
+              setSelected(null)
             }}
             style={[
               styles.Margin,
@@ -107,7 +116,6 @@ const CategoryFunc=(index,id)=>{
           />
         </View>
         <View>
-
           <FlatList
             data={productsData?.categories_collection}
             scrollEnabled={true}
@@ -116,15 +124,15 @@ const CategoryFunc=(index,id)=>{
             showsHorizontalScrollIndicator={false}
             renderItem={({ item, index }) => (
               <TouchableOpacity onPress={() => {
-                CategoryFunc(index,item?.id)
-                 
-                  }}>
+                CategoryFunc(index, item?.id)
+
+              }}>
                 <Text style={{ color: selected === index ? '#fff' : '#E899B8', fontFamily: 'Axiforma-Bold', fontSize: RFValue(15) }}>{item?.name}</Text>
               </TouchableOpacity>
             )}
             keyExtractor={(item) => item.id}
             ListEmptyComponent={() => (
-              <Text style={{ color: '#000000', textAlign: 'center', width: width,}}>The list is empty</Text>
+              <Text style={{ color: '#000000', textAlign: 'center', width: width, }}>The list is empty</Text>
             )
             }
 
@@ -143,37 +151,47 @@ const CategoryFunc=(index,id)=>{
           {/* onPress={()=>navigation.navigate("SimpeStackScreen",{screen:"ProductDetail"})}> */}
 
 
-          <FlatList
-            data={productsData?.data}
-            scrollEnabled={false}
-            extraData={updateData}
-            renderItem={({ item }) => (
+          {loading ? (
+            <ActivityIndicator size="large" color="#000000" />
+          ) : (
+            <FlatList
+              data={productsData?.data}
+              scrollEnabled={false}
+              extraData={updateData}
+              renderItem={({ item }) => (
 
-              <ChanceCard
-                title={item?.product?.title}
-                updated_stocks={item?.product?.updated_stocks}
-                stock={item?.product?.stock}
-                image={item?.product?.image}
-                description={item?.description}
-                price={item?.product?.price}
-                prize_title={item.prize_title}
-                data={item}
-                onPress={() =>
-                  navigation.navigate("ProductDetail", { data: item })
-                }
-              />
-            )}
-            keyExtractor={(item) => item.id}
-            ListEmptyComponent={() => (
-              <Text style={{ color: '#000000', top: 300, textAlign: 'center', width: width,height:300,}}>The list is empty</Text>
-            )
-            }
+                <ChanceCard
+                  title={item?.product?.title}
+                  updated_stocks={item?.product?.updated_stocks}
+                  stock={item?.product?.stock}
+                  image={item?.product?.image}
+                  description={item?.description}
+                  price={item?.product?.price}
+                  prize_title={item.prize_title}
+                  data={item}
+                  onPress={() =>
+                    navigation.navigate("ProductDetail", { data: item })
+                  }
+                />
+              )}
+              keyExtractor={(item) => item.id}
+              ListEmptyComponent={() => (
+                <>
+                  {loading ? (
+                    <ActivityIndicator size="large" color="#000000" />
+                  ) : (
+                    <Text style={{ color: '#000000', top: 300, textAlign: 'center', width: width, height: 300, }}>The list is empty</Text>
+                  )}
+                </>
+              )
+              }
 
-            contentContainerStyle={{
-              paddingBottom: height * 0.1,
-            }}
+              contentContainerStyle={{
+                paddingBottom: height * 0.1,
+              }}
 
-          />
+            />
+          )}
 
 
         </View>

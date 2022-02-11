@@ -48,7 +48,7 @@ function WalletLastPlayedCard({ noOfQuestions, onPress, wonPrize, result, option
         {t("last_played_game")}
         </Label>
 
-        <Label notAlign primary font={14} dark style={{ color: "#000000",marginTop:20,fontFamily: "Axiforma-SemiBold", }}>
+        <Label notAlign primary font={14} dark style={{ color: "#000000",marginTop:20,fontFamily: "Axiforma-SemiBold",width:width*0.8, }}>
           Answer {noOfQuestions} simple questions and WIN amazing prizes
         </Label>
         <Label notAlign primary font={14} bold style={{ color: "#E7003F", marginTop:7}}>

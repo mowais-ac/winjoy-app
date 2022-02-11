@@ -1,4 +1,3 @@
-import { SET_USER_NAME, SET_USER_AGE, INCREASE_AGE, GET_CITIES } from '../actions';
 import types from '../types';
 
 const INITIAL_STATE = {

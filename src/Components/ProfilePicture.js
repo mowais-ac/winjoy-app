@@ -16,8 +16,8 @@ const ProfilePicture = (props) => {
     </ImageBackground>
   ) : (
     <View style={[styles.ProfileView, styles.ProfileBG, style]}>
-      <Label adjustsFontSizeToFit={true} font={font || 18} bold style={styles.Text}>
-        {name}
+      <Label adjustsFontSizeToFit={true} font={font || 25} bold style={styles.Text}>
+        {name?.charAt(0)?.toUpperCase()} 
       </Label>
     </View>
   );
@@ -29,6 +29,7 @@ const styles = StyleSheet.create({
     height: width * 0.14,
     borderRadius: 50,
     overflow: "hidden",
+    justifyContent:'center'
   },
   ProfileBG: {
     backgroundColor: Colors.WHITE,

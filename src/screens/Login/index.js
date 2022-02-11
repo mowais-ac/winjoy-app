@@ -202,8 +202,9 @@ const index = ({ navigation }) => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView>
+      <Background height={1} design />
         <View style={styles.MainTop}>
-          <Background height={1} design />
+          
           <Image source={Images.Logo} style={styles.Logo} />
           <Label bold2 headingtype="h2" style={[styles.MarginLarge]}>
             {t("login_heading")}

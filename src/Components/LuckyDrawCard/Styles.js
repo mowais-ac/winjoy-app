@@ -58,8 +58,8 @@ export default StyleSheet.create({
     justifyContent: 'center'
   },
   Margin: {
-    height: height * 0.06,
-    width: width * 0.4,
+    height: height * 0.035,
+    width: width * 0.22,
     backgroundColor: "#ffffff",
   },
 });

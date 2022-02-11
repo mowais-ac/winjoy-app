@@ -98,9 +98,9 @@ export default StyleSheet.create({
     marginLeft: 2,
   },
   mainView: {
-    height: heightPercentageToDP("40"),
+    height: heightPercentageToDP("47"),
     width: width,
-
+    alignItems: 'center',
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
     borderTopLeftRadius: 0,
@@ -141,13 +141,24 @@ export default StyleSheet.create({
     color: 'black'
   },
   avatarBannerView: {
-    width: "100%",
-    height: 160,
-    alignItems: 'center'
+    alignItems: 'center', 
+    backgroundColor: '#f05b31',
+    borderRadius: widthConverter(10),
+    height:height*0.15, 
+    width: widthPercentageToDP("95%"),
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
   },
   avatarBanner: {
-    width: "95%",
-    height: 130,
+    // width: "95%",
+    // height: 130,
+    position: 'absolute', overlayColor: 'white',
+    alignItems: 'center', 
+    borderRadius: widthConverter(10),
+    height:145, 
+    width: widthPercentageToDP("95%"),
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
   },
   Margin: {
     height: height * 0.035,

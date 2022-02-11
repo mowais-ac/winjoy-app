@@ -11,7 +11,9 @@ import {
   Animated,
   Text,
   Image,
-  ImageBackground
+  ImageBackground,
+  SafeAreaView,
+  Platform
 } from "react-native";
 import { connect, useDispatch, useSelector } from "react-redux";
 import { FormatNumber, wait } from "../../Constants/Functions";
@@ -25,6 +27,8 @@ const { width, height } = Dimensions.get("window");
 import axios from "axios";
 import LinearGradient from "react-native-linear-gradient";
 import HomeBottomList from "../../Components/HomeBottomList";
+import SafeArea from "../../Components/SafeArea";
+
 import {
   heightConverter,
   heightPercentageToDP,
@@ -46,12 +50,13 @@ import Video from "react-native-video";
 import { getLandingScreen, CheckGameEnterStatus } from '../../redux/actions';
 import socketIO from "socket.io-client";
 import { useTranslation } from 'react-i18next';
-import WatchAddModal from "../../Components/WatchAddModal";
+import HowItWorkModal from "../../Components/HowItWorkModal";
+import types from "../../redux/types";
 const MYServer = "https://node-winjoyserver-deploy.herokuapp.com/";
 function ClosingSoon({ item }) {
   let progress = item.updated_stocks
     ? (item?.updated_stocks / item?.stock) * 100
-    : 0; 
+    : 0;
 
   // const ImgUrl = `${Config.PRODUCT_IMG}/${item.id}/${JSON.parse(item.image)[0]
   //   }`;
@@ -139,6 +144,7 @@ const index = (props) => {
   const [videoAction, setVideoAction] = useState(true);
   const dispatch = useDispatch();
   const dispatch2 = useDispatch();
+  const dispatch3 = useDispatch();
   const socket = socketIO(MYServer);
   const AddModalState = useRef();
   const onRefresh = React.useCallback(() => {
@@ -172,9 +178,10 @@ const index = (props) => {
 
     dispatch(getLandingScreen());
     setGameShowData(LandingData?.gameShow)
+    console.log("LandingData", LandingData);
   }, []);
   const LetBegin = () => {
-     dispatch2(CheckGameEnterStatus());
+    dispatch2(CheckGameEnterStatus());
     // console.log("gameEnterStatus",gameEnterStatus);
     // navigation.navigate("GameStack", {
     //   screen: "Quiz",
@@ -197,6 +204,15 @@ const index = (props) => {
       alert("game not started yet!")
     }
 
+  }
+  const onPressCreator = (id) => {
+    // alert(id)
+    dispatch3({
+      type: types.CREATOR_ID,
+      creatorId: id
+      //  user: res.data.data,
+    });
+    navigation.navigate("CreatorsPage")
   }
   function _renderItem({ item, index }) {
     if (item.type === "image") {
@@ -236,9 +252,9 @@ const index = (props) => {
     }
   }
   return (
-
-    <View>
-      {/* <Animated.View
+    <SafeAreaView>
+      <View>
+        {/* <Animated.View
         style={{
           transform: [
             { translateY: translateY }
@@ -247,271 +263,307 @@ const index = (props) => {
           zIndex: 100,
         }}
       > */}
-      <Header style={{
-        position: 'absolute',
-        zIndex: 1000,
-        backgroundColor: headerValue !== 0 ? 'rgba(0,0,0,0.5)' : null,
-        width: '100%',
-        borderBottomRightRadius: 10,
-        borderBottomLeftRadius: 10
-      }} />
-      {/* </Animated.View> */}
-      <ScrollView
-        onScroll={(e) => {
-          setHeaderValue(e.nativeEvent.contentOffset.y)
-        }}
-        style={{ backgroundColor: "#f6f1f3" }}
-        refreshControl={
-          <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
-        }
-      >
-        <View style={{ width: '100%', alignItems: 'center', }}>
-          <LinearGradient colors={["#5B0C86", "#E7003F"]} style={styles.mainView}>
+        <Header style={{
+          position: 'absolute',
+          zIndex: 1000,
+          backgroundColor: headerValue !== 0 ? 'rgba(0,0,0,0.5)' : null,
+          width: '100%',
+          borderBottomRightRadius: 10,
+          borderBottomLeftRadius: 10,
+          top: Platform.OS === "android" ? 0 : height * 0.038,
+        }} />
+        {/* </Animated.View> */}
+        <ScrollView
+          onScroll={(e) => {
+            setHeaderValue(e.nativeEvent.contentOffset.y)
+          }}
+          style={{ backgroundColor: "#f6f1f3" }}
+          refreshControl={
+            <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
+          }
+        >
+          <View style={{ width: '100%', alignItems: 'center', }}>
+            <LinearGradient colors={["#5B0C86", "#E7003F"]} style={styles.mainView}>
 
 
-            <View style={styles.wrap}>
-              {loader ? (
-                <ActivityIndicator size="large" color="#fff" />
-              ) : (
-                <Carousel
-                  layout={"default"}
-                  resizeMode={"cover"}
-                  loop={videoAction}
-                  autoplay={videoAction}
-                  autoplayInterval={3000}
+              <View style={styles.wrap}>
+                {loader ? (
+                  <ActivityIndicator size="large" color="#fff" />
+                ) : (
+                  <Carousel
+                    layout={"default"}
+                    resizeMode={"cover"}
+                    loop={videoAction}
+                    autoplay={videoAction}
+                    autoplayInterval={3000}
 
-                  // ref={ref => this.carousel = ref}
-                  data={LandingData?.banners}
-                  sliderWidth={width}
-                  itemWidth={width}
-                  renderItem={_renderItem}
-                  style={styles.ShoppingBanner}
-                  onSnapToItem={index => setActiveSlide(index)}
-                />
+                    // ref={ref => this.carousel = ref}
+                    data={LandingData?.banners}
+                    sliderWidth={width}
+                    itemWidth={width}
+                    renderItem={_renderItem}
+                    style={styles.ShoppingBanner}
+                    onSnapToItem={index => setActiveSlide(index)}
+                  />
 
-              )}
-            </View>
-            <View
-              style={styles.yellowBtn}
-            >
-
-              <View style={{ borderWidth: 2, borderColor: "#fff", borderRadius: 45, }}>
-                <AvatarBtn
-                  picture={userData?.profile_image}
-                  // id={userInfo?.id}
-                  //  name={(name.slice(0, 1) + name.slice(0, 1))}
-                  size={50}
-                  font={28}
-                />
+                )}
               </View>
-
-              <TouchableOpacity onPress={() => navigation.navigate("WALLET")}>
-              <View style={styles.secondHeaderMiddleView}>
-                <Text style={[styles.text, { color: '#fff', fontSize: RFValue(14) }]}>
-                  {userData?.first_name?.charAt(0).toUpperCase() + userData?.first_name?.slice(1)} {userData?.last_name?.charAt(0).toUpperCase() + userData?.last_name?.slice(1)}
-                </Text>
-                <Text style={[styles.text, { color: '#fff', fontSize: RFValue(14) }]}>Your balance: <Text style={[styles.text, { color: '#ffff00', fontSize: RFValue(14) }]}>
-                  AED {userData?.balance ? FormatNumber(+(userData?.balance)) : 0}
-
-                </Text>
-                </Text>
-              </View>
-              </TouchableOpacity> 
-              <TouchableOpacity onPress={() => navigation.navigate("MenuStack", { screen: 'BuyLife' })}>
-              <ImageBackground
-                resizeMode="center"
-                style={{ width: 50, height: 40, justifyContent: 'center', alignItems: 'center' }}
-    
-                source={require('../../assets/imgs/pinkHeart.png')}
+              <View
+                style={styles.yellowBtn}
               >
 
-                <Text style={{ color: "#E7003F", fontFamily: 'Axiforma-SemiBold', fontSize: RFValue(12) }}>
-                  {totalLives?totalLives:0} 
-                </Text>
-                
-              </ImageBackground>
-              </TouchableOpacity>
-              {/* <TouchableOpacity onPress={() => navigation.navigate("WALLET")}>
+                <View style={{ borderWidth: 2, borderColor: "#fff", borderRadius: 45, }}>
+                  <AvatarBtn
+                    picture={userData?.profile_image}
+                    // id={userInfo?.id}
+                    //  name={(name.slice(0, 1) + name.slice(0, 1))}
+                    size={50}
+                    font={28}
+                  />
+                </View>
+
+                <TouchableOpacity onPress={() => navigation.navigate("WALLET")}>
+                  <View style={styles.secondHeaderMiddleView}>
+                    <Text style={[styles.text, { color: '#fff', fontSize: RFValue(14) }]}>
+                      {userData?.first_name?.charAt(0).toUpperCase() + userData?.first_name?.slice(1)} {userData?.last_name?.charAt(0).toUpperCase() + userData?.last_name?.slice(1)}
+                    </Text>
+                    <Text style={[styles.text, { color: '#fff', fontSize: RFValue(14) }]}>Your balance: <Text style={[styles.text, { color: '#ffff00', fontSize: RFValue(14) }]}>
+                      AED {userData?.balance ? FormatNumber(+(userData?.balance)) : 0}
+
+                    </Text>
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate("MenuStack", { screen: 'BuyLife' })}>
+                  <ImageBackground
+                    resizeMode="center"
+                    style={{ width: 50, height: 40, justifyContent: 'center', alignItems: 'center' }}
+
+                    source={require('../../assets/imgs/pinkHeart.png')}
+                  >
+
+                    <Text style={{ color: "#E7003F", fontFamily: 'Axiforma-SemiBold', fontSize: RFValue(12) }}>
+                      {totalLives ? totalLives : 0}
+                    </Text>
+
+                  </ImageBackground>
+                </TouchableOpacity>
+
+                {/* <TouchableOpacity onPress={() => navigation.navigate("WALLET")}>
                 <Entypo name="chevron-thin-right" size={22} color="#fff" style={{ marginTop: 6.5, marginRight: 6 }} />
               </TouchableOpacity> */}
-            </View>
-
-          </LinearGradient>
-
-        
-
-
-          <FlatList
-            horizontal={true}
-            style={{ marginLeft: 1, width: '100%', }}
-            contentContainerStyle={{
-
-              marginLeft: 10,
-              alignSelf: "flex-start",
-              paddingRight: width * 0.04,
-
-
-            }}
-            showsVerticalScrollIndicator={false}
-            showsHorizontalScrollIndicator={false}
-            data={LandingData?.lowerBanner}
-            renderItem={({ item, index }) => (
-
-              // <TouchableOpacity
-              //   onPress={() =>
-              //    // navigation.navigate("SimpeStackScreen", { screen: "ProductDetail", params: item })
-              //    alert("hii")
-              //   }
-              // >
-              <TriviaNightCard
-                uri={item.url}
-                index={item.index}
-                item={item}
-                onPress={() => {
-                  index === 0 ? (
-                    navigation.navigate("TriviaJoy")
-                  ) : index === 1 ? (
-                    navigation.navigate("DealsJoy")
-                  ) : (
-                    //  navigation.navigate("FanJoy")
-                    navigation.navigate("AllCreatorsPage")
-                  )
-                }} />
-              // </TouchableOpacity>
-            )}
-            keyExtractor={(item) => item.id}
-          //   ListEmptyComponent={this.RenderEmptyContainerOnGoing()}
-          />
-            <View style={{ justifyContent: 'center', alignItems: 'center',paddingBottom:15 }}>
-            <ButtonWithRightIcon
-              btnStyle={{ backgroundColor: '#420E92' }}
-              text={"How it works"}
-              textStyle={{ color: '#fff', fontFamily: 'Axiforma SemiBold' }}
-              onPress={() => AddModalState.current(true)}
-            />
-          </View>
-          <HomeCard
-            //onPress={() => navigation.navigate("GameStack")} 
-            onPress={() => LetBegin()}
-
-            //style={{ marginTop: 10, }}
-            gameShowData={"hiii"}
-            time={time}
-          />
-          <View style={{ flexDirection: 'row', width: '90%', justifyContent: 'space-between', marginTop: 10, marginBottom: 10 }}>
-            <Text style={{ color: '#E7003F', fontSize: 16, fontFamily: "Axiforma-Bold" }}>Shop to Win</Text>
-
-            <TouchableOpacity onPress={() => navigation.navigate("PRODUCTS", {
-              screen: "PrizeList"
-            })}>
-              <Text style={{ color: '#E7003F', fontSize: 16, fontFamily: "Axiforma-Bold" }}>View all</Text>
-            </TouchableOpacity>
-
-          </View>
-          <FlatList
-            horizontal={true}
-            style={{ marginLeft: 1, minHeight: 50 }}
-            contentContainerStyle={{
-              alignSelf: "flex-start",
-              paddingRight: width * 0.04,
-            }}
-            showsVerticalScrollIndicator={false}
-            showsHorizontalScrollIndicator={false}
-            data={LandingData?.products}
-            renderItem={({ item }) => (
-              <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate("PRODUCTS", { params: item })
-                }
-              >
-                <ClosingSoon props={props} index={item.index} item={item} />
-              </TouchableOpacity>
-            )}
-            keyExtractor={(item) => item.id}
-          //   ListEmptyComponent={this.RenderEmptyContainerOnGoing()}
-          />
-          <View style={styles.avatarBannerView}>
-            <Image
-              style={styles.avatarBanner}
-              source={require('../../assets/imgs/avatarBannar.gif')}
-              resizeMode="center"
-            />
-            <LongButton
-              style={[
-                styles.Margin,
-                { backgroundColor: "#ffffff", position: 'absolute', bottom: 48, right: 25, },
-              ]}
-              textstyle={{ color: "#000000", fontFamily: "Axiforma SemiBold", fontSize: 10 }}
-              text="View Leaderboard"
-              font={10}
-              shadowless
-              onPress={() => navigation.navigate("MenuStack", { screen: 'LeaderBoard' })}
-            />
-          </View>
-          <LinearGradient
-            start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
-            colors={["#f8d7e8", "#c7dfe8"]}
-            style={{ width: '100%', justifyContent: 'center', paddingLeft: 15, paddingTop: 20, paddingBottom: 20 }}
-          >
-            <View style={{ width: "95%", flexDirection: 'row', justifyContent: 'space-between' }}>
-              <View>
-                <Text style={{ color: '#E7003F', fontSize: 20, fontFamily: "Axiforma-Bold" }}>FANJOY</Text>
-                <Text style={{ color: '#0B2142', fontSize: 16, fontFamily: "Axiforma Regular" }}>Products By Creators</Text>
               </View>
-              <LongButton
-                style={[
-                  styles.Margin,
-                  { backgroundColor: "#ffffff", },
-                ]}
-                textstyle={{ color: "#000000", fontFamily: "Axiforma SemiBold", fontSize: 14 }}
-                text="View all Stars"
-                font={16}
-                shadowless
-                onPress={() => navigation.navigate("AllCreatorsList")}
+              <View
+                style={{
+                  height: 1,
+                  width: width * 1,
+                  backgroundColor: "#E74F7D",
+                  marginTop: 13,
+                }}
               />
-            </View>
+              <TouchableOpacity onPress={() => { AddModalState.current(true) }}>
+                <View style={{ flexDirection: 'row', marginTop: height * 0.013 }}>
+                  <Image
+                    style={{ width: 30, height: 30 }}
+                    source={require('../../assets/imgs/circlePlaybtn.png')}
+                  />
+                  <Label primary font={RFValue(13)} bold dark style={{ color: "#ffff", width: width * 0.4 }}>
+                    How it works
+                  </Label>
+                </View>
+              </TouchableOpacity>
+            </LinearGradient>
+
+
+
 
             <FlatList
-              data={LandingData?.products}
               horizontal={true}
-              //   style={{ paddingLeft: 12 }}
-              renderItem={({ item }) =>
-                <TrendingCards
-                  onPress={() => navigation.navigate("AllCreatorsPage")}
-                  imageUrl={item.image}
-                  title={item?.title}
-                  price={item?.price}
-                  style={{ width: width * 0.38, height: height * 0.33, }}
-                  imageStyle={{ width: width * 0.35, height: height * 0.22, borderRadius: 15 }}
-                />
-              }
-              //keyExtractor={(e) => e.id.toString()}
+              style={{ marginLeft: 1, width: '100%', }}
               contentContainerStyle={{
-                marginTop: 10,
+
+                marginLeft: 10,
+                alignSelf: "flex-start",
+                paddingRight: width * 0.04,
+
+
               }}
-              // refreshControl={
-              //   <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
-              // }
+              showsVerticalScrollIndicator={false}
+              showsHorizontalScrollIndicator={false}
+              data={LandingData?.lowerBanner}
+              renderItem={({ item, index }) => (
+
+                // <TouchableOpacity
+                //   onPress={() =>
+                //    // navigation.navigate("SimpeStackScreen", { screen: "ProductDetail", params: item })
+                //    alert("hii")
+                //   }
+                // >
+                <TriviaNightCard
+                  uri={item.url}
+                  index={item.index}
+                  item={item}
+                  onPress={() => {
+                    index === 0 ? (
+                      navigation.navigate("TriviaJoy")
+                    ) : index === 1 ? (
+                      navigation.navigate("DealsJoy")
+                    ) : (
+                      //  navigation.navigate("FanJoy")
+                      navigation.navigate("AllCreatorsPage")
+                    )
+                  }} />
+                // </TouchableOpacity>
+              )}
               keyExtractor={(item) => item.id}
+            //   ListEmptyComponent={this.RenderEmptyContainerOnGoing()}
             />
-          </LinearGradient>
-          <TouchableOpacity onPress={() => navigation.navigate('WINNERS', {
-            selected: 1
-          })}>
-            <LuckyDrawCard
-              style={{ marginTop: 15, }}
+            <View style={{ justifyContent: 'center', alignItems: 'center', }}>
+            </View>
+            {
+              LandingData?.home_middle_banners_data?(
+                <HomeCard
+                //onPress={() => navigation.navigate("GameStack")} 
+                onPress={() => LetBegin()}
+                images={LandingData?.home_middle_banners_data}
+                //style={{ marginTop: 10, }}
+                gameShowData={"hiii"}
+                time={time}
+              />
+              ):null
+            }
+          
+            <View style={{ flexDirection: 'row', width: '90%', justifyContent: 'space-between', marginTop: 10, marginBottom: 10 }}>
+              <Text style={{ color: '#E7003F', fontSize: 16, fontFamily: "Axiforma-Bold" }}>Shop to Win</Text>
+
+              <TouchableOpacity onPress={() => navigation.navigate("PRODUCTS", {
+                screen: "PrizeList"
+              })}>
+                <Text style={{ color: '#E7003F', fontSize: 16, fontFamily: "Axiforma-Bold" }}>View all</Text>
+              </TouchableOpacity>
+
+            </View>
+            <FlatList
+              horizontal={true}
+              style={{ marginLeft: 1, minHeight: 50 }}
+              contentContainerStyle={{
+                alignSelf: "flex-start",
+                paddingRight: width * 0.04,
+              }}
+              showsVerticalScrollIndicator={false}
+              showsHorizontalScrollIndicator={false}
+              data={LandingData?.products}
+              renderItem={({ item }) => (
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate("PRODUCTS", { params: item })
+                  }
+                >
+                  <ClosingSoon props={props} index={item.index} item={item} />
+                </TouchableOpacity>
+              )}
+              keyExtractor={(item) => item.id}
+            //   ListEmptyComponent={this.RenderEmptyContainerOnGoing()}
             />
-          </TouchableOpacity>
-          <View style={{ height: 10 }} />
-        </View>
-        <WatchAddModal ModalRef={AddModalState} details
-          video={"https://winjoy-assets.s3.amazonaws.com/banners/banner-3.mp4"}
-          cross={true}
-        // id={idVideoAdd}
-        // onPressContinue={onPressContinue} 
-        />
-      </ScrollView>
-    </View >
+            <View style={{ paddingVertical: 12 }}>
+              <View style={styles.avatarBannerView}>
+                {LandingData?.leaderboard_home_data ? (
+                  <Image
+                    style={[styles.avatarBannerView, { position: 'absolute', overlayColor: '#f6f1f3', }]}
+                    source={{ uri: LandingData?.leaderboard_home_data[0]?.url }}
+                  /> 
+                ) : null}
+                <View style={{left:0,bottom:0,position:'absolute'}}>
+                  <Text style={{color:'#000000',fontFamily:'Axiforma-Bold',fontSize:RFValue(16)}}>Winners</Text>
+                  <Text style={{color:'#000000',fontFamily:'Axiforma-Regular',fontSize:RFValue(8)}}>STILL COUNTING</Text>
+                </View>
+                <LongButton
+                  style={[
+                    styles.Margin,
+                    { backgroundColor: "#ffffff", position: 'absolute', bottom: 10, right: 25, },
+                  ]}
+                  textstyle={{ color: "#000000", fontFamily: "Axiforma-SemiBold", fontSize: 10 }}
+                  text="View Leaderboard"
+                  font={10}
+                  shadowless
+                  onPress={() => navigation.navigate("MenuStack", { screen: 'LeaderBoard' })}
+                />
+              </View>
+            </View>
+            <LinearGradient
+              start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
+              colors={["#f8d7e8", "#c7dfe8"]}
+              style={{ width: '100%', justifyContent: 'center', paddingLeft: 15, paddingTop: 20, paddingBottom: 20 }}
+            >
+              <View style={{ width: "95%", flexDirection: 'row', justifyContent: 'space-between' }}>
+                <View>
+                  <Text style={{ color: '#E7003F', fontSize: 20, fontFamily: "Axiforma-Bold" }}>FANJOY</Text>
+                  <Text style={{ color: '#0B2142', fontSize: 16, fontFamily: "Axiforma-Regular" }}>Products By Creators</Text>
+                </View>
+                <LongButton
+                  style={[
+                    styles.Margin,
+                    { backgroundColor: "#ffffff", },
+                  ]}
+                  textstyle={{ color: "#000000", fontFamily: "Axiforma-SemiBold", fontSize: 14 }}
+                  text="View all Stars"
+                  font={16}
+                  shadowless
+                  onPress={() => navigation.navigate("AllCreatorsList")}
+                />
+              </View>
+
+              <FlatList
+                data={LandingData?.funJoy}
+                horizontal={true}
+                //   style={{ paddingLeft: 12 }}
+                renderItem={({ item }) =>
+                  <FanJoyCard
+                    onPress={() => {
+                      onPressCreator(item?.id)
+
+                    }}
+                    name={item?.user_name}
+                    imageUrl={item?.image}
+                    fans={item.fans}
+                  />
+                }
+                //keyExtractor={(e) => e.id.toString()}
+                contentContainerStyle={{
+                  marginTop: 10,
+                }}
+                // refreshControl={
+                //   <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
+                // }
+                keyExtractor={(item) => item.id}
+              />
+            </LinearGradient>
+            {LandingData?.luckydraw_results_data ? (
+
+              <LuckyDrawCard
+                image={LandingData?.luckydraw_results_data[0]?.url}
+                style={{ marginTop: 15, }}
+                onPress={() => {
+                  navigation.navigate("MenuStack", {
+                    screen: "RefferAndEarn",
+
+                  });
+                }}
+              />
+
+            ) : null}
+
+            <View style={{ height: 10 }} />
+          </View>
+          <HowItWorkModal ModalRef={AddModalState} details
+            video={"https://winjoy-assets.s3.amazonaws.com/banners/banner-3.mp4"}
+            cross={true}
+          // id={idVideoAdd}
+          // onPressContinue={onPressContinue} 
+          />
+        </ScrollView>
+      </View >
+    </SafeAreaView>
   );
 };
 
