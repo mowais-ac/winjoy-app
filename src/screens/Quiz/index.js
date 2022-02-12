@@ -149,7 +149,7 @@ const BackgroundVideo = ({ route, navigation }) => {
             .then(async (res) => {
                 setAvailLifeActivity(false)
                 console.log("resUseLife", res);
-                if (res.message = "Live availed successfully") {
+                if (res.message === "Live availed successfully") {
                     dispatch({
                         type: types.TOTAL_LIVES, 
                         totalLives: res?.lives,
@@ -159,7 +159,8 @@ const BackgroundVideo = ({ route, navigation }) => {
                     LifeLineModalState.current(false)
                 }
                 else {
-                    ModalState.current(true);
+                    LifeLineModalState.current(false)
+                    ModalState.current(true); 
                 }
 
 
