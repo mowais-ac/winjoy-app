@@ -48,12 +48,12 @@ const index = ({ props, navigation }) => {
   const [renderBtn, setRenderBtn] = useState(false);
 
   useEffect(() => {
-    dispatch(TriviaJoyAPI());
     console.log("userData", userData);
     console.log("triviaJoyData", triviaJoyData.on_going_gameshow);
     var date = new Date().toLocaleString()
     console.log("daaate", date);
     console.log("start", dayjs(triviaJoyData?.upcoming_gameshow?.start_date).format('MMMM DD, YYYY - HH:MM A'));
+    console.log("time",time);
 
   }, [])
 

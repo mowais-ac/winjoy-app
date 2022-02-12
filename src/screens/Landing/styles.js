@@ -98,7 +98,7 @@ export default StyleSheet.create({
     marginLeft: 2,
   },
   mainView: {
-    height: heightPercentageToDP("47"),
+    height: height*0.48,
     width: width,
     alignItems: 'center',
     borderBottomLeftRadius: 20,

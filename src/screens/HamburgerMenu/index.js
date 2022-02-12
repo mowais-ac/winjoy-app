@@ -174,7 +174,7 @@ const index = ({ props, navigation }) => {
         />
         <View style={styles.aView}>
           <View style={styles.bView}>
-            <View style={styles.topView}>
+            <View style={[styles.topView]}>
               <ProfilePicture
                 picture={userData?.profile_image}
                 id={userData?.id}
@@ -185,12 +185,12 @@ const index = ({ props, navigation }) => {
                 style={styles.avatarView}
               />
 
-              <View style={{ width: widthConverter(250), marginLeft: 20 }}>
+              <View style={{ width: widthConverter(250), marginLeft: 20, justifyContent: 'center', }}>
                 <Label
                   font={14}
                   notAlign
                   bold
-                  style={{ color: "#FFFFFF", marginTop: 8 }}
+                  style={{ color: "#FFFFFF", }}
                 >
                   {userData?.first_name?.charAt(0)?.toUpperCase() + userData?.first_name?.slice(1)} {userData?.last_name?.charAt(0)?.toUpperCase() + userData?.last_name?.slice(1)}
                 </Label>
@@ -199,16 +199,19 @@ const index = ({ props, navigation }) => {
                   notAlign
                   font={14}
                   bold
-                  style={{ color: "#FFFFFF", marginTop: 6, }}
+                  style={{ color: "#FFFFFF", }}
                 >
                   {userData?.designation}
-                  <Label
-                    primary
-                    font={14}
-                    style={{ color: "#e2acc7" }}
-                  >
-                    {' '}at
-                  </Label>
+                  {userData?.company_name ? (
+                    <Label
+                      primary
+                      font={14}
+                      style={{ color: "#e2acc7" }}
+                    >
+                      {' '}at
+                    </Label>
+                  ) : null}
+
                   {' '}{userData?.company_name}
                 </Label>
               </View>
@@ -326,7 +329,7 @@ const index = ({ props, navigation }) => {
                         navigation.navigate("RefferAndEarn")
                       }
 
-                    
+
                     }}
                   >
                     <View style={{ flexDirection: 'row', marginLeft: width * 0.05 }}>
@@ -537,7 +540,7 @@ const index = ({ props, navigation }) => {
                 </TouchableOpacity>
               </View>
             </View>
-            <SelectLanguageModal ModalRef={ModalStateLanguage} details /> 
+            <SelectLanguageModal ModalRef={ModalStateLanguage} details />
             <SelectCurrencyModal ModalRef={ModalStateCurrency} details />
           </View>
         </View>
@@ -598,7 +601,7 @@ const styles = StyleSheet.create({
   },
   topView: {
     width: widthPercentageToDP("100%"),
-    paddingTop: 10,
+    paddingVertical: 10,
     flexDirection: "row",
   },
   avatarView: {

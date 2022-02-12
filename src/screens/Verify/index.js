@@ -131,10 +131,7 @@ const index = ({ route, navigation }) => {
           />
         </View>
         <View>
-          <GoBack
-            onPress={() => navigation.replace("Splash")}
-            style={styles.Margin3}
-          />
+         
         </View>
       </ScrollView>
     </SafeAreaView>

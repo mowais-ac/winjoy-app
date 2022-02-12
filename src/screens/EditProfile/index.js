@@ -498,7 +498,7 @@ const index = ({ route, navigation }) => {
   return (
     <ScrollView>
       <SafeArea>
-        <Background height={0.2} />
+        <Background height={0.15} />
         <Header value={3} />
         <View style={styles.MainTop}>
           {userData !== null && (

@@ -27,10 +27,12 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import Video from "react-native-video";
 import * as Progress from 'react-native-progress';
 import { getLiveShowPlans } from '../redux/actions';
+import types from "../redux/types";
 const { width, height } = Dimensions.get("window");
 //let timer = () => { };
 const WatchAddModal = (props) => {
   const dispatch = useDispatch();
+  const dispatch2 = useDispatch();
   const [timer, setTimer] = useState(0);
   const [totalTime, setTotalTime] = useState(30);
   const [ModelState, setModelState] = useState({
@@ -54,8 +56,14 @@ const WatchAddModal = (props) => {
         },
       });
       const json = await result.json();
+      console.log("ress",json.lives);
       if(json.status==="success"){
         if(json.message==="Lives buy successfully"){
+          dispatch2({
+            type: types.TOTAL_LIVES,
+            totalLives:json?.lives,
+
+          });
           setModelState({
             ...ModelState,
             state: ModelState.state = false,

@@ -33,7 +33,7 @@ const NotFoundCart = (props) => {
             textstyle={{color:'#ffffff',fontFamily:'Axiforma-Bold'}}
             style={styles.Btn}
             shadowless
-            onPress={() => {alert("test")}}
+            onPress={props.onPress}
           />
  
   

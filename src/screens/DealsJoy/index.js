@@ -34,6 +34,7 @@ import Video from "react-native-video";
 import Carousel from "react-native-snap-carousel";
 import { ButtonWithRightIcon } from '../../Components'
 import HowItWorkModal from "../../Components/HowItWorkModal";
+import { RFValue } from "react-native-responsive-fontsize";
 
 function ClosingSoon({ item }) {
   let progress = item?.updated_stocks
@@ -175,7 +176,26 @@ const index = ({ props, navigation }) => {
             />
           )}
         </View>
-
+     
+        <TouchableOpacity onPress={() => { AddModalState.current(true) }}>
+          <View style={{ flexDirection: 'row', marginTop: height * 0.015,justifyContent:'center',width:width }}>
+            <Image
+              style={{ width: 30, height: 30 }}
+              source={require('../../assets/imgs/circlePlaybtn.png')}
+            />
+            <Label primary font={RFValue(13)} bold dark style={{ color: "#ffff", width: width * 0.4 }}>
+              How it works
+            </Label>
+          </View>
+        </TouchableOpacity>
+        <View
+          style={{
+            height: 1,
+            width: width * 1,
+            backgroundColor: "rgba(178, 190, 181,0.5)",
+            marginTop: height * 0.02,
+          }}
+        />
         <Label
           notAlign
           primary
@@ -252,18 +272,11 @@ const index = ({ props, navigation }) => {
         </TouchableOpacity>
         <View style={{ marginBottom: height * 0.01 }} />
       </LinearGradient>
-      <View style={{ justifyContent: 'center', alignItems: 'center', height: height * 0.1 }}>
-        <ButtonWithRightIcon
-          btnStyle={{ backgroundColor: '#420E92' }}
-          text={"How it works"}
-          textStyle={{color:'#fff',fontFamily:'Axiforma-SemiBold'}}
-          onPress={()=>AddModalState.current(true)} 
-        />
-      </View>
+     
       <HomeBottomList data={dealsJoyData?.winners_collection} />
       <View style={{ height: 20 }} />
       <HowItWorkModal ModalRef={AddModalState} details
-       cross={true}
+        cross={true}
         video={"https://winjoy-assets.s3.amazonaws.com/banners/banner-3.mp4"}
       // id={idVideoAdd}
       // onPressContinue={onPressContinue} 

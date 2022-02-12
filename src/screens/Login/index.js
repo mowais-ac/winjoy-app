@@ -129,7 +129,8 @@ const index = ({ navigation }) => {
       await fetch(`${Config.API_URL}/auth/login`, requestOptions)
         .then(async (response) => response.json())
         .then(async (res) => {
-          tokenForLang.current = res.data.token;
+          console.log("res",res);
+          tokenForLang.current = res?.data?.token;
           ButtonRef.current.SetActivity(false);
           if (res?.data?.token) {
             if (res?.data?.user?.preferred_language === null) {
@@ -170,24 +171,25 @@ const index = ({ navigation }) => {
             }
           }
           else if (
-            res.message === "Enter 6 Digit Code which sent on your mobile"
+            res?.message === "Enter 6 Digit Code which sent on your mobile"
           ) {
             await EncryptedStorage.setItem("Token", res.data.token);
             navigation.replace("Verify", { phone: phone_no });
           }
           else if (
-            res.message ===
+            res?.message ===
             "Your account has been inactive/suspended by our admin, please contact support for further details"
           )
             ModalState.current(true, {
               heading: "Account suspended",
-              Error: res.message,
+              Error: res?.message,
             });
           else {
+            console.log("res?.message",res?.message);
             ModalState.current(true, {
               heading: "Error",
-              Error: res.message,
-              array: res.errors ? Object.values(res.errors) : [],
+              Error: res?.message,
+             // array: res.errors ? Object.values(res.errors) : [],
             });
             ButtonRef.current.SetActivity(false);
           }

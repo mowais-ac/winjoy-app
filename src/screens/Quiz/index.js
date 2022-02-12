@@ -427,7 +427,7 @@ const BackgroundVideo = ({ route, navigation }) => {
                             >
 
                                 <Text style={{ color: "#E7003F", fontFamily: 'Axiforma-SemiBold', fontSize: RFValue(15) }}>
-                                   {totalLives}
+                                   {totalLives?totalLives:0}
                                 </Text>
                             </ImageBackground>
                             {gameShowCheck ? (
@@ -546,7 +546,7 @@ const BackgroundVideo = ({ route, navigation }) => {
                                                 
                                                     >
                                                         <View style={{ justifyContent: 'center', alignItems: 'center', }}>
-                                                            <Text style={{ fontFamily: 'Axiforma-SemiBold', fontSize: 12, color: "#E7003F", lineHeight: 12, }}>
+                                                            <Text style={{ fontFamily: 'Axiforma-SemiBold', fontSize: 12, color: "#E7003F", lineHeight: 12,textAlign:'center' }}>
                                                                 {timeLeft <= 0 ? "Time's Up" : timeLeft}
                                                             </Text>
 

@@ -28,8 +28,8 @@ export default StyleSheet.create({
     flexDirection:'row'
   },
   optionsText: {
-    fontSize: RFValue(16), color: "#0032B5",
-    lineHeight: heightConverter(30),
+    fontSize: RFValue(13), color: "#0032B5",
+   // lineHeight: heightConverter(30),
     textAlign: 'left',
     fontFamily: "Axiforma-Regular",
   },

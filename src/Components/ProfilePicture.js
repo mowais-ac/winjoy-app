@@ -17,7 +17,7 @@ const ProfilePicture = (props) => {
   ) : (
     <View style={[styles.ProfileView, styles.ProfileBG, style]}>
       <Label adjustsFontSizeToFit={true} font={font || 25} bold style={styles.Text}>
-        {name?.charAt(0)?.toUpperCase()} 
+        {name} 
       </Label>
     </View>
   );
