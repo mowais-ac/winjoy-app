@@ -32,6 +32,7 @@ import { numericRegex, alphabetRegex } from '../Constants/regex';
 import Modals from "../Components/Modals";
 import BuyLifeCongrats from "./BuyLifeCongrats";
 import Clipboard from '@react-native-clipboard/clipboard';
+import types from "../redux/types";
 const { width, height } = Dimensions.get("window");
 
 let li = [{
@@ -51,6 +52,7 @@ const RefferLifeLineModal = (props) => {
   const totalLives = useRef();
   const livePlans = useSelector(state => state.app.livePlans);
   const dispatch = useDispatch();
+  const dispatch2 = useDispatch();
   const [ModelState, setModelState] = useState({
     state: false,
     details: null,
@@ -230,8 +232,14 @@ const RefferLifeLineModal = (props) => {
     await fetch(`${Config.API_URL}/buy_lives_plan/${id}`, requestOptions)
       .then((response) => response.json())
       .then(async (res) => {
+        console.log("res",res);
         setLoader(false)
         if (res.status === "success") {
+          dispatch2({
+            type: types.TOTAL_LIVES,
+            totalLives:res?.lives,
+
+          });
           dispatch(getLiveShowPlans());
           totalLives.current=res?.lives
           SucessModalState.current(true)

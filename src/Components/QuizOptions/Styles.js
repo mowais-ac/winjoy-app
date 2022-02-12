@@ -28,8 +28,8 @@ export default StyleSheet.create({
     borderRadius: 25, marginTop: 15
   },
   optionsText: {
-    fontSize: RFValue(15), color: "#0032B5",
-    lineHeight: heightConverter(30),
+    fontSize: RFValue(13), color: "#0032B5",
+    //lineHeight: heightConverter(30),
     textAlign: 'left',
     fontFamily: "Axiforma-Regular",
   },

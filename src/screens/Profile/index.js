@@ -46,7 +46,7 @@ const index = ({ props, navigation, route }) => {
   const [activity, setActivity] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const user = useSelector(state => state.app.userData);
-  
+
   useEffect(async () => {
     if (JSON.stringify(Data) !== user) {
       setData(user);
@@ -132,22 +132,22 @@ const index = ({ props, navigation, route }) => {
   return (
     <>
       <Background height={1} />
-      <View style={{ height: 20 }} />
+      <View style={{ height: 10 }} />
       <Header back={true} />
       <View style={styles.aView}>
         <View style={styles.avatarView}>
           <ProfilePicture
             picture={userInfo?.profile_image}
             id={userInfo?.id}
-            // name={(userInfo?.first_name.slice(0, 1) + userInfo?.last_name.slice(0, 1))}
+            name={userInfo?.first_name?.slice(0, 1)?.toUpperCase()+userInfo?.last_name?.slice(0, 1)?.toUpperCase()}
             style={styles.avatarView}
             font={28}
           />
         </View>
 
         <Label font={14} style={{ color: "#FFFFFF", marginTop: 8 }}>
-        {userInfo?.first_name?.charAt(0).toUpperCase() + userInfo?.first_name?.slice(1)} {userInfo?.last_name?.charAt(0).toUpperCase() + userInfo?.last_name?.slice(1)}
-       
+          {userInfo?.first_name?.charAt(0).toUpperCase() + userInfo?.first_name?.slice(1)} {userInfo?.last_name?.charAt(0).toUpperCase() + userInfo?.last_name?.slice(1)}
+
         </Label>
         {/* <Label
           primary
@@ -205,7 +205,8 @@ const index = ({ props, navigation, route }) => {
                   <NotFound
                     text="Games"
                     desc="You don't have win any Games yet "
-                    ConModal
+                    style={{justifyContent:'center',alignItems:'center',height:height*0.4}}
+                   
                   />
                 )
               }
@@ -292,7 +293,7 @@ const index = ({ props, navigation, route }) => {
                   <NotFound
                     text="Friends"
                     desc="You don't have any Friend yet "
-                    ConModal
+                    style={{justifyContent:'center',alignItems:'center',height:height*0.4}}
                   />
                 )
               }

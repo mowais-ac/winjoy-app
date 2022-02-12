@@ -259,7 +259,7 @@ const index = ({ navigation }) => {
               scrollEnabled={true}
               keyExtractor={(e) => e.id.toString()} 
               extraData={updateData}
-              ListEmptyComponent={listloader?(<ActivityIndicator size="large" color="#000000" style={{marginTop:height*0.2}} />):(<NotFoundCart text="Cart" />)}
+              ListEmptyComponent={listloader?(<ActivityIndicator size="large" color="#000000" style={{marginTop:height*0.2}} />):(<NotFoundCart text="Cart" onPress={()=>navigation.navigate("PRODUCTS")} />)}
               ListHeaderComponent={() => 
                 
                   <Label primary bold headingtype="h4" style={{ marginTop: 15 }}>

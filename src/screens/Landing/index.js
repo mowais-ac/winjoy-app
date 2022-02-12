@@ -47,7 +47,7 @@ import LongButton from "../../Components/LongButton";
 import { FanJoyCard, WjBackground } from "../../Components";
 import Carousel from 'react-native-snap-carousel';
 import Video from "react-native-video";
-import { getLandingScreen, CheckGameEnterStatus } from '../../redux/actions';
+import { getLandingScreen, CheckGameEnterStatus,TriviaJoyAPI } from '../../redux/actions';
 import socketIO from "socket.io-client";
 import { useTranslation } from 'react-i18next';
 import HowItWorkModal from "../../Components/HowItWorkModal";
@@ -145,6 +145,7 @@ const index = (props) => {
   const dispatch = useDispatch();
   const dispatch2 = useDispatch();
   const dispatch3 = useDispatch();
+  const dispatch4 = useDispatch();
   const socket = socketIO(MYServer);
   const AddModalState = useRef();
   const onRefresh = React.useCallback(() => {
@@ -178,6 +179,9 @@ const index = (props) => {
 
     dispatch(getLandingScreen());
     setGameShowData(LandingData?.gameShow)
+    var CurrentDate = new Date().toLocaleString()
+    var duration = dayjs(LandingData?.gameShow?.start_date).diff(dayjs(CurrentDate), 'seconds');
+    setTime(duration)
     console.log("LandingData", LandingData);
   }, []);
   const LetBegin = () => {
@@ -316,7 +320,7 @@ const index = (props) => {
                   <AvatarBtn
                     picture={userData?.profile_image}
                     // id={userInfo?.id}
-                    //  name={(name.slice(0, 1) + name.slice(0, 1))}
+                      name={(userData?.first_name?.slice(0, 1))?.toUpperCase()}
                     size={50}
                     font={28}
                   />
@@ -385,6 +389,7 @@ const index = (props) => {
                 marginLeft: 10,
                 alignSelf: "flex-start",
                 paddingRight: width * 0.04,
+                paddingVertical:10
 
 
               }}
@@ -405,7 +410,8 @@ const index = (props) => {
                   item={item}
                   onPress={() => {
                     index === 0 ? (
-                      navigation.navigate("TriviaJoy")
+                      navigation.navigate("TriviaJoy"),
+                      dispatch4(TriviaJoyAPI())
                     ) : index === 1 ? (
                       navigation.navigate("DealsJoy")
                     ) : (
@@ -427,8 +433,9 @@ const index = (props) => {
                 onPress={() => LetBegin()}
                 images={LandingData?.home_middle_banners_data}
                 //style={{ marginTop: 10, }}
-                gameShowData={"hiii"}
                 time={time}
+                gameShow={LandingData?.gameShow}
+                
               />
               ):null
             }

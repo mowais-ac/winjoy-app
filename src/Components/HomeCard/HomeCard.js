@@ -5,7 +5,7 @@ import styles from "./Styles";
 import CountDown from 'react-native-countdown-component';
 import LongButton from "../LongButton";
 import Carousel from 'react-native-snap-carousel';
-function HomeCard({ style, onPress, gameShowData, time, images }) {
+function HomeCard({ style, onPress, gameShow, time, images }) {
   console.log("images", images);
   const { width, height } = Dimensions.get("window");
   const [renderBtn, setRenderBtn] = useState(false);
@@ -44,7 +44,7 @@ function HomeCard({ style, onPress, gameShowData, time, images }) {
           source={{uri:image}}
         /> */}
       <View style={styles.textView}>
-        {!renderBtn ? (
+        {renderBtn || time<=0 ? (
           <>
             <Text
               style={styles.commingSoonTxt}
@@ -55,11 +55,11 @@ function HomeCard({ style, onPress, gameShowData, time, images }) {
               style={[styles.commingSoonTxt, { color: '#D9FE51' }]} >
               TRIVIA
             </Text>
-            {!gameShowData ? (
+            {gameShow==="no Live game shoe at this time" ? (
               <Text
                 style={[styles.commingSoonTxt, { fontSize: 16 }]}
               >
-                {gameShowData}
+               no Live game show at this time
               </Text>
             ) : (
               <LongButton
@@ -99,7 +99,7 @@ function HomeCard({ style, onPress, gameShowData, time, images }) {
               digitTxtStyle={{ color: '#D9FE51', fontSize: 18, fontFamily: 'Axiforma-Medium' }}
               timeLabelStyle={{ color: 'red', }}
               separatorStyle={{ color: '#D9FE51', paddingLeft: 5, paddingRight: 5 }}
-              timeToShow={['H', 'M', 'S']}
+              timeToShow={['D', 'H', 'M', 'S']}
               timeLabels={{ m: null, s: null }}
               showSeparator
             />

@@ -14,8 +14,7 @@ const SafeArea = (props) => {
         style={{
           paddingTop:
             Platform.OS === "android"
-              ? StatusBar.currentHeight +
-                Dimensions.get("window").height * 0.005
+              ? 0
               : 0,
         }}
       >
