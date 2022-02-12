@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import {
   View,
   StyleSheet,
@@ -28,6 +28,7 @@ import { TriviaJoyAPI, CheckGameEnterStatus } from '../../redux/actions';
 import CountDown from "react-native-countdown-component";
 import { RFValue } from "react-native-responsive-fontsize";
 import HowItWorkModal from "../../Components/HowItWorkModal";
+import { wait } from "../../Constants/Functions";
 const MYServer = "https://node-winjoyserver-deploy.herokuapp.com/";
 const index = ({ props, navigation }) => {
   const userData = useSelector(state => state.app.userData);
@@ -38,7 +39,7 @@ const index = ({ props, navigation }) => {
   const gameEnterStatus = useSelector(state => state.app.gameEnterStatus);
   const totalLives = useSelector(state => state.app.totalLives);
   const socket = socketIO(MYServer);
-  //const [time, setTime] = useState();
+  const [refreshing, setRefreshing] = useState(false);
   const [time, setTime] = useState(() => {
     dispatch(TriviaJoyAPI());
     var CurrentDate = new Date().toLocaleString()
@@ -46,14 +47,22 @@ const index = ({ props, navigation }) => {
     return duration;
   })
   const [renderBtn, setRenderBtn] = useState(false);
-
+  const onRefresh = useCallback(() => {
+    // setBanners(null);
+    setRefreshing(true);
+    dispatch(TriviaJoyAPI());
+    wait(2000).then(() => setRefreshing(false));
+  }, []);
   useEffect(() => {
+    socket.on("sendStartlivegameshow", msg => {
+      dispatch(TriviaJoyAPI());
+    });
     console.log("userData", userData);
     console.log("triviaJoyData", triviaJoyData.on_going_gameshow);
     var date = new Date().toLocaleString()
     console.log("daaate", date);
     console.log("start", dayjs(triviaJoyData?.upcoming_gameshow?.start_date).format('MMMM DD, YYYY - HH:MM A'));
-    console.log("time",time);
+    console.log("time", time);
 
   }, [])
 
@@ -82,6 +91,9 @@ const index = ({ props, navigation }) => {
   return (
     <ScrollView
       style={{ backgroundColor: "#ffffff" }}
+      refreshControl={
+        <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
+      }
     >
       <LinearGradient
         start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
@@ -105,7 +117,7 @@ const index = ({ props, navigation }) => {
 
           </Label>
 
-          {triviaJoyData?.on_going_gameshow!==null&&renderBtn? (
+          {triviaJoyData?.on_going_gameshow !== null ? (
             <TouchableOpacity
               onPress={() => LetBegin()}
             >
@@ -160,7 +172,7 @@ const index = ({ props, navigation }) => {
           </TouchableOpacity>
         </LinearGradient>
         <View style={styles.viewLifeDetails}>
-          <View style={{ width: width, flexDirection: 'row', justifyContent: 'space-around',alignItems:'center' }}>
+          <View style={{ width: width, flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center' }}>
             <View style={{ width: width * 0.6 }}>
               <Label notAlign primary font={13} bold style={{ color: "#E61C54", width: width * 0.4 }}>
                 Buy/Earn Lives
@@ -171,12 +183,12 @@ const index = ({ props, navigation }) => {
             </View>
             <ImageBackground
               resizeMode="cover"
-              style={{ width: 100, height: 80,  justifyContent: 'center', alignItems: 'center' }}
+              style={{ width: 100, height: 80, justifyContent: 'center', alignItems: 'center' }}
               source={require('../../assets/imgs/pinkHeart.png')}
             >
 
               <Text style={{ color: "#E7003F", fontFamily: 'Axiforma-SemiBold', fontSize: RFValue(20) }}>
-              {totalLives?totalLives:0} 
+                {totalLives ? totalLives : 0}
               </Text>
             </ImageBackground>
           </View>
@@ -185,20 +197,20 @@ const index = ({ props, navigation }) => {
             onPress={() => navigation.navigate("MenuStack", {
               screen: "BuyLife",
 
-            })} 
-            style={{paddingVertical:14}}
-            >
-            <Label primary font={13} bold style={{ color: "#E61C54",}}>
+            })}
+            style={{ paddingVertical: 14 }}
+          >
+            <Label primary font={13} bold style={{ color: "#E61C54", }}>
               View Detail
             </Label>
           </TouchableOpacity>
         </View>
-        
+
         <TriviaJoyBottomList data={triviaJoyData.banners} />
         <View style={{ marginBottom: height * 0.05 }} />
       </LinearGradient>
       <HowItWorkModal ModalRef={AddModalState} details
-       cross={true}
+        cross={true}
         video={"https://winjoy-assets.s3.amazonaws.com/banners/banner-3.mp4"}
       // id={idVideoAdd}
       // onPressContinue={onPressContinue} 
@@ -243,7 +255,7 @@ const styles = StyleSheet.create({
   },
   viewLifeDetails: {
     backgroundColor: '#F6EEF1',
-    
+
     paddingTop: 10,
     alignItems: 'center',
     borderBottomLeftRadius: 20,

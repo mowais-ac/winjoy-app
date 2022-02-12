@@ -133,7 +133,6 @@ const index = (props) => {
   const [winnerData, setWinnerData] = useState([]);
   const [imgActive, setImgActive] = useState(0);
   const [homeData, setHomeData] = useState([]);
-  const [gameShowData, setGameShowData] = useState([]);
   const [time, setTime] = useState("");
   const [activeSlide, setActiveSlide] = useState();
   const userData = useSelector(state => state.app.userData);
@@ -153,37 +152,23 @@ const index = (props) => {
     setRefreshing(true);
     dispatch(getLandingScreen());
     var CurrentDate = new Date().toLocaleString()
-    var duration = dayjs(LandingData?.gameShow?.start_date).diff(dayjs(CurrentDate), 'seconds');
+    var duration = dayjs(LandingData?.upcoming_gameshow?.start_date).diff(dayjs(CurrentDate), 'seconds');
     setTime(duration)
-    initialLoad();
     wait(2000).then(() => setRefreshing(false));
   }, []);
-  const UpdateLandingDataOnce = () => {
-    initialLoad();
-    dispatch(getLandingScreen());
-  };
-  const initialLoad = () => {
 
-    var CurrentDate = new Date().toLocaleString()
-    var duration = dayjs(LandingData?.gameShow?.start_date).diff(dayjs(CurrentDate), 'seconds');
-    setTime(duration)
-    setGameShowData(LandingData?.gameShow)
-  }
-  useFocusEffect(
-    React.useCallback(() => {
-      UpdateLandingDataOnce();
-      initialLoad();
-    }, [])
-  );
+
   useEffect(() => {
-
+    socket.on("sendStartlivegameshow", msg => {
+      dispatch(getLandingScreen());
+    });
     dispatch(getLandingScreen());
-    setGameShowData(LandingData?.gameShow)
     var CurrentDate = new Date().toLocaleString()
-    var duration = dayjs(LandingData?.gameShow?.start_date).diff(dayjs(CurrentDate), 'seconds');
+    var duration = dayjs(LandingData?.upcoming_gameshow?.start_date).diff(dayjs(CurrentDate), 'seconds');
     setTime(duration)
     console.log("LandingData", LandingData);
   }, []);
+  
   const LetBegin = () => {
     dispatch2(CheckGameEnterStatus());
     // console.log("gameEnterStatus",gameEnterStatus);
@@ -435,6 +420,7 @@ const index = (props) => {
                 //style={{ marginTop: 10, }}
                 time={time}
                 gameShow={LandingData?.gameShow}
+                upcoming_gameshow={LandingData?.upcoming_gameshow}
                 
               />
               ):null

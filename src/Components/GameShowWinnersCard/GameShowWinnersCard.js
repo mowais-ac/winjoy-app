@@ -11,6 +11,7 @@ function GameShowWinnersCard({ onPress, date, profile_image, name, ammount }) {
   return (
     <TouchableOpacity
       onPress={onPress}
+      disabled={true}
     > 
       <View style={styles.mainView}>
         <View style={styles.avatarView}>
