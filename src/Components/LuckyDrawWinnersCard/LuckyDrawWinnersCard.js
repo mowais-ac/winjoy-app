@@ -11,6 +11,7 @@ function LuckyDrawWinnersCard({ onPress, date, profile_image, name, prize_image 
   return (
     <TouchableOpacity
       onPress={onPress}
+      disabled={true}
     > 
       <View style={styles.mainView}>
         <View style={styles.avatarView}>

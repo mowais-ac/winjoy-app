@@ -44,7 +44,7 @@ function HomeCard({ style, onPress, gameShow, time, images }) {
           source={{uri:image}}
         /> */}
       <View style={styles.textView}>
-        {renderBtn || time<=0 ? (
+        {gameShow!=="no Live game shoe at this time"? (
           <>
             <Text
               style={styles.commingSoonTxt}
@@ -55,13 +55,6 @@ function HomeCard({ style, onPress, gameShow, time, images }) {
               style={[styles.commingSoonTxt, { color: '#D9FE51' }]} >
               TRIVIA
             </Text>
-            {gameShow==="no Live game shoe at this time" ? (
-              <Text
-                style={[styles.commingSoonTxt, { fontSize: 16 }]}
-              >
-               no Live game show at this time
-              </Text>
-            ) : (
               <LongButton
                 style={[
                   styles.Margin,
@@ -73,7 +66,6 @@ function HomeCard({ style, onPress, gameShow, time, images }) {
                 shadowless
                 onPress={onPress}
               />
-            )}
           </>
         ) : (
           <>

@@ -23,19 +23,19 @@ const LuckyDraw = (props) => {
 
   return (
     <View style={styles.mainView}>
-      
-      <FlatList 
+
+      <FlatList
         data={props?.winnersLastGame}
         contentContainerStyle={{}}
         scrollEnabled={false}
         // horizontal={true}
-     
+
         renderItem={
           ({ item, index }) => {
             return (
               <LuckyDrawWinnersCard
-              name={item?.user?.first_name?.charAt(0)?.toUpperCase() + item?.user?.first_name?.slice(1)+" "+item?.user?.last_name?.charAt(0)?.toUpperCase() + item?.user?.last_name?.slice(1)}
-              date={dayjs(item.created_at).format('MMMM DD, YYYY')}
+                name={item?.user?.first_name?.charAt(0)?.toUpperCase() + item?.user?.first_name?.slice(1) + " " + item?.user?.last_name?.charAt(0)?.toUpperCase() + item?.user?.last_name?.slice(1)}
+                date={dayjs(item.created_at).format('MMMM DD, YYYY')}
                 ammount={item?.price}
                 profile_image={item?.user?.profile_image}
                 prize_image={item?.prize_image?.prize_image}
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     fontFamily: "Axiforma-SemiBold",
     color: "#000000",
     fontSize: RFValue(12),
-   
+
   }
 });
 
