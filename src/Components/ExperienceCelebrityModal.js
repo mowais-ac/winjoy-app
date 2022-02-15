@@ -27,10 +27,13 @@ import { heightConverter } from "./Helpers/Responsive";
 import { Avatar } from "react-native-elements";
 import Modals from "../Components/Modals";
 import BuyLifeCongrats from "../Components/BuyLifeCongrats";
+import PaymentModalExperience from "../Components/PaymentModalExperience";
 const { width, height } = Dimensions.get("window");
 
 const ExperienceCelebrityModal = (props) => {
-  console.log("props.experienceDetail", props.experienceDetail);
+  console.log("props.experienceDetail", props);
+  console.log("props.celebrity_id", props.celebrity_id,);
+  console.log("props.experience_id", props.experience_id,);
   const ModalStateError = useRef();
   const [ModelState, setModelState] = useState({
     state: false,
@@ -40,6 +43,8 @@ const ExperienceCelebrityModal = (props) => {
   const SucessModalState = useRef();
   const ApproveRef = useRef();
   const DeclineRef = useRef();
+  const PayModalState = useRef();
+
 
   const navigation = useNavigation();
 
@@ -54,8 +59,8 @@ const ExperienceCelebrityModal = (props) => {
     setActivity(true)
     const Token = await EncryptedStorage.getItem("Token");
     const body = JSONtoForm({
-      celebrity_id: 12,
-      experience_id: 1
+      celebrity_id: props.celebrity_id,
+      experience_id: props.experience_id
     });
     const requestOptions = {
       method: "POST",
@@ -72,19 +77,19 @@ const ExperienceCelebrityModal = (props) => {
       .then(async (res) => {
         setActivity(false)
         console.log("resBuy", res);
-      
-        if(res?.order){
+
+        if (res?.order) {
           SucessModalState.current(true)
-         
+
         }
         else {
           ModalStateError.current(true, {
             heading: "Alert",
-           Error: res?.order?.status,
-          // array: res.errors ? Object.values(res.errors) : [],
+            Error: res?.order?.status,
+            // array: res.errors ? Object.values(res.errors) : [],
           });
         }
-       
+
       })
       .catch((e) => {
         Alert.alert("Error", e);
@@ -166,7 +171,7 @@ const ExperienceCelebrityModal = (props) => {
                 uri: props?.celebrityData?.profile_image,
               }}
             />
-            <View style={{ marginLeft: 20, width: width*0.67, }}>
+            <View style={{ marginLeft: 20, width: width * 0.67, }}>
               <Text style={{
                 color: '#000000',
                 fontFamily: 'Axiforma-Regular',
@@ -211,19 +216,19 @@ const ExperienceCelebrityModal = (props) => {
             data={props?.experienceDetail?.celebrity_porttfolio}
             horizontal={true}
             ListEmptyComponent={() => (
-              <Text style={{ color: '#000000' }}>The list is empty</Text> 
+              <Text style={{ color: '#000000' }}>The list is empty</Text>
             )
             }
-              ItemSeparatorComponent={
-            () => <View style={{ width: 12,}}/>
-        }
+            ItemSeparatorComponent={
+              () => <View style={{ width: 12, }} />
+            }
             renderItem={({ item }) =>
               <View style={{
                 width: width * 0.6,
                 height: height * 0.16,
                 justifyContent: 'center',
                 alignItems: 'center',
-             
+
 
               }}>
                 <Image
@@ -273,7 +278,7 @@ const ExperienceCelebrityModal = (props) => {
 
         <View style={styles.ModalBody}>
           <TouchableOpacity
-            onPress={() => { BuyExperience() }}
+            onPress={() => { PayModalState.current(true) }}
             disabled={activity}
             style={{
               height: heightConverter(15),
@@ -323,28 +328,35 @@ const ExperienceCelebrityModal = (props) => {
             Close
           </LabelButton>
         </View>
-        <Modals ModalRef={ModalStateError} Error onClose={()=>{
-           setModelState({
-            ...ModelState,
-            state: !ModelState.state,
-          });
-        }}/>
-        <BuyLifeCongrats ModalRef={SucessModalState}
-        heading={"Congratulations"}
-        description={"successfully Buy Experience"}
-        requestOnPress={() => {
-
-          SucessModalState.current(false)
-
-        }}
-        closeOnPress={() => {
-          SucessModalState.current(false)
+        <Modals ModalRef={ModalStateError} Error onClose={() => {
           setModelState({
             ...ModelState,
             state: !ModelState.state,
           });
-        }}
-      />
+        }} />
+        <BuyLifeCongrats ModalRef={SucessModalState}
+          heading={"Congratulations"}
+          description={"successfully Buy Experience"}
+          requestOnPress={() => {
+
+            SucessModalState.current(false)
+
+          }}
+          closeOnPress={() => {
+            SucessModalState.current(false)
+            setModelState({
+              ...ModelState,
+              state: !ModelState.state,
+            });
+          }}
+        />
+        <PaymentModalExperience
+          ModalRef={PayModalState}
+          details
+          total={props?.experienceDetail?.experience?.price}
+          celebrity_id={props?.celebrity_id}
+          experience_id={props?.experience_id}
+        />
       </View>
     </Modal>
   );

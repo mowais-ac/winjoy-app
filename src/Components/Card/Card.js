@@ -1,13 +1,13 @@
 import React from "react";
-import { View, Dimensions,Text } from "react-native";
+import { View, Dimensions, Text } from "react-native";
 import Config from "react-native-config";
 import LoaderImage from "../LoaderImage";
 const { width, height } = Dimensions.get("window");
 import ProgressCircle from 'react-native-progress-circle';
-function Card({ options, onPress, reset, result, optionDisable,imageUrl,updated_stocks,stock }) {
+function Card({ options, onPress, reset, result, optionDisable, imageUrl, updated_stocks, stock, removeProgressCircle }) {
   let progress = updated_stocks
-  ? (updated_stocks / stock) * 100
-  : 0;
+    ? (updated_stocks / stock) * 100
+    : 0;
   return (
     <View
       style={{
@@ -23,9 +23,11 @@ function Card({ options, onPress, reset, result, optionDisable,imageUrl,updated_
         alignItems: "center",
         elevation: 3,
         marginBottom: 15,
-      }} 
+      }}
     >
-          <View style={{position:'absolute',top:10,zIndex:1000,left:10}}>
+      <View style={{ position: 'absolute', top: 10, zIndex: 1000, left: 10 }}>
+
+        {!removeProgressCircle ? (
           <ProgressCircle
             percent={progress}
             radius={35}
@@ -49,7 +51,8 @@ function Card({ options, onPress, reset, result, optionDisable,imageUrl,updated_
               </Text>
             </View>
           </ProgressCircle>
-        </View>
+        ) : null}
+      </View>
       <LoaderImage
         source={{
           uri: imageUrl,

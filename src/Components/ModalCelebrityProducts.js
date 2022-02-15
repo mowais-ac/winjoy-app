@@ -37,16 +37,16 @@ const ModalCelebrityProducts = (props) => {
   const [ModelState, setModelState] = useState({
     state: false,
     details: null,
-  }); 
- 
-  useEffect(() => { 
+  });
+
+  useEffect(() => {
     if (props.ModalRef) props.ModalRef.current = HandleChange;
   });
 
   const HandleChange = (state, details = null, ForceSuccess = false) => {
     setModelState({ state, details, ForceSuccess });
   };
- 
+
 
 
   return (
@@ -91,8 +91,11 @@ const ModalCelebrityProducts = (props) => {
 
             renderItem={({ item }) =>
               <>
-                <TrendingCards 
-                  onPress={() => navigation.navigate("ExperienceProductDetail",{experienceId:experienceID,productId: item?.id})} 
+                <TrendingCards
+                  onPress={() => navigation.navigate("ExperienceProductDetail", {
+                    experience_celebrity_id: item?.pivot?.experience_celebrity_id,
+                    product_id: item?.pivot?.product_id,
+                  })}
                   imageUrl={item.image}
                   title={item?.title}
                   price={item?.price}

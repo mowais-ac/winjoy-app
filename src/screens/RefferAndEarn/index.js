@@ -14,7 +14,7 @@ import {
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import Header from "../../Components/Header";
-import { LifeCard, LifeCardRefferAndVideo, RewardzButton, WjBackground,RefferalTextInputForScreen } from "../../Components";
+import { LifeCard, LifeCardRefferAndVideo, RewardzButton, WjBackground, RefferalTextInputForScreen } from "../../Components";
 import styles from "./styles";
 import LinearGradient from "react-native-linear-gradient";
 import EncryptedStorage from "react-native-encrypted-storage";
@@ -42,6 +42,7 @@ let li = [{
 }];
 let reff = [{
     name: null,
+    countrycode: null,
     phone_no: null
 }];
 const index = ({ route, navigation }) => {
@@ -61,7 +62,9 @@ const index = ({ route, navigation }) => {
     const [ModelState, setModelState] = useState({
         state: false,
         details: null,
-      });
+    });
+    const [CountryCode, setCountryCode] = useState(+971);
+
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(getLiveShowPlans());
@@ -110,13 +113,23 @@ const index = ({ route, navigation }) => {
         //   li[index].status = false
         // }
         reff[index].name = name;
-       
+
     }
     const SettingNumber = (number, index) => {
         reff[index].phone_no = number
     }
+    const SettingCountryCode = (text, index) => {
+        // if (name === "" || name === undefined || name === null) {
+        //   li[index].status = true;
+        // } else {
+        //   li[index].status = false
+        // }
 
-  
+        reff[index].countrycode = text;
+        console.log("reff", reff);
+        setUpdateData(!updateData)
+    }
+
     const HandleClick = async () => {
 
         let validToPost = true;
@@ -128,7 +141,7 @@ const index = ({ route, navigation }) => {
             else {
                 li[index].status = true;
             }
-            if (element.phone_no !== "" && element.phone_no !== null && element.phone_no !== undefined && numericRegex.test(element?.phone_no) && element?.phone_no?.length === 11) {
+            if (element.phone_no !== "" && element.phone_no !== null && element.phone_no !== undefined) {
                 li[index].status2 = false;
             }
             else {
@@ -144,10 +157,22 @@ const index = ({ route, navigation }) => {
             }
         });
         setUpdateData(!updateData)
+        let fData = [];
+        reff.forEach((element, index) => {
+            console.log("element", element)
+            
+            fData.push({
+                name:element.name,
+                phone_no: element.countrycode + element.phone_no
+            })
+
+        });
+        console.log("fData", fData);
         if (validToPost) {
             postData = {
-                "referrals": reff
+                "referrals": fData
             };
+
             PostData(postData)
         }
 
@@ -281,13 +306,13 @@ const index = ({ route, navigation }) => {
                             <View style={{ width: width, justifyContent: 'center' }}>
                                 <View style={styles.SmallBorder} />
 
-                                <Text style={[styles.text, { textAlign: 'center',  width: width }]}>
+                                <Text style={[styles.text, { textAlign: 'center', width: width }]}>
                                     Refer To Earn Lives
                                 </Text>
 
 
 
-                                <View style={{ alignItems: 'center',marginTop:10 }}>
+                                <View style={{ alignItems: 'center', marginTop: 10 }}>
                                     <View style={{
                                         width: width * 0.93,
                                         height: height * 0.075,
@@ -354,16 +379,19 @@ const index = ({ route, navigation }) => {
                                 }}>
                                     {selected === 0 ? (
                                         <FlatList
-                                            style={{width: '100%', }}
-                                      
+                                            style={{ width: '100%', }}
+
                                             scrollEnabled={false}
                                             data={li}
                                             extraData={updateData}
+
                                             renderItem={({ item, index }) => (
                                                 <RefferalTextInputForScreen
                                                     srNumber={item.sr}
                                                     validationBorderName={item.status}
                                                     validationBorderNumber={item.status2}
+                                                    CountryCode={(text) => SettingCountryCode(text, index)}
+                                                    code={reff[index].countrycode}
                                                     onChangeName={(name) => {
                                                         if (!name) {
                                                             SettingName(name, index)
@@ -390,17 +418,18 @@ const index = ({ route, navigation }) => {
 
                                         <FlatList
                                             style={{ width: '100%', }}
-                                            contentContainerStyle={{  }}
+                                            contentContainerStyle={{}}
                                             scrollEnabled={false}
                                             data={li}
                                             extraData={updateData}
                                             renderItem={({ item, index }) => (
 
-
                                                 <RefferalTextInputForScreen
                                                     srNumber={item.sr}
                                                     validationBorderName={item.status}
                                                     validationBorderNumber={item.status2}
+                                                    CountryCode={(text) => SettingCountryCode(text, index)}
+                                                    code={reff[index].countrycode}
                                                     onChangeName={(name) => {
                                                         if (!name) {
                                                             SettingName(name, index)
@@ -429,17 +458,18 @@ const index = ({ route, navigation }) => {
                                     ) : null}
                                     {selected === 2 ? (
                                         <FlatList
-                                            style={{  width: '100%', }}
-                                            contentContainerStyle={{ }}
+                                            style={{ width: '100%', }}
+                                            contentContainerStyle={{}}
                                             data={li}
                                             extraData={updateData}
                                             scrollEnabled={false}
                                             renderItem={({ item, index }) => (
-
                                                 <RefferalTextInputForScreen
                                                     srNumber={item.sr}
                                                     validationBorderName={item.status}
                                                     validationBorderNumber={item.status2}
+                                                    CountryCode={(text) => SettingCountryCode(text, index)}
+                                                    code={reff[index].countrycode}
                                                     onChangeName={(name) => {
                                                         if (!name) {
                                                             SettingName(name, index)
@@ -466,7 +496,7 @@ const index = ({ route, navigation }) => {
 
                                 </View>
 
-                                <View style={{ width: '100%',height:height*0.15,justifyContent:'center',alignItems:'center' }}>
+                                <View style={{ width: '100%', height: height * 0.15, justifyContent: 'center', alignItems: 'center' }}>
                                     <TouchableOpacity
                                         onPress={() => { HandleClick() }}
                                         disabled={loader}
@@ -514,7 +544,7 @@ const index = ({ route, navigation }) => {
 
                                         </View>
                                     </TouchableOpacity>
-                                  
+
                                     <Modals ModalRef={ModalStateError} Error />
                                     <BuyLifeCongrats ModalRef={SucessModalState}
                                         heading={"Congratulations"}
@@ -524,7 +554,7 @@ const index = ({ route, navigation }) => {
                                             SucessModalState.current(false)
 
                                         }}
-                                        closeOnPress={() => { 
+                                        closeOnPress={() => {
                                             SucessModalState.current(false)
                                             setModelState({
                                                 ...ModelState,
@@ -543,7 +573,7 @@ const index = ({ route, navigation }) => {
                     <RefferLifeLineModal ModalRef={RefferModalState} details
                         onPressContinue={() => {
                             RefferModalState.current(false)
-                            SucessModalState.current(true) 
+                            SucessModalState.current(true)
 
                         }}
 

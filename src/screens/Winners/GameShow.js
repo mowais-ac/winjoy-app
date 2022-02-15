@@ -106,7 +106,7 @@ const GameShow = (props) => {
                 name={item?.user?.first_name?.charAt(0)?.toUpperCase() + item?.user?.first_name?.slice(1) + " " + item?.user?.last_name?.charAt(0)?.toUpperCase() + item?.user?.last_name?.slice(1)}
                 date={dayjs(item.created_at).format('MMMM DD, YYYY')}
 
-                ammount={FormatNumber(+(item?.price).toLocaleString())}
+                ammount={FormatNumber(+(item?.price))}
                 profile_image={item?.user?.profile_image}
               // onPress={()=>navigation.navigate("LastGameWinnerDetail")}
               />

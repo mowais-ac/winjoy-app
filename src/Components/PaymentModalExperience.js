@@ -27,9 +27,6 @@ import { heightConverter } from "./Helpers/Responsive";
 import { ScrollView } from "react-native-gesture-handler";
 import BuyLifeCongrats from "../Components/BuyLifeCongrats";
 import Modals from "../Components/Modals";
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import types from "../redux/types";
-import { useDispatch } from "react-redux";
 const { width, height } = Dimensions.get("window");
 
 const PaymentModals = (props) => {
@@ -53,7 +50,7 @@ const PaymentModals = (props) => {
   const DeclineRef = useRef();
   const SucessModalState = useRef();
   const ModalErrorState = useRef();
-  const dispatch = useDispatch();
+
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -87,28 +84,6 @@ const PaymentModals = (props) => {
 
 
   const PostCreditCardInfo = async () => {
-    let expData = await AsyncStorage.getItem('expData');
-    let ids = await AsyncStorage.getItem('ids');
-    // console.log("ids", ids);
-      const expDataParse = JSON.parse(expData)
-    const expData1 = [];
-    const dat2 = JSON.parse(ids)
-    console.log("dat2", dat2);
-    if (ids !== null) {
-      dat2.forEach((element, index) => {
-        console.log("ele", element);
-        expData1.push({
-          "product_id": element,
-          "is_from_experience": false,
-        })
-      });
-    }
-    if (expData !== null) {
-      expDataParse.forEach((element, index) => {
-        expData1.push(element)
-      });
-    }
-    console.log("expData1", expData1);
     let number = number1 + number2 + number3 + number4;
     console.log("number ", number1 + number2 + number3 + number4)
     console.log("cvc", cvc);
@@ -140,55 +115,50 @@ const PaymentModals = (props) => {
     else {
       setActivity(true)
       const Token = await EncryptedStorage.getItem("Token");
-      let dat = [];
-      let postData = {};
-      expData1.map(element => {
-        console.log("element", element);
-      });
-
-      console.log("expData1", expData1);
-      postData = {
-        "products": expData1
-      };
-
       // const body = {
       //   card_number: number,
       //   exp_month: month,
-      //   exp_year: year,
+      //   exp_year: year, 
       //   cvc: cvc,
       //   type: "products",
       //   products:  JSON.stringify(dat)
       // };
 
-      var data = new FormData();
-      data.append("card_number", number);
-      data.append("exp_month", month);
-      data.append("exp_year", year);
-      data.append("cvc", cvc);
-      data.append("type", "products");
-      data.append("products", JSON.stringify(expData1));
-      console.log("data", data);
+//       var data = new FormData();
+//       data.append("card_number", number);
+//       data.append("exp_month", parseInt(month));
+//       data.append("exp_year", parseInt(year));
+//       data.append("cvc", parseInt(cvc));
+//       data.append("type", "experience");
+//    "celebrity_id", props?.celebrity_id
+// "experience_id",props?.experience_id
+       const body = JSONtoForm({
+        card_number: number,
+        exp_month: month,
+        exp_year: year, 
+        cvc: cvc,
+        type: "experience",
+        celebrity_id: props?.celebrity_id,
+        experience_id:props?.experience_id,
+      });
+      console.log("body", body);
       const requestOptions = {
-        method: "POST",
+        method: "POST", 
         headers: {
           "Content-Type": "multipart/form-data",
           Accept: "application/json",
           Authorization: `Bearer ${Token}`,
         },
-        body: data,
+        body,
       };
+      console.log("req",requestOptions);
       await fetch(`${Config.API_URL}/paynow`, requestOptions)
         .then(async (response) => response.json())
         .then(async (res) => {
-          setActivity(true)
+          setActivity(false)
           console.log("res", res);
           if (res.status === 'success') {
-            await AsyncStorage.removeItem('ids');
-            await AsyncStorage.removeItem('expData');
-            dispatch({
-              type: types.CART_COUNTER,
-              counter: "",
-            });
+
             SucessModalState.current(true)
           }
           else if (res.status === 'action_required') {
@@ -202,7 +172,6 @@ const PaymentModals = (props) => {
               heading: "Error",
               Error: res?.error,
             });
-            setActivity(false)
 
           }
 

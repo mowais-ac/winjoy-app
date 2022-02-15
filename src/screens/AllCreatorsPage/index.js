@@ -157,17 +157,29 @@ const index = ({ route, navigation }) => {
                   <>
                     {item?.is_win ? (
                       <WinningTrendingCard
-                        onPress={() => navigation.navigate("ExperienceProductDetail", { productId: item?.id, experienceId: item.celebrity_id })}
-                        imageUrl={item?.experience_product?.featured_image}
+                        onPress={() =>{
+                           navigation.navigate("SimpleProductDetailInExperience", { data:item })
+                          //  navigation.navigate("PRODUCTS", {
+                          //   screen: "ProductDetail",
+                          //   params:{ data:item }
+                          // })
+                        } }
+                        imageUrl={item?.experience_product?.featured_image} 
                         title={item?.experience_product?.title}
-                        price={item?.price}
+                        price={item?.price} 
                         updated_stocks={item?.updated_stocks}
                         stock={item?.stock}
                         trending={true}
                       />
                     ) : (
                       <WinningTrendingCard
-                        onPress={() => navigation.navigate("ExperienceProductDetail", { productId: item?.id, experienceId: item.celebrity_id })}
+                      onPress={() =>{
+                        navigation.navigate("SimpleProductDetailInExperience", { data:item })
+                       //  navigation.navigate("PRODUCTS", {
+                       //   screen: "ProductDetail",
+                       //   params:{ data:item }
+                       // })
+                     } }
                         imageUrl={item?.image}
                         title={item?.title}
                         price={item?.price}
@@ -245,11 +257,11 @@ const index = ({ route, navigation }) => {
                   onPress={() => {
                     dispatch3({
                       type: types.EXPERIENCE_ID,
-                      experienceID: item.id
+                      experienceID: item.id 
                       //  user: res.data.data,
                     });
                     console.log("id", item.id)
-                    dispatch4(ExperienceProductData(item.id));
+                    dispatch4(ExperienceProductData(item?.id));
                     celebrityModalState.current(true)
                   }}
                   short_desc={item?.title}

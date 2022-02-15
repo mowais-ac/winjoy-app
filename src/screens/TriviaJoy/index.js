@@ -58,7 +58,7 @@ const index = ({ props, navigation }) => {
       dispatch(TriviaJoyAPI());
     });
     console.log("userData", userData);
-    console.log("triviaJoyData", triviaJoyData.on_going_gameshow);
+    console.log("triviaJoyData", triviaJoyData.banners);
     var date = new Date().toLocaleString()
     console.log("daaate", date);
     console.log("start", dayjs(triviaJoyData?.upcoming_gameshow?.start_date).format('MMMM DD, YYYY - HH:MM A'));
@@ -205,8 +205,10 @@ const index = ({ props, navigation }) => {
             </Label>
           </TouchableOpacity>
         </View>
+        {triviaJoyData?.banners ? (
+          <TriviaJoyBottomList data={triviaJoyData.banners} />
+        ) : (null)}
 
-        <TriviaJoyBottomList data={triviaJoyData.banners} />
         <View style={{ marginBottom: height * 0.05 }} />
       </LinearGradient>
       <HowItWorkModal ModalRef={AddModalState} details

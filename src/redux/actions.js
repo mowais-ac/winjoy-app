@@ -211,10 +211,11 @@ export const GetCreatorPageData = (id) => {
     }
 }
 export const ExperienceProductData = (id) => {
+    console.log("idd",id);
     try {
         return async dispatch => {
             const Token = await EncryptedStorage.getItem("Token");
-            const result = await fetch(`${Config.API_URL}/experience/product_list?experience_id=${id}`, {
+            const result = await fetch(`${Config.API_URL}/experience/product_list?experience_celebrity_id=${id}`, {
                 method: 'GET',
                 headers: {
                     "Content-Type": "multipart/form-data",
@@ -223,6 +224,7 @@ export const ExperienceProductData = (id) => {
                 },
             });
             const json = await result.json();
+            console.log("jsonP",json);
             if (json && json.status === "success") {
                 dispatch({
                     type: types.WIN_EXPERIENCE_PRODUCT_DATA,
