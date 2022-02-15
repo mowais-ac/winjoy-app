@@ -466,10 +466,7 @@ const index = (props) => {
                     source={{ uri: LandingData?.leaderboard_home_data[0]?.url }}
                   /> 
                 ) : null}
-                <View style={{left:0,bottom:0,position:'absolute'}}>
-                  <Text style={{color:'#000000',fontFamily:'Axiforma-Bold',fontSize:RFValue(16)}}>Winners</Text>
-                  <Text style={{color:'#000000',fontFamily:'Axiforma-Regular',fontSize:RFValue(8)}}>STILL COUNTING</Text>
-                </View>
+             
                 <LongButton
                   style={[
                     styles.Margin,

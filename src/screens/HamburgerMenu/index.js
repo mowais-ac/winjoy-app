@@ -299,7 +299,6 @@ const index = ({ props, navigation }) => {
                         // navigation.navigate("BottomTabStack"); 
                         navigation.navigate("BottomTabStack", {
                           screen: "WALLET",
-
                         });
                       }
                       if (item.name === "Leaderboard") {

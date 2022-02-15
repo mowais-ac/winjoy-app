@@ -10,7 +10,6 @@ function HomeCard({ style, onPress, gameShow, time, images }) {
   const { width, height } = Dimensions.get("window");
   const [renderBtn, setRenderBtn] = useState(false);
   function _renderItem({ item, index }) {
-    console.log("test", item.url);
     return (
       <View key={index}>
         <Image

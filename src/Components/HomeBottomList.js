@@ -100,7 +100,7 @@ function ClosingSoon({ item }) {
             dark
             style={{ color: "#000000", width: width * 0.3 }}
           >
-            {item.product_title || (+item.price).toLocaleString()}
+            {item.luckydraw.prize_title || (+item.price).toLocaleString()}
           </Label>
         </View>
       </View>

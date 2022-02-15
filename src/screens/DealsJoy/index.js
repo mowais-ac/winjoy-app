@@ -46,11 +46,12 @@ function ClosingSoon({ item }) {
     <View
       style={{
         width: width * 0.38,
-        height: heightConverter(190),
+        height:height*0.26,
         backgroundColor: "#ffffff",
         marginLeft: 10,
         borderRadius: 10,
         padding: 10,
+        alignItems:'center'
       }}
     >
       <LoaderImage
@@ -78,7 +79,7 @@ function ClosingSoon({ item }) {
         </Label>
       </Label>
       <Label bold font={11} dark style={{ color: "#000000", width: "110%" }}>
-        {item.luckydraw.gift_title}
+        {item?.luckydraw?.gift_title}
       </Label>
       {/* <Label  bold font={11} dark style={{ color: "#000000", }}>
       Edition
@@ -108,6 +109,7 @@ const index = ({ props, navigation }) => {
   const AddModalState = useRef();
   useEffect(() => {
     dispatch(DealsJoyAPI());
+    console.log("dealsJoyData",dealsJoyData);
   }, []);
   function _renderItem({ item, index }) {
     if (item.type === "image") {
@@ -210,12 +212,14 @@ const index = ({ props, navigation }) => {
         >
           Closing Soon
         </Label>
+        <View>
         <FlatList
           horizontal={true}
           style={{ marginLeft: 1, minHeight: 50 }}
           contentContainerStyle={{
             alignSelf: "flex-start",
             paddingRight: width * 0.04,
+            
           }}
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
@@ -241,6 +245,7 @@ const index = ({ props, navigation }) => {
           keyExtractor={(item) => item.id}
         //   ListEmptyComponent={this.RenderEmptyContainerOnGoing()}
         />
+        </View>
         <View
           style={{
             height: 1,
@@ -327,7 +332,7 @@ const styles = StyleSheet.create({
     marginLeft: 2,
   },
   mainView: {
-    height: heightPercentageToDP("70"),
+    height: height*0.79,
     width: width,
 
     borderBottomLeftRadius: 20,

@@ -30,6 +30,9 @@ const index = ({ route, navigation }) => {
   const dispatch = useDispatch();
   const dispatch2 = useDispatch();
   const ModalState = useRef();
+  const celebrity_id = useRef();
+  const experience_id = useRef();
+  
   const creatorId = useSelector(state => state.app.creatorId);
   const data = useSelector(state => state.app.creatorPageData);
   const experienceDetail = useSelector(state => state.app.experienceDetail);
@@ -156,6 +159,8 @@ const index = ({ route, navigation }) => {
                   <SecondExperienceCard
                     onPress={() => {
                       // alert(item.id)
+                      celebrity_id.current=data?.celebrity?.id,
+                      experience_id.current=item?.id,
                       dispatch2(ExperienceDetals(item?.id, data?.celebrity?.id));
                       ModalState.current(true)
                     }
@@ -187,6 +192,8 @@ const index = ({ route, navigation }) => {
             onPressContinue={onPressContinue}
             experienceDetail={experienceDetail}
             celebrityData={data.celebrity}
+            celebrity_id={celebrity_id.current}
+            experience_id={experience_id.current}
           />
         </LinearGradient>
       </ScrollView>

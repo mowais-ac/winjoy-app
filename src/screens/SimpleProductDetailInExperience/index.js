@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
     View,
     StyleSheet,
@@ -16,63 +16,52 @@ import {
     heightPercentageToDP,
     heightConverter,
 } from "../../Components/Helpers/Responsive";
+import { connect, useDispatch, useSelector } from "react-redux";
 import Header from "../../Components/Header";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { ExperienceProductDetal } from '../../redux/actions';
-import { useDispatch, useSelector } from "react-redux";
+import { RFValue } from "react-native-responsive-fontsize";
+import dayjs from "dayjs";
 import types from "../../redux/types";
-const ProductDetail = ({ props, navigation, route }) => {
-    const product_id = route?.params?.product_id;
-    const experience_celebrity_id = route?.params?.experience_celebrity_id;
-    const dispatch = useDispatch();
-    const dispatch2 = useDispatch();
-    const data = useSelector(state => state?.app?.expProductDetail);
-    useEffect(() => {
-        console.log("exid", "pid", experience_celebrity_id, product_id);
-        dispatch(ExperienceProductDetal(experience_celebrity_id, product_id));
-        console.log("dataExp", data);
-    }, []);
-    let progress = (data?.products?.updated_stocks ? (data?.products?.updated_stocks / data?.products?.stock) * 100 : 0);
-    //console.log("item", item?.id);
-    // function uniqBy(a, key) {
-    //     var seen = {};
-    //     return a?.filter(function (item) {
-    //         var k = key(item);
-    //         return seen?.hasOwnProperty(k) ? false : (seen[k] = true);
-    //     })
-    // }
+const index = ({ props, navigation, route }) => {
+    const dispatch = useDispatch(); 
+    const item = route?.params?.data;
+    console.log("item",item);
+    let progress = (item?.product?.updated_stocks ? (item?.product?.updated_stocks / item?.stock) * 100 : 0);
+    function uniqBy(a, key) {
+        var seen = {};
+        return a.filter(function (item) {
+            var k = key(item);
+            return seen.hasOwnProperty(k) ? false : (seen[k] = true);
+        })
+    }
     const SaveIdInfo = async () => {
+        console.log("item?.experience_product?.id",item?.experience_product?.id);
         // await EncryptedStorage.setItem("ids","");
         AsyncStorage
-            .getItem('expData')
+            .getItem('ids')
             .then(favs => {
                 favs = favs == null ? [] : JSON.parse(favs)
 
-                favs.push(
-                    {
-                        experience_celebrity_id: experience_celebrity_id,
-                        product_id: product_id,
-                        is_from_experience: true
-                    })
-                console.log("favs", favs);
-                const ids = favs.map(o => o.product_id)
-                const filtered = favs.filter(({ product_id }, index) => !ids.includes(product_id, index + 1))
-                // dispatch2({
-                //     type: types.CART_COUNTER, 
-                //     counter:uniqueArray?.length,
-                //   }); 
-                return AsyncStorage.setItem('expData', JSON.stringify(filtered))    
+
+                favs.push(item?.experience_product?.id) 
+                let uniqueArray = favs.filter(function (item, pos) {
+                    return favs.indexOf(item) == pos;
+                });
+                dispatch({
+                    type: types.CART_COUNTER, 
+                    counter:uniqueArray?.length,
+                  }); 
+                return AsyncStorage.setItem('ids', JSON.stringify(uniqueArray))
             })
 
-        let dat = await AsyncStorage.getItem('expData');
-        console.log("dat", dat);
+        let dat = await AsyncStorage.getItem('ids');
 
     }
 
     return (
         <ScrollView>
 
-            <View style={{ height: heightPercentageToDP("100%") }}>
+            <View style={{ height: height }}>
 
                 <LinearGradient
                     style={styles.mainView}
@@ -82,36 +71,42 @@ const ProductDetail = ({ props, navigation, route }) => {
                     <View style={{ height: 20 }} />
                     <Header back={true} />
 
+
+
+
                 </LinearGradient>
                 <View style={styles.upperView}>
-                    <Card
-                        imageUrl={data?.products?.image}
-                        stock={data?.products?.stock}
-                        updated_stocks={data?.products?.updated_stocks}
 
+                    <Card
+                        imageUrl={item?.experience_product?.featured_image}
+                        updated_stocks={item?.product?.updated_stocks}
+                        stock={item?.product?.stock}
+                        removeProgressCircle={true}
                     />
                 </View>
                 <View style={styles.card}>
+                    <Text style={{ color: '#000000', fontFamily: 'Axiforma-Regular', fontSize: 16 }}>Buy outwear jacket</Text>
+                    <View style={{ width: width * 0.95, height: 1, backgroundColor: '#E6DFEE', marginTop: 10 }} />
+                    <Label primary font={16} dark style={{ color: "#E7003F", marginTop: 30 }}>
+                        Get a chance to win
 
-                    <Label primary font={16} dark style={{ color: "#000000", marginTop: 30 }}>
-                        Get a chance to
-                        <Label notAlign primary font={16} bold style={{ color: "#E7003F" }}>
-                            {" "}WIN
-                        </Label>
                     </Label>
                     <Label font={16} dark style={{ color: "#000000" }}>
-                        {data?.products?.title}
+                        {item.experience_product.title}
                     </Label>
-                    <Text style={styles.closingTxt}>
+                    {/* <Label font={12} light style={{ color: "#000000", height: height * 0.07, marginTop: height * 0.01, }}>
+                        Max draw date {dayjs(item?.end_date).format('MMMM DD, YYYY')} or when the campaign is sold out, which is earliest
+                    </Label>  */}
+                    {/* <Text style={styles.closingTxt}> 
                         Closing Soon
-                    </Text>
+                    </Text> */}
                 </View>
-                <View style={styles.pdView}>
+                <View style={[styles.pdView, { top: height * 0.62, }]}>
                     <Label notAlign primary font={16} bold style={{ color: "#E7003F" }}>
                         Products Details
                     </Label>
                     <Label notAlign font={11} dark style={{ color: "#000000", lineHeight: 20 }}>
-                        {data?.products?.description}
+                    {item.experience_product.description}
                     </Label>
                 </View>
                 <View style={styles.card2}>
@@ -122,20 +117,18 @@ const ProductDetail = ({ props, navigation, route }) => {
                         alignItems: 'center',
                         width: widthPercentageToDP("83")
                     }}>
-                        <Text style={styles.metaText}>To enter in the lucky draw</Text>
-                        <Text style={[styles.text, { fontWeight: 'bold' }]}>{"AED "}{+(data?.products?.price)?.toLocaleString()}</Text>
+                        <View>
+                            <Text style={styles.metaText}>To enter in the lucky draw</Text>
+                            <Text style={[styles.metaText, { fontWeight: 'bold' }]}>Buy a {item?.experience_product?.title}</Text>
+                        </View>
+                        <Text style={[styles.text, { fontWeight: 'bold', fontSize: RFValue(14) }]}>AED {+(item?.experience_product?.price)?.toLocaleString()}</Text>
 
                     </View>
-                    <View style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                        width: widthPercentageToDP("83")
-                    }}>
-                        <Text style={[styles.metaText, { fontWeight: 'bold' }]}>Buy a {data?.products?.title}</Text>
-                        <Text style={styles.text}>Gold Coin</Text>
 
-                    </View>
+
+
+
+
                     <TouchableOpacity
                         onPress={() => {
                             // navigation.navigate("SimpeStackScreen", {
@@ -221,13 +214,13 @@ const styles = StyleSheet.create({
 
     },
     upperView: {
-        top: heightPercentageToDP('8%'),
+        top: height * 0.1,
         position: 'absolute',
 
     },
     card: {
-        width: width - 25,
-        height: height * 0.1,
+        width: width * 0.95,
+        height: height * 0.26,
         backgroundColor: '#ffffff',
         marginLeft: 10,
         borderRadius: 10,
@@ -236,9 +229,11 @@ const styles = StyleSheet.create({
         left: 2,
         justifyContent: 'center', alignItems: 'center',
         elevation: 3,
-        marginBottom: 15
+        marginBottom: 15,
+        paddingTop: height * 0.06
     },
     card2: {
+
         width: width - 25,
         height: height * 0.15,
         backgroundColor: '#ffffff',
@@ -263,11 +258,11 @@ const styles = StyleSheet.create({
         paddingTop: 6,
         paddingBottom: 6,
         borderRadius: 20,
-        top: heightConverter(2)
+        top: 0
     },
     pdView: {
         position: 'absolute',
-        bottom: heightPercentageToDP("25"),
+        bottom: heightPercentageToDP("22"),
         height: heightPercentageToDP("25"),
         padding: 20,
 
@@ -284,4 +279,4 @@ const styles = StyleSheet.create({
 
 
 
-export default ProductDetail;
+export default index;
