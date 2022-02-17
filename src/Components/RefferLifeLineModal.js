@@ -161,7 +161,7 @@ const RefferLifeLineModal = (props) => {
       else {
         li[index].status = true;
       }
-      if (element.phone_no !== "" && element.phone_no !== null && element.phone_no !== undefined && numericRegex.test(element?.phone_no) && element?.phone_no?.length === 11) {
+      if (element.phone_no !== "" && element.phone_no !== null && element.phone_no !== undefined && numericRegex.test(element?.phone_no) ) {
         li[index].status2 = false;
       }
       else {

@@ -11,7 +11,7 @@ function TriviaNightCard({ style, uri, onPress, subHeading, timer, startIn }) {
     >
       <View style={[styles.mainView, style]}>
         <Image
-          style={[styles.mainView, { position: 'absolute' }]}
+          style={{width:'100%',height:"100%"}}
           resizeMode="contain"
           source={{
             uri: uri,

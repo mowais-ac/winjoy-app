@@ -5,16 +5,19 @@ import {
   widthConverter
 } from '../Helpers/Responsive';
 import { RFValue } from 'react-native-responsive-fontsize';
-
-const { StyleSheet } = require('react-native');
+const { width, height } = Dimensions.get("window");
+import {
+  StyleSheet,
+  Dimensions,
+} from "react-native";
 
 export default StyleSheet.create({
   mainView: {
     alignItems: 'center',
   //  backgroundColor: '#f05b31',
     borderRadius: widthConverter(10),
-    height: heightPercentageToDP("20%"),
-    width: widthPercentageToDP("35%"),
+    height: heightPercentageToDP("16%"),
+    width: width/3.36,
     flexDirection: 'row',
     justifyContent: 'flex-end',
     marginRight:10

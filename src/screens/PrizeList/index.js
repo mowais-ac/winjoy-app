@@ -91,7 +91,7 @@ const index = ({ props, navigation }) => {
               setSelected(null)
             }}
             style={[styles.Margin,
-            { backgroundColor: !isClosing ? "#fff" : null, borderWidth: isClosing ? 2 : null, borderColor: isClosing ? "#ffffff" : null }
+            { backgroundColor: !isClosing ? "#fff" : null, borderWidth: isClosing ? 1 : null, borderColor: isClosing ? "#ffffff" : null }
             ]}
             textstyle={{ color: isClosing ? "#fff" : "#000000" }}
             text={"All " + (!isClosing ? "(" + productsData?.data?.length + ")" : "")}
@@ -107,7 +107,7 @@ const index = ({ props, navigation }) => {
             }}
             style={[
               styles.Margin,
-              { backgroundColor: isClosing ? "#fff" : null, borderWidth: 2, borderColor: "#ffffff" },
+              { backgroundColor: isClosing ? "#fff" : null, borderWidth: 1, borderColor: "#ffffff" },
             ]}
             textstyle={{ color: isClosing ? "#000000" : "#ffffff" }}
             text={t("closing_soon")}
@@ -152,7 +152,7 @@ const index = ({ props, navigation }) => {
 
 
           {loading ? (
-            <ActivityIndicator size="large" color="#000000" />
+            <ActivityIndicator size="large" color="#ffffff" />
           ) : (
             <FlatList
               data={productsData?.data}
@@ -187,7 +187,8 @@ const index = ({ props, navigation }) => {
               }
 
               contentContainerStyle={{
-                paddingBottom: height * 0.1,
+               padding: 15,
+             
               }}
 
             />
@@ -203,7 +204,7 @@ const index = ({ props, navigation }) => {
 const styles = StyleSheet.create({
   Margin: {
     height: height * 0.06,
-    width: width * 0.4,
+    width: width * 0.45,
     backgroundColor: "#ffffff",
   },
 });

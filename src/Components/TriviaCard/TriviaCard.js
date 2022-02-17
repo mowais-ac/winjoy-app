@@ -23,24 +23,25 @@ function TriviaCard({ onPress, userInfo, userData }) {
         </View>
 
         <View>
-          <Text style={styles.text}>
-            {userInfo?.first_name || userData.first_name} {userInfo?.last_name || userData?.last_name}
-          </Text>
-          {date && userData.country ? (
-            <Text style={styles.text}>
-            {userData.user_name}
-          </Text>
-           
-          ) : <Text style={styles.text}>
-          {date}
-        </Text>}
+
+              <View>
+                <Text style={styles.text}>
+                  {userInfo?.first_name || userData.first_name} {userInfo?.last_name || userData?.last_name}
+                </Text>
+                {date && userData.country ? (
+                  <Text style={styles.text}>
+                  {userData.user_name}
+                </Text>
+                
+                ) : <Text style={styles.text}>
+                  {date}
+                </Text>}
+              </View>
+              <Text style={styles.text2}>
+              AED { userData?.price?parseInt(userData?.price).toLocaleString('en'):null || userData.country}
+              </Text>
+            </View>
         </View>
-        <Text style={styles.text2}>
-          { userData?.price?parseInt(userData?.price).toLocaleString('en'):null || userData.country}
-        </Text>
-
-
-      </View>
     </TouchableOpacity>
   );
 }

@@ -13,7 +13,7 @@ const { width, height } = Dimensions.get("window");
 export default StyleSheet.create({
   mainView:{
     alignItems:'center',
-    width:width*0.9,
+    width:'100%',
     height:height*0.1,
     marginTop:10,
     flexDirection:'row',

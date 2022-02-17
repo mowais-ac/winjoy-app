@@ -336,7 +336,7 @@ const ExperienceCelebrityModal = (props) => {
         }} />
         <BuyLifeCongrats ModalRef={SucessModalState}
           heading={"Congratulations"}
-          description={"successfully Buy Experience"}
+          description={"successfully Bought Experience"}
           requestOnPress={() => {
 
             SucessModalState.current(false)

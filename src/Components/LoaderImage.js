@@ -11,7 +11,7 @@ const LoaderImage = (props) => {
           style={[
             props.style,
             {
-              backgroundColor: "grey",
+            
               alignItems: "center",
               justifyContent: "center",
             },

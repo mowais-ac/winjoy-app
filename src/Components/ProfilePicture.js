@@ -12,7 +12,6 @@ const ProfilePicture = (props) => {
       source={{ uri: picture }}
       style={[styles.ProfileView, styles.ProfilePicture, style]}
     >
-    
     </ImageBackground>
   ) : (
     <View style={[styles.ProfileView, styles.ProfileBG, style]}>
