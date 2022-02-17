@@ -41,7 +41,7 @@ const GameShow = (props) => {
                 text="View Leaderboard"
                 font={16}
                 shadowless
-                onPress={() => navigation.navigate("AllCreatorsList")}
+                onPress={() => navigation.navigate("WINNERS")}
               />
         </View>
         <FlatList

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, {useState, useRef, useEffect} from 'react';
 import {
   View,
   StyleSheet,
@@ -7,30 +7,30 @@ import {
   Alert,
   Image,
   TouchableOpacity,
-} from "react-native";
+} from 'react-native';
 
-import Background from "../../Components/Background";
-import SafeArea from "../../Components/SafeArea";
-import Label from "../../Components/Label";
-import LongButton from "../../Components/LongButton";
-import InputField from "../../Components/InputField";
-import Header from "../../Components/Header";
+import Background from '../../Components/Background';
+import SafeArea from '../../Components/SafeArea';
+import Label from '../../Components/Label';
+import LongButton from '../../Components/LongButton';
+import InputField from '../../Components/InputField';
+import Header from '../../Components/Header';
 
-import { Colors } from "../../Constants/Index";
-import UserInfo from "../../Components/UserInfo";
-import EncryptedStorage from "react-native-encrypted-storage";
-import { JSONtoForm } from "../../Constants/Functions";
-import Config from "react-native-config";
-import ImagePicker from "react-native-image-crop-picker";
-import LabelButton from "../../Components/LabelButton";
-import CountryModal from "../../Components/CountryModal";
-import ValidateModal from "../../Components/ValidateModal";
-import GoBack from "../../Components/GoBack";
-import { useDispatch, useSelector } from "react-redux";
-import types from "../../redux/types";
-const { width, height } = Dimensions.get("window");
+import {Colors} from '../../Constants/Index';
+import UserInfo from '../../Components/UserInfo';
+import EncryptedStorage from 'react-native-encrypted-storage';
+import {JSONtoForm} from '../../Constants/Functions';
+import Config from 'react-native-config';
+import ImagePicker from 'react-native-image-crop-picker';
+import LabelButton from '../../Components/LabelButton';
+import CountryModal from '../../Components/CountryModal';
+import ValidateModal from '../../Components/ValidateModal';
+import GoBack from '../../Components/GoBack';
+import {useDispatch, useSelector} from 'react-redux';
+import types from '../../redux/types';
+const {width, height} = Dimensions.get('window');
 
-const index = ({ route, navigation }) => {
+const index = ({route, navigation}) => {
   const dispatch = useDispatch();
   const ReceivedType = route.params && route.params.ReceivedType;
   const [EditType, setEditType] = useState(ReceivedType || 0);
@@ -72,7 +72,7 @@ const index = ({ route, navigation }) => {
 
   const ValidateRef = useRef();
 
-  const HandleClick = (e) => {
+  const HandleClick = e => {
     if (!ButtonRef.current.GetActivity())
       switch (EditType) {
         case 0:
@@ -104,25 +104,24 @@ const index = ({ route, navigation }) => {
     };
     PerformApiFunc(JSONBody);
     if (pictureref.current !== null) {
-
-      const Token = await EncryptedStorage.getItem("Token");
+      const Token = await EncryptedStorage.getItem('Token');
       const body = JSONtoForm({
         profile_image: `data:${pictureref?.current?.mime};base64, ${pictureref?.current?.data}`,
       });
       const requestOptions = {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "multipart/form-data",
-          Accept: "application/json",
+          'Content-Type': 'multipart/form-data',
+          Accept: 'application/json',
           Authorization: `Bearer ${Token}`,
         },
         body,
       };
       await fetch(`${Config.API_URL}/update/user/profile-image`, requestOptions)
-        .then(async (response) => response.json())
-        .then(async (res) => {
-          if (!res.status || res.status.toLowerCase() !== "success")
-            Alert.alert("Error", "Profile image not updating");
+        .then(async response => response.json())
+        .then(async res => {
+          if (!res.status || res.status.toLowerCase() !== 'success')
+            Alert.alert('Error', 'Profile image not updating');
           else {
             dispatch({
               type: types.USER_DATA,
@@ -159,32 +158,32 @@ const index = ({ route, navigation }) => {
       const password = newpref.current.getText();
       const password_confirmation = conpref.current.getText();
 
-      const Token = await EncryptedStorage.getItem("Token");
+      const Token = await EncryptedStorage.getItem('Token');
       const body = JSONtoForm({
         current_password,
         password,
         password_confirmation,
       });
       const requestOptions = {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "multipart/form-data",
-          Accept: "application/json",
+          'Content-Type': 'multipart/form-data',
+          Accept: 'application/json',
           Authorization: `Bearer ${Token}`,
         },
         body,
       };
       ButtonRef.current.SetActivity(true);
       await fetch(`${Config.API_URL}/user/password-change`, requestOptions)
-        .then(async (response) => response.json())
-        .then(async (res) => {
-          if (res.status && res.status.toLowerCase() === "success") {
-            Alert.alert("Success", res.message);
+        .then(async response => response.json())
+        .then(async res => {
+          if (res.status && res.status.toLowerCase() === 'success') {
+            Alert.alert('Success', res.message);
             navigation.reset({
               index: 0,
-              routes: [{ name: "BottomTabStack" }],
+              routes: [{name: 'BottomTabStack'}],
             });
-          } else Alert.alert("Error", res.message);
+          } else Alert.alert('Error', res.message);
           ButtonRef.current.SetActivity(false);
         });
     }
@@ -193,11 +192,11 @@ const index = ({ route, navigation }) => {
   const PerformApiFunc = async (JSONBody, val = 0) => {
     var CleanedBody = {};
     for (var i in JSONBody) {
-      if (JSONBody[i] !== null && JSONBody[i] !== "") {
+      if (JSONBody[i] !== null && JSONBody[i] !== '') {
         CleanedBody[i] = JSONBody[i];
       }
     }
-    const Token = await EncryptedStorage.getItem("Token");
+    const Token = await EncryptedStorage.getItem('Token');
 
     const body = JSONtoForm({
       ...OldUser,
@@ -205,8 +204,8 @@ const index = ({ route, navigation }) => {
     });
     const requestOptions = {
       headers: {
-        "Content-Type": "multipart/form-data",
-        Accept: "application/json",
+        'Content-Type': 'multipart/form-data',
+        Accept: 'application/json',
         Authorization: `Bearer ${Token}`,
       },
     };
@@ -217,36 +216,35 @@ const index = ({ route, navigation }) => {
       (val === 0 ? `/update/personal-details` : `/update/career-details`);
     await fetch(URL, {
       ...requestOptions,
-      method: "POST",
+      method: 'POST',
       body,
     })
-      .then(async (response) => response.json())
-      .then(async (res) => {
+      .then(async response => response.json())
+      .then(async res => {
         if (res.status === 'Success') {
           dispatch({
             type: types.USER_DATA,
             userData: res?.user,
             //  user: res.data.data,
           });
-          alert(res.message)
-
+          alert(res.message);
 
           ButtonRef.current.SetActivity(false);
           navigation.reset({
             index: 0,
-            routes: [{ name: "MenuStack" }],
+            routes: [{name: 'MenuStack'}],
           });
         }
       })
-      .catch((e) => {
+      .catch(e => {
         console.log(e);
-        Alert.alert("Error", "An error occured, try again");
+        Alert.alert('Error', 'An error occured, try again');
         ButtonRef.current.SetActivity(false);
       });
   };
 
   const GetField = React.forwardRef((props, ref) => {
-    const { name, value, style } = props;
+    const {name, value, style} = props;
     return (
       <View style={[styles.InputView, style]}>
         <Label notAlign darkmuted>
@@ -268,10 +266,10 @@ const index = ({ route, navigation }) => {
     );
   });
 
-  const HandleBtnClick = (e) => {
+  const HandleBtnClick = e => {
     if (EditType !== e) return setEditType(e);
   };
-  const GetButton = (props) => {
+  const GetButton = props => {
     return (
       <LongButton
         text={props.text}
@@ -347,10 +345,10 @@ const index = ({ route, navigation }) => {
                   cropping: true,
                   includeBase64: true,
                 })
-                  .then((image) => {
+                  .then(image => {
                     setPicture(image);
                   })
-                  .catch((e) => setPicture(null))
+                  .catch(e => setPicture(null))
               }
               style={Picture && styles.PictureBtn}
             />
@@ -363,7 +361,7 @@ const index = ({ route, navigation }) => {
       const CountryModalRef = useRef();
 
       const [CountryValue, setCountryValue] = useState(
-        OldUser.country === "null" ? "N/A" : OldUser.country
+        OldUser.country === 'null' ? 'N/A' : OldUser.country,
       );
 
       useEffect(() => {
@@ -374,7 +372,7 @@ const index = ({ route, navigation }) => {
         <>
           <CountryModal
             CountryRef={CountryModalRef}
-            onChange={(e) => setCountryValue(e)}
+            onChange={e => setCountryValue(e)}
           />
           <InputField
             style={styles.UserFieldView}
@@ -383,7 +381,7 @@ const index = ({ route, navigation }) => {
             white
             editable={false}
             value={CountryValue}
-            placeholder={"Select Country"}
+            placeholder={'Select Country'}
             placeholderTextColor={Colors.DARK_MUTED}
           />
           <View style={styles.ChangeConView}>
@@ -426,7 +424,7 @@ const index = ({ route, navigation }) => {
         />
         <ValidateModal
           ModalRef={ValidateRef}
-          onComplete={() => navigation.navigate("Splash")}
+          onComplete={() => navigation.navigate('Splash')}
         />
         <TouchableOpacity onPress={() => ValidateRef.current(true, true)}>
           <GetField
@@ -451,12 +449,12 @@ const index = ({ route, navigation }) => {
         <GetField
           name="City"
           ref={cityref}
-          value={userData?.city === "null" ? "N/A" : userData?.city}
+          value={userData?.city === 'null' ? 'N/A' : userData?.city}
         />
         <GetField
           name="Address"
           ref={addressref}
-          value={userData?.address === "null" ? "N/A" : userData?.address}
+          value={userData?.address === 'null' ? 'N/A' : userData?.address}
         />
         <GetProfilePic />
       </>
@@ -518,18 +516,19 @@ const styles = StyleSheet.create({
     height: height * 0.165,
   },
   header: {
-    flexDirection: "row",
+    flexDirection: 'row',
     marginTop: height * 0.03,
     marginLeft: width * 0.034,
   },
   TopButtonsView: {
     width: width,
-    flexDirection: "row",
-    justifyContent: "space-around"
+    flexDirection: 'row',
+    justifyContent: 'space-around',
   },
   TopButton: {
     width: width * 0.3,
-    height: height * 0.06,
+    height: height * 0.045,
+    backgroundColor: '#ffffff',
   },
   SelectedBtn: {
     backgroundColor: Colors.BUTTON_LABEL,
@@ -537,16 +536,16 @@ const styles = StyleSheet.create({
   InputView: {
     marginTop: height * 0.02,
     width: width * 0.95,
-    alignSelf: "center",
+    alignSelf: 'center',
   },
   FieldHeight: {
     height: height * 0.06,
   },
   PersonalBtnView: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     width: width * 0.95,
-    alignSelf: "center",
+    alignSelf: 'center',
   },
   PersonalBtn: {
     width: width * 0.45,
@@ -558,7 +557,7 @@ const styles = StyleSheet.create({
     marginTop: height * 0.02,
   },
   PictureView: {
-    flexDirection: "row",
+    flexDirection: 'row',
     marginTop: height * 0.02,
     marginLeft: width * 0.025,
   },
@@ -581,14 +580,14 @@ const styles = StyleSheet.create({
   },
 
   ChangeConView: {
-    position: "absolute",
+    position: 'absolute',
     width: width * 0.2,
     paddingRight: width * 0.05,
     marginTop: height * 0.025,
     height: height * 0.07,
     zIndex: 3,
-    alignSelf: "flex-end",
-    justifyContent: "center",
+    alignSelf: 'flex-end',
+    justifyContent: 'center',
   },
   ChangeCon: {
     zIndex: 4,

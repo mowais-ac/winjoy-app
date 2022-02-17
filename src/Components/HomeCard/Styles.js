@@ -2,43 +2,43 @@ import {
   widthPercentageToDP,
   heightPercentageToDP,
   heightConverter,
-  widthConverter
+  widthConverter,
 } from '../Helpers/Responsive';
-import { RFValue } from 'react-native-responsive-fontsize';
-import {
-  Dimensions,
-  StyleSheet
-} from "react-native";
+import {RFValue} from 'react-native-responsive-fontsize';
+import {Dimensions, StyleSheet} from 'react-native';
 
-const { width, height } = Dimensions.get("window");
+const {width, height} = Dimensions.get('window');
 export default StyleSheet.create({
-  mainView: {
-    alignItems: 'center', 
-    backgroundColor: '#f05b31',
-    borderRadius: widthConverter(10),
-    height:height*0.2, 
-    width: widthPercentageToDP("95%"),
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
+  mainViewWrap: {
+    width: '100%',
+    paddingHorizontal: 10,
 
- //   paddingRight: widthConverter(20),
+    marginTop: 16,
+  },
+
+  mainView: {
+    alignItems: 'center',
+    borderRadius: widthConverter(10),
+    height: height * 0.15,
+    width: '100%',
+    flexDirection: 'row',
+
+    //   paddingRight: widthConverter(20),
   },
   textView: {
-    alignItems: 'center',
-    marginLeft:15,
-    marginRight:15,
+    //  alignItems: 'center',
+
+    width: '100%',
+    paddingHorizontal: 10,
+    justifyContent: 'space-between',
   },
   commingSoonTxt: {
-    fontFamily: "Axiforma-SemiBold",
-    fontSize: 26,
-    color: "#fff",
-    lineHeight: heightConverter(30),
-    width: widthPercentageToDP("40%"),
-    textAlign:'left',
- 
+    fontFamily: 'Axiforma-SemiBold',
+    fontSize: 18,
+    color: '#fff',
+    lineHeight: heightConverter(20),
 
-
-
+    textAlign: 'left',
   },
 
   circularView: {
@@ -52,14 +52,14 @@ export default StyleSheet.create({
     position: 'absolute',
     bottom: heightConverter(55),
     right: 10,
-    bottom: 36
+    bottom: 36,
   },
   imageView: {
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   Margin: {
     height: height * 0.06,
     width: width * 0.4,
-    backgroundColor: "#ffffff",
+    backgroundColor: '#ffffff',
   },
 });

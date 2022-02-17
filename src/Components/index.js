@@ -30,23 +30,4 @@ export * from './WinExperienceCard/WinExperienceCard';
 export * from './LuckyDrawWinnersCard/LuckyDrawWinnersCard';
 export * from './ButtonWithRightIcon/ButtonWithRightIcon';
 export * from './WinningTrendingCard/WinningTrendingCard';
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+export * from './ClosingSoonCard/ClosingSoonCard';

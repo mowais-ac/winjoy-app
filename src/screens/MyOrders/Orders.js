@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from 'react';
 import {
   View,
   StyleSheet,
@@ -8,25 +8,27 @@ import {
   ActivityIndicator,
   RefreshControl,
   Text,
-} from "react-native";
+  ImageBackground,
+} from 'react-native';
 
-import Background from "../../Components/Background";
-import SafeArea from "../../Components/SafeArea";
-import Label from "../../Components/Label";
-import Header from "../../Components/Header";
+import Background from '../../Components/Background';
+import SafeArea from '../../Components/SafeArea';
+import Label from '../../Components/Label';
+import Header from '../../Components/Header';
 
-import { Colors, Images } from "../../Constants/Index";
-import Section from "../../Components/Section";
-import UserInfo from "../../Components/UserInfo";
-import EncryptedStorage from "react-native-encrypted-storage";
-import Config from "react-native-config";
-import NotFound from "../../Components/NotFound";
-import { wait } from "../../Constants/Functions";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import {Colors, Images} from '../../Constants/Index';
+import Section from '../../Components/Section';
+import UserInfo from '../../Components/UserInfo';
+import EncryptedStorage from 'react-native-encrypted-storage';
+import Config from 'react-native-config';
+import NotFound from '../../Components/NotFound';
+import {FormatNumber, wait} from '../../Constants/Functions';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import dayjs from 'dayjs';
 
-const { width, height } = Dimensions.get("window");
+const {width, height} = Dimensions.get('window');
 
-const Orders = ({ navigation }) => {
+const Orders = ({navigation}) => {
   const [Data, setData] = useState(null);
   const [refreshing, setRefreshing] = useState(false);
 
@@ -40,21 +42,21 @@ const Orders = ({ navigation }) => {
     let isActive = true;
     const check = async () => {
       if (Data === null) {
-        const Token = await EncryptedStorage.getItem("Token");
+        const Token = await EncryptedStorage.getItem('Token');
         const requestOptions = {
-          method: "GET",
+          method: 'GET',
           headers: {
-            "Content-Type": "multipart/form-data",
-            Accept: "application/json",
+            'Content-Type': 'multipart/form-data',
+            Accept: 'application/json',
             Authorization: `Bearer ${Token}`,
           },
         };
         await fetch(`${Config.API_URL}/my/orders`, requestOptions)
-          .then(async (response) => response.json())
-          .then((res) => {
+          .then(async response => response.json())
+          .then(res => {
             if (!isActive) return;
-            if (res.message === "My order history") {
-              setData(res.data[0]);
+            if (res.message === 'My order history') {
+              setData(res.data);
             }
           });
       }
@@ -63,43 +65,106 @@ const Orders = ({ navigation }) => {
 
     return () => (isActive = false);
   });
-  const renderItem = ({ item }) => {
-
+  const renderItem = ({item}) => {
     return (
       <TouchableOpacity
-        onPress={() => navigation.navigate("OrderDetails", { item })}
-      >
-        <View>
-          <Section style={styles.Section}>
-            <View style={styles.SectionView}>
-              {/* <View style={styles.ImageView}>
-                <Image
-                  source={{
-                    uri: item?.image,
-                  }}
-                  style={styles.Image}
-                />
-              </View> */}
-              <View style={styles.TextView}>
-                <View style={{ flexDirection: 'row' }}>
-                  <Text>
-                    {item?.order_reference} <Text>{item?.status}</Text>
-                  </Text>
-                </View>
-                {/* <Label notAlign darkmuted bold headingtype="h5">
-                  {item?.products?.title}
-                </Label> */}
-                <Text
-                  
-                  style={styles.LessMargin}
-                >
-                  Total: {+item?.total} {item?.coin_type}
-                </Text>
-                
-                <Text>{item?.order_detail?.length}</Text>
-              </View>
+        onPress={() => navigation.navigate('OrderDetails', {item})}>
+        <View
+          style={{
+            backgroundColor: '#fff',
+            overflow: 'hidden',
+            borderRAdius: 10,
+            padding: 10,
+            marginVertical: 6,
+          }}>
+          <View
+            style={{
+              flex: 1,
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+            }}>
+            <View>
+              <Text
+                style={{
+                  color: '#420E92',
+                  fontSize: 13,
+                  fontFamily: 'Axiforma-SemiBold',
+                }}>
+                {item.order_reference}
+              </Text>
+              <Text style={{color: '#000000', fontSize: 13}}>
+                {dayjs(item.created_at).format('MMMM DD, YYYY')}
+              </Text>
             </View>
-          </Section>
+            <View
+              style={{
+                alignItems: 'flex-end',
+              }}>
+              <Text
+                style={{
+                  color: '#000000',
+                  fontSize: 10,
+                  fontFamily: 'Axiforma-Regular',
+                }}>
+                Total:
+              </Text>
+              <Text
+                style={{
+                  color: '#E61C54',
+                  fontSize: 13,
+                  fontFamily: 'Axiforma-Bold',
+                }}>
+                {' '}
+                AED {item.total}
+              </Text>
+            </View>
+          </View>
+          {item.products ? (
+            <>
+              {item.products.map(productItem => {
+                return (
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      position: 'relative',
+                      flex: 1,
+                      borderBottomWidth: 1,
+                      borderBottomColor: '#DCE1E3',
+                      paddingVertical: 8,
+                    }}>
+                    <View style={{width: 40}}>
+                      <ImageBackground
+                        source={{uri: productItem?.product?.image}}
+                        style={{
+                          width: 40,
+                          height: 40,
+                          borderRadius: 8,
+                          overflow: 'hidden',
+                        }}
+                      />
+                    </View>
+                    <View style={{paddingLeft: 10}}>
+                      <Text style={{color: '#000000', fontSize: 13}}>
+                        {productItem?.product?.title}
+                      </Text>
+                      <Text
+                        style={{
+                          color: '#E61C54',
+                          fontSize: 13,
+                          fontFamily: 'Axiforma-Bold',
+                        }}>
+                        AED{' '}
+                        {FormatNumber(
+                          +productItem?.product?.price?.toLocaleString(),
+                        )}
+                      </Text>
+                    </View>
+                  </View>
+                );
+              })}
+            </>
+          ) : null}
         </View>
       </TouchableOpacity>
     );
@@ -116,7 +181,6 @@ const Orders = ({ navigation }) => {
         <ActivityIndicator size="large" color={Colors.BLACK} />
       ) : (
         <>
-
           <FlatList
             data={Data}
             ListHeaderComponent={
@@ -129,13 +193,13 @@ const Orders = ({ navigation }) => {
               </>
             }
             renderItem={renderItem}
-            keyExtractor={(e) => e.id}
+            keyExtractor={e => e.id}
             ListEmptyComponent={<NotFound text="Orders" />}
             refreshControl={
               <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
             }
             contentContainerStyle={{
-              paddingBottom: Dimensions.get("window").height * 0.25,
+              paddingHorizontal: 10,
             }}
           />
         </>
@@ -149,20 +213,18 @@ const styles = StyleSheet.create({
     height: height * 0.15,
   },
   header: {
-    flexDirection: "row",
+    flexDirection: 'row',
     marginTop: height * 0.03,
     marginLeft: width * 0.034,
   },
   Section: {
-    marginTop: height * 0.01,
-    height: height * 0.15,
-    justifyContent: "center",
-    borderWidth: 1,
+    marginTop: 10,
+    padding: 10,
   },
   SectionView: {
-    flexDirection: "row",
-    alignItems: "center",
-    alignSelf: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignSelf: 'center',
     borderWidth: 1,
     width: '100%',
   },
@@ -179,18 +241,16 @@ const styles = StyleSheet.create({
 
     width: width * 0.22,
     height: height * 0.11,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     borderRadius: 10,
     backgroundColor: Colors.WHITE,
   },
   Image: {
-    
     height: height * 0.1,
-    resizeMode: "contain",
+    resizeMode: 'contain',
   },
-  TextView: {
-  },
+  TextView: {},
   LessMargin: {
     marginTop: height * 0.003,
   },
