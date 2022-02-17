@@ -52,47 +52,47 @@ export default StyleSheet.create({
         shadowOpacity: 0.43,
         shadowRadius: 9.51,
     },
-    mainView:{
-        alignItems:'center',
-        width:width*0.9,
-        height:height*0.1,
-        marginTop:10,
-        flexDirection:'row',
-        justifyContent:'space-between',
-        paddingLeft:15,
-        paddingRight:15,
-     
-    
-      },
-      text:{
+    mainView: {
+        alignItems: 'center',
+        width: width * 0.9,
+        height: height * 0.1,
+        marginVertical: 5,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingLeft: 15,
+        paddingRight: 15,
+
+
+    },
+    text: {
         fontFamily: "Axiforma-Regular",
-        color:'#000000',
-        fontSize:RFValue(12)
-      },
-      text2:{
+        color: '#000000',
+        fontSize: RFValue(12)
+    },
+    text2: {
         fontFamily: "Axiforma-SemiBold",
         color: "#000000",
-        fontSize:RFValue(12)
-      },
+        fontSize: RFValue(12)
+    },
     avatarViewSecondList: {
         //position: 'absolute',
-     
+
         width: width * 0.16,
         height: width * 0.16,
         borderRadius: width * 0.22,
         //borderWidth: 3,
         alignItems: "center",
         justifyContent: "center",
-       // borderColor: "#ffffff",
-       // elevation: 5,
+        // borderColor: "#ffffff",
+        // elevation: 5,
         shadowColor: "#000",
         shadowOffset: {
-          width: 0,
-          height: 7,
+            width: 0,
+            height: 7,
         },
         shadowOpacity: 0.43,
         shadowRadius: 9.51,
-      },
+    },
     subHeaderText: {
         color: '#FFFFFF',
         fontFamily: 'Axiforma-Regular'

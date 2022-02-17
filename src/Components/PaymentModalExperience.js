@@ -384,7 +384,7 @@ const PaymentModals = (props) => {
           </View>
           <BuyLifeCongrats ModalRef={SucessModalState}
             heading={"Congratulations"}
-            description={"Products buyed"}
+            description={"Products Bought"}
             requestOnPress={() => {
 
               SucessModalState.current(false)

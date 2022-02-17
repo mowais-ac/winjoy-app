@@ -174,11 +174,11 @@ const index = ({ props, navigation, route }) => {
           >
             <Text style={[styles.text, { color: selected === 2 ? "#ffff00" : "#ffffff" }]}>About</Text>
           </TouchableOpacity>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={() => { setSelected(3) }}
           >
             <Text style={[styles.text, { color: selected === 3 ? "#ffff00" : "#ffffff" }]}>Friends</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
         {selected === 1 ? (
           <>
@@ -212,7 +212,7 @@ const index = ({ props, navigation, route }) => {
               }
               ItemSeparatorComponent={() => {
                 return (
-                  <View
+                  <View 
                     style={{
                       marginTop: 20,
                       height: 1,
@@ -227,7 +227,7 @@ const index = ({ props, navigation, route }) => {
                   <TriviaCard
                     userInfo={user}
                     userData={item}
-                    onPress={() => navigation.navigate("MenuStack")}
+                  //  onPress={() => navigation.navigate("MenuStack")}
                   />
                 );
               }}

@@ -64,25 +64,25 @@ function ClosingSoon({ item }) {
     <View
       style={{
         width: width * 0.38,
-        height: heightConverter(190),
         backgroundColor: "#ffffff",
         marginLeft: 10,
         borderRadius: 10,
-        padding: 10,
       }}
     >
       <LoaderImage
         source={{
           // uri: ImgUrl.replace("http://", "https://"),
-          uri: item?.image
+          uri: item?.product?.image
         }}
         style={{
-          width: 120,
+          width: '100%',
           height: 90,
+          borderTopLeftRadius: 10,
+          borderTopRightRadius: 10,
         }}
-        resizeMode="contain"
+        resizeMode="cover"
       />
-      <Label primary font={11} dark style={{ color: "#000000" }}>
+      <Label primary font={11} dark style={{ color: "#000000", marginTop: 7, }}>
         Get a chance to
         <Label
           notAlign
@@ -96,25 +96,27 @@ function ClosingSoon({ item }) {
           WIN
         </Label>
       </Label>
-      <Label bold font={11} dark style={{ color: "#000000", width: "110%" }}>
-        {item.title}
+      <Label bold font={11} dark style={{ color: "#000000", width: "100%", marginBottom: 7, }}>
+        {item?.product?.title}
       </Label>
       {/* <Label  bold font={11} dark style={{ color: "#000000", }}>
       Edition
       </Label> */}
-      <View style={styles.containerprogressBar}>
-        <LinearGradient
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 0 }}
-          colors={["#E7003F", "#420E92"]}
-          style={[styles.LinerGradientProgrees, { width: `${progress}%` }]}
-        />
-        <View style={styles.GreybarWidth} />
+      <View style={styles.containerprogressBarWrap}>
+
+        <View style={styles.containerprogressBar}>
+          <LinearGradient
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
+            colors={["#E7003F", "#420E92"]}
+            style={[styles.LinerGradientProgrees, { width: `${progress ? progress : 2}%` }]}
+          />
+        </View>
+        <Label primary font={10} style={{ color: "#877C80", top: 4 }}>
+          {item.updated_stocks ? item.updated_stocks : 0} sold out of {item.stock}
+        </Label>
       </View>
-      <Label primary font={10} style={{ color: "#877C80", top: 4 }}>
-        {item.updated_stocks ? item.updated_stocks : 0} sold out of {item.stock}
-      </Label>
-    </View>
+      </View>
   );
 }
 const index = (props) => {
@@ -301,7 +303,7 @@ const index = (props) => {
                 style={styles.yellowBtn}
               >
 
-                <View style={{ borderWidth: 2, borderColor: "#fff", borderRadius: 45, }}>
+                {/* <View style={{ borderWidth: 2, borderColor: "#fff", borderRadius: 45, }}>
                   <AvatarBtn
                     picture={userData?.profile_image}
                     // id={userInfo?.id}
@@ -309,17 +311,13 @@ const index = (props) => {
                     size={50}
                     font={28}
                   />
-                </View>
+                </View> */}
 
                 <TouchableOpacity onPress={() => navigation.navigate("WALLET")}>
                   <View style={styles.secondHeaderMiddleView}>
-                    <Text style={[styles.text, { color: '#fff', fontSize: RFValue(14) }]}>
-                      {userData?.first_name?.charAt(0).toUpperCase() + userData?.first_name?.slice(1)} {userData?.last_name?.charAt(0).toUpperCase() + userData?.last_name?.slice(1)}
-                    </Text>
-                    <Text style={[styles.text, { color: '#fff', fontSize: RFValue(14) }]}>Your balance: <Text style={[styles.text, { color: '#ffff00', fontSize: RFValue(14) }]}>
-                      AED {userData?.balance ? FormatNumber(+(userData?.balance)) : 0}
-
-                    </Text>
+                      <Text style={[styles.text, { color: '#fff', fontSize: RFValue(18), fontFamily:'Axiforma-SemiBold' }]}>Your balance: <Text style={[styles.text, { color: '#ffff00'}]}>
+                        AED {userData?.balance ? FormatNumber(+(userData?.balance)) : 0}
+                      </Text>
                     </Text>
                   </View>
                 </TouchableOpacity>
@@ -342,41 +340,41 @@ const index = (props) => {
                 <Entypo name="chevron-thin-right" size={22} color="#fff" style={{ marginTop: 6.5, marginRight: 6 }} />
               </TouchableOpacity> */}
               </View>
-              <View
-                style={{
-                  height: 1,
-                  width: width * 1,
-                  backgroundColor: "#E74F7D",
-                  marginTop: 13,
-                }}
-              />
-              <TouchableOpacity onPress={() => { AddModalState.current(true) }}>
-                <View style={{ flexDirection: 'row', marginTop: height * 0.013 }}>
-                  <Image
-                    style={{ width: 30, height: 30 }}
-                    source={require('../../assets/imgs/circlePlaybtn.png')}
-                  />
-                  <Label primary font={RFValue(13)} bold dark style={{ color: "#ffff", width: width * 0.4 }}>
-                    How it works
-                  </Label>
-                </View>
-              </TouchableOpacity>
+              
             </LinearGradient>
 
-
-
+            <View>
+              <TouchableOpacity
+                style={{flexDirection: 'row', 
+                alignItems: 'center', 
+                borderRadius: 100, 
+                height: 40,
+                marginTop: -20,
+                paddingHorizontal: 30,
+                backgroundColor: '#fff',
+                marginBottom:10,}}
+                  onPress={() => { AddModalState.current(true) }}>
+                  {/* <Image
+                    style={{ width: 22, height: 22 }}
+                    source={require('../../assets/imgs/circlePlaybtn.png')}
+                  /> */}
+                  <Text  style={{ 
+                    color: "#420E92", 
+                  fontSize:RFValue(14),
+                  fontFamily:'Axiforma-SemiBold', }}>
+                    How it works
+                  </Text>
+              </TouchableOpacity>
+            </View>
+            
 
             <FlatList
               horizontal={true}
-              style={{ marginLeft: 1, width: '100%', }}
+              style={{ marginLeft: 1, width: '100%',  borderWidth: 1, borderColor: 'orange',}}
               contentContainerStyle={{
-
                 marginLeft: 10,
                 alignSelf: "flex-start",
-                paddingRight: width * 0.04,
                 paddingVertical:10
-
-
               }}
               showsVerticalScrollIndicator={false}
               showsHorizontalScrollIndicator={false}
@@ -409,6 +407,21 @@ const index = (props) => {
               keyExtractor={(item) => item.id}
             //   ListEmptyComponent={this.RenderEmptyContainerOnGoing()}
             />
+            <ScrollView horizontal style={{ flex: 1, marginTop: 8, flexDirection: 'row',}}>
+              {LandingData?.host_sliders_data ? (
+                <>
+                {LandingData?.host_sliders_data.map((hostSlider) => {
+                  return (
+                    <View style={{width: width-60, paddingLeft: 14, flexDirection: 'column',}}>
+                      <ImageBackground source={{uri: hostSlider.url}} style={{
+                        overflow: 'hidden', width: '100%', height: 120, borderRadius: 10, backgroundSize: 'cover',
+                        }}></ImageBackground>
+                    </View>
+                  )
+                })}
+                </>
+              ) : null}
+            </ScrollView>
             <View style={{ justifyContent: 'center', alignItems: 'center', }}>
             </View>
             {
@@ -425,20 +438,28 @@ const index = (props) => {
               />
               ):null
             }
-          
-            <View style={{ flexDirection: 'row', width: '90%', justifyContent: 'space-between', marginTop: 10, marginBottom: 10 }}>
-              <Text style={{ color: '#E7003F', fontSize: 16, fontFamily: "Axiforma-Bold" }}>Shop to Win</Text>
-
-              <TouchableOpacity onPress={() => navigation.navigate("PRODUCTS", {
-                screen: "PrizeList"
-              })}>
-                <Text style={{ color: '#E7003F', fontSize: 16, fontFamily: "Axiforma-Bold" }}>View all</Text>
-              </TouchableOpacity>
-
-            </View>
+               <View style={{ width: "95%", flexDirection: 'row', justifyContent: 'space-between',marginTop:10 }}>
+                <View>
+                  <Text style={{ color: '#E7003F', fontSize: 20, fontFamily: "Axiforma-Bold" }}>Shop to Win</Text>
+                  <Text style={{ color: '#0B2142', fontSize: 16, fontFamily: "Axiforma-Regular" }}>Shop More Win More</Text>
+                </View>
+                <LongButton
+                  style={[
+                    styles.Margin,
+                    { backgroundColor: "#ffffff", },
+                  ]}
+                  textstyle={{ color: "#000000", fontFamily: "Axiforma-SemiBold", fontSize: 14 }}
+                  text="View all"
+                  font={16}
+                  shadowless
+                  onPress={() => navigation.navigate("PRODUCTS", {
+                    screen: "PrizeList"
+                  })}
+                />
+              </View>
             <FlatList
               horizontal={true}
-              style={{ marginLeft: 1, minHeight: 50 }}
+              style={{  }}
               contentContainerStyle={{
                 alignSelf: "flex-start",
                 paddingRight: width * 0.04,
@@ -448,9 +469,9 @@ const index = (props) => {
               data={LandingData?.products}
               renderItem={({ item }) => (
                 <TouchableOpacity
-                  onPress={() =>
-                    navigation.navigate("PRODUCTS", { params: item })
-                  }
+                onPress={() =>
+                  navigation.navigate("PRODUCTS",{screen:"ProductDetail",params:{data:item}})  
+                }
                 >
                   <ClosingSoon props={props} index={item.index} item={item} />
                 </TouchableOpacity>

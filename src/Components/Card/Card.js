@@ -11,18 +11,15 @@ function Card({ options, onPress, reset, result, optionDisable, imageUrl, update
   return (
     <View
       style={{
-        width: width - 25,
-        height: height * 0.21,
+        width: "100%",
         backgroundColor: "#ffffff",
-        marginLeft: 10,
+       
         borderRadius: 10,
-        padding: 10,
-        top: 15,
-        left: 2,
+      
         justifyContent: "center",
         alignItems: "center",
         elevation: 3,
-        marginBottom: 15,
+    
       }}
     >
       <View style={{ position: 'absolute', top: 10, zIndex: 1000, left: 10 }}>
@@ -58,10 +55,11 @@ function Card({ options, onPress, reset, result, optionDisable, imageUrl, update
           uri: imageUrl,
         }}
         style={{
-          width: 230,
-          height: 120,
+          width: "100%",
+          height: 200,
+          borderRadius:10
         }}
-        resizeMode="contain"
+        resizeMode="cover"
       />
     </View>
   );

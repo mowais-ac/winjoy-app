@@ -80,13 +80,13 @@ const index = ({ route, navigation }) => {
           }}
         >
           <WjBackground
-            style={{ height: height * 0.37, borderBottomRightRadius: 20, borderBottomLeftRadius: 20 }}
+            style={{ height: height * 0.4, borderBottomRightRadius: 20, borderBottomLeftRadius: 20 }}
           />
           <View style={{ marginTop: height * 0.07, height: height * 0.15, alignItems: 'center', }}>
 
             <Text style={[styles.headerText, { marginBottom: height * 0.01 }]}>LeaderBoard</Text>
 
-            <View style={{ width: width, height: height * 0.22, }}>
+            <View style={{ width: width, height: height * 0.28, }}>
               <FlatList
                 horizontal={true}
                 style={{ marginLeft: 1, width: width, }}
@@ -109,9 +109,9 @@ const index = ({ route, navigation }) => {
                 renderItem={({ item, index }) => (
                   <View style={index === 1 ? styles.avatarView : styles.leftRightavatarView}>
                     <ProfilePicture
-                      picture={item?.profile_image} 
+                     // picture={item?.profile_image} 
                       // id={userInfo?.id || userData?.id}
-                      name={item?.first_name}
+                      name={item?.first_name?.charAt(0)?.toUpperCase()+item?.last_name?.charAt(0)?.toUpperCase()} 
                       style={index === 1 ? styles.avatarView : styles.leftRightavatarView}
                     />
                     <View style={{
@@ -137,7 +137,7 @@ const index = ({ route, navigation }) => {
 
 
           </View>
-          <View style={{ width: '100%', alignItems: 'center', marginTop: height*0.16 }}>
+          <View style={{ width: '100%', alignItems: 'center', marginTop: height*0.19 }}>
             <FlatList
               data={leaderBoardWinners?.leaders?.slice(3)}
          
@@ -151,12 +151,12 @@ const index = ({ route, navigation }) => {
                     <TouchableOpacity
                      // onPress={() => alert("test")}
                     >
-                      <View style={[styles.mainView,{marginLeft:width*0.05}]}>
+                      <View style={[styles.mainView,{marginLeft:width*0.05,paddingVertical:10}]}>
                         <View style={styles.avatarViewSecondList}>
                           <ProfilePicture
                             picture={item?.profile_image}
                             // id={userInfo?.id || userData?.id}
-                            name={item?.first_name}
+                            name={item?.first_name?.charAt(0)?.toUpperCase()}
                             style={styles.avatarViewSecondList}
                           />
                           <View style={{

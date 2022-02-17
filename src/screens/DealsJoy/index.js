@@ -251,15 +251,16 @@ const index = ({ props, navigation }) => {
             height: 1,
             width: width * 1,
             backgroundColor: "#E74F7D",
-            marginTop: 13,
+            marginTop: 13, 
           }}
         />
         <TouchableOpacity onPress={() =>
-          navigation.navigate("BottomTabStack", {
+          navigation.push("BottomTabStack", {
             screen: "PRODUCTS",
 
           })
-        }>
+        }
+        >
           <Label
             primary
             font={16}
@@ -272,7 +273,7 @@ const index = ({ props, navigation }) => {
               marginBottom: 10,
             }}
           >
-            View All Prizes
+            View All Products
           </Label>
         </TouchableOpacity>
         <View style={{ marginBottom: height * 0.01 }} />

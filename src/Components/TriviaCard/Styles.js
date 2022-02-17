@@ -11,7 +11,7 @@ const { StyleSheet } = require('react-native');
 export default StyleSheet.create({
   mainView:{
     alignItems:'center',
-    width:widthPercentageToDP("100%"),
+    width:"100%",
     marginTop:20,
     flexDirection:'row',
     justifyContent:'space-between',

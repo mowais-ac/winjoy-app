@@ -5,7 +5,8 @@ import {
   Dimensions,
   FlatList,
   Text,
-  Image
+  Image,
+  ImageBackground
 } from "react-native";
 import Label from "../../Components/Label";
 const { width, height } = Dimensions.get("window");
@@ -19,33 +20,45 @@ import ProfilePicture from "../../Components/ProfilePicture";
 import { RFValue } from "react-native-responsive-fontsize";
 import dayjs from "dayjs";
 import { FormatNumber } from "../../Constants/Functions";
+import LongButton from "../../Components/LongButton";
 
 const GameShow = (props) => {
 
   return (
-    <View style={styles.mainView}>
+    <View style={[styles.mainView]}>
 
 
-      <View style={{ height: height * 0.2, width: width * 0.9, marginTop: height * 0.02 }}>
+      <View style={{width: width,marginTop: height * 0.02,  }}>
+        <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 15, marginBottom: 6,}}>
+          <Text style={[styles.text2, { fontSize: RFValue(14), color: "#420E92", }]}>
+            Last Game Winners 
+          </Text>
+          <LongButton
+                style={[
+                  { backgroundColor: "#ffffff", width: 150, height: 36, margin: 0, },
+                ]}
+                textstyle={{ color: "#000000", fontFamily: "Axiforma-SemiBold", fontSize: 12 }}
+                text="View Leaderboard"
+                font={16}
+                shadowless
+                onPress={() => navigation.navigate("AllCreatorsList")}
+              />
+        </View>
         <FlatList
           horizontal={true}
-          style={{ marginLeft: 1, width: width * 0.9, }}
+          style={{ marginTop: 10,  }}
           ItemSeparatorComponent={
             () => <View style={{ width: 16, }} />
           }
-          scrollEnabled={false}
+          scrollEnabled={true}
           contentContainerStyle={{
-
-            marginLeft: 10,
+            marginBottom: 20,
             alignSelf: "flex-start",
-            paddingRight: width * 0.04,
-
-
-
           }}
           ListEmptyComponent={() => (
-            <View style={{ height: height * 0.16, width: width * 0.85, justifyContent: 'center', alignItems: 'center' }}>
-              <Text style={{ color: '#000000', fontFamily: 'Axiforma-Bold', fontSize: RFValue(15) }}>No Winners Found</Text>
+            <View style={{  }}>
+              
+              <Text style={{ color: '#000000', fontFamily: 'Axiforma-Regular', fontSize: RFValue(13) }}>No Winners Found</Text>
             </View>
           )
           }
@@ -53,30 +66,32 @@ const GameShow = (props) => {
           showsHorizontalScrollIndicator={false}
           data={props?.lastWinners}
           renderItem={({ item }) => (
-            <View style={{ width: width * 0.25, height: height * 0.2, justifyContent: 'center', marginLeft: 3 }}>
-              <ProfilePicture
-                picture={item?.user?.profile_image}
-                // id={userInfo?.id || userData?.id}
-                name={item?.user?.first_name?.charAt(0).toUpperCase()} 
-              // name={userInfo?.first_name?.charAt(0).toUpperCase()}
-                style={styles.avatarViewTop}
-              />
+            <View style={{ width: width/3 -16, justifyContent: 'center',  }}>
+              <View style={{flexDirection: 'row', justifyContent: 'center',}}>
+                <ProfilePicture
+                  picture={item?.user?.profile_image}
+                  // id={userInfo?.id || userData?.id}
+                  name={item?.user?.first_name?.charAt(0).toUpperCase()} 
+                // name={userInfo?.first_name?.charAt(0).toUpperCase()}
+                  style={styles.avatarViewTop}
+                />
+              </View>
               <View style={{
-                position: 'absolute', width: width * 0.14,
-                height: width * 0.14, top: height * 0.012, left: -3
+                position: 'absolute', width: 20, height: 20, 
+                top: 4, left: 22
               }}>
                 <Image
                   source={require('../../assets/imgs/redStar.png')}
                   style={{ width: 20, height: 20, }}
                 />
               </View>
-              <View style={{ width: width * 0.36, height: height * 0.08, justifyContent: 'center', marginLeft: -6 }}>
-                <Text style={[styles.text2, { textAlign: 'center', width: width * 0.29, }]}>
+              <View style={{ justifyContent: 'center', marginTop: 5, }}>
+                <Text style={[styles.text2, { textAlign: 'center', }]}>
                   {item?.user?.first_name?.charAt(0)?.toUpperCase() + item?.user?.first_name?.slice(1) + " " + item?.user?.last_name?.charAt(0)?.toUpperCase() + item?.user?.last_name?.slice(1)}
                 </Text>
 
-                <Text style={[styles.text2, { width: width * 0.29, color: "#420E92", textAlign: 'center' }]}>
-                  AED {FormatNumber(+(item?.price).toLocaleString())}
+                <Text style={[styles.text2, { color: "#420E92", textAlign: 'center' }]}>
+                 AED {FormatNumber(+(item?.price)?.toLocaleString())}
                 </Text>
               </View>
             </View>
@@ -88,14 +103,18 @@ const GameShow = (props) => {
       </View>
 
 
+<View></View>
       <FlatList
-        data={props?.pastWinners}
-        contentContainerStyle={{}}
+        data={props?.pastWinners} 
+        style={{width:'100%', paddingHorizontal: 10,}}
+        contentContainerStyle={{
+          width: '100%',
+        }}
         // horizontal={true}
         ListHeaderComponent={() =>
 
-          <Text style={[styles.text2, { width: width * 0.9, fontSize: RFValue(14), color: "#420E92" }]}>
-            Past Winner
+          <Text style={[styles.text2, { fontSize: RFValue(14), color: "#420E92" }]}>
+            Past Winners
           </Text>
 
         }
@@ -126,9 +145,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   avatarViewTop: {
-    width: height * 0.12,
-    height: height * 0.12
-
+    width: 80,
+    height: 80,
   },
   newGameView: {
     marginTop: 10,

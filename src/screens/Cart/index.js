@@ -260,8 +260,8 @@ const index = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView style={{ height: height }}>
-      <Background height={0.2} />
+    <SafeAreaView style={{ height: height, }}>
+      <Background height={0.15} />
       <Header value={3} />
       <View style={styles.MainTop}>
         <UserInfo style={styles.header} OwnUser popup status />
@@ -283,7 +283,7 @@ const index = ({ navigation }) => {
               ListEmptyComponent={listloader ? (<ActivityIndicator size="large" color="#000000" style={{ marginTop: height * 0.2 }} />) : (<NotFoundCart text="Cart" onPress={() => navigation.navigate("PRODUCTS")} />)}
               ListHeaderComponent={() =>
 
-                <Label primary bold headingtype="h4" style={{ marginTop: 15 }}>
+                <Label primary bold headingtype="h4" style={{ marginTop: 5 }}>
                   Cart
                 </Label>
 
@@ -380,7 +380,7 @@ const index = ({ navigation }) => {
       }} />
       <BuyLifeCongrats ModalRef={SucessModalState}
         heading={"Congratulations"}
-        description={"Products buyed"}
+        description={"Products bought"}
         requestOnPress={() => {
 
           SucessModalState.current(false)
@@ -455,7 +455,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     borderRadius: 10,
     padding: 10,
-    bottom: height * 0.01,
+    bottom: height * 0.05,
     left: 2,
     alignItems: 'center',
     elevation: 3,

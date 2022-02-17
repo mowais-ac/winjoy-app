@@ -5,7 +5,8 @@ import {
     Dimensions,
     Text,
     TouchableOpacity,
-    ScrollView
+    ScrollView,
+    SafeAreaView
 } from "react-native";
 import Label from "../../Components/Label";
 const { width, height } = Dimensions.get("window");
@@ -23,8 +24,9 @@ import { RFValue } from "react-native-responsive-fontsize";
 import dayjs from "dayjs";
 import types from "../../redux/types";
 const ProductDetail = ({ props, navigation, route }) => {
-    const dispatch = useDispatch(); 
+    const dispatch = useDispatch();
     const item = route?.params?.data;
+    console.log("item", item);
     let progress = (item?.product?.updated_stocks ? (item?.product?.updated_stocks / item?.stock) * 100 : 0);
     function uniqBy(a, key) {
         var seen = {};
@@ -41,14 +43,14 @@ const ProductDetail = ({ props, navigation, route }) => {
                 favs = favs == null ? [] : JSON.parse(favs)
 
 
-                favs.push(item?.product?.id) 
+                favs.push(item?.product?.id)
                 let uniqueArray = favs.filter(function (item, pos) {
                     return favs.indexOf(item) == pos;
                 });
                 dispatch({
-                    type: types.CART_COUNTER, 
-                    counter:uniqueArray?.length,
-                  }); 
+                    type: types.CART_COUNTER,
+                    counter: uniqueArray?.length,
+                });
                 return AsyncStorage.setItem('ids', JSON.stringify(uniqueArray))
             })
 
@@ -57,10 +59,10 @@ const ProductDetail = ({ props, navigation, route }) => {
     }
 
     return (
-        <ScrollView>
 
-            <View style={{ height: height }}>
 
+        <SafeAreaView style={{ height: "100%", paddingBottom: 120 }}>
+            <ScrollView style={{}}>
                 <LinearGradient
                     style={styles.mainView}
                     colors={["#420E92", "#E7003F"]}
@@ -73,46 +75,56 @@ const ProductDetail = ({ props, navigation, route }) => {
 
 
                 </LinearGradient>
-                <View style={styles.upperView}>
+                <View style={{ paddingHorizontal: 15 }}>
+                    <View style={[styles.upperView]}>
 
-                    <Card
-                        imageUrl={item?.product?.image}
-                        updated_stocks={item?.product?.updated_stocks}
-                        stock={item?.product?.stock}
-                    />
-                </View>
-                <View style={styles.card}>
-                    <Text style={{ color: '#000000', fontFamily: 'Axiforma-Regular', fontSize: 16 }}>Buy outwear jacket</Text>
-                    <View style={{ width: width * 0.95, height: 1, backgroundColor: '#E6DFEE', marginTop: 10 }} />
-                    <Label primary font={16} dark style={{ color: "#E7003F", marginTop: 30 }}>
-                        Get a chance to win
+                        <Card
+                            imageUrl={item?.product?.image}
+                            updated_stocks={item?.product?.updated_stocks}
+                            stock={item?.product?.stock}
+                        />
+                    </View>
+                    <View style={styles.card}>
+                        <Text style={{ color: '#000000', fontFamily: 'Axiforma-Regular', fontSize: 16, borderBottomWidth: 1, borderBottomColor: '#E6DFEE', width: '100%', textAlign: 'center', paddingVertical: 10 }}>Buy outwear jacket</Text>
 
-                    </Label>
-                    <Label font={16} dark style={{ color: "#000000" }}>
-                        {item.prize_title}
-                    </Label>
-                    <Label font={12} light style={{ color: "#000000", height: height * 0.07, marginTop: height * 0.01, }}>
-                        Max draw date {dayjs(item?.end_date).format('MMMM DD, YYYY')} or when the campaign is sold out, which is earliest
-                    </Label> 
-                    <Text style={styles.closingTxt}> 
-                        Closing Soon
-                    </Text>
+                        <Label primary font={16} dark style={{ color: "#E7003F", marginTop: 10 }}>
+                            Get a chance to win
+
+                        </Label>
+                        <Label font={16} dark style={{ color: "#000000" }}>
+                            {item.prize_title}
+                        </Label>
+                        <Label font={12} light style={{ color: "#000000", paddingVertical: 10,lineHeight:17 }}>
+                            Max draw date {dayjs(item?.end_date).format('MMMM DD, YYYY')} or when the campaign is sold out, which is earliest
+                        </Label>
+                        <Text style={styles.closingTxt}>
+                            Closing Soon
+                        </Text>
+                    </View>
+                    <View style={styles.pdView}>
+                        <Label notAlign primary font={16} bold style={{ color: "#E7003F" }}>
+                            Products Details
+                        </Label>
+                        <Label notAlign font={11} dark style={{ color: "#000000", lineHeight: 20 }}>
+                            {item?.product?.description}
+                        </Label>
+                    </View>
+
                 </View>
-                <View style={[styles.pdView, { top: height * 0.62, }]}>
-                    <Label notAlign primary font={16} bold style={{ color: "#E7003F" }}>
-                        Products Details
-                    </Label>
-                    <Label notAlign font={11} dark style={{ color: "#000000", lineHeight: 20 }}>
-                        {item?.product?.description}
-                    </Label>
-                </View>
+
+            </ScrollView>
+            <View style={styles.card2Wrap}>
                 <View style={styles.card2}>
 
                     <View style={{
                         flexDirection: 'row',
                         justifyContent: 'space-between',
                         alignItems: 'center',
-                        width: widthPercentageToDP("83")
+                        width: "100%",
+                        paddingHorizontal: 15,
+                        paddingVertical: 8
+
+
                     }}>
                         <View>
                             <Text style={styles.metaText}>To enter in the lucky draw</Text>
@@ -121,36 +133,18 @@ const ProductDetail = ({ props, navigation, route }) => {
                         <Text style={[styles.text, { fontWeight: 'bold', fontSize: RFValue(14) }]}>AED {+(item?.product?.price)?.toLocaleString()}</Text>
 
                     </View>
-
-
-
-
-
                     <TouchableOpacity
                         onPress={() => {
-                            // navigation.navigate("SimpeStackScreen", {
-                            //     screen: "Cart",
-                            //   })]
                             SaveIdInfo()
                         }}
-                        style={{
-                            height: heightConverter(55),
-                            width: width - 25,
-                            position: 'absolute',
-                            bottom: 0,
-                            borderBottomLeftRadius: 10,
-                            borderBottomRightRadius: 10,
-                            justifyContent: 'center',
-                            alignItems: 'center'
-                        }}
+
                     >
                         <LinearGradient
                             start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
                             style={{
-                                height: heightConverter(55),
-                                width: width - 25,
-                                position: 'absolute',
-                                bottom: 0,
+                                width: "100%",
+                                paddingVertical: 12,
+
                                 borderBottomLeftRadius: 10,
                                 borderBottomRightRadius: 10,
                                 justifyContent: 'center',
@@ -163,12 +157,13 @@ const ProductDetail = ({ props, navigation, route }) => {
                                 Add to Cart
                             </Label>
                         </LinearGradient>
+
                     </TouchableOpacity>
 
                 </View>
-
             </View>
-        </ScrollView>
+        </SafeAreaView>
+
 
     );
 };
@@ -211,57 +206,65 @@ const styles = StyleSheet.create({
 
     },
     upperView: {
-        top: height * 0.1,
-        position: 'absolute',
+        marginTop: -height * 0.13,
+        //  position: 'absolute',
+        width: '100%',
+
+
 
     },
     card: {
-        width: width * 0.95,
-        height: height * 0.26,
+        width: "100%",
+        marginVertical: 10,
         backgroundColor: '#ffffff',
-        marginLeft: 10,
+        paddingBottom: 22,
+        marginBottom: 30,
         borderRadius: 10,
-        padding: 10,
-        top: height * 0.1,
-        left: 2,
+
+
         justifyContent: 'center', alignItems: 'center',
         elevation: 3,
-        marginBottom: 15,
-        paddingTop: height * 0.06
+
+
+    },
+    card2Wrap: {
+        bottom: 10, left: 0, position: 'absolute',
+        paddingHorizontal: 15, width: '100%'
     },
     card2: {
 
-        width: width - 25,
-        height: height * 0.15,
+        width: "100%",
         backgroundColor: '#ffffff',
-        marginLeft: 10,
+        marginTop: 10,
         borderRadius: 10,
-        padding: 10,
-        bottom: 0,
-        left: 2,
-        alignItems: 'center',
+
+
+
+
+
         elevation: 3,
-        position: 'absolute',
-        marginBottom: 20
+
+
     },
+
     closingTxt: {
         color: '#ffffff',
         backgroundColor: '#e7003f',
         fontFamily: "Axiforma-Regular",
         fontWeight: 'bold',
         fontSize: 16,
-        paddingLeft: 20,
-        paddingRight: 20,
-        paddingTop: 6,
-        paddingBottom: 6,
+        paddingVertical: 10,
+        width: 140,
+        textAlign: 'center',
         borderRadius: 20,
-        top: 0
+        left: '50%',
+        marginLeft: -70,
+        bottom: -20,
+        position: 'absolute'
     },
     pdView: {
-        position: 'absolute',
-        bottom: heightPercentageToDP("22"),
-        height: heightPercentageToDP("25"),
-        padding: 20,
+
+
 
     },
     metaText: {

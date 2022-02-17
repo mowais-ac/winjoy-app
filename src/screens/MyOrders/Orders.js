@@ -7,6 +7,7 @@ import {
   Image,
   ActivityIndicator,
   RefreshControl,
+  Text,
 } from "react-native";
 
 import Background from "../../Components/Background";
@@ -63,7 +64,7 @@ const Orders = ({ navigation }) => {
     return () => (isActive = false);
   });
   const renderItem = ({ item }) => {
-  
+
     return (
       <TouchableOpacity
         onPress={() => navigation.navigate("OrderDetails", { item })}
@@ -74,32 +75,28 @@ const Orders = ({ navigation }) => {
               {/* <View style={styles.ImageView}>
                 <Image
                   source={{
-                    uri: ImgUrl,
+                    uri: item?.image,
                   }}
                   style={styles.Image}
                 />
               </View> */}
               <View style={styles.TextView}>
-              <View style={{flexDirection:'row'}}>
-              <Label notAlign dark bold2 headingtype="h4" style={{width:width*0.55}}>
-                  {item?.order_reference}
-                </Label>
-                <Label notAlign darkmuted bold headingtype="h5" style={{width:width*0.55}}>
-                  {item?.status}
-                </Label> 
-              </View>
+                <View style={{ flexDirection: 'row' }}>
+                  <Text>
+                    {item?.order_reference} <Text>{item?.status}</Text>
+                  </Text>
+                </View>
                 {/* <Label notAlign darkmuted bold headingtype="h5">
                   {item?.products?.title}
                 </Label> */}
-                <Label
-                  notAlign
-                  primary
-                  bold
-                  headingtype="h4"
+                <Text
+                  
                   style={styles.LessMargin}
                 >
-                  Total: {+item.total} {item.coin_type}
-                </Label>
+                  Total: {+item?.total} {item?.coin_type}
+                </Text>
+                
+                <Text>{item?.order_detail?.length}</Text>
               </View>
             </View>
           </Section>
@@ -110,7 +107,7 @@ const Orders = ({ navigation }) => {
 
   return (
     <SafeArea>
-      <Background height={0.21} />
+      <Background height={0.14} />
       <Header value={3} />
       <View style={styles.MainTop}>
         <UserInfo style={styles.header} OwnUser popup status />
@@ -119,13 +116,18 @@ const Orders = ({ navigation }) => {
         <ActivityIndicator size="large" color={Colors.BLACK} />
       ) : (
         <>
-          {Data?.length >= 1 && (
-            <Label primary bold headingtype="h4">
-              Orders
-            </Label>
-          )}
+
           <FlatList
             data={Data}
+            ListHeaderComponent={
+              <>
+                {Data?.length >= 1 && (
+                  <Label primary bold headingtype="h4">
+                    Orders
+                  </Label>
+                )}
+              </>
+            }
             renderItem={renderItem}
             keyExtractor={(e) => e.id}
             ListEmptyComponent={<NotFound text="Orders" />}
@@ -144,7 +146,7 @@ const Orders = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   MainTop: {
-    height: height * 0.18,
+    height: height * 0.15,
   },
   header: {
     flexDirection: "row",
@@ -155,12 +157,14 @@ const styles = StyleSheet.create({
     marginTop: height * 0.01,
     height: height * 0.15,
     justifyContent: "center",
+    borderWidth: 1,
   },
   SectionView: {
     flexDirection: "row",
     alignItems: "center",
-    width: width * 0.85,
     alignSelf: "center",
+    borderWidth: 1,
+    width: '100%',
   },
   ImageView: {
     shadowColor: Colors.SHADOW,
@@ -181,12 +185,11 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.WHITE,
   },
   Image: {
-    width: width * 0.2,
+    
     height: height * 0.1,
     resizeMode: "contain",
   },
   TextView: {
-    marginLeft: width * 0.052,
   },
   LessMargin: {
     marginTop: height * 0.003,

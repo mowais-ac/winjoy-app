@@ -48,7 +48,7 @@ function RefferalTextInput({ srNumber,onChangeName,onChangeNumber,validationBord
             color:'#000000',fontFamily: 'Axiforma-Regular',
             borderWidth: 1, borderColor:validationBorderNumber?'red':'#F2EFF5',borderBottomLeftRadius: 10,borderBottomRightRadius:10,borderTopWidth:0.5
           }}
-          maxLength={11}
+          maxLength={13}
             onChangeText={onChangeNumber}
           // value={number}
           placeholder="Phone Number"

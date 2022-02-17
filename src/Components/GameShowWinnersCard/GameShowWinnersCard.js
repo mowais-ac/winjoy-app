@@ -13,7 +13,7 @@ function GameShowWinnersCard({ onPress, date, profile_image, name, ammount }) {
       onPress={onPress}
       disabled={true}
     > 
-      <View style={styles.mainView}>
+      <View style={[styles.mainView]}>
         <View style={styles.avatarView}>
           <ProfilePicture
             picture={profile_image}
@@ -32,7 +32,7 @@ function GameShowWinnersCard({ onPress, date, profile_image, name, ammount }) {
           </View>
         </View>
 
-        <View style={{ width: width * 0.36, height: height * 0.08, justifyContent: 'center', }}>
+        <View style={{height: height * 0.08, justifyContent: 'center', }}>
           <Text style={styles.text}>
             {date}
           </Text>
@@ -42,7 +42,7 @@ function GameShowWinnersCard({ onPress, date, profile_image, name, ammount }) {
 
         </View>
 
-        <Text style={[styles.text2, { width: width * 0.25, color: "#420E92" }]}>
+        <Text style={[styles.text2, { color: "#420E92" }]}>
           AED {ammount}
         </Text>
 

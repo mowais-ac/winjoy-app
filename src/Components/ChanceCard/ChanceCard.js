@@ -16,23 +16,25 @@ function ChanceCard({ onPress, updated_stocks, stock, title, description, image,
   return (
     <View
       style={{
-        width: width * 0.94,
-        height: height * 0.53,
+        width: "100%",
+      //  height: height * 0.53,
+     
         backgroundColor: "#ffffff",
-        marginLeft: 10,
+  
         borderRadius: 10,
-        top: 15,
-        left: 2,
+  
+        
         // justifyContent: "center",
         alignItems: "center",
         elevation: 3,
         marginBottom: 15,
+       
       }}
 
     >
       <View
         style={{
-          width: width * 0.95,
+          width: "100%",
           height: height * 0.28,
           borderRadius: 10,
           marginTop: height * 0.02
@@ -42,25 +44,26 @@ function ChanceCard({ onPress, updated_stocks, stock, title, description, image,
             uri: image,
           }}
           style={{
-            width: width * 0.95,
+            width: "100%" ,
             height: height * 0.25,
+            borderRadius:10
 
           }}
 
           resizeMode="contain"
         />
       </View>
-      <View style={{ borderBottomWidth: 1, borderBottomColor: "#e2ebed" }}>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: width - 70, marginTop: 5, marginBottom: 5 }}>
+      <View style={{ borderBottomWidth: 1, borderBottomColor: "#e2ebed",width:'100%',paddingHorizontal:15,flexDirection:'row',justifyContent:'space-between' }}>
+  
           <Text style={{ fontFamily: 'Axiforma-Regular', fontSize: 14, color: 'grey' }}>
             {title}
           </Text>
           <Text style={{ fontFamily: 'Axiforma-SemiBold', fontSize: 14, color: "#E7003F" }}>
             {price}
           </Text>
-        </View>
+     
       </View>
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: width - 60, marginTop: 5, marginBottom: 5 }}>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between',alignItems:'center', width: "100%" , marginTop: 5, marginBottom: 5,paddingHorizontal:15 }}>
         <View>
           <Text style={{ fontFamily: 'Axiforma-Regular', fontSize: 14, color: "#E7003F" }}>
             Get a chance to win
@@ -96,7 +99,7 @@ function ChanceCard({ onPress, updated_stocks, stock, title, description, image,
         </View>
 
       </View>
-      <View style={{ flexDirection: 'row', width: width - 90, justifyContent: 'space-around', marginTop: 5 }}>
+      <View style={{ flexDirection: 'row', width:"100%", justifyContent: 'center', marginTop: 5 }}>
         <TouchableOpacity
           onPress={onPress}
           style={{
@@ -106,13 +109,13 @@ function ChanceCard({ onPress, updated_stocks, stock, title, description, image,
         >
           <View
             style={{
-              height: heightConverter(45),
-              width: widthPercentageToDP(35),
-              borderWidth: 2,
+             paddingHorizontal:20,
+             paddingVertical:8,
+              
+              borderWidth: 1,
               borderColor: '#E7003F',
               borderRadius: 35,
-              justifyContent: 'center',
-              alignItems: 'center'
+              marginRight:12
             }}
 
 
@@ -132,11 +135,10 @@ function ChanceCard({ onPress, updated_stocks, stock, title, description, image,
           <LinearGradient
             start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
             style={{
-              height: heightConverter(45),
-              width: widthPercentageToDP(35),
+              paddingHorizontal:40,
+              paddingVertical:10,
               borderRadius: 35,
-              justifyContent: 'center',
-              alignItems: 'center'
+             
             }}
             colors={["#E7003F", "#420E92"]}
 
