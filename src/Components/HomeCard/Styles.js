@@ -19,7 +19,7 @@ export default StyleSheet.create({
   mainView: {
     alignItems: 'center',
     borderRadius: widthConverter(10),
-    height: height * 0.15,
+    height: height * 0.1,
     width: '100%',
     flexDirection: 'row',
 
@@ -34,10 +34,9 @@ export default StyleSheet.create({
   },
   commingSoonTxt: {
     fontFamily: 'Axiforma-SemiBold',
-    fontSize: 18,
+    fontSize: 16,
     color: '#fff',
-    lineHeight: heightConverter(20),
-
+    lineHeight: 17,
     textAlign: 'left',
   },
 

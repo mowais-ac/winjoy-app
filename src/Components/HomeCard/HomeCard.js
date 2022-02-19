@@ -89,27 +89,28 @@ function HomeCard({style, onPress, gameShow, time, images}) {
                 </Text>
               </View>
               <View>
-                <Text style={[styles.commingSoonTxt, {fontSize: 16}]}>
+                <Text style={[styles.commingSoonTxt, {fontSize: 13}]}>
                   TRIVIA
                 </Text>
                 <Text
                   style={[
                     styles.commingSoonTxt,
-                    {color: '#ffffff', fontSize: 16},
+                    {color: '#ffffff', fontSize: 13},
                   ]}>
                   COMING SOON
                 </Text>
                 <CountDown
                   style={{marginTop: 3}}
-                  size={16}
+                  size={12}
                   until={time}
                   onFinish={() => setRenderBtn(true)}
                   digitStyle={{
                     backgroundColor: '#ffffff',
+                    height: 25,
                   }}
                   digitTxtStyle={{
                     color: '#420E92',
-                    fontSize: 18,
+                    fontSize: 13,
                     fontFamily: 'Axiforma-Medium',
                   }}
                   timeLabelStyle={{color: 'red'}}
