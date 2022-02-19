@@ -23,6 +23,7 @@ import {Colors} from '../../Constants/Index';
 import {useFocusEffect} from '@react-navigation/native';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import Config from 'react-native-config';
+import {SliderBox} from 'react-native-image-slider-box';
 const {width, height} = Dimensions.get('window');
 import axios from 'axios';
 import LinearGradient from 'react-native-linear-gradient';
@@ -90,6 +91,7 @@ const index = props => {
   const totalLives = useSelector(state => state.app.totalLives);
   const [buffer, setBuffer] = useState(false);
   const [videoAction, setVideoAction] = useState(true);
+  const [imgSlider, setImageSlider] = useState([]);
   const dispatch = useDispatch();
   const dispatch2 = useDispatch();
   const dispatch3 = useDispatch();
@@ -121,6 +123,12 @@ const index = props => {
     );
     setTime(duration);
     console.log('LandingData', LandingData);
+    let arr = [];
+    LandingData?.host_sliders_data.map(ele => {
+      console.log('ele', ele.url);
+      arr.push(ele.url);
+    });
+    setImageSlider(arr);
   }, []);
 
   const LetBegin = () => {
@@ -271,12 +279,20 @@ const index = props => {
                         styles.text,
                         {
                           color: '#fff',
-                          fontSize: RFValue(18),
+                          fontSize: RFValue(15),
                           fontFamily: 'Axiforma-SemiBold',
                         },
                       ]}>
                       Your balance:{' '}
-                      <Text style={[styles.text, {color: '#ffff00'}]}>
+                      <Text
+                        style={[
+                          styles.text,
+                          {
+                            color: '#ffff00',
+                            fontSize: RFValue(15),
+                            fontFamily: 'Axiforma-SemiBold',
+                          },
+                        ]}>
                         AED{' '}
                         {userData?.balance
                           ? FormatNumber(+userData?.balance)
@@ -382,7 +398,7 @@ const index = props => {
               keyExtractor={item => item.id}
               //   ListEmptyComponent={this.RenderEmptyContainerOnGoing()}
             />
-            <ScrollView
+            {/* <ScrollView
               horizontal
               style={{flex: 1, marginTop: 8, flexDirection: 'row'}}>
               {LandingData?.host_sliders_data ? (
@@ -391,26 +407,54 @@ const index = props => {
                     return (
                       <View
                         style={{
-                          width: width - 60,
+                          width: width - 10,
                           paddingLeft: 14,
                           flexDirection: 'column',
                         }}>
-                        <ImageBackground
+                        <Image
                           source={{uri: hostSlider.url}}
-                          resizeMode="cover"
+                          resizeMode="stretch"
                           style={{
                             overflow: 'hidden',
                             width: '100%',
-                            height: 120,
+                            height: 150,
                             borderRadius: 10,
-                            backgroundSize: 'cover',
-                          }}></ImageBackground>
+                          }}
+                        />
                       </View>
                     );
                   })}
                 </>
               ) : null}
-            </ScrollView>
+            </ScrollView> */}
+            <View
+              style={{
+                flex: 1,
+                marginTop: 8,
+                flexDirection: 'row',
+              }}>
+              <SliderBox
+                images={imgSlider}
+                sliderBoxHeight={150}
+                resizeMode={'cover'}
+                ImageComponentStyle={{
+                  borderRadius: 15,
+                  width: '95%',
+                  marginTop: 5,
+                }}
+                dotColor="#FFEE58"
+                inactiveDotColor="#90A4AE"
+                dotStyle={{top: 5}}
+                autoplay={true}
+                circleLoop={true}
+                onCurrentImagePressed={index =>
+                  console.warn(`image ${index} pressed`)
+                }
+                currentImageEmitter={index =>
+                  console.warn(`current pos is: ${index}`)
+                }
+              />
+            </View>
             <View
               style={{justifyContent: 'center', alignItems: 'center'}}></View>
             {LandingData?.home_middle_banners_data ? (
