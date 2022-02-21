@@ -37,6 +37,7 @@ const ProductDetail = ({props, navigation, route}) => {
   const item = route?.params?.data;
   const [activity, setActivity] = useState(false);
   const [count, setCount] = useState(1);
+  console.log('item', item);
 
   let progress = item?.product?.updated_stocks
     ? (item?.product?.updated_stocks / item?.stock) * 100
@@ -337,7 +338,9 @@ const styles = StyleSheet.create({
     bottom: -20,
     position: 'absolute',
   },
-  pdView: {},
+  pdView: {
+    minHeight: 100,
+  },
   metaText: {
     color: '#000000',
     fontFamily: 'Axiforma-Regular',

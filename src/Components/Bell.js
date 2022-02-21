@@ -52,9 +52,8 @@ const Bell = props => {
 const styles = StyleSheet.create({
   Main: {bottom: height * 0.005},
   Bell: {
-    width: width * 0.08,
-    height: height * 0.04,
-    resizeMode: 'contain',
+    width: width * 0.09,
+    height: width * 0.08,
   },
   Pop: {
     backgroundColor: 'red',

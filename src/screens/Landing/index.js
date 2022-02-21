@@ -60,6 +60,7 @@ import {
   getLandingScreen,
   CheckGameEnterStatus,
   TriviaJoyAPI,
+  AllCreatorsList,
 } from '../../redux/actions';
 import socketIO from 'socket.io-client';
 import {useTranslation} from 'react-i18next';
@@ -96,6 +97,7 @@ const index = props => {
   const dispatch2 = useDispatch();
   const dispatch3 = useDispatch();
   const dispatch4 = useDispatch();
+  const dispatch5 = useDispatch();
   const socket = socketIO(MYServer);
   const AddModalState = useRef();
   const onRefresh = React.useCallback(() => {
@@ -112,6 +114,7 @@ const index = props => {
   }, []);
 
   useEffect(() => {
+    dispatch5(AllCreatorsList());
     socket.on('sendStartlivegameshow', msg => {
       dispatch(getLandingScreen());
     });
@@ -124,7 +127,7 @@ const index = props => {
     setTime(duration);
     console.log('LandingData', LandingData);
     let arr = [];
-    LandingData?.host_sliders_data.map(ele => {
+    LandingData?.host_sliders_data?.map(ele => {
       console.log('ele', ele.url);
       arr.push(ele.url);
     });
@@ -610,16 +613,21 @@ const index = props => {
                   </Text>
                 </View>
                 <LongButton
-                  style={[styles.Margin, {backgroundColor: '#ffffff'}]}
+                  style={[
+                    styles.Margin,
+                    {backgroundColor: '#ffffff', width: width * 0.35},
+                  ]}
                   textstyle={{
                     color: '#000000',
                     fontFamily: 'Axiforma-SemiBold',
                     fontSize: 14,
                   }}
-                  text="View all Stars"
+                  text="View all Creators"
                   font={16}
                   shadowless
-                  onPress={() => navigation.navigate('AllCreatorsList')}
+                  onPress={() => {
+                    navigation.navigate('AllCreatorsList');
+                  }}
                 />
               </View>
 
