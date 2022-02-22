@@ -50,8 +50,8 @@ function HomeCard({style, onPress, gameShow, time, images}) {
                   styles.Margin,
                   {
                     backgroundColor: null,
-                    bottom: -3,
-                    left: 0,
+                    bottom: 10,
+                    left: width * 0.25,
                     borderWidth: 2,
                     borderColor: '#fff',
                   },

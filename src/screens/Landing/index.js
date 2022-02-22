@@ -81,15 +81,14 @@ const index = props => {
   const {Coins, navigation} = props;
   const [loader, setLoader] = useState(false);
   const [refreshing, setRefreshing] = React.useState(false);
-  const [winnerData, setWinnerData] = useState([]);
-  const [imgActive, setImgActive] = useState(0);
-  const [homeData, setHomeData] = useState([]);
   const [time, setTime] = useState('');
   const [activeSlide, setActiveSlide] = useState();
   const userData = useSelector(state => state.app.userData);
   const LandingData = useSelector(state => state.app.LandingData);
   const gameEnterStatus = useSelector(state => state.app.gameEnterStatus);
   const totalLives = useSelector(state => state.app.totalLives);
+  const loading = useSelector(state => state.app.loading);
+
   const [buffer, setBuffer] = useState(false);
   const [videoAction, setVideoAction] = useState(true);
   const [imgSlider, setImageSlider] = useState([]);
@@ -342,17 +341,18 @@ const index = props => {
                   borderRadius: 100,
                   height: 40,
                   marginTop: -20,
-                  paddingHorizontal: 30,
+                  paddingHorizontal: 15,
                   backgroundColor: '#fff',
                   marginBottom: 10,
+                  justifyContent: 'space-between',
                 }}
                 onPress={() => {
                   AddModalState.current(true);
                 }}>
-                {/* <Image
-                    style={{ width: 22, height: 22 }}
-                    source={require('../../assets/imgs/circlePlaybtn.png')}
-                  /> */}
+                <Image
+                  style={{width: 22, height: 22, marginRight: 10}}
+                  source={require('../../assets/imgs/iconPlay.png')}
+                />
                 <Text
                   style={{
                     color: '#420E92',
@@ -436,27 +436,31 @@ const index = props => {
                 marginTop: 8,
                 flexDirection: 'row',
               }}>
-              <SliderBox
-                images={imgSlider}
-                sliderBoxHeight={150}
-                resizeMode={'cover'}
-                ImageComponentStyle={{
-                  borderRadius: 15,
-                  width: '95%',
-                  marginTop: 5,
-                }}
-                dotColor="#FFEE58"
-                inactiveDotColor="#90A4AE"
-                dotStyle={{top: 5}}
-                autoplay={true}
-                circleLoop={true}
-                onCurrentImagePressed={index =>
-                  console.warn(`image ${index} pressed`)
-                }
-                currentImageEmitter={index =>
-                  console.warn(`current pos is: ${index}`)
-                }
-              />
+              {loading ? (
+                <ActivityIndicator size="large" color="#000000" />
+              ) : (
+                <SliderBox
+                  images={imgSlider}
+                  sliderBoxHeight={150}
+                  resizeMode={'cover'}
+                  ImageComponentStyle={{
+                    borderRadius: 15,
+                    width: '95%',
+                    marginTop: 5,
+                  }}
+                  dotColor="#FFEE58"
+                  inactiveDotColor="#90A4AE"
+                  dotStyle={{top: 5}}
+                  autoplay={true}
+                  circleLoop={true}
+                  onCurrentImagePressed={index =>
+                    console.warn(`image ${index} pressed`)
+                  }
+                  currentImageEmitter={index =>
+                    console.warn(`current pos is: ${index}`)
+                  }
+                />
+              )}
             </View>
             <View
               style={{justifyContent: 'center', alignItems: 'center'}}></View>
@@ -640,11 +644,15 @@ const index = props => {
                     onPress={() => {
                       onPressCreator(item?.id);
                     }}
+                    style={{width: width / 3.45, height: height * 0.2}}
                     name={item?.user_name}
                     imageUrl={item?.image}
                     fans={item.fans}
                   />
                 )}
+                ItemSeparatorComponent={() => {
+                  return <View style={{width: width * 0.03}} />;
+                }}
                 //keyExtractor={(e) => e.id.toString()}
                 contentContainerStyle={{
                   marginTop: 10,

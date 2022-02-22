@@ -9,7 +9,7 @@ import Config from 'react-native-config';
 import ProgressCircle from 'react-native-progress-circle';
 import {RFValue} from 'react-native-responsive-fontsize';
 const {width, height} = Dimensions.get('window');
-function ExperienceCard({
+function CreatorExperienceCard({
   style,
   textStyle,
   onPress,
@@ -18,42 +18,51 @@ function ExperienceCard({
   imageUrl,
 }) {
   return (
-    <TouchableOpacity onPress={onPress} style={[{width: 200}, style]}>
-      <View>
+    <TouchableOpacity style={{paddingHorizontal: 8}} onPress={onPress}>
+      <View
+        style={{
+          backgroundColor: '#ffffff',
+          borderRadius: 15,
+
+          width: '100%',
+        }}>
         <Image
-          style={[styles.bgImage, style]}
+          style={styles.bgImage}
           source={{
             uri: imageUrl,
           }}
         />
-        <LinearGradient
-          colors={['rgba(0,0,128,0)', 'rgba(0,0,128,0)', 'rgba(0,0,128,0.9)']}
-          style={[styles.bgView, style]}>
+        <View style={styles.bgView}>
           <Text
             style={{
-              color: '#ffffff',
+              color: '#420E92',
               fontFamily: 'Axiforma-SemiBold',
               fontSize: RFValue(13),
               marginBottom: 2,
             }}>
-            {title}
+            Baby Mares
           </Text>
           <Text
-            style={[
-              {
-                color: '#ffffff',
-                fontFamily: 'Axiforma-Regular',
-                textAlign: 'center',
-                width: '98%',
-              },
-              textStyle,
-            ]}>
-            {short_desc}
+            style={{
+              color: '#0B2142',
+              fontFamily: 'Axiforma-Regular',
+              width: width * 0.4,
+            }}>
+            Hi! I make great videos! Loving myFanPark!
           </Text>
-        </LinearGradient>
+          <Text
+            style={{
+              color: '#420E92',
+              fontFamily: 'Axiforma-SemiBold',
+              fontSize: RFValue(13),
+              paddingVertical: 10,
+            }}>
+            AED 240
+          </Text>
+        </View>
       </View>
     </TouchableOpacity>
   );
 }
 
-export {ExperienceCard};
+export {CreatorExperienceCard};

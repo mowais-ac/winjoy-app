@@ -9,6 +9,8 @@ import {
   FlatList,
   Text,
   ScrollView,
+  TextInput,
+  TouchableOpacity,
 } from 'react-native';
 import Header from '../../Components/Header';
 import {
@@ -31,8 +33,8 @@ import {useDispatch, useSelector} from 'react-redux';
 import types from '../../redux/types';
 import ModalCelebrityProducts from '../../Components/ModalCelebrityProducts';
 import ExperienceCelebrityModal from '../../Components/ExperienceCelebrityModal';
-import {TextInput} from 'react-native-gesture-handler';
 import NotFoundCart from '../../Components/NotFoundCart';
+import Icon from 'react-native-vector-icons/Feather';
 const {width, height} = Dimensions.get('window');
 const index = ({route, navigation}) => {
   const celebrityModalState = useRef();
@@ -41,6 +43,7 @@ const index = ({route, navigation}) => {
   const dispatch2 = useDispatch();
   const [resData, setResData] = useState([]);
   const [insearchData, setInsearchData] = useState([]);
+  const [showResult, setShowResult] = useState(false);
   const allCreatorsList = useSelector(state => state.app.allCreatorsList);
   // const [experienceId, setExperienceId] = useState();
   useEffect(() => {
@@ -83,7 +86,7 @@ const index = ({route, navigation}) => {
           style={{height: height}}>
           <WjBackground
             style={{
-              height: height * 0.18,
+              height: height * 0.19,
               borderBottomRightRadius: 20,
               borderBottomLeftRadius: 20,
             }}
@@ -94,33 +97,48 @@ const index = ({route, navigation}) => {
             <Text style={[styles.headerText]}>Our Creators</Text>
             <Text style={styles.subHeaderText}>Created By Stars</Text>
           </View>
-
+          <View
+            style={{
+              width: '100%',
+              justifyContent: 'flex-end',
+              alignItems: 'flex-end',
+              paddingHorizontal: 15,
+            }}>
+            <TouchableOpacity
+              onPress={() => {
+                setShowResult(!showResult);
+              }}>
+              <Icon name="search" size={30} color="#ffffff" />
+            </TouchableOpacity>
+          </View>
           <View
             style={{
               width: '100%',
               alignItems: 'center',
               marginTop: height * 0.05,
             }}>
-            <View
-              style={{
-                backgroundColor: '#ffffff',
-                width: '90%',
-                borderRadius: 25,
-              }}>
-              <TextInput
+            {showResult ? (
+              <View
                 style={{
-                  paddingVertical: height * 0.015,
-                  paddingLeft: 20,
-                  fontFamily: 'Axiforma-Regular',
-                  color: '#000000',
-                }}
-                onChangeText={text => searchEmployee(text)}
-                // value={number}
-                placeholder="Search by name"
-                placeholderTextColor={'#420E92'}
-                keyboardType="default"
-              />
-            </View>
+                  backgroundColor: '#ffffff',
+                  width: '90%',
+                  borderRadius: 25,
+                }}>
+                <TextInput
+                  style={{
+                    paddingVertical: height * 0.015,
+                    paddingLeft: 20,
+                    fontFamily: 'Axiforma-Regular',
+                    color: '#000000',
+                  }}
+                  onChangeText={text => searchEmployee(text)}
+                  // value={number}
+                  placeholder="Search by name"
+                  placeholderTextColor={'#420E92'}
+                  keyboardType="default"
+                />
+              </View>
+            ) : null}
             <FlatList
               data={resData}
               style={{paddingLeft: 20}}

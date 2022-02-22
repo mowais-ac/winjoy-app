@@ -31,7 +31,7 @@ const Bell = props => {
         <ImageBackground
           source={Images.Bell}
           style={styles.Bell}
-          resizeMode={'cover'}>
+          resizeMode={'stretch'}>
           {+counter >= 1 && (
             <>
               {/* <Image source={Images.BellPop} style={styles.Pop} />

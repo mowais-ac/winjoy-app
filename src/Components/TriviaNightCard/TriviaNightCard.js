@@ -1,17 +1,21 @@
-import React, { useState } from "react";
-import { View, Text, TextInput, TouchableWithoutFeedback, StyleSheet, Image, } from "react-native";
-import { widthConverter } from "../Helpers/Responsive";
-import styles from "./Styles";
+import React, {useState} from 'react';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableWithoutFeedback,
+  StyleSheet,
+  Image,
+} from 'react-native';
+import {widthConverter} from '../Helpers/Responsive';
+import styles from './Styles';
 import CountDown from 'react-native-countdown-component';
-function TriviaNightCard({ style, uri, onPress, subHeading, timer, startIn }) {
-
+function TriviaNightCard({style, uri, onPress, subHeading, timer, startIn}) {
   return (
-    <TouchableWithoutFeedback
-      onPress={onPress}
-    >
+    <TouchableWithoutFeedback onPress={onPress}>
       <View style={[styles.mainView, style]}>
         <Image
-          style={{width:'100%',height:"100%"}}
+          style={{width: '100%', height: '100%'}}
           resizeMode="contain"
           source={{
             uri: uri,
@@ -46,9 +50,8 @@ function TriviaNightCard({ style, uri, onPress, subHeading, timer, startIn }) {
           />
         </View> */}
       </View>
-
     </TouchableWithoutFeedback>
   );
 }
 
-export { TriviaNightCard };
+export {TriviaNightCard};

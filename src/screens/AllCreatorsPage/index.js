@@ -184,7 +184,7 @@ const index = ({route, navigation}) => {
           <View
             style={{
               width: '100%',
-              height: height * 0.48,
+              paddingVertical: 22,
               justifyContent: 'center',
               marginTop: 10,
               backgroundColor: 'rgba(255, 255, 255, 0.3)',
@@ -194,7 +194,6 @@ const index = ({route, navigation}) => {
                 width: '100%',
                 flexDirection: 'row',
                 justifyContent: 'space-between',
-                marginTop: 14,
               }}>
               <View>
                 <Text
@@ -218,46 +217,85 @@ const index = ({route, navigation}) => {
                 </Text>
               </View>
             </View>
-
+            <View>
+              <FlatList
+                data={data?.win_experience}
+                horizontal={true}
+                style={{paddingLeft: 12}}
+                ItemSeparatorComponent={() => {
+                  return <View style={{width: width * 0.03}} />;
+                }}
+                renderItem={({item}) => (
+                  <WinExperienceCard
+                    onPress={() => {
+                      dispatch3({
+                        type: types.EXPERIENCE_ID,
+                        experienceID: item.id,
+                        //  user: res.data.data,
+                      });
+                      console.log('id', item.id);
+                      dispatch4(ExperienceProductData(item?.id));
+                      celebrityModalState.current(true);
+                    }}
+                    short_desc={item?.title}
+                    thumbnail={item?.thumbnail}
+                    style={{
+                      width: width * 0.4,
+                      backgroundColor: '#fff',
+                      borderRadius: 15,
+                    }}
+                    imageStyle={{
+                      width: width * 0.4,
+                      height: height * 0.18,
+                      borderRadius: 15,
+                      borderBottomLeftRadius: 0,
+                      borderBottomRightRadius: 0,
+                    }}
+                  />
+                )}
+                //keyExtractor={(e) => e.id.toString()}
+                contentContainerStyle={{
+                  marginTop: 10,
+                  paddingRight: width * 0.05,
+                }}
+                // refreshControl={
+                //   <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
+                // }
+                keyExtractor={item => item.id}
+              />
+            </View>
+          </View>
+          <View
+            style={{
+              width: '100%',
+              alignItems: 'center',
+              marginTop: 15,
+              paddingBottom: 10,
+            }}>
+            <Text style={styles.textHeading}>
+              Buy experience with celebrities
+            </Text>
             <FlatList
-              data={data?.win_experience}
+              data={data?.experience_celebrities}
               horizontal={true}
-              style={{paddingLeft: 12}}
-              ItemSeparatorComponent={() => {
-                return <View style={{width: width * 0.03}} />;
-              }}
+              style={{paddingLeft: 10}}
               renderItem={({item}) => (
-                <WinExperienceCard
-                  onPress={() => {
-                    dispatch3({
-                      type: types.EXPERIENCE_ID,
-                      experienceID: item.id,
-                      //  user: res.data.data,
-                    });
-                    console.log('id', item.id);
-                    dispatch4(ExperienceProductData(item?.id));
-                    celebrityModalState.current(true);
-                  }}
-                  short_desc={item?.title}
-                  thumbnail={item?.thumbnail}
+                <ExperienceCard
+                  onPress={() => navigation.navigate('AllCreatorsPage')}
+                  imageUrl={item?.celebrity?.profile_image}
+                  title={item?.title}
+                  short_desc={item?.short_desc}
                   style={{
-                    height: height * 0.32,
-                    backgroundColor: '#fff',
-                    borderRadius: 15,
-                  }}
-                  imageStyle={{
-                    width: width * 0.6,
-                    height: height * 0.18,
-                    borderRadius: 15,
-                    borderBottomLeftRadius: 0,
-                    borderBottomRightRadius: 0,
+                    width: width * 0.4,
+                    height: height * 0.25,
+                    marginRight: 10,
                   }}
                 />
               )}
               //keyExtractor={(e) => e.id.toString()}
               contentContainerStyle={{
+                paddingRight: 10,
                 marginTop: 10,
-                paddingRight: width * 0.05,
               }}
               // refreshControl={
               //   <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
@@ -272,24 +310,23 @@ const index = ({route, navigation}) => {
               marginTop: 15,
               paddingBottom: 10,
             }}>
-            <Text style={styles.textHeading}>
-              Buy experience with celebrities
-            </Text>
+            <Text style={styles.textHeading}>Ultimate Fan Experience</Text>
             <FlatList
               data={data?.experiences}
               horizontal={true}
-              style={{paddingLeft: 10}}
+              //  style={{paddingLeft: 8}}
               renderItem={({item}) => (
                 <ExperienceCard
-                  onPress={() => navigation.navigate('AllCreatorsPage')}
-                  imageUrl={item?.celebrity?.profile_image}
+                  onPress={() => navigation.navigate('CreatorExperience')}
+                  imageUrl={item?.thumbnail}
                   title={item?.title}
                   short_desc={item?.short_desc}
                   style={{
-                    width: width * 0.4,
-                    height: height * 0.25,
+                    width: width * 0.43,
+                    height: height * 0.32,
                     marginRight: 10,
                   }}
+                  textStyle={{lineHeight: 17, paddingBottom: 5}}
                 />
               )}
               //keyExtractor={(e) => e.id.toString()}

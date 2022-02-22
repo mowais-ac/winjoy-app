@@ -45,6 +45,7 @@ const {width, height} = Dimensions.get('window');
 
 import {connect, useDispatch, useSelector} from 'react-redux';
 import types from '../../redux/types';
+import {WjBackground} from '../../Components';
 const index = ({navigation}) => {
   const dispatch = useDispatch();
   const dispatch2 = useDispatch();
@@ -160,18 +161,24 @@ const index = ({navigation}) => {
 
   return (
     <SafeAreaView style={{height: height}}>
-      <Background height={0.15} />
+      <WjBackground
+        style={{
+          height: height * 0.19,
+          borderBottomRightRadius: 20,
+          borderBottomLeftRadius: 20,
+        }}
+      />
       <Header value={3} />
-      <View style={styles.MainTop}>
-        <UserInfo style={styles.header} OwnUser popup status />
+      <View style={{alignItems: 'center'}}>
+        <Text style={[styles.headerText, {marginTop: 20}]}>Cart</Text>
       </View>
       {cartData?.data === null ? (
         <Label primary bold headingtype="h4" style={{marginTop: 15}}>
           No data
         </Label>
       ) : (
-        <>
-          <View style={{height: '65%'}}>
+        <View style={{marginTop: height * 0.06}}>
+          <View style={{height: '85%'}}>
             <FlatList
               data={cartData?.data}
               renderItem={renderItem}
@@ -192,11 +199,6 @@ const index = ({navigation}) => {
                   />
                 )
               }
-              ListHeaderComponent={() => (
-                <Label primary bold headingtype="h4" style={{marginTop: 5}}>
-                  Cart
-                </Label>
-              )}
               refreshControl={
                 <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
               }
@@ -214,7 +216,33 @@ const index = ({navigation}) => {
                   alignItems: 'center',
                   width: widthPercentageToDP('83'),
                 }}>
-                <Text style={styles.metaText}>Total</Text>
+                <Text style={styles.metaText}>SubTotal</Text>
+                <Text style={[styles.text, {fontWeight: 'bold'}]}>
+                  {'AED '}
+                  {FormatNumber(+cartData?.sub_total)}
+                </Text>
+              </View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  width: widthPercentageToDP('83'),
+                }}>
+                <Text style={styles.metaText}>Vat 5%</Text>
+                <Text style={[styles.text, {fontWeight: 'bold'}]}>
+                  {'AED '}
+                  {FormatNumber(+cartData?.vat)}
+                </Text>
+              </View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  width: widthPercentageToDP('83'),
+                }}>
+                <Text style={styles.metaText}>Grand Total</Text>
                 <Text style={[styles.text, {fontWeight: 'bold'}]}>
                   {'AED '}
                   {FormatNumber(+cartData?.total)}
@@ -272,7 +300,7 @@ const index = ({navigation}) => {
               </TouchableOpacity>
             </View>
           ) : null}
-        </>
+        </View>
       )}
       <PaymentModals ModalRef={ModalState} details total={cartData?.total} />
       <Modals
@@ -348,7 +376,7 @@ const styles = StyleSheet.create({
   },
   card2: {
     width: width - 25,
-    height: height * 0.13,
+    height: height * 0.17,
     backgroundColor: '#ffffff',
     marginLeft: 10,
     borderRadius: 10,
@@ -390,6 +418,11 @@ const styles = StyleSheet.create({
     paddingLeft: width * 0.09,
     fontSize: RFValue(12),
     color: Colors.WHITE,
+  },
+  headerText: {
+    color: '#ffffff',
+    fontFamily: 'Axiforma-SemiBold',
+    fontSize: RFValue(22),
   },
 });
 export default index;
