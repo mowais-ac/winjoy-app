@@ -1,27 +1,27 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Image,
   StyleSheet,
   Dimensions,
   TouchableOpacity,
-  Text
-} from "react-native";
-import { RFValue } from "react-native-responsive-fontsize";
-import { Images } from "../Constants/Index";
-import Bell from "./Bell";
-import Label from "./Label";
-import { Colors } from "../Constants/Index";
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import EncryptedStorage from "react-native-encrypted-storage";
-import Config from "react-native-config";
-import { connect, useSelector } from "react-redux";
+  Text,
+} from 'react-native';
+import {RFValue} from 'react-native-responsive-fontsize';
+import {Images} from '../Constants/Index';
+import Bell from './Bell';
+import Label from './Label';
+import {Colors} from '../Constants/Index';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
+import EncryptedStorage from 'react-native-encrypted-storage';
+import Config from 'react-native-config';
+import {connect, useSelector} from 'react-redux';
 import BackIcon from 'react-native-vector-icons/Ionicons';
-import { heightConverter, widthConverter } from "./Helpers/Responsive";
-const { width, height } = Dimensions.get("window");
+import {heightConverter, widthConverter} from './Helpers/Responsive';
+const {width, height} = Dimensions.get('window');
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {UpdateBell } from '../redux/actions';
-const Header = (props) => {
+import {UpdateBell} from '../redux/actions';
+const Header = props => {
   const navigation = useNavigation();
 
   // const check = async () => {
@@ -62,13 +62,16 @@ const Header = (props) => {
   // }, []);
   return (
     <View style={props.style}>
-      <View style={[styles.Container, { height: props.height }]}>
+      <View style={[styles.Container, {height: props.height}]}>
         {props.back ? (
-          <TouchableOpacity
-            onPress={() => navigation.goBack()}
-          >
+          <TouchableOpacity onPress={() => navigation.goBack()}>
             <View style={styles.containerBack}>
-              <BackIcon name="ios-chevron-back" size={20} color="#FFFFFF" style={{ left: 5 }} />
+              <BackIcon
+                name="ios-chevron-back"
+                size={20}
+                color="#FFFFFF"
+                style={{left: 5}}
+              />
               <Text style={styles.text}>Back</Text>
             </View>
           </TouchableOpacity>
@@ -77,10 +80,9 @@ const Header = (props) => {
             onPress={() => {
               navigation.reset({
                 index: 0,
-                routes: [{ name: "BottomTabStack" }],
+                routes: [{name: 'BottomTabStack'}],
               });
-            }}
-          >
+            }}>
             <Image
               source={Images.Logo}
               style={[
@@ -95,10 +97,11 @@ const Header = (props) => {
         {!props.noBell && <Bell style={styles.Bell} value={props.value} />}
         <TouchableOpacity
           style={styles.Lines}
-          onPress={() => navigation.navigate("MenuStack", {
-            screen: "HamburgerMenu",
-          })} 
-        >
+          onPress={() =>
+            navigation.navigate('MenuStack', {
+              screen: 'HamburgerMenu',
+            })
+          }>
           <Image source={Images.Lines} style={styles.Logo} />
         </TouchableOpacity>
       </View>
@@ -113,18 +116,18 @@ const Header = (props) => {
 
 const styles = StyleSheet.create({
   Container: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 5,
   },
   containerBack: {
     flexDirection: 'row',
     width: widthConverter(80),
     marginRight: widthConverter(-30),
-    alignItems: "center"
-
+    alignItems: 'center',
   },
   text: {
-    fontFamily: "Axiforma-Regular",
+    fontFamily: 'Axiforma-Regular',
     fontSize: RFValue(14),
     color: Colors.LABEL,
     left: 4,
@@ -132,7 +135,7 @@ const styles = StyleSheet.create({
   Logo: {
     width: width * 0.086,
     height: height * 0.038,
-    resizeMode: "contain",
+    resizeMode: 'contain',
     marginLeft: width * 0.043,
   },
   Bell: {
@@ -143,11 +146,10 @@ const styles = StyleSheet.create({
     marginTop: height * 0.03,
   },
   Lines: {
-    position: "absolute",
+    position: 'absolute',
     marginLeft: width * 0.83,
   },
 });
-
 
 // const mapStateToProps = (state) => {
 //   const { Bell } = state;

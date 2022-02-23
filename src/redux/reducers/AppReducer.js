@@ -30,6 +30,8 @@ const INITIAL_STATE = {
   allCreatorsList: [],
   cartData: [],
   removeCartData: [],
+  productsDetals: [],
+  creatorExpList: [],
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -99,6 +101,10 @@ export default (state = INITIAL_STATE, action) => {
       return {...state, cartData: action.payload};
     case types.REMOVE_CAR_DATA:
       return {...state, removeCartData: action.payload};
+    case types.PRODUCTS_DETAILS:
+      return {...state, productsDetals: action.payload};
+    case types.CREATORS_EXPERIENCE_LIST:
+      return {...state, creatorExpList: action.payload};
 
     default:
       return state;

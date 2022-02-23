@@ -10,18 +10,14 @@ const {StyleSheet} = require('react-native');
 
 export default StyleSheet.create({
   bgView: {
-    width: 170,
-    height: 200,
     borderRadius: 15,
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-    paddingBottom: 10,
+    paddingLeft: 10,
   },
   bgImage: {
-    width: 170,
-    height: 200,
-    borderRadius: 15,
-    position: 'absolute',
+    width: '100%',
+    height: 120,
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15,
   },
   text: {
     color: '#fff',

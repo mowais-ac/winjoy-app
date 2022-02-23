@@ -133,6 +133,7 @@ const GameShow = props => {
       <FlatList
         data={props?.pastWinners}
         style={{width: '100%', paddingHorizontal: 10}}
+        scrollEnabled={false}
         contentContainerStyle={{
           width: '100%',
         }}

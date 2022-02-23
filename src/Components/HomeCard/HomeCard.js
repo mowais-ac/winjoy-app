@@ -39,19 +39,25 @@ function HomeCard({style, onPress, gameShow, time, images}) {
         />
         <View style={styles.textView}>
           {gameShow?.status === 'on_boarding' ? (
-            <>
-              <Text style={styles.commingSoonTxt}>LIVE</Text>
-              <Text style={[styles.commingSoonTxt, {color: '#D9FE51'}]}>
-                TRIVIA
-              </Text>
+            <View
+              style={{
+                alignItems: 'center',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+              }}>
+              <View>
+                <Text style={styles.commingSoonTxt}>LIVE</Text>
+                <Text style={[styles.commingSoonTxt, {color: '#D9FE51'}]}>
+                  TRIVIA
+                </Text>
+              </View>
 
               <LongButton
                 style={[
                   styles.Margin,
                   {
                     backgroundColor: null,
-                    bottom: -3,
-                    left: 0,
+
                     borderWidth: 2,
                     borderColor: '#fff',
                   },
@@ -66,7 +72,7 @@ function HomeCard({style, onPress, gameShow, time, images}) {
                 shadowless
                 onPress={onPress}
               />
-            </>
+            </View>
           ) : gameShow?.status === 'inprocess' ? (
             <View
               style={{

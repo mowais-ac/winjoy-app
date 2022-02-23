@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, {useRef} from 'react';
 import {
   Image,
   View,
@@ -6,27 +6,27 @@ import {
   Dimensions,
   ScrollView,
   Alert,
-  SafeAreaView
-} from "react-native";
+  SafeAreaView,
+} from 'react-native';
 
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
-import Config from "react-native-config";
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview';
+import Config from 'react-native-config';
 
-import Background from "../../Components/Background";
-import InputField from "../..//Components/InputField";
-import Label from "../../Components/Label";
-import LabelButton from "../../Components/LabelButton";
-import LongButton from "../../Components/LongButton";
-import Modals from "../../Components/Modals";
+import Background from '../../Components/Background';
+import InputField from '../..//Components/InputField';
+import Label from '../../Components/Label';
+import LabelButton from '../../Components/LabelButton';
+import LongButton from '../../Components/LongButton';
+import Modals from '../../Components/Modals';
 
-import { JSONtoForm } from "../../Constants/Functions";
+import {JSONtoForm} from '../../Constants/Functions';
 
-import { Images } from "../../Constants/Index";
-import GoBack from "../../Components/GoBack";
+import {Images} from '../../Constants/Index';
+import GoBack from '../../Components/GoBack';
 
-const { width, height } = Dimensions.get("window");
+const {width, height} = Dimensions.get('window');
 
-const index = ({ navigation }) => {
+const index = ({navigation}) => {
   const emailref = useRef();
   const Buttonref = useRef();
   const ModalRef = useRef();
@@ -39,19 +39,19 @@ const index = ({ navigation }) => {
         email,
       });
       const requestOptions = {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "multipart/form-data",
-          Accept: "application/json",
+          'Content-Type': 'multipart/form-data',
+          Accept: 'application/json',
         },
         body,
       };
 
       await fetch(`${Config.API_URL}/auth/forget-password`, requestOptions)
-        .then((response) => response.json())
-        .then(async (res) => {
-          if (res.message == "We have emailed your password reset link!") {
-            Alert.alert("Success", res.message);
+        .then(response => response.json())
+        .then(async res => {
+          if (res.message == 'We have emailed your password reset link!') {
+            Alert.alert('Success', res.message);
             Buttonref.current.SetActivity(false);
           } else {
             ModalRef.current(true, {
@@ -61,17 +61,14 @@ const index = ({ navigation }) => {
           }
         })
 
-        .catch((e) => console.log(e));
+        .catch(e => console.log(e));
     }
   };
   return (
-
     <SafeAreaView>
       <Background height={1} design />
       <ScrollView>
-
         <KeyboardAwareScrollView keyboardDismissMode="interactive">
-
           <View style={styles.MainTop}>
             <GoBack />
             <Image source={Images.Logo} style={styles.Logo} />
@@ -81,15 +78,13 @@ const index = ({ navigation }) => {
             </Label>
             <Label
               light
-              style={[styles.MarginLarge, { lineHeight: height * 0.03 }]}
-            >
+              style={[styles.MarginLarge, {lineHeight: height * 0.03}]}>
               A link will be sent to your email using which you can reset your
               password
             </Label>
             <Label
               light
-              style={[styles.MarginLarge, { lineHeight: height * 0.03 }]}
-            >
+              style={[styles.MarginLarge, {lineHeight: height * 0.03}]}>
               Enter your email below to get the link
             </Label>
             <InputField
@@ -102,12 +97,12 @@ const index = ({ navigation }) => {
               textContentType="emailAddress"
             />
             <LongButton
-              style={styles.MarginLarge}
+              style={[styles.MarginLarge, {backgroundColor: '#ffffff'}]}
               text="Get link"
               font={17}
               onPress={HandleClick}
               ref={Buttonref}
-              textstyle={{ color: '#fff' }}
+              textstyle={{color: '#E7003F'}}
             />
           </View>
           {/* <GoBack style={styles.MarginLarge} /> */}
@@ -120,21 +115,21 @@ const index = ({ navigation }) => {
 const styles = StyleSheet.create({
   MainTop: {
     height: height * 0.85,
-    alignItems: "center",
+    alignItems: 'center',
   },
 
   Logo: {
     marginTop: height * 0.15,
     width: width * 0.2,
     height: height * 0.1,
-    resizeMode: "contain",
+    resizeMode: 'contain',
   },
-  Heading: { marginTop: height * 0.015 },
-  Terms: { marginTop: height * 0.02 },
-  Margin: { marginTop: height * 0.014 },
-  MarginLarge: { marginTop: height * 0.025 },
+  Heading: {marginTop: height * 0.015},
+  Terms: {marginTop: height * 0.02},
+  Margin: {marginTop: height * 0.014},
+  MarginLarge: {marginTop: height * 0.025},
   NumberInitial: {
-    position: "absolute",
+    position: 'absolute',
     marginTop: height * 0.038,
     marginLeft: width * 0.05,
   },

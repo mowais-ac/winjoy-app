@@ -43,10 +43,15 @@ const index = ({props, navigation}) => {
   const [videoAction, setVideoAction] = useState(true);
   const [loader, setLoader] = useState(false);
   const [activeSlide, setActiveSlide] = useState();
+  const [refreshing, setRefreshing] = useState(false);
   const AddModalState = useRef();
   useEffect(() => {
     dispatch(DealsJoyAPI());
     console.log('dealsJoyData', dealsJoyData);
+  }, []);
+  const onRefresh = React.useCallback(() => {
+    dispatch(DealsJoyAPI());
+    wait(2000).then(() => setRefreshing(false));
   }, []);
   function _renderItem({item, index}) {
     if (item.type === 'image') {
@@ -92,10 +97,9 @@ const index = ({props, navigation}) => {
   return (
     <ScrollView
       style={{backgroundColor: '#ffffff'}}
-      // refreshControl={
-      //   <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
-      // }
-    >
+      refreshControl={
+        <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
+      }>
       <LinearGradient colors={['#5B0C86', '#E7003F']} style={styles.mainView}>
         <Header style={{top: 5, position: 'absolute', zIndex: 1000, left: 0}} />
         <View style={styles.wrap}>
@@ -197,6 +201,7 @@ const index = ({props, navigation}) => {
             //   ListEmptyComponent={this.RenderEmptyContainerOnGoing()}
           />
         </View>
+
         <View
           style={{
             height: 1,
@@ -284,7 +289,6 @@ const styles = StyleSheet.create({
     marginLeft: 2,
   },
   mainView: {
-    height: height * 0.73,
     width: width,
 
     borderBottomLeftRadius: 20,

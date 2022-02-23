@@ -189,10 +189,13 @@ const index = ({props, navigation}) => {
                   description={item?.description}
                   price={item?.product?.price}
                   prize_title={item.prize_title}
+                  draw_description={item?.end_date}
                   data={item}
-                  onPress={() =>
-                    navigation.navigate('ProductDetail', {data: item})
-                  }
+                  onPress={() => {
+                    navigation.navigate('ProductDetail', {
+                      productId: item?.product?.id,
+                    });
+                  }}
                 />
               )}
               keyExtractor={item => item.id}
