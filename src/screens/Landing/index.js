@@ -61,6 +61,7 @@ import {
   CheckGameEnterStatus,
   TriviaJoyAPI,
   AllCreatorsList,
+  ProductDetails,
 } from '../../redux/actions';
 import socketIO from 'socket.io-client';
 import {useTranslation} from 'react-i18next';
@@ -97,6 +98,7 @@ const index = props => {
   const dispatch3 = useDispatch();
   const dispatch4 = useDispatch();
   const dispatch5 = useDispatch();
+  const dispatch6 = useDispatch();
   const socket = socketIO(MYServer);
   const AddModalState = useRef();
   const onRefresh = React.useCallback(() => {
@@ -109,6 +111,7 @@ const index = props => {
       'seconds',
     );
     setTime(duration);
+    NavigateToQuiz();
     wait(2000).then(() => setRefreshing(false));
   }, []);
 
@@ -117,6 +120,7 @@ const index = props => {
     socket.on('sendStartlivegameshow', msg => {
       dispatch(getLandingScreen());
     });
+
     dispatch(getLandingScreen());
     var CurrentDate = new Date().toLocaleString();
     var duration = dayjs(LandingData?.upcoming_gameshow?.start_date).diff(
@@ -131,7 +135,18 @@ const index = props => {
       arr.push(ele.url);
     });
     setImageSlider(arr);
+    NavigateToQuiz();
   }, []);
+  const NavigateToQuiz = () => {
+    if (LandingData?.gameShow?.status === 'on_boarding') {
+      navigation.navigate('GameStack', {
+        screen: 'Quiz',
+        params: {
+          uri: LandingData?.gameShow?.live_stream?.key,
+        },
+      });
+    }
+  };
 
   const LetBegin = () => {
     dispatch2(CheckGameEnterStatus());
@@ -143,16 +158,7 @@ const index = props => {
     //   }
     // })
     if (gameEnterStatus.status === 'success') {
-      if (gameEnterStatus.message === 'Welcome to Live Game Show') {
-        navigation.navigate('GameStack', {
-          screen: 'Quiz',
-          params: {
-            uri: LandingData?.gameShow?.live_stream?.key,
-          },
-        });
-      } else {
-        alert('game not started yet!');
-      }
+      NavigateToQuiz();
     } else {
       alert('game not started yet!');
     }
@@ -528,19 +534,18 @@ const index = props => {
               showsHorizontalScrollIndicator={false}
               data={LandingData?.products}
               renderItem={({item}) => (
-                <TouchableOpacity
-                  onPress={() =>
+                <ClosingSoonCard
+                  onPress={() => {
+                    // dispatch6(ProductDetails(item?.product?.id));
                     navigation.navigate('PRODUCTS', {
                       screen: 'ProductDetail',
-                      params: {data: item},
-                    })
-                  }>
-                  <ClosingSoonCard
-                    props={props}
-                    index={item.index}
-                    item={item}
-                  />
-                </TouchableOpacity>
+                      params: {productId: item?.product?.id},
+                    });
+                  }}
+                  props={props}
+                  index={item.index}
+                  item={item}
+                />
               )}
               keyExtractor={item => item.id}
               //   ListEmptyComponent={this.RenderEmptyContainerOnGoing()}

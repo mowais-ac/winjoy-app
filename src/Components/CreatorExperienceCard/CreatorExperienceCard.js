@@ -11,23 +11,25 @@ import {RFValue} from 'react-native-responsive-fontsize';
 const {width, height} = Dimensions.get('window');
 function CreatorExperienceCard({
   style,
-  textStyle,
+  price,
   onPress,
   title,
-  short_desc,
+  description,
   imageUrl,
 }) {
   return (
-    <TouchableOpacity style={{paddingHorizontal: 8}} onPress={onPress}>
+    <TouchableOpacity onPress={onPress}>
       <View
         style={{
           backgroundColor: '#ffffff',
           borderRadius: 15,
 
-          width: '100%',
+          width: width * 0.45,
+          marginLeft: 10,
         }}>
         <Image
           style={styles.bgImage}
+          resizeMode={'cover'}
           source={{
             uri: imageUrl,
           }}
@@ -38,17 +40,20 @@ function CreatorExperienceCard({
               color: '#420E92',
               fontFamily: 'Axiforma-SemiBold',
               fontSize: RFValue(13),
-              marginBottom: 2,
+
+              width: '100%',
+              paddingTop: 10,
             }}>
-            Baby Mares
+            {title}
           </Text>
           <Text
             style={{
               color: '#0B2142',
               fontFamily: 'Axiforma-Regular',
               width: width * 0.4,
+              fontSize: RFValue(12),
             }}>
-            Hi! I make great videos! Loving myFanPark!
+            {description}
           </Text>
           <Text
             style={{
@@ -57,7 +62,7 @@ function CreatorExperienceCard({
               fontSize: RFValue(13),
               paddingVertical: 10,
             }}>
-            AED 240
+            AED {price}
           </Text>
         </View>
       </View>

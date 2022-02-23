@@ -22,9 +22,12 @@ export default StyleSheet.create({
     marginTop: 15,
   },
   mainView: {
+    position: 'absolute',
     height: height * 0.25,
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
+    borderBottomRightRadius: 14,
+    borderBottomLeftRadius: 14,
   },
 });

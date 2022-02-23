@@ -216,8 +216,14 @@ const index = ({navigation}) => {
                   alignItems: 'center',
                   width: widthPercentageToDP('83'),
                 }}>
-                <Text style={styles.metaText}>SubTotal</Text>
-                <Text style={[styles.text, {fontWeight: 'bold'}]}>
+                <Text style={[styles.metaText, {fontSize: RFValue(17)}]}>
+                  Total
+                </Text>
+                <Text
+                  style={[
+                    styles.text,
+                    {fontWeight: 'bold', fontSize: RFValue(17)},
+                  ]}>
                   {'AED '}
                   {FormatNumber(+cartData?.sub_total)}
                 </Text>
@@ -229,10 +235,10 @@ const index = ({navigation}) => {
                   alignItems: 'center',
                   width: widthPercentageToDP('83'),
                 }}>
-                <Text style={styles.metaText}>Vat 5%</Text>
-                <Text style={[styles.text, {fontWeight: 'bold'}]}>
+                <Text style={styles.metaText}>Sub Total</Text>
+                <Text style={styles.text}>
                   {'AED '}
-                  {FormatNumber(+cartData?.vat)}
+                  {FormatNumber(Math.trunc(cartData?.total))}
                 </Text>
               </View>
               <View
@@ -242,12 +248,13 @@ const index = ({navigation}) => {
                   alignItems: 'center',
                   width: widthPercentageToDP('83'),
                 }}>
-                <Text style={styles.metaText}>Grand Total</Text>
-                <Text style={[styles.text, {fontWeight: 'bold'}]}>
+                <Text style={styles.metaText}>Vat 5%</Text>
+                <Text style={styles.text}>
                   {'AED '}
-                  {FormatNumber(+cartData?.total)}
+                  {FormatNumber(Math.trunc(cartData?.vat))}
                 </Text>
               </View>
+
               {/* <View style={{
               flexDirection: 'row',
               justifyContent: 'space-between',
@@ -376,7 +383,7 @@ const styles = StyleSheet.create({
   },
   card2: {
     width: width - 25,
-    height: height * 0.17,
+    paddingBottom: heightConverter(65),
     backgroundColor: '#ffffff',
     marginLeft: 10,
     borderRadius: 10,
@@ -391,6 +398,7 @@ const styles = StyleSheet.create({
   metaText: {
     color: '#000000',
     fontFamily: 'Axiforma-Regular',
+    paddingVertical: 1.5,
   },
   text: {
     color: '#e7003f',

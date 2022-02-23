@@ -229,11 +229,11 @@ const index = ({navigation}) => {
             //  lang={lang}
           />
           <LongButton
-            style={styles.MarginSmall}
+            style={[styles.Margin, {backgroundColor: '#ffffff'}]}
+            textstyle={{color: '#E7003F'}}
             text={t('login')}
             onPress={HandleLogin}
             ref={ButtonRef}
-            textstyle={{color: '#fff'}}
           />
           <LabelButton
             style={styles.MarginSmall}
@@ -254,7 +254,8 @@ const index = ({navigation}) => {
           <LongButton
             text={t('create_account')}
             onPress={() => navigation.navigate('Register')}
-            textstyle={{color: '#fff'}}
+            style={[styles.Margin, {backgroundColor: '#ffffff'}]}
+            textstyle={{color: '#E7003F'}}
           />
           {/* <LongButton
             style={styles.MarginMed}

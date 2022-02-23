@@ -45,7 +45,6 @@ const PaymentModals = props => {
   const [expiryDate, setExpiryDate] = useState('');
   const [cvc, setCvc] = useState('');
   const [activity, setActivity] = useState(false);
-
   const ApproveRef = useRef();
   const DeclineRef = useRef();
   const SucessModalState = useRef();
@@ -130,6 +129,7 @@ const PaymentModals = props => {
       //    "celebrity_id", props?.celebrity_id
       // "experience_id",props?.experience_id
       const body = JSONtoForm({
+        name: name,
         card_number: number,
         exp_month: month,
         exp_year: year,
@@ -137,6 +137,7 @@ const PaymentModals = props => {
         type: 'experience',
         celebrity_id: props?.celebrity_id,
         experience_id: props?.experience_id,
+        instructions: props.instructions,
       });
       console.log('body', body);
       const requestOptions = {
@@ -208,10 +209,10 @@ const PaymentModals = props => {
                   <TextInput
                     placeholder="Name on Card"
                     placeholderTextColor={Colors.DARK_LABEL}
-                    keyboardType={'numeric'}
+                    keyboardType={'default'}
                     // onBlur={onBlur}
 
-                    // onChangeText={HandleChange}
+                    onChangeText={text => setName(text)}
                     style={styles.MarginLarge}
                   />
                 </View>

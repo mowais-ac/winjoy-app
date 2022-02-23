@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import {
   View,
   StyleSheet,
@@ -29,37 +29,34 @@ import {JSONtoForm} from '../../Constants/Functions';
 import Counter from 'react-native-counters';
 import BuyLifeCongrats from '../../Components/BuyLifeCongrats';
 import Modals from '../../Components/Modals';
+import {ProductDetails} from '../../redux/actions';
 const ProductDetail = ({props, navigation, route}) => {
   const dispatch = useDispatch();
+  const dispatch2 = useDispatch();
   const SucessModalState = useRef();
   const ModalErrorState = useRef();
   const counterMain = useSelector(state => state.app.counter);
-  const item = route?.params?.data;
+  const productsDetails = useSelector(state => state.app.productsDetals);
+  const productId = route?.params?.productId;
   const [activity, setActivity] = useState(false);
   const [count, setCount] = useState(1);
-  console.log('item', item);
+  const loading = useSelector(state => state.app.loading);
+  useEffect(() => {
+    console.log('productId', productId);
+    dispatch2(ProductDetails(productId));
+    console.log('productsDetails', productsDetails);
+  }, []);
 
-  let progress = item?.product?.updated_stocks
-    ? (item?.product?.updated_stocks / item?.stock) * 100
-    : 0;
-  function uniqBy(a, key) {
-    var seen = {};
-    return a.filter(function (item) {
-      var k = key(item);
-      return seen.hasOwnProperty(k) ? false : (seen[k] = true);
-    });
-  }
   const onChange = (number, type) => {
     setCount(number);
     console.log(number, type); // 1, + or -
   };
   const SaveIdInfo = async () => {
     console.log(counterMain, count);
-    console.log('item', item);
     setActivity(true);
     var postData = JSON.stringify({
       is_from_experience: false,
-      product_id: item?.product?.id,
+      product_id: productsDetails?.prpduct?.luckydraw?.product_id,
       count: count,
     });
     const Token = await EncryptedStorage.getItem('Token');
@@ -108,61 +105,79 @@ const ProductDetail = ({props, navigation, route}) => {
           <View style={{height: 20}} />
           <Header back={true} />
         </LinearGradient>
-        <View style={{paddingHorizontal: 15}}>
-          <View style={[styles.upperView]}>
-            <Card
-              imageUrl={item?.product?.image}
-              updated_stocks={item?.product?.updated_stocks}
-              stock={item?.product?.stock}
-            />
-          </View>
-          <View style={styles.card}>
-            <Text
-              style={{
-                color: '#000000',
-                fontFamily: 'Axiforma-Regular',
-                fontSize: 16,
-                borderBottomWidth: 1,
-                borderBottomColor: '#E6DFEE',
-                width: '100%',
-                textAlign: 'center',
-                paddingVertical: 10,
-              }}>
-              Buy outwear jacket
-            </Text>
+        {loading ? (
+          <ActivityIndicator size="large" color="#000000" />
+        ) : (
+          <>
+            <View style={{paddingHorizontal: 15}}>
+              <View style={[styles.upperView]}>
+                <Card
+                  images={productsDetails?.prpduct?.images}
+                  updated_stocks={productsDetails?.prpduct?.updated_stocks}
+                  stock={productsDetails?.prpduct?.stock}
+                />
+              </View>
+              <View style={styles.card}>
+                <Text
+                  style={{
+                    color: '#000000',
+                    fontFamily: 'Axiforma-Regular',
+                    fontSize: 16,
+                    borderBottomWidth: 1,
+                    borderBottomColor: '#E6DFEE',
+                    width: '100%',
+                    textAlign: 'center',
+                    paddingVertical: 10,
+                  }}>
+                  {productsDetails?.prpduct?.title}
+                </Text>
 
-            <Label
-              primary
-              font={16}
-              dark
-              style={{color: '#E7003F', marginTop: 10}}>
-              Get a chance to win
-            </Label>
-            <Label font={16} dark style={{color: '#000000'}}>
-              {item.prize_title}
-            </Label>
-            <Label
-              font={12}
-              light
-              style={{color: '#000000', paddingVertical: 10, lineHeight: 17}}>
-              Max draw date {dayjs(item?.end_date).format('MMMM DD, YYYY')} or
-              when the campaign is sold out, which is earliest
-            </Label>
-            <Text style={styles.closingTxt}>Closing Soon</Text>
-          </View>
-          <View style={styles.pdView}>
-            <Label notAlign primary font={16} bold style={{color: '#E7003F'}}>
-              Products Details
-            </Label>
-            <Label
-              notAlign
-              font={11}
-              dark
-              style={{color: '#000000', lineHeight: 20}}>
-              {item?.product?.description}
-            </Label>
-          </View>
-        </View>
+                <Label
+                  primary
+                  font={16}
+                  dark
+                  style={{color: '#E7003F', marginTop: 10}}>
+                  Get a chance to win
+                </Label>
+                <Label font={16} dark style={{color: '#000000'}}>
+                  {productsDetails?.prpduct?.luckydraw?.prize_title}
+                </Label>
+                <Label
+                  font={12}
+                  light
+                  style={{
+                    color: '#000000',
+                    paddingVertical: 10,
+                    lineHeight: 17,
+                  }}>
+                  Max draw date{' '}
+                  {dayjs(productsDetails?.prpduct?.luckydraw?.end_date).format(
+                    'MMMM DD, YYYY',
+                  )}{' '}
+                  or when the campaign is sold out, which is earliest
+                </Label>
+                <Text style={styles.closingTxt}>Closing Soon</Text>
+              </View>
+              <View style={styles.pdView}>
+                <Label
+                  notAlign
+                  primary
+                  font={16}
+                  bold
+                  style={{color: '#E7003F'}}>
+                  Products Details
+                </Label>
+                <Label
+                  notAlign
+                  font={11}
+                  dark
+                  style={{color: '#000000', lineHeight: 20}}>
+                  {productsDetails?.prpduct?.description}
+                </Label>
+              </View>
+            </View>
+          </>
+        )}
       </ScrollView>
       <View style={styles.card2Wrap}>
         <View style={styles.card2}>
@@ -178,7 +193,7 @@ const ProductDetail = ({props, navigation, route}) => {
             <View>
               <Text style={styles.metaText}>To enter in the lucky draw</Text>
               <Text style={[styles.metaText, {fontWeight: 'bold'}]}>
-                Buy a {item?.product?.title}
+                Buy a {productsDetails?.prpduct?.title}
               </Text>
             </View>
             <Text
@@ -186,7 +201,7 @@ const ProductDetail = ({props, navigation, route}) => {
                 styles.text,
                 {fontWeight: 'bold', fontSize: RFValue(14)},
               ]}>
-              AED {+item?.product?.price?.toLocaleString()}
+              AED {+productsDetails?.prpduct?.price?.toLocaleString()}
             </Text>
           </View>
           <View
@@ -207,7 +222,7 @@ const ProductDetail = ({props, navigation, route}) => {
                   color: '#000000',
                   fontFamily: 'Axiforma-Bold',
                 }}
-                max={parseInt(item?.product?.stock)}
+                max={parseInt(productsDetails?.product?.stock)}
                 countTextStyle={{color: '#000000', fontFamily: 'Axiforma-Bold'}}
                 onChange={(number, type) => onChange(number, type)}
               />
@@ -239,19 +254,19 @@ const ProductDetail = ({props, navigation, route}) => {
             </TouchableOpacity>
           </View>
         </View>
-        <BuyLifeCongrats
-          ModalRef={SucessModalState}
-          heading={'Alert'}
-          description={'Successfully added to cart'}
-          requestOnPress={() => {
-            SucessModalState.current(false);
-          }}
-          closeOnPress={() => {
-            SucessModalState.current(false);
-          }}
-        />
-        <Modals ModalRef={ModalErrorState} Error />
       </View>
+      <BuyLifeCongrats
+        ModalRef={SucessModalState}
+        heading={'Alert'}
+        description={'Successfully added to cart'}
+        requestOnPress={() => {
+          SucessModalState.current(false);
+        }}
+        closeOnPress={() => {
+          SucessModalState.current(false);
+        }}
+      />
+      <Modals ModalRef={ModalErrorState} Error />
     </SafeAreaView>
   );
 };

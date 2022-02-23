@@ -1,4 +1,4 @@
-import React, { useState, useImperativeHandle } from "react";
+import React, {useState, useImperativeHandle} from 'react';
 import {
   Dimensions,
   ImageBackground,
@@ -7,12 +7,12 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   View,
-} from "react-native";
-import { RFValue } from "react-native-responsive-fontsize";
+} from 'react-native';
+import {RFValue} from 'react-native-responsive-fontsize';
 
-import { Colors, Icons, Images } from "../Constants/Index";
+import {Colors, Icons, Images} from '../Constants/Index';
 
-const { width, height } = Dimensions.get("window");
+const {width, height} = Dimensions.get('window');
 
 const LongButton = React.forwardRef((props, ref) => {
   const {
@@ -33,11 +33,11 @@ const LongButton = React.forwardRef((props, ref) => {
     MutedBtn,
   } = props;
 
-  const [act, setact] = useState({ act: Activity, col: "LABEL" });
+  const [act, setact] = useState({act: Activity, col: 'LABEL'});
 
   useImperativeHandle(ref, () => ({
-    SetActivity(ibool, col = "LABEL") {
-      setact({ act: ibool, col: col });
+    SetActivity(ibool, col = 'LABEL') {
+      setact({act: ibool, col: col});
     },
     GetActivity() {
       return act.act;
@@ -49,10 +49,10 @@ const LongButton = React.forwardRef((props, ref) => {
       width: width * 0.95,
       height: height * 0.07,
       backgroundColor: Colors.REDESH,
-      alignSelf: "center",
-      justifyContent: "center",
+      alignSelf: 'center',
+      justifyContent: 'center',
     },
-    border: { borderRadius: 50 },
+    border: {borderRadius: 50},
     shadow: {
       shadowColor: Colors.SHADOW,
       shadowOffset: {
@@ -67,11 +67,11 @@ const LongButton = React.forwardRef((props, ref) => {
     Text: {
       color: Colors.BUTTON_LABEL,
       fontSize: RFValue(font || 15),
-      alignSelf: "center",
-      fontFamily: NoBold ? "Axiforma-Regular" : "Axiforma-SemiBold",
+      alignSelf: 'center',
+      fontFamily: NoBold ? 'Axiforma-Regular' : 'Axiforma-SemiBold',
     },
     Regular: {
-      fontFamily: "Axiforma-Regular",
+      fontFamily: 'Axiforma-Regular',
     },
     BlackText: {
       color: Colors.BLACK,
@@ -80,7 +80,7 @@ const LongButton = React.forwardRef((props, ref) => {
       color: Colors.WHITE,
     },
     IconStyle: {
-      position: "absolute",
+      position: 'absolute',
       marginLeft: width * 0.03,
       fontSize: RFValue(20),
     },
@@ -119,12 +119,12 @@ const LongButton = React.forwardRef((props, ref) => {
     return (
       <>
         <Text style={styles.IconStyle}>
-          {Icon == "google" && <Icons.Google />}
+          {Icon == 'google' && <Icons.Google />}
         </Text>
         {!act.act ? (
           <Text style={TextStyle}>{text}</Text>
         ) : (
-          <ActivityIndicator size="large" color={Colors[act.col]} />
+          <ActivityIndicator size="large" color={'#E7003F'} />
         )}
       </>
     );
@@ -135,9 +135,9 @@ const LongButton = React.forwardRef((props, ref) => {
       {childbefore && props.children}
       {gradient ? (
         <View
-      //    source={Images.Background}
+          //    source={Images.Background}
           style={[styles.Button, styles.border, imgstyle]}
-       //   imageStyle={styles.border}
+          //   imageStyle={styles.border}
         >
           {GetData()}
         </View>

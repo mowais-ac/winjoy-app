@@ -193,6 +193,7 @@ export const GetCreatorPageData = id => {
         },
       });
       const json = await result.json();
+
       if (json && json.status === 'success') {
         dispatch({
           type: types.CREATOR_PAGE_DATA,
@@ -534,6 +535,67 @@ export const RemoveCartData = id => {
       if (json) {
         dispatch({
           type: types.REMOVE_CAR_DATA,
+          payload: json,
+        });
+      } else {
+        console.log('Unable to fetch!');
+      }
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const ProductDetails = id => {
+  try {
+    return async dispatch => {
+      dispatch({type: types.SHOW_LOADER});
+      const Token = await EncryptedStorage.getItem('Token');
+      const result = await fetch(`${Config.API_URL}/product/show/${id}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Accept: 'application/json',
+          Authorization: `Bearer ${Token}`,
+        },
+      });
+      const json = await result.json();
+
+      dispatch({type: types.HIDE_LOADER});
+      if (json) {
+        dispatch({
+          type: types.PRODUCTS_DETAILS,
+          payload: json,
+        });
+      } else {
+        console.log('Unable to fetch!');
+      }
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const CreatorExperienceList = id => {
+  try {
+    return async dispatch => {
+      dispatch({type: types.SHOW_LOADER});
+      const Token = await EncryptedStorage.getItem('Token');
+      const result = await fetch(
+        `${Config.API_URL}/fanjoy/experience_celebrity/index?experience_id=${id}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Accept: 'application/json',
+            Authorization: `Bearer ${Token}`,
+          },
+        },
+      );
+      const json = await result.json();
+
+      dispatch({type: types.HIDE_LOADER});
+      if (json) {
+        dispatch({
+          type: types.CREATORS_EXPERIENCE_LIST,
           payload: json,
         });
       } else {

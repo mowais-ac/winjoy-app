@@ -317,7 +317,11 @@ const index = ({route, navigation}) => {
               //  style={{paddingLeft: 8}}
               renderItem={({item}) => (
                 <ExperienceCard
-                  onPress={() => navigation.navigate('CreatorExperience')}
+                  onPress={() => {
+                    navigation.navigate('CreatorExperience', {
+                      experience_id: item?.id,
+                    });
+                  }}
                   imageUrl={item?.thumbnail}
                   title={item?.title}
                   short_desc={item?.short_desc}
