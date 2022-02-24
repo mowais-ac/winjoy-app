@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, {useState, useEffect, useRef} from 'react';
 import {
   View,
   StyleSheet,
@@ -11,26 +11,26 @@ import {
   TextInput,
   ScrollView,
   ActivityIndicator,
-  KeyboardAvoidingView
-} from "react-native";
-import Label from "./Label";
-import LabelButton from "./LabelButton";
-import { Colors, Images } from "../Constants/Index";
-import LongButton from "./LongButton";
-import { useNavigation } from "@react-navigation/native";
-import EncryptedStorage from "react-native-encrypted-storage";
-import Config from "react-native-config";
-import { GetDate, JSONtoForm } from "../Constants/Functions";
-import ProfilePicture from "./ProfilePicture";
-import { RFValue } from "react-native-responsive-fontsize";
-import LinearGradient from "react-native-linear-gradient";
-import { heightConverter } from "./Helpers/Responsive";
-import { TrendingCards } from "../Components/index";
-import { ExperienceProductData } from '../redux/actions';
-import { useDispatch, useSelector } from "react-redux";
-const { width, height } = Dimensions.get("window");
+  KeyboardAvoidingView,
+} from 'react-native';
+import Label from './Label';
+import LabelButton from './LabelButton';
+import {Colors, Images} from '../Constants/Index';
+import LongButton from './LongButton';
+import {useNavigation} from '@react-navigation/native';
+import EncryptedStorage from 'react-native-encrypted-storage';
+import Config from 'react-native-config';
+import {GetDate, JSONtoForm} from '../Constants/Functions';
+import ProfilePicture from './ProfilePicture';
+import {RFValue} from 'react-native-responsive-fontsize';
+import LinearGradient from 'react-native-linear-gradient';
+import {heightConverter} from './Helpers/Responsive';
+import {TrendingCards} from '../Components/index';
+import {ExperienceProductData} from '../redux/actions';
+import {useDispatch, useSelector} from 'react-redux';
+const {width, height} = Dimensions.get('window');
 
-const ModalCelebrityProducts = (props) => {
+const ModalCelebrityProducts = props => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const experienceID = useSelector(state => state.app.experienceID);
@@ -44,10 +44,8 @@ const ModalCelebrityProducts = (props) => {
   });
 
   const HandleChange = (state, details = null, ForceSuccess = false) => {
-    setModelState({ state, details, ForceSuccess });
+    setModelState({state, details, ForceSuccess});
   };
-
-
 
   return (
     <Modal
@@ -61,9 +59,7 @@ const ModalCelebrityProducts = (props) => {
           state: !ModelState.state,
         });
         if (props.onClose) props.onClose();
-      }}
-    >
-
+      }}>
       <TouchableWithoutFeedback
         onPress={() => {
           setModelState({
@@ -71,49 +67,76 @@ const ModalCelebrityProducts = (props) => {
             state: !ModelState.state,
           });
           if (props.onClose) props.onClose();
-        }}
-      >
+        }}>
         <View style={styles.MainView} />
       </TouchableWithoutFeedback>
       <View style={styles.ModalView}>
         <View style={styles.SmallBorder} />
 
-        <Text style={[styles.text, { textAlign: 'center', marginTop: height * 0.03, width: width * 0.8 }]}>
-          Buy one of the following and<Text style={{ fontFamily: 'Axiforma-Bold' }}>{' '}WIN a dinner with{' '}</Text>John Omarosa
+        <Text
+          style={[
+            styles.text,
+            {textAlign: 'center', marginTop: height * 0.03, width: width * 0.8},
+          ]}>
+          Buy one of the following and win
+          <Text style={{fontFamily: 'Axiforma-Bold'}}>
+            {' '}
+            {props?.expData?.experience?.title}{' '}
+          </Text>
+          with{' '}
+          {props?.expData?.celebrity?.first_name +
+            ' ' +
+            props?.expData?.celebrity?.last_name}
         </Text>
 
-        <View style={styles.ModalBody}>
+        <View style={[styles.ModalBody]}>
           <FlatList
             data={props?.expData?.experience?.products}
-
-            style={{ paddingLeft: 12, }}
+            style={{
+              paddingHorizontal: 5,
+              width: '100%',
+            }}
             numColumns={2}
-
-            renderItem={({ item }) =>
+            renderItem={({item}) => (
               <>
                 <TrendingCards
-                  onPress={() => navigation.navigate("ExperienceProductDetail", {
-                    experience_celebrity_id: item?.pivot?.experience_celebrity_id,
-                    product_id: item?.pivot?.product_id,
-                  })}
+                  onPress={() =>
+                    navigation.navigate('ExperienceProductDetail', {
+                      experience_celebrity_id:
+                        item?.pivot?.experience_celebrity_id,
+                      product_id: item?.pivot?.product_id,
+                    })
+                  }
                   imageUrl={item.image}
                   title={item?.title}
                   price={item?.price}
-                  mainViewStyle={{ backgroundColor: '#F2F2FA', width: width * 0.4, height: height * 0.31, borderRadius: 15, }}
-                  style={{ height: height * 0.33, }}
-                  imageStyle={{ width: width * 0.4, height: height * 0.22, borderRadius: 15, }}
+                  mainViewStyle={{
+                    backgroundColor: '#F2F2FA',
+
+                    height: height * 0.31,
+                    borderRadius: 15,
+                    borderWidth: 1,
+                    borderColor: '#F2F2FA',
+                  }}
+                  style={{
+                    height: height * 0.33,
+                    width: '50%',
+                    paddingHorizontal: 8,
+                  }}
+                  imageStyle={{
+                    height: height * 0.22,
+                    borderRadius: 15,
+                  }}
                 />
-                <View style={{ width: width * 0.06, }} />
               </>
-            }
+            )}
             //keyExtractor={(e) => e.id.toString()}
             contentContainerStyle={{
               paddingBottom: 12,
               marginTop: 10,
             }}
-            keyExtractor={(item) => item.id}
+            keyExtractor={item => item.id}
           />
-
         </View>
       </View>
     </Modal>
@@ -125,8 +148,8 @@ export default ModalCelebrityProducts;
 const styles = StyleSheet.create({
   MainView: {
     height: height,
-    width: width,
-    position: "absolute",
+    width: '100%',
+    position: 'absolute',
     backgroundColor: Colors.BG_MUTED,
   },
   ModalView: {
@@ -135,30 +158,28 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 37,
     borderTopRightRadius: 37,
     backgroundColor: Colors.WHITE,
-    alignItems: 'center'
+    alignItems: 'center',
   },
   SmallBorder: {
     width: width * 0.35,
     height: 4,
     backgroundColor: Colors.SMALL_LINE,
-    alignSelf: "center",
+    alignSelf: 'center',
     marginTop: height * 0.02,
   },
   ModalHead: {
     marginTop: height * 0.01,
-
   },
 
   ModalBody: {
-
+    width: '100%',
     marginTop: height * 0.02,
     backgroundColor: Colors.WHITE,
     height: height * 0.76,
-
   },
   CheckImage: {
-    alignSelf: "center",
-    resizeMode: "contain",
+    alignSelf: 'center',
+    resizeMode: 'contain',
     height: height * 0.1,
     marginTop: height * 0.09,
   },
@@ -171,7 +192,6 @@ const styles = StyleSheet.create({
     lineHeight: height * 0.03,
   },
 
-
   CloseBtn: {
     marginTop: height * 0.02,
   },
@@ -179,8 +199,8 @@ const styles = StyleSheet.create({
   ConView: {
     height: height * 0.1,
     backgroundColor: Colors.WHITE,
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     borderBottomColor: Colors.MUTED,
     borderBottomWidth: 1,
   },
@@ -189,7 +209,7 @@ const styles = StyleSheet.create({
   },
   ProfileInfo: {
     marginLeft: width * 0.02,
-    justifyContent: "center",
+    justifyContent: 'center',
   },
   ReqMsg: {
     marginTop: height * 0.04,
@@ -223,54 +243,61 @@ const styles = StyleSheet.create({
 
   ErrorTxt: {
     width: width * 0.9,
-    alignSelf: "center",
+    alignSelf: 'center',
   },
   ///new added
   Main1: {
-    justifyContent: "center",
+    justifyContent: 'center',
     backgroundColor: Colors.WHITE,
     width: width * 0.4,
     borderRadius: 55,
-    alignSelf: "center",
+    alignSelf: 'center',
     marginTop: height * 0.011,
     borderWidth: 1,
-    borderColor: Colors.DARK_LABEL
+    borderColor: Colors.DARK_LABEL,
   },
   Main2: {
-    justifyContent: "center",
+    justifyContent: 'center',
     backgroundColor: Colors.WHITE,
     width: width * 0.9,
     borderRadius: 55,
-    alignSelf: "center",
+    alignSelf: 'center',
     marginTop: height * 0.011,
     borderWidth: 1,
-    borderColor: Colors.DARK_LABEL
+    borderColor: Colors.DARK_LABEL,
   },
   mView: {
-    justifyContent: "center",
+    justifyContent: 'center',
 
-    alignSelf: "center",
-
+    alignSelf: 'center',
   },
   MarginLarge: {
     paddingLeft: width * 0.06,
     fontSize: RFValue(12),
-    color: Colors.PRIMARY_LABEL
+    color: Colors.PRIMARY_LABEL,
   },
   MarginLargeNumber: {
     paddingLeft: width * 0.02,
     fontSize: RFValue(12),
     color: Colors.PRIMARY_LABEL,
-    letterSpacing: width * 0.03, width: width * 0.2,
+    letterSpacing: width * 0.03,
+    width: width * 0.2,
   },
   titleTxt: {
-    marginTop: height * 0.01
+    marginTop: height * 0.01,
   },
   textHeading: {
-    color: '#6F5F87', fontFamily: 'Axiforma-Bold', fontSize: RFValue(16), textAlign: 'center'
+    color: '#6F5F87',
+    fontFamily: 'Axiforma-Bold',
+    fontSize: RFValue(16),
+    textAlign: 'center',
   },
   mainTextHeading: {
-    color: '#6F5F87', fontFamily: 'Axiforma-Regular', fontSize: RFValue(16), textAlign: 'center', lineHeight: height * 0.03
+    color: '#6F5F87',
+    fontFamily: 'Axiforma-Regular',
+    fontSize: RFValue(16),
+    textAlign: 'center',
+    lineHeight: height * 0.03,
   },
   refferBox: {
     width: width * 0.29,
@@ -278,7 +305,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F2EFF5',
     borderRadius: 10,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   refferBoxSelected: {
     width: width * 0.29,
@@ -287,14 +314,21 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 2, borderColor: '#420E92'
+    borderWidth: 2,
+    borderColor: '#420E92',
   },
-
 
   text: {
-    color: '#0B2142', fontFamily: 'Axiforma-Regular', fontSize: RFValue(16), lineHeight: height * 0.035
+    color: '#0B2142',
+    fontFamily: 'Axiforma-Regular',
+    fontSize: RFValue(16),
+    lineHeight: height * 0.035,
   },
   descriptionText: {
-    color: '#000000', fontFamily: 'Axiforma-Regular', fontSize: RFValue(13), textAlign: 'center', lineHeight: height * 0.03
-  }
+    color: '#000000',
+    fontFamily: 'Axiforma-Regular',
+    fontSize: RFValue(13),
+    textAlign: 'center',
+    lineHeight: height * 0.03,
+  },
 });

@@ -10,6 +10,7 @@ import {
   FlatList,
   ImageBackground,
   Image,
+  Text,
 } from 'react-native';
 import {wait} from '../../Constants/Functions';
 import LoaderImage from '../../Components/LoaderImage';
@@ -48,6 +49,7 @@ const index = ({props, navigation}) => {
   useEffect(() => {
     dispatch(DealsJoyAPI());
     console.log('dealsJoyData', dealsJoyData);
+    console.log('banner', dealsJoyData.lower_banners);
   }, []);
   const onRefresh = React.useCallback(() => {
     dispatch(DealsJoyAPI());
@@ -232,6 +234,24 @@ const index = ({props, navigation}) => {
         </TouchableOpacity>
         <View style={{marginBottom: height * 0.01}} />
       </LinearGradient>
+      <ScrollView horizontal={true}>
+        {dealsJoyData.lower_banners.map(element => {
+          return (
+            <View key={element.key} style={{margin: 10, flexDirection: 'row'}}>
+              <Image
+                source={{uri: element.url}}
+                resizeMode={'cover'}
+                style={{
+                  height: height * 0.2,
+                  width: width * 0.95,
+                  borderRadius: 12,
+                  marginRight: 10,
+                }}
+              />
+            </View>
+          );
+        })}
+      </ScrollView>
 
       <HomeBottomList data={dealsJoyData?.winners_collection} />
       <View style={{height: 20}} />
@@ -239,7 +259,9 @@ const index = ({props, navigation}) => {
         ModalRef={AddModalState}
         details
         cross={true}
-        video={'https://winjoy-assets.s3.amazonaws.com/banners/banner-3.mp4'}
+        video={
+          'https://winjoy-assets.s3.amazonaws.com/how_it_work/Mostafa_dealsjoy-wj.mp4'
+        }
         // id={idVideoAdd}
         // onPressContinue={onPressContinue}
       />

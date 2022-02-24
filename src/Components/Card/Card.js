@@ -1,10 +1,11 @@
 import React, {useEffect} from 'react';
-import {View, Dimensions, Text} from 'react-native';
+import {View, Dimensions, Text, Image} from 'react-native';
 import Config from 'react-native-config';
 import LoaderImage from '../LoaderImage';
 const {width, height} = Dimensions.get('window');
 import ProgressCircle from 'react-native-progress-circle';
 import {SliderBox} from 'react-native-image-slider-box';
+import Carousel from 'react-native-snap-carousel';
 function Card({
   options,
   onPress,
@@ -103,7 +104,7 @@ function Card({
           marginTop: 8,
           flexDirection: 'row',
         }}>
-        <SliderBox
+        {/* <SliderBox
           images={images}
           sliderBoxHeight={250}
           resizeMode={'center'}
@@ -118,11 +119,42 @@ function Card({
           autoplay={false}
           circleLoop={true}
           onCurrentImagePressed={index =>
-            console.warn(`image ${index} pressed`)
+            console.warn(`image ${index} pressed` )
           }
           currentImageEmitter={index =>
             console.warn(`current pos is: ${index}`)
           }
+        /> */}
+        <Carousel
+          layout={'default'}
+          resizeMode={'cover'}
+          // loop={videoAction}
+          // autoplay={videoAction}
+          autoplayInterval={3000}
+          // ref={ref => this.carousel = ref}
+          data={images}
+          sliderWidth={width}
+          itemWidth={width}
+          renderItem={({item, index}) => {
+            return (
+              <Image
+                source={{uri: item?.image}}
+                resizeMode={'center'}
+                style={{
+                  width: width,
+                  height: height * 0.3,
+                  // marginTop: height * 0.015,
+                  alignSelf: 'center',
+                }}
+              />
+            );
+          }}
+          style={{
+            width: width,
+            height: height * 0.3,
+            // marginTop: height * 0.015,
+            alignSelf: 'center',
+          }}
         />
       </View>
     </View>

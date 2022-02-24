@@ -42,7 +42,7 @@ const ProductDetail = ({props, navigation, route}) => {
   const productId = route?.params?.productId;
   const [activity, setActivity] = useState(false);
   const [count, setCount] = useState(1);
-  const [images, setImages] = useState([]);
+
   const loading = useSelector(state => state.app.loading);
 
   useEffect(() => {
@@ -51,14 +51,6 @@ const ProductDetail = ({props, navigation, route}) => {
   useEffect(() => {
     console.log('productId', productId);
     dispatch2(ProductDetails(productId));
-    console.log('productsDetails', productsDetails);
-    console.log('images', images);
-    let arr = [];
-    productsDetails?.prpduct?.images?.map(ele => {
-      console.log('ele', ele.image);
-      arr.push(ele.image);
-    });
-    setImages(arr);
   }, []);
   const onChange = (number, type) => {
     setCount(number);
@@ -69,7 +61,7 @@ const ProductDetail = ({props, navigation, route}) => {
     setActivity(true);
     var postData = JSON.stringify({
       is_from_experience: false,
-      product_id: productsDetails?.prpduct?.luckydraw?.product_id,
+      product_id: productsDetails?.product?.luckydraw?.product_id,
       count: count,
     });
     const Token = await EncryptedStorage.getItem('Token');
@@ -125,9 +117,9 @@ const ProductDetail = ({props, navigation, route}) => {
             <View style={{paddingHorizontal: 15}}>
               <View style={[styles.upperView]}>
                 <Card
-                  images={images}
-                  updated_stocks={productsDetails?.prpduct?.updated_stocks}
-                  stock={productsDetails?.prpduct?.stock}
+                  images={productsDetails?.product?.images}
+                  updated_stocks={productsDetails?.product?.updated_stocks}
+                  stock={productsDetails?.product?.stock}
                 />
               </View>
               <View style={styles.card}>
@@ -142,7 +134,7 @@ const ProductDetail = ({props, navigation, route}) => {
                     textAlign: 'center',
                     paddingVertical: 10,
                   }}>
-                  {productsDetails?.prpduct?.title}
+                  {productsDetails?.product?.title}
                 </Text>
 
                 <Label
@@ -153,7 +145,7 @@ const ProductDetail = ({props, navigation, route}) => {
                   Get a chance to win
                 </Label>
                 <Label font={16} dark style={{color: '#000000'}}>
-                  {productsDetails?.prpduct?.luckydraw?.prize_title}
+                  {productsDetails?.product?.luckydraw?.prize_title}
                 </Label>
                 <Label
                   font={12}
@@ -164,7 +156,7 @@ const ProductDetail = ({props, navigation, route}) => {
                     lineHeight: 17,
                   }}>
                   Max draw date{' '}
-                  {dayjs(productsDetails?.prpduct?.luckydraw?.end_date).format(
+                  {dayjs(productsDetails?.product?.luckydraw?.end_date).format(
                     'MMMM DD, YYYY',
                   )}{' '}
                   or when the campaign is sold out, which is earliest
@@ -185,7 +177,7 @@ const ProductDetail = ({props, navigation, route}) => {
                   font={11}
                   dark
                   style={{color: '#000000', lineHeight: 20}}>
-                  {productsDetails?.prpduct?.description}
+                  {productsDetails?.product?.description}
                 </Label>
               </View>
             </View>
@@ -206,7 +198,7 @@ const ProductDetail = ({props, navigation, route}) => {
             <View>
               <Text style={styles.metaText}>To enter in the lucky draw</Text>
               <Text style={[styles.metaText, {fontWeight: 'bold'}]}>
-                Buy a {productsDetails?.prpduct?.title}
+                Buy a {productsDetails?.product?.title}
               </Text>
             </View>
             <Text
@@ -214,7 +206,7 @@ const ProductDetail = ({props, navigation, route}) => {
                 styles.text,
                 {fontWeight: 'bold', fontSize: RFValue(14)},
               ]}>
-              AED {+productsDetails?.prpduct?.price?.toLocaleString()}
+              AED {+productsDetails?.product?.price?.toLocaleString()}
             </Text>
           </View>
           <View

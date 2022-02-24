@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, {useState, useEffect, useRef} from 'react';
 import {
   View,
   StyleSheet,
@@ -8,31 +8,33 @@ import {
   TouchableWithoutFeedback,
   Alert,
   TouchableOpacity,
-  Image
-} from "react-native";
-import Label from "./Label";
-import LabelButton from "./LabelButton";
-import { Colors, Images } from "../Constants/Index";
-import LongButton from "./LongButton";
-import { useNavigation } from "@react-navigation/native";
-import EncryptedStorage from "react-native-encrypted-storage";
-import Config from "react-native-config";
-import { GetDate } from "../Constants/Functions";
-import ProfilePicture from "./ProfilePicture";
-import { RFValue } from "react-native-responsive-fontsize";
-import { useSelector, useDispatch } from "react-redux";
-import LinearGradient from "react-native-linear-gradient";
-import { heightConverter } from "./Helpers/Responsive";
+  Image,
+  ActivityIndicator,
+} from 'react-native';
+import Label from './Label';
+import LabelButton from './LabelButton';
+import {Colors, Images} from '../Constants/Index';
+import LongButton from './LongButton';
+import {useNavigation} from '@react-navigation/native';
+import EncryptedStorage from 'react-native-encrypted-storage';
+import Config from 'react-native-config';
+import {GetDate} from '../Constants/Functions';
+import ProfilePicture from './ProfilePicture';
+import {RFValue} from 'react-native-responsive-fontsize';
+import {useSelector, useDispatch} from 'react-redux';
+import LinearGradient from 'react-native-linear-gradient';
+import {heightConverter} from './Helpers/Responsive';
 import Entypo from 'react-native-vector-icons/Entypo';
-import Video from "react-native-video";
+import Video from 'react-native-video';
 import * as Progress from 'react-native-progress';
-import { getLiveShowPlans } from '../redux/actions';
-const { width, height } = Dimensions.get("window");
+import {getLiveShowPlans} from '../redux/actions';
+const {width, height} = Dimensions.get('window');
 //let timer = () => { };
-const HowItWorkModal = (props) => {
+const HowItWorkModal = props => {
   const dispatch = useDispatch();
   const [timer, setTimer] = useState(0);
   const [totalTime, setTotalTime] = useState(30);
+  const [opacity, setOpacity] = useState(null);
   const [ModelState, setModelState] = useState({
     state: false,
     details: null,
@@ -41,44 +43,24 @@ const HowItWorkModal = (props) => {
   const DeclineRef = useRef();
 
   const navigation = useNavigation();
-  const getData = async () => {
-    try {
+  const onLoadStart = () => {
+    setOpacity(1);
+  };
 
-      const Token = await EncryptedStorage.getItem("Token");
-      const result = await fetch(`${Config.API_URL}/buy_lives_plan/${props.id}`, {
-        method: 'POST',
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Accept: "application/json",
-          Authorization: `Bearer ${Token}`,
-        },
-      });
-      const json = await result.json();
-      if (json.status === "success") {
-        if (json.message === "Lives buy successfully") {
-          setModelState({
-            ...ModelState,
-            state: ModelState.state = false,
-          });
-          dispatch(getLiveShowPlans());
-        }
-        else {
-          alert(json)
-        }
-      }
+  const onLoad = () => {
+    setOpacity(0);
+  };
 
-
-    } catch (error) {
-      alert(error)
-    }
-  }
+  const onBuffer = ({isBuffering}) => {
+    console.log('isBuffering', isBuffering);
+    setOpacity(isBuffering ? 1 : 0);
+  };
   useEffect(() => {
     if (props.ModalRef) props.ModalRef.current = HandleChange;
-
   });
 
   const HandleChange = (state, details = null, ForceSuccess = false) => {
-    setModelState({ state, details, ForceSuccess });
+    setModelState({state, details, ForceSuccess});
   };
 
   // const startTimer = () => {
@@ -92,7 +74,6 @@ const HowItWorkModal = (props) => {
   //       });
   //      // getData()
   //       return false;
-
 
   //     }
   //     setTimeLeft(timeLeft +0.1);
@@ -111,8 +92,7 @@ const HowItWorkModal = (props) => {
           state: !ModelState.state,
         });
         if (props.onClose) props.onClose();
-      }}
-    >
+      }}>
       {/* <TouchableWithoutFeedback
         onPress={() => {
           setModelState({
@@ -122,72 +102,72 @@ const HowItWorkModal = (props) => {
           if (props.onClose) props.onClose();
         }}
       > */}
-      <View style={styles.MainView}>
-
-      </View>
+      <View style={styles.MainView}></View>
       {/* </TouchableWithoutFeedback> */}
       <View style={styles.ModalView}>
-
         <Video
           // key={keyS}
           source={{
-            uri: props.video
+            uri: props.video,
           }}
           // onReadyForDisplay={readyToDisplay}
           style={styles.backgroundVideo}
-          resizeMode={"cover"}
+          resizeMode={'cover'}
           minLoadRetryCount={2}
           fullScreen={true}
-          ignoreSilentSwitch={"obey"}
-          // onLoad={() => setBuffer(false)}
-          // onLoadStart={() => {
-          //   setTimeLeft(0)
-          //   clearTimeout(timer);
-          //   startTimer();
-          // }}
-          onEnd={() => getData()}
+          ignoreSilentSwitch={'obey'}
+          onBuffer={onBuffer}
+          onLoadStart={onLoadStart}
+          onLoad={onLoad}
           onProgress={e => {
-            setTimer(e.currentTime)
+            setTimer(e.currentTime);
 
-            setTotalTime(e.seekableDuration)
-
+            setTotalTime(e.seekableDuration);
           }}
         />
-
-        {
-          props.cross ? (
-            <TouchableOpacity
-              onPress={() => {
-                setModelState({
-                  ...ModelState,
-                  state: !ModelState.state,
-                });
+        <ActivityIndicator
+          animating
+          size="large"
+          color={Colors.Pink}
+          style={[styles.activityIndicator, {opacity: opacity}]}
+        />
+        {props.cross ? (
+          <TouchableOpacity
+            onPress={() => {
+              setModelState({
+                ...ModelState,
+                state: !ModelState.state,
+              });
+            }}
+            style={{
+              position: 'absolute',
+              right: 8,
+              top: 8,
+              height: 30,
+              width: 30,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Image
+              style={{
+                width: 15,
+                height: 20,
               }}
-              style={{ position: 'absolute', right: 8, top: 8, height: 30, width: 30, justifyContent: 'center', alignItems: 'center', }}
-            >
-              <Image
-                style={{
-                  width: 15,
-                  height: 20,
-
-                }}
-                resizeMode="center"
-                source={require('../assets/imgs/cross.png')}
-              />
-            </TouchableOpacity>
-          ) : (null)
-        }
-   
+              resizeMode="center"
+              source={require('../assets/imgs/cross.png')}
+            />
+          </TouchableOpacity>
+        ) : null}
       </View>
       <Progress.Bar
-          style={{ bottom: 0, position: 'absolute' }}
-          //borderRadius={0}
-          color="#430E92"
-          progress={timer / totalTime}
-          width={394}
-          unfilledColor={"#E61C54"}
-          borderWidth={0}
-        />
+        style={{bottom: 0, position: 'absolute'}}
+        //borderRadius={0}
+        color="#430E92"
+        progress={timer / totalTime}
+        width={394}
+        unfilledColor={'#E61C54'}
+        borderWidth={0}
+      />
     </Modal>
   );
 };
@@ -195,31 +175,36 @@ const HowItWorkModal = (props) => {
 export default HowItWorkModal;
 
 const styles = StyleSheet.create({
+  activityIndicator: {
+    position: 'absolute',
+    top: height * 0.5,
+    left: 70,
+    right: 70,
+    height: 50,
+  },
   MainView: {
     height: height,
     width: width,
-    position: "absolute",
+    position: 'absolute',
     backgroundColor: Colors.BG_MUTED,
-    alignItems: 'flex-end'
-
+    alignItems: 'flex-end',
   },
   ModalView: {
     width: width,
     height: height * 0.9,
     //borderRadius: 10,
-    backgroundColor: "#000000",
+    backgroundColor: '#000000',
     //marginLeft: 10
   },
   SmallBorder: {
     width: width * 0.35,
     height: 4,
     backgroundColor: Colors.SMALL_LINE,
-    alignSelf: "center",
+    alignSelf: 'center',
     marginTop: height * 0.02,
   },
   ModalHead: {
     marginTop: height * 0.01,
-
   },
 
   ModalBody: {
@@ -230,8 +215,8 @@ const styles = StyleSheet.create({
     height: height * 0.3,
   },
   CheckImage: {
-    alignSelf: "center",
-    resizeMode: "contain",
+    alignSelf: 'center',
+    resizeMode: 'contain',
     height: height * 0.1,
     marginTop: height * 0.09,
   },
@@ -244,7 +229,6 @@ const styles = StyleSheet.create({
     lineHeight: height * 0.03,
   },
 
-
   CloseBtn: {
     marginTop: height * 0.02,
   },
@@ -252,8 +236,8 @@ const styles = StyleSheet.create({
   ConView: {
     height: height * 0.1,
     backgroundColor: Colors.WHITE,
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     borderBottomColor: Colors.MUTED,
     borderBottomWidth: 1,
   },
@@ -262,7 +246,7 @@ const styles = StyleSheet.create({
   },
   ProfileInfo: {
     marginLeft: width * 0.02,
-    justifyContent: "center",
+    justifyContent: 'center',
   },
   ReqMsg: {
     marginTop: height * 0.04,
@@ -296,66 +280,71 @@ const styles = StyleSheet.create({
 
   ErrorTxt: {
     width: width * 0.9,
-    alignSelf: "center",
+    alignSelf: 'center',
   },
   ///new added
   Main1: {
-    justifyContent: "center",
+    justifyContent: 'center',
     backgroundColor: Colors.WHITE,
     width: width * 0.4,
     borderRadius: 55,
-    alignSelf: "center",
+    alignSelf: 'center',
     marginTop: height * 0.011,
     borderWidth: 1,
-    borderColor: Colors.DARK_LABEL
+    borderColor: Colors.DARK_LABEL,
   },
   Main2: {
-    justifyContent: "center",
+    justifyContent: 'center',
     backgroundColor: Colors.WHITE,
     width: width * 0.9,
     borderRadius: 55,
-    alignSelf: "center",
+    alignSelf: 'center',
     marginTop: height * 0.011,
     borderWidth: 1,
-    borderColor: Colors.DARK_LABEL
+    borderColor: Colors.DARK_LABEL,
   },
   mView: {
-    justifyContent: "center",
+    justifyContent: 'center',
 
-    alignSelf: "center",
-
+    alignSelf: 'center',
   },
   MarginLarge: {
     paddingLeft: width * 0.06,
     fontSize: RFValue(12),
-    color: Colors.PRIMARY_LABEL
+    color: Colors.PRIMARY_LABEL,
   },
   MarginLargeNumber: {
     paddingLeft: width * 0.02,
     fontSize: RFValue(12),
     color: Colors.PRIMARY_LABEL,
-    letterSpacing: width * 0.03, width: width * 0.2,
+    letterSpacing: width * 0.03,
+    width: width * 0.2,
   },
   titleTxt: {
-    marginTop: height * 0.01
+    marginTop: height * 0.01,
   },
   text: {
-    color: '#420E92', fontFamily: 'Axiforma-Bold', fontSize: RFValue(14)
+    color: '#420E92',
+    fontFamily: 'Axiforma-Bold',
+    fontSize: RFValue(14),
   },
   descriptionText: {
-    color: '#000000', fontFamily: 'Axiforma-Regular', fontSize: RFValue(13), textAlign: 'center', lineHeight: height * 0.03
+    color: '#000000',
+    fontFamily: 'Axiforma-Regular',
+    fontSize: RFValue(13),
+    textAlign: 'center',
+    lineHeight: height * 0.03,
   },
   backgroundVideo: {
-    backgroundColor: "#000000",
+    backgroundColor: '#000000',
     height: height,
     width: width,
-    position: "absolute",
+    position: 'absolute',
     // top: 70,
     left: 0,
-    alignItems: "stretch",
+    alignItems: 'stretch',
     top: 0,
     right: 0,
     // borderRadius: 10,
-
   },
 });

@@ -650,7 +650,7 @@ const index = props => {
                       onPressCreator(item?.id);
                     }}
                     style={{width: width / 3.45, height: height * 0.2}}
-                    name={item?.user_name}
+                    name={item?.first_name + ' ' + item.last_name}
                     imageUrl={item?.image}
                     fans={item.fans}
                   />
@@ -686,7 +686,7 @@ const index = props => {
             ModalRef={AddModalState}
             details
             video={
-              'https://winjoy-assets.s3.amazonaws.com/banners/banner-3.mp4'
+              'https://winjoy-assets.s3.amazonaws.com/how_it_work/Mostafa_wj-intro.mp4'
             }
             cross={true}
             // id={idVideoAdd}

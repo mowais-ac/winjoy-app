@@ -17,6 +17,7 @@ import {
   FanJoyCard,
   SecondExperienceCard,
   TrendingCards,
+  WinExperienceCard,
   WjBackground,
 } from '../../Components';
 import styles from './styles';
@@ -30,19 +31,32 @@ import {Avatar} from 'react-native-elements';
 import ExperienceCelebrityModal from '../../Components/ExperienceCelebrityModal';
 import {RFValue} from 'react-native-responsive-fontsize';
 import {useDispatch, useSelector} from 'react-redux';
-import {GetCreatorPageData, ExperienceDetals} from '../../redux/actions';
+import {
+  GetCreatorPageData,
+  ExperienceDetals,
+  ExperienceProductData,
+  ProductDetails,
+} from '../../redux/actions';
+import types from '../../redux/types';
+import ModalCelebrityProducts from '../../Components/ModalCelebrityProducts';
 const {width, height} = Dimensions.get('window');
 const index = ({route, navigation}) => {
   const dispatch = useDispatch();
   const dispatch2 = useDispatch();
+  const dispatch3 = useDispatch();
+  const dispatch4 = useDispatch();
+  const dispatch5 = useDispatch();
   const ModalState = useRef();
   const celebrity_id = useRef();
   const experience_id = useRef();
-
+  const celebrityModalState = useRef();
   const creatorId = useSelector(state => state.app.creatorId);
   const data = useSelector(state => state.app.creatorPageData);
+  const expData = useSelector(state => state.app.winExperienceProductData);
   const experienceDetail = useSelector(state => state.app.experienceDetail);
+  const productsDetails = useSelector(state => state.app.productsDetals);
   useEffect(() => {
+    console.log('exp', expData);
     console.log('creatorId', creatorId);
     dispatch(GetCreatorPageData(creatorId));
     console.log('data', data);
@@ -60,8 +74,12 @@ const index = ({route, navigation}) => {
           end={{x: 1, y: 0}}
           colors={['#f8d7e8', '#c7dfe8']}>
           <Image
-            source={require('../../assets/imgs/creatorImage.png')}
+            source={{
+              uri:
+                data?.celebrity?.profile_image || data?.celebrity?.cover_image,
+            }}
             style={styles.mainView}
+            resizeMode={'cover'}
           />
 
           <Header style={{top: 0, position: 'absolute', marginTop: 10}} />
@@ -123,6 +141,9 @@ const index = ({route, navigation}) => {
                 numberOfLines={3}
                 style={{
                   fontFamily: 'Axiforma-Regular',
+                  fontSize: RFValue(11),
+                  paddingVertical: 8,
+                  lineHeight: 17,
                   color: '#3E324F',
                   width: width * 0.7,
                   textAlign: 'justify',
@@ -175,9 +196,14 @@ const index = ({route, navigation}) => {
                   <TrendingCards
                     // onPress={() => navigation.navigate("AllCreatorsPage")}
                     onPress={() => {
-                      navigation.navigate('ExperienceProductDetail', {
-                        productId: item?.id,
-                        experienceId: item.celebrity_id,
+                      dispatch5(ProductDetails(item?.id));
+                      console.log('proDet', productsDetails);
+                      navigation.navigate('PRODUCTS', {
+                        screen: 'ProductDetail',
+                        params: {
+                          productId: item?.id,
+                          experienceId: item.celebrity_id,
+                        },
                       });
                     }}
                     title={item?.title}
@@ -202,6 +228,89 @@ const index = ({route, navigation}) => {
                 // }
                 keyExtractor={item => item.id}
               />
+            </View>
+            <View
+              style={{
+                width: '100%',
+                paddingVertical: 22,
+                justifyContent: 'center',
+              }}>
+              <View
+                style={{
+                  width: '100%',
+                }}>
+                <View>
+                  <Text
+                    style={{
+                      fontFamily: 'Axiforma-Bold',
+                      color: '#eb3d6e',
+
+                      textAlign: 'center',
+                    }}>
+                    Win an Experience
+                  </Text>
+                  <Text
+                    style={{
+                      color: '#000000',
+                      fontFamily: 'Axiforma-Regular',
+                      textAlign: 'center',
+                      fontSize: RFValue(12),
+                      marginTop: 4,
+                      paddingHorizontal: 15,
+                    }}>
+                    You just need to shop a product to win an amazing experience
+                    with your favourite stars.
+                  </Text>
+                </View>
+              </View>
+              <View>
+                <FlatList
+                  data={data?.win_experiences}
+                  horizontal={true}
+                  style={{paddingLeft: 12}}
+                  ItemSeparatorComponent={() => {
+                    return <View style={{width: width * 0.03}} />;
+                  }}
+                  renderItem={({item}) => (
+                    <WinExperienceCard
+                      onPress={() => {
+                        console.log('item');
+                        dispatch3({
+                          type: types.EXPERIENCE_ID,
+                          experienceID: item.id,
+                          //  user: res.data.data,
+                        });
+                        console.log('id', item.id);
+                        dispatch4(ExperienceProductData(item?.id));
+                        celebrityModalState.current(true);
+                      }}
+                      short_desc={item?.title}
+                      thumbnail={item?.thumbnail}
+                      style={{
+                        width: width * 0.4,
+                        backgroundColor: '#fff',
+                        borderRadius: 15,
+                      }}
+                      imageStyle={{
+                        width: width * 0.4,
+                        height: height * 0.18,
+                        borderRadius: 15,
+                        borderBottomLeftRadius: 0,
+                        borderBottomRightRadius: 0,
+                      }}
+                    />
+                  )}
+                  //keyExtractor={(e) => e.id.toString()}
+                  contentContainerStyle={{
+                    marginTop: 10,
+                    paddingRight: width * 0.05,
+                  }}
+                  // refreshControl={
+                  //   <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
+                  // }
+                  keyExtractor={item => item.id}
+                />
+              </View>
             </View>
             <View
               style={{
@@ -237,7 +346,7 @@ const index = ({route, navigation}) => {
                         );
                       ModalState.current(true);
                     }}
-                    cover_photo={item.cover_photo}
+                    cover_photo={item.featured_image}
                     short_desc={item?.title}
                     price={item?.price}
                     heading={item?.title}
@@ -256,7 +365,14 @@ const index = ({route, navigation}) => {
               />
             </View>
           </View>
-
+          <ModalCelebrityProducts
+            ModalRef={celebrityModalState}
+            details
+            expData={expData}
+            onPressContinue={() => {
+              celebrityModalState.current(false);
+            }}
+          />
           <ExperienceCelebrityModal
             ModalRef={ModalState}
             details

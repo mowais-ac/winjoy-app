@@ -34,7 +34,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import types from '../../redux/types';
 import ModalCelebrityProducts from '../../Components/ModalCelebrityProducts';
 import ExperienceCelebrityModal from '../../Components/ExperienceCelebrityModal';
-import WatchAddModal from '../../Components/WatchAddModal';
+import HowItWorkModal from '../../Components/HowItWorkModal';
 import Label from '../../Components/Label';
 import LongButton from '../../Components/LongButton';
 const {width, height} = Dimensions.get('window');
@@ -265,6 +265,7 @@ const index = ({route, navigation}) => {
               />
             </View>
           </View>
+
           <View
             style={{
               width: '100%',
@@ -272,45 +273,7 @@ const index = ({route, navigation}) => {
               marginTop: 15,
               paddingBottom: 10,
             }}>
-            <Text style={styles.textHeading}>
-              Buy experience with celebrities
-            </Text>
-            <FlatList
-              data={data?.experience_celebrities}
-              horizontal={true}
-              style={{paddingLeft: 10}}
-              renderItem={({item}) => (
-                <ExperienceCard
-                  onPress={() => navigation.navigate('AllCreatorsPage')}
-                  imageUrl={item?.celebrity?.profile_image}
-                  title={item?.title}
-                  short_desc={item?.short_desc}
-                  style={{
-                    width: width * 0.4,
-                    height: height * 0.25,
-                    marginRight: 10,
-                  }}
-                />
-              )}
-              //keyExtractor={(e) => e.id.toString()}
-              contentContainerStyle={{
-                paddingRight: 10,
-                marginTop: 10,
-              }}
-              // refreshControl={
-              //   <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
-              // }
-              keyExtractor={item => item.id}
-            />
-          </View>
-          <View
-            style={{
-              width: '100%',
-              alignItems: 'center',
-              marginTop: 15,
-              paddingBottom: 10,
-            }}>
-            <Text style={styles.textHeading}>Ultimate Fan Experience</Text>
+            <Text style={styles.textHeading}>Buy experience with creators</Text>
             <FlatList
               data={data?.experiences}
               horizontal={true}
@@ -345,7 +308,7 @@ const index = ({route, navigation}) => {
             />
           </View>
 
-          <View
+          {/* <View
             style={{
               width: '100%',
               height: height * 0.33,
@@ -435,7 +398,7 @@ const index = ({route, navigation}) => {
                 keyExtractor={item => item.id}
               />
             </View>
-          </View>
+          </View> */}
           <ModalCelebrityProducts
             ModalRef={celebrityModalState}
             details
@@ -448,15 +411,17 @@ const index = ({route, navigation}) => {
             ModalRef={ModalState}
             details
             onPressContinue={onPressContinue}
-            experienceDetail={experienceDetail}
+            experienceDetail={experienceDetail} 
             celebrityData={data.celebrity}
           /> */}
         </LinearGradient>
-        <WatchAddModal
+        <HowItWorkModal
           ModalRef={AddModalState}
           details
-          video={'https://winjoy-assets.s3.amazonaws.com/banners/banner-3.mp4'}
           cross={true}
+          video={
+            'https://winjoy-assets.s3.amazonaws.com/how_it_work/Mostafa_fanjoy-wj.mp4'
+          }
           // id={idVideoAdd}
           // onPressContinue={onPressContinue}
         />
