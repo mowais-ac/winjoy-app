@@ -144,9 +144,16 @@ const ProductDetail = ({props, navigation, route}) => {
                   style={{color: '#E7003F', marginTop: 10}}>
                   Get a chance to win
                 </Label>
-                <Label font={16} dark style={{color: '#000000'}}>
-                  {productsDetails?.product?.luckydraw?.prize_title}
-                </Label>
+
+                {productsDetails?.product?.luckydraw?.experience ? (
+                  <Label font={16} dark style={{color: '#000000'}}>
+                    {productsDetails?.product?.luckydraw?.experience?.title}
+                  </Label>
+                ) : (
+                  <Label font={16} dark style={{color: '#000000'}}>
+                    {productsDetails?.product?.luckydraw?.prize_title}
+                  </Label>
+                )}
                 <Label
                   font={12}
                   light

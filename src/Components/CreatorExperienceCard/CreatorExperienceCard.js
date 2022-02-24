@@ -23,7 +23,7 @@ function CreatorExperienceCard({
         style={{
           backgroundColor: '#ffffff',
           borderRadius: 15,
-          height: height * 0.28,
+          height: height * 0.3,
           width: width * 0.45,
           marginLeft: 10,
         }}>

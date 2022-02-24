@@ -88,7 +88,7 @@ const index = ({route, navigation}) => {
           </View>
           <View
             style={{
-              paddingVertical: 10,
+              paddingVertical: height * 0.04,
               paddingHorizontal: 5,
               marginTop: height * 0.07,
             }}>
