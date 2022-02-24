@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {View, Dimensions, Text} from 'react-native';
 import Config from 'react-native-config';
 import LoaderImage from '../LoaderImage';
@@ -16,14 +16,12 @@ function Card({
   stock,
   removeProgressCircle,
 }) {
-  console.log('images', images);
+  console.log('imag', images);
   let progress = updated_stocks ? (updated_stocks / stock) * 100 : 0;
-  let arr = [];
-  images?.map(ele => {
-    console.log('ele', ele.image);
-    arr.push(ele.image);
-  });
-  console.log('arr', arr);
+  useEffect(() => {
+    console.log('imag', images);
+  }, [images]);
+
   return (
     <View
       style={{
@@ -106,12 +104,12 @@ function Card({
           flexDirection: 'row',
         }}>
         <SliderBox
-          images={arr}
-          sliderBoxHeight={160}
+          images={images}
+          sliderBoxHeight={250}
           resizeMode={'center'}
           ImageComponentStyle={{
             width: '100%',
-            height: 160,
+            height: 250,
             borderRadius: 10,
           }}
           dotColor="#FFEE58"

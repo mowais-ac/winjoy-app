@@ -536,7 +536,7 @@ const index = props => {
               renderItem={({item}) => (
                 <ClosingSoonCard
                   onPress={() => {
-                    // dispatch6(ProductDetails(item?.product?.id));
+                    dispatch6(ProductDetails(item?.product?.id));
                     navigation.navigate('PRODUCTS', {
                       screen: 'ProductDetail',
                       params: {productId: item?.product?.id},

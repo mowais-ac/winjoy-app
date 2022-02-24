@@ -64,6 +64,7 @@ let timer = () => {};
 const BackgroundVideo = ({route, navigation}) => {
   const dispatch = useDispatch();
   const dispatch2 = useDispatch();
+  const dispatch3 = useDispatch();
   const userData = useSelector(state => state.app.userData);
   const totalLives = useSelector(state => state.app.totalLives);
   const [availLifeActivity, setAvailLifeActivity] = useState(false);
@@ -344,6 +345,7 @@ const BackgroundVideo = ({route, navigation}) => {
     });
 
     socket.on('sendShowWinners', msg => {
+      dispatch3(GameShowWinners());
       winnerModal.current(true);
     });
     socket.on('sendHideWinners', msg => {

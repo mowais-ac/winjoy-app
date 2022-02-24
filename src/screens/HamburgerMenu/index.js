@@ -116,8 +116,9 @@ const index = ({props, navigation}) => {
     Linking.openURL('https://vm.tiktok.com/ZSe7SEt69/');
   };
   const OpenSnapChat = () => {
-    alert('under development');
-    // Linking.openURL('https://vm.tiktok.com/ZSe7SEt69/');
+    Linking.openURL(
+      'https://www.snapchat.com/add/wjwinjoy?share_id=WiY7dKP-QK4&locale=en-GB',
+    );
   };
   const OpenInsta = () => {
     let appUrl = 'https://www.instagram.com/winjoyae?utm_medium=copy_link';

@@ -39,6 +39,7 @@ import Modals from '../../Components/Modals';
 import BuyLifeCongrats from '../../Components/BuyLifeCongrats';
 import Clipboard from '@react-native-clipboard/clipboard';
 import Config from 'react-native-config';
+import types from '../../redux/types';
 const {width, height} = Dimensions.get('window');
 
 let li = [
@@ -74,15 +75,18 @@ const index = ({route, navigation}) => {
     details: null,
   });
   const [CountryCode, setCountryCode] = useState(+971);
-
+  const loading = useSelector(state => state.app.loading);
   const dispatch = useDispatch();
+  const dispatch2 = useDispatch();
   useEffect(() => {
     dispatch(getLiveShowPlans());
-    console.log('livePlans', livePlans);
+  }, [dispatch]);
+
+  useEffect(() => {
+    console.log('livePlans2', livePlans);
     let li = [];
     let idforFirst;
     livePlans?.plan?.forEach(element => {
-      console.log('element', element);
       if (element.type === 'referral') {
         li.push(element);
 
@@ -93,7 +97,7 @@ const index = ({route, navigation}) => {
     });
     setRefferalLivePlans(li);
     setId(idforFirst);
-  }, [dispatch]);
+  }, [livePlans]);
 
   const copyToClipboard = () => {
     Clipboard.setString(
@@ -244,9 +248,14 @@ const index = ({route, navigation}) => {
       .then(response => response.json())
       .then(async res => {
         setLoader(false);
+        console.log('res', res);
         if (res.status === 'success') {
           dispatch(getLiveShowPlans());
           totalLives.current = res?.lives;
+          dispatch2({
+            type: types.TOTAL_LIVES,
+            totalLives: res?.lives,
+          });
           SucessModalState.current(true);
         } else {
           ModalStateError.current(true, {

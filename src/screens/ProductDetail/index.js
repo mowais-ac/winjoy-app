@@ -30,7 +30,9 @@ import Counter from 'react-native-counters';
 import BuyLifeCongrats from '../../Components/BuyLifeCongrats';
 import Modals from '../../Components/Modals';
 import {ProductDetails} from '../../redux/actions';
+import {useIsFocused} from '@react-navigation/native';
 const ProductDetail = ({props, navigation, route}) => {
+  const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const dispatch2 = useDispatch();
   const SucessModalState = useRef();
@@ -40,13 +42,24 @@ const ProductDetail = ({props, navigation, route}) => {
   const productId = route?.params?.productId;
   const [activity, setActivity] = useState(false);
   const [count, setCount] = useState(1);
+  const [images, setImages] = useState([]);
   const loading = useSelector(state => state.app.loading);
+
+  useEffect(() => {
+    dispatch2(ProductDetails());
+  }, [dispatch2]);
   useEffect(() => {
     console.log('productId', productId);
     dispatch2(ProductDetails(productId));
     console.log('productsDetails', productsDetails);
+    console.log('images', images);
+    let arr = [];
+    productsDetails?.prpduct?.images?.map(ele => {
+      console.log('ele', ele.image);
+      arr.push(ele.image);
+    });
+    setImages(arr);
   }, []);
-
   const onChange = (number, type) => {
     setCount(number);
     console.log(number, type); // 1, + or -
@@ -112,7 +125,7 @@ const ProductDetail = ({props, navigation, route}) => {
             <View style={{paddingHorizontal: 15}}>
               <View style={[styles.upperView]}>
                 <Card
-                  images={productsDetails?.prpduct?.images}
+                  images={images}
                   updated_stocks={productsDetails?.prpduct?.updated_stocks}
                   stock={productsDetails?.prpduct?.stock}
                 />
