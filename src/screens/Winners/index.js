@@ -78,6 +78,7 @@ const index = ({route, navigation}) => {
   return (
     <SafeAreaView style={styles.safeStyle}>
       <LinearGradient
+        style={{flex: 1}}
         start={{x: 0, y: 0}}
         end={{x: 1, y: 0}}
         colors={['#f8d7e8', '#c7dfe8']}>

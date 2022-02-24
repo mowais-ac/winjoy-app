@@ -53,7 +53,7 @@ function ChanceCard({
             height: height * 0.25,
             borderRadius: 10,
           }}
-          resizeMode="contain"
+          resizeMode="cover"
         />
       </View>
       <View
@@ -66,14 +66,18 @@ function ChanceCard({
           justifyContent: 'space-between',
         }}>
         <Text
-          style={{fontFamily: 'Axiforma-Regular', fontSize: 14, color: 'grey'}}>
+          style={{
+            fontFamily: 'Axiforma-Bold',
+            fontSize: 16,
+            color: '#000000',
+          }}>
           {title}
         </Text>
         <Text
           style={{
-            fontFamily: 'Axiforma-SemiBold',
-            fontSize: 14,
-            color: '#E7003F',
+            fontFamily: 'Axiforma-Bold',
+            fontSize: 16,
+            color: '#420E92',
           }}>
           AED {FormatNumber(price)}
         </Text>
@@ -93,13 +97,21 @@ function ChanceCard({
             style={{
               fontFamily: 'Axiforma-Regular',
               fontSize: 14,
-              color: '#E7003F',
+              color: '#420E92',
             }}>
-            Get a chance to win
+            Get a chance to{' '}
+            <Text
+              style={{
+                fontFamily: 'Axiforma-Bold',
+
+                color: '#E7003F',
+              }}>
+              WIN
+            </Text>
           </Text>
           <Text
             style={{
-              fontFamily: 'Axiforma-Regular',
+              fontFamily: 'Axiforma-Bold',
               fontSize: 12,
               color: '#000000',
               lineHeight: 17,

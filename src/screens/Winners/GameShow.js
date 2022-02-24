@@ -72,6 +72,7 @@ const GameShow = props => {
             <View style={{}}>
               <Text
                 style={{
+                  paddingLeft: 15,
                   color: '#000000',
                   fontFamily: 'Axiforma-Regular',
                   fontSize: RFValue(13),
@@ -132,7 +133,10 @@ const GameShow = props => {
 
       <FlatList
         data={props?.pastWinners}
-        style={{width: '100%', paddingHorizontal: 10}}
+        style={{
+          width: '100%',
+          paddingHorizontal: 10,
+        }}
         scrollEnabled={false}
         contentContainerStyle={{
           width: '100%',
@@ -168,9 +172,9 @@ const GameShow = props => {
 
 const styles = StyleSheet.create({
   mainView: {
-    height: height * 0.7,
     width: width,
     alignItems: 'center',
+    paddingBottom: 10,
   },
   avatarViewTop: {
     width: 80,

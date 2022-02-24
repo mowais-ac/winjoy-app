@@ -78,6 +78,7 @@ const index = ({route, navigation}) => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getLiveShowPlans());
+    console.log('livePlans', livePlans);
     let li = [];
     let idforFirst;
     livePlans?.plan?.forEach(element => {
@@ -92,9 +93,12 @@ const index = ({route, navigation}) => {
     });
     setRefferalLivePlans(li);
     setId(idforFirst);
-  }, []);
+  }, [dispatch]);
+
   const copyToClipboard = () => {
-    Clipboard.setString('https:/ /winjoy.ae/invite/token?aaasd');
+    Clipboard.setString(
+      `https://winjoy.ae/invite/token?${livePlans?.refer_code}`,
+    );
   };
   const onPressRefTab = (index, item) => {
     li = [];

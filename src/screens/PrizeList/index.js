@@ -133,7 +133,7 @@ const index = ({props, navigation}) => {
             shadowless
           />
         </View>
-        <View>
+        {/* <View>
           <FlatList
             data={productsData?.categories_collection}
             scrollEnabled={true}
@@ -169,7 +169,7 @@ const index = ({props, navigation}) => {
             }}
             ItemSeparatorComponent={() => <View style={{width: 15}} />}
           />
-        </View>
+        </View> */}
         <View>
           {/* onPress={()=>navigation.navigate("SimpeStackScreen",{screen:"ProductDetail"})}> */}
 

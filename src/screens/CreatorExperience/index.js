@@ -65,7 +65,7 @@ const index = ({route, navigation}) => {
             style={styles.mainView}
           />
           <Header style={{top: 0, position: 'absolute', width: width}} />
-          <View style={{marginTop: height * 0.069}}>
+          <View style={{marginTop: height * 0.085}}>
             <Text
               style={{
                 color: '#ffffff',
@@ -90,7 +90,7 @@ const index = ({route, navigation}) => {
             style={{
               paddingVertical: 10,
               paddingHorizontal: 5,
-              marginTop: height * 0.09,
+              marginTop: height * 0.07,
             }}>
             <FlatList
               data={creatorExpList?.experience_celebrities}
@@ -99,9 +99,7 @@ const index = ({route, navigation}) => {
               renderItem={({item}) => (
                 <CreatorExperienceCard
                   // onPress={() => navigation.navigate('CreatorExperience')}
-                  imageUrl={
-                    'https://winjoy-assets.s3.amazonaws.com/experiences/experience-1.jpg'
-                  }
+                  imageUrl={item?.thumbnail}
                   title={item?.title}
                   description={item?.description}
                   price={item?.price}

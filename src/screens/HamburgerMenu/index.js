@@ -13,8 +13,7 @@ import {
 } from 'react-native';
 import Label from '../../Components/Label';
 const {width, height} = Dimensions.get('window');
-import LinearGradient from 'react-native-linear-gradient';
-import DropDownPicker from 'react-native-dropdown-picker';
+
 import {
   widthPercentageToDP,
   heightPercentageToDP,
