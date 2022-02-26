@@ -83,7 +83,6 @@ const index = ({route, navigation}) => {
   }, [dispatch]);
 
   useEffect(() => {
-    console.log('livePlans2', livePlans);
     let li = [];
     let idforFirst;
     livePlans?.plan?.forEach(element => {
@@ -141,7 +140,7 @@ const index = ({route, navigation}) => {
     // }
 
     reff[index].countrycode = text;
-    console.log('reff', reff);
+
     setUpdateData(!updateData);
   };
 
@@ -180,8 +179,6 @@ const index = ({route, navigation}) => {
     setUpdateData(!updateData);
     let fData = [];
     reff.forEach((element, index) => {
-      console.log('element', element);
-
       fData.push({
         name: element.name,
         phone_no:
@@ -189,7 +186,7 @@ const index = ({route, navigation}) => {
           element.phone_no,
       });
     });
-    console.log('fData', fData);
+
     if (validToPost) {
       postData = {
         referrals: fData,
@@ -231,8 +228,6 @@ const index = ({route, navigation}) => {
   };
   const PostData = async postData => {
     setLoader(true);
-    console.log('postData', postData);
-    console.log('id', id);
 
     var Token = await EncryptedStorage.getItem('Token');
     const requestOptions = {
@@ -248,7 +243,7 @@ const index = ({route, navigation}) => {
       .then(response => response.json())
       .then(async res => {
         setLoader(false);
-        console.log('res', res);
+
         if (res.status === 'success') {
           dispatch(getLiveShowPlans());
           totalLives.current = res?.lives;
@@ -267,7 +262,6 @@ const index = ({route, navigation}) => {
       })
       .catch(e => {
         setLoader(false);
-        console.log('error', e);
       });
   };
 

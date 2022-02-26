@@ -52,7 +52,6 @@ const HowItWorkModal = props => {
   };
 
   const onBuffer = ({isBuffering}) => {
-    console.log('isBuffering', isBuffering);
     setOpacity(isBuffering ? 1 : 0);
   };
   useEffect(() => {

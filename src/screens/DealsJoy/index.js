@@ -48,8 +48,6 @@ const index = ({props, navigation}) => {
   const AddModalState = useRef();
   useEffect(() => {
     dispatch(DealsJoyAPI());
-    console.log('dealsJoyData', dealsJoyData);
-    console.log('banner', dealsJoyData.lower_banners);
   }, []);
   const onRefresh = React.useCallback(() => {
     dispatch(DealsJoyAPI());
@@ -235,7 +233,7 @@ const index = ({props, navigation}) => {
         <View style={{marginBottom: height * 0.01}} />
       </LinearGradient>
       <ScrollView horizontal={true}>
-        {dealsJoyData.lower_banners.map(element => {
+        {dealsJoyData?.lower_banners?.map(element => {
           return (
             <View key={element.key} style={{margin: 10, flexDirection: 'row'}}>
               <Image

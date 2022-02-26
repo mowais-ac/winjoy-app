@@ -80,7 +80,6 @@ const index = ({navigation}) => {
   }, []);
 
   const RemoveItem = (id, qty) => {
-    console.log('qqty', qty);
     setId(id);
     dispatch2(RemoveCartData(id));
     dispatch(GetCartData());

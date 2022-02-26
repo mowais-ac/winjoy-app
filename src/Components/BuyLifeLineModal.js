@@ -57,11 +57,9 @@ const BuyLifeLineModal = props => {
         type: types.TOTAL_LIVES,
         totalLives: json?.lives,
       });
-      console.log('jsonjson', json?.lives);
+
       alert(json.message);
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   const HandleChange = (state, details = null, ForceSuccess = false) => {

@@ -56,7 +56,6 @@ const index = ({route, navigation}) => {
       await fetch(`${Config.API_URL}/verify/otp`, requestOptions)
         .then(async response => response.json())
         .then(async res => {
-          console.log('res', res);
           if (res.message && res.message === 'Congrats!! Account verified') {
             dispatch({
               type: types.USER_DATA,
@@ -74,7 +73,6 @@ const index = ({route, navigation}) => {
           }
         })
         .catch(e => {
-          console.log(e);
           ButtonRef.current.SetActivity(false);
         });
     }

@@ -44,7 +44,6 @@ const index = ({route, navigation}) => {
   const data = useSelector(state => state.app.creatorPageData);
   const creatorExpList = useSelector(state => state.app.creatorExpList);
   useEffect(() => {
-    console.log('creatorExpList', creatorExpList);
     dispatch(CreatorExperienceList(experience_id));
   }, []);
 

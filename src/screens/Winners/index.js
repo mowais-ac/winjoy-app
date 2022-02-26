@@ -55,7 +55,6 @@ const index = ({route, navigation}) => {
   const dispatch2 = useDispatch();
   const routeSelected = route?.params?.selected;
   useEffect(() => {
-    console.log('loading', loading);
     //  dispatch(getLiveShowPlans());
     dispatch(GameShowWinners());
     dispatch2(LuckyDrawWinnersAPI());

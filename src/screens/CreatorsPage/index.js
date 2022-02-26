@@ -56,10 +56,7 @@ const index = ({route, navigation}) => {
   const experienceDetail = useSelector(state => state.app.experienceDetail);
   const productsDetails = useSelector(state => state.app.productsDetals);
   useEffect(() => {
-    console.log('exp', expData);
-    console.log('creatorId', creatorId);
     dispatch(GetCreatorPageData(creatorId));
-    console.log('data', data);
   }, []);
 
   const onPressContinue = () => {
@@ -197,7 +194,7 @@ const index = ({route, navigation}) => {
                     // onPress={() => navigation.navigate("AllCreatorsPage")}
                     onPress={() => {
                       dispatch5(ProductDetails(item?.id));
-                      console.log('proDet', productsDetails);
+
                       navigation.navigate('PRODUCTS', {
                         screen: 'ProductDetail',
                         params: {
@@ -274,13 +271,12 @@ const index = ({route, navigation}) => {
                   renderItem={({item}) => (
                     <WinExperienceCard
                       onPress={() => {
-                        console.log('item');
                         dispatch3({
                           type: types.EXPERIENCE_ID,
                           experienceID: item.id,
                           //  user: res.data.data,
                         });
-                        console.log('id', item.id);
+
                         dispatch4(ExperienceProductData(item?.id));
                         celebrityModalState.current(true);
                       }}

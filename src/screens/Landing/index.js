@@ -128,10 +128,9 @@ const index = props => {
       'seconds',
     );
     setTime(duration);
-    console.log('LandingData', LandingData);
+
     let arr = [];
     LandingData?.host_sliders_data?.map(ele => {
-      console.log('ele', ele.url);
       arr.push(ele.url);
     });
     setImageSlider(arr);
@@ -150,7 +149,7 @@ const index = props => {
 
   const LetBegin = () => {
     dispatch2(CheckGameEnterStatus());
-    // console.log("gameEnterStatus",gameEnterStatus);
+    //
     // navigation.navigate("GameStack", {
     //   screen: "Quiz",
     //   params: {
@@ -584,6 +583,24 @@ const index = props => {
                     navigation.navigate('MenuStack', {screen: 'LeaderBoard'})
                   }
                 />
+                <View style={{width: '95%'}}>
+                  <Text
+                    style={{
+                      color: '#000000',
+                      fontFamily: 'Axiforma-SemiBold',
+                      fontSize: RFValue(20),
+                    }}>
+                    50+
+                  </Text>
+                  <Text
+                    style={{
+                      color: '#000000',
+                      fontFamily: 'Axiforma-SemiBold',
+                      fontSize: RFValue(20),
+                    }}>
+                    Winners
+                  </Text>
+                </View>
               </View>
             </View>
             <LinearGradient

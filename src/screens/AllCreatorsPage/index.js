@@ -52,7 +52,6 @@ const index = ({route, navigation}) => {
   // const [experienceId, setExperienceId] = useState();
   useEffect(() => {
     dispatch(getAllCreator());
-    console.log('data', data);
   }, []);
   const onPressCreator = id => {
     // alert(id)
@@ -233,7 +232,7 @@ const index = ({route, navigation}) => {
                         experienceID: item.id,
                         //  user: res.data.data,
                       });
-                      console.log('id', item.id);
+
                       dispatch4(ExperienceProductData(item?.id));
                       celebrityModalState.current(true);
                     }}

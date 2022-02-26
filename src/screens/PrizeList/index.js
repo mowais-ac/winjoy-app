@@ -36,7 +36,7 @@ const index = ({props, navigation}) => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getProducts('?is_closing_soon=0'));
-    console.log('productsData', productsData);
+
     setIsClosing(false);
   }, []);
   const onRefresh = React.useCallback(() => {
@@ -47,7 +47,7 @@ const index = ({props, navigation}) => {
   const CategoryFunc = (index, id) => {
     let link = `?is_closing_soon=${isClosing ? 1 : 0}&category=${id}`;
     setSelected(index);
-    console.log('linkkk', link);
+
     dispatch(getProducts(link));
     setUpdateData(!updateData);
   };

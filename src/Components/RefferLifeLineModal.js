@@ -85,16 +85,14 @@ const RefferLifeLineModal = props => {
   };
   useEffect(() => {
     dispatch(getLiveShowPlans());
-    console.log('livePlansModal', livePlans.plan);
+
     let li = [];
     let idforFirst;
     livePlans?.plan?.forEach(element => {
-      console.log('element', element);
       if (element.type === 'referral') {
         li.push(element);
 
         if (element.required_referrals === 1) {
-          console.log('element', element.id);
           idforFirst = element.id;
         }
       }
@@ -142,7 +140,7 @@ const RefferLifeLineModal = props => {
     // }
 
     reff[index].countrycode = text;
-    console.log('reff', reff);
+
     setUpdateData(!updateData);
   };
 
@@ -181,8 +179,6 @@ const RefferLifeLineModal = props => {
     setUpdateData(!updateData);
     let fData = [];
     reff.forEach((element, index) => {
-      console.log('element', element);
-
       fData.push({
         name: element.name,
         phone_no:
@@ -190,7 +186,7 @@ const RefferLifeLineModal = props => {
           element.phone_no,
       });
     });
-    console.log('fData', fData);
+
     if (validToPost) {
       postData = {
         referrals: fData,
@@ -232,8 +228,6 @@ const RefferLifeLineModal = props => {
   };
   const PostData = async postData => {
     setLoader(true);
-    console.log('postData', postData);
-    console.log('id', id);
 
     var Token = await EncryptedStorage.getItem('Token');
     const requestOptions = {
@@ -263,7 +257,6 @@ const RefferLifeLineModal = props => {
       })
       .catch(e => {
         setLoader(false);
-        console.log('error', e);
       });
   };
   return (

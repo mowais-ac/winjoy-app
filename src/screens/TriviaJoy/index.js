@@ -64,22 +64,11 @@ const index = ({props, navigation}) => {
     socket.on('sendStartlivegameshow', msg => {
       dispatch(TriviaJoyAPI());
     });
-    console.log('userData', userData);
-    console.log('triviaJoyData', triviaJoyData.banners);
-    var date = new Date().toLocaleString();
-    console.log('daaate', date);
-    console.log(
-      'start',
-      dayjs(triviaJoyData?.upcoming_gameshow?.start_date).format(
-        'MMMM DD, YYYY - HH:MM A',
-      ),
-    );
-    console.log('time', time);
   }, []);
 
   const LetBegin = () => {
     dispatch2(CheckGameEnterStatus());
-    console.log('gameEnterStatus', gameEnterStatus);
+
     if (gameEnterStatus.status === 'success') {
       if (gameEnterStatus.message === 'Welcome to Live Game Show') {
         navigation.navigate('GameStack', {

@@ -48,7 +48,7 @@ const index = ({route, navigation}) => {
   // const [experienceId, setExperienceId] = useState();
   useEffect(() => {
     dispatch(AllCreatorsList());
-    console.log('allCreatorsList', allCreatorsList);
+
     setResData(allCreatorsList?.data);
     setInsearchData(allCreatorsList?.data);
   }, []);
@@ -63,7 +63,6 @@ const index = ({route, navigation}) => {
   };
   const searchEmployee = value => {
     const filteredContacts = insearchData.filter(item => {
-      console.log('item', item);
       let contactLowercase = (
         item.first_name +
         ' ' +
