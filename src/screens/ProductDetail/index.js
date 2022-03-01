@@ -238,7 +238,10 @@ const ProductDetail = ({props, navigation, route}) => {
             <TouchableOpacity
               disabled={activity}
               onPress={() => {
-                SaveIdInfo();
+                // SaveIdInfo();
+                alert(
+                  'Thankyou for your interest, this feature is comming soon',
+                );
               }}>
               <LinearGradient
                 start={{x: 0, y: 0}}

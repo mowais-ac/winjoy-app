@@ -36,7 +36,7 @@ export default StyleSheet.create({
     fontFamily: 'Axiforma-SemiBold',
     fontSize: 16,
     color: '#fff',
-    lineHeight: 17,
+    lineHeight: 15,
     textAlign: 'left',
   },
 

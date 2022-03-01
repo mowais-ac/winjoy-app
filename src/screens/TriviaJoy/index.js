@@ -283,7 +283,7 @@ const index = ({props, navigation}) => {
         details
         cross={true}
         video={
-          'https://winjoy-assets.s3.amazonaws.com/how_it_work/m-triviajoy.mp4'
+          'https://winjoy-assets.s3.amazonaws.com/how_it_work/m-triviajoy(1).mp4'
         }
         // id={idVideoAdd}
         // onPressContinue={onPressContinue}

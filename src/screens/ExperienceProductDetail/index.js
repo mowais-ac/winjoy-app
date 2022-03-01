@@ -140,7 +140,8 @@ const ProductDetail = ({props, navigation, route}) => {
               // navigation.navigate("SimpeStackScreen", {
               //     screen: "Cart",
               //   })]
-              SaveIdInfo();
+              // SaveIdInfo();
+              alert('Thankyou for your interest, this feature is comming soon');
             }}
             style={{
               height: heightConverter(55),

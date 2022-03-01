@@ -240,7 +240,7 @@ const index = ({props, navigation}) => {
                 source={{uri: element.url}}
                 resizeMode={'cover'}
                 style={{
-                  height: height * 0.2,
+                  height: height * 0.13,
                   width: width * 0.95,
                   borderRadius: 12,
                   marginRight: 10,
@@ -258,7 +258,7 @@ const index = ({props, navigation}) => {
         details
         cross={true}
         video={
-          'https://winjoy-assets.s3.amazonaws.com/how_it_work/Mostafa_dealsjoy-wj.mp4'
+          'https://winjoy-assets.s3.amazonaws.com/how_it_work/Mostafa_dealsjoy-wj+(1).mp4'
         }
         // id={idVideoAdd}
         // onPressContinue={onPressContinue}

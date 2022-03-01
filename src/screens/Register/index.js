@@ -101,7 +101,7 @@ const index = ({navigation}) => {
         cpassref.current.Error();
         return;
       }
-      Buttonref.current.SetActivity(true);
+      //   Buttonref.current.SetActivity(true);
 
       const body = JSONtoForm({
         first_name,
@@ -126,8 +126,10 @@ const index = ({navigation}) => {
       await fetch(`${Config.API_URL}/auth/new_register`, requestOptions)
         .then(response => response.json())
         .then(async res => {
+          console.log('res', res);
           if (res.status && res.status.toLowerCase() === 'success') {
             await EncryptedStorage.setItem('Token', res.data.token);
+            console.log('res.data.token', res.data.token);
             if (await IsVerified(res.data.token)) {
               navigation.replace('TabsStack');
             } else {

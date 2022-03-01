@@ -268,7 +268,10 @@ const index = ({navigation}) => {
               <TouchableOpacity
                 onPress={() => {
                   // ModalState.current(true);
-                  PostData();
+                  // PostData();
+                  alert(
+                    'Thankyou for your interest, this feature is comming soon',
+                  );
                 }}
                 disabled={activity}
                 style={{

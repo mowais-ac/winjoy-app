@@ -77,70 +77,72 @@ const index = ({route, navigation}) => {
   };
   return (
     <SafeAreaView style={styles.safeStyle}>
-      <ScrollView>
-        <LinearGradient
-          start={{x: 0, y: 0}}
-          end={{x: 1, y: 0}}
-          colors={['#f8d7e8', '#c7dfe8']}
-          style={{height: height}}>
-          <WjBackground
-            style={{
-              height: height * 0.19,
-              borderBottomRightRadius: 20,
-              borderBottomLeftRadius: 20,
-            }}
-          />
-          <Header style={{top: 0, position: 'absolute', marginTop: 10}} />
+      <LinearGradient
+        start={{x: 0, y: 0}}
+        end={{x: 1, y: 0}}
+        colors={['#f8d7e8', '#c7dfe8']}
+        style={{height: height}}>
+        <WjBackground
+          style={{
+            height: height * 0.19,
+            borderBottomRightRadius: 20,
+            borderBottomLeftRadius: 20,
+          }}
+        />
+        <Header style={{top: 0, position: 'absolute', marginTop: 10}} />
 
-          <View style={{marginTop: 55, alignItems: 'center'}}>
-            <Text style={[styles.headerText]}>Our Creators</Text>
-            <Text style={styles.subHeaderText}>Created By Stars</Text>
-          </View>
-          <View
-            style={{
-              width: '100%',
-              justifyContent: 'flex-end',
-              alignItems: 'flex-end',
-              paddingHorizontal: 15,
+        <View style={{marginTop: 55, alignItems: 'center'}}>
+          <Text style={[styles.headerText]}>Our Creators</Text>
+          <Text style={styles.subHeaderText}>Created By Stars</Text>
+        </View>
+        <View
+          style={{
+            width: '100%',
+            justifyContent: 'flex-end',
+            alignItems: 'flex-end',
+            paddingHorizontal: 15,
+          }}>
+          <TouchableOpacity
+            onPress={() => {
+              setShowResult(!showResult);
             }}>
-            <TouchableOpacity
-              onPress={() => {
-                setShowResult(!showResult);
+            <Icon name="search" size={30} color="#ffffff" />
+          </TouchableOpacity>
+        </View>
+        <View
+          style={{
+            width: '100%',
+            alignItems: 'center',
+            marginTop: height * 0.03,
+          }}>
+          {showResult ? (
+            <View
+              style={{
+                backgroundColor: '#ffffff',
+                width: '90%',
+                borderRadius: 25,
               }}>
-              <Icon name="search" size={30} color="#ffffff" />
-            </TouchableOpacity>
-          </View>
-          <View
-            style={{
-              width: '100%',
-              alignItems: 'center',
-              marginTop: height * 0.05,
-            }}>
-            {showResult ? (
-              <View
+              <TextInput
                 style={{
-                  backgroundColor: '#ffffff',
-                  width: '90%',
-                  borderRadius: 25,
-                }}>
-                <TextInput
-                  style={{
-                    paddingVertical: height * 0.015,
-                    paddingLeft: 20,
-                    fontFamily: 'Axiforma-Regular',
-                    color: '#000000',
-                  }}
-                  onChangeText={text => searchEmployee(text)}
-                  // value={number}
-                  placeholder="Search by name"
-                  placeholderTextColor={'#420E92'}
-                  keyboardType="default"
-                />
-              </View>
-            ) : null}
+                  paddingVertical: height * 0.015,
+                  paddingLeft: 20,
+                  fontFamily: 'Axiforma-Regular',
+                  color: '#000000',
+                }}
+                onChangeText={text => searchEmployee(text)}
+                // value={number}
+                placeholder="Search by name"
+                placeholderTextColor={'#420E92'}
+                keyboardType="default"
+              />
+            </View>
+          ) : null}
+          <View style={{height: height * 0.73}}>
             <FlatList
               data={resData}
-              style={{paddingLeft: 20}}
+              style={{
+                paddingLeft: 20,
+              }}
               numColumns={2}
               // horizontal={true}
 
@@ -152,12 +154,17 @@ const index = ({route, navigation}) => {
                   name={item?.first_name + ' ' + item?.last_name}
                   imageUrl={item?.profile_image}
                   fans={item.fans}
-                  style={{width: 160, marginRight: 20, height: 180}}
+                  style={{
+                    width: 160,
+                    marginRight: 20,
+                    height: 180,
+                  }}
                 />
               )}
               //keyExtractor={(e) => e.id.toString()}
               contentContainerStyle={{
                 marginTop: 10,
+                paddingBottom: 20,
               }}
               ItemSeparatorComponent={() => <View style={{height: 15}} />}
               // refreshControl={
@@ -166,8 +173,8 @@ const index = ({route, navigation}) => {
               keyExtractor={item => item.id}
             />
           </View>
-        </LinearGradient>
-      </ScrollView>
+        </View>
+      </LinearGradient>
     </SafeAreaView>
   );
 };

@@ -305,7 +305,10 @@ const ExperienceCelebrityModal = props => {
             <View style={styles.ModalBody}>
               <TouchableOpacity
                 onPress={() => {
-                  PayModalState.current(true);
+                  alert(
+                    'Thankyou for your interest, this feature is comming soon',
+                  );
+                  // PayModalState.current(true);
                 }}
                 disabled={activity}
                 style={{

@@ -357,23 +357,28 @@ const BackgroundVideo = ({route, navigation}) => {
       <Wrapper>
         <View style={styles.gradientView}>
           {liveStream ? (
-            <Video
-              // key={keyS}
-              source={{
-                // uri: uri,
-                uri: 'https://stream.mux.com/00BxefBTB1vqcrjK2u01a4PbY9IBO9Uuoi5K82I5MuO9k.m3u8',
-              }}
-              // onReadyForDisplay={readyToDisplay}
-              hls={true}
-              paused={false}
+            // <Video
+            //   // key={keyS}
+            //   source={{
+            //     // uri: uri,
+            //     uri: 'https://stream.mux.com/00BxefBTB1vqcrjK2u01a4PbY9IBO9Uuoi5K82I5MuO9k.m3u8',
+            //   }}
+            //   // onReadyForDisplay={readyToDisplay}
+            //   hls={true}
+            //   paused={false}
+            //   style={styles.backgroundVideo}
+            //   resizeMode={'cover'}
+            //   minLoadRetryCount={2}
+            //   fullScreen={true}
+            //   ignoreSilentSwitch={'obey'}
+            //   onLoad={() => setBuffer(false)}
+            //   onLoadStart={() => setBuffer(true)}
+            //   onError={er => {}}
+            // />
+            <Image
               style={styles.backgroundVideo}
+              source={require('../../assets/imgs/bgImage.png')}
               resizeMode={'cover'}
-              minLoadRetryCount={2}
-              fullScreen={true}
-              ignoreSilentSwitch={'obey'}
-              onLoad={() => setBuffer(false)}
-              onLoadStart={() => setBuffer(true)}
-              onError={er => {}}
             />
           ) : (
             <ActivityIndicator size="large" color={'#ffffff'} top={300} />

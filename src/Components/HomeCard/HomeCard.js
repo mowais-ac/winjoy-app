@@ -94,7 +94,7 @@ function HomeCard({style, onPress, gameShow, time, images, upcoming_gameshow}) {
                   {FormatNumber(+upcoming_gameshow?.price?.toLocaleString())}
                 </Text>
               </View>
-              <View>
+              <View style={{paddingTop: 5}}>
                 <Text style={[styles.commingSoonTxt, {fontSize: 13}]}>
                   TRIVIA
                 </Text>

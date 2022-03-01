@@ -252,20 +252,39 @@ const index = props => {
                 {loader ? (
                   <ActivityIndicator size="large" color="#fff" />
                 ) : (
-                  <Carousel
-                    layout={'default'}
-                    resizeMode={'cover'}
-                    loop={videoAction}
-                    autoplay={videoAction}
-                    autoplayInterval={3000}
-                    // ref={ref => this.carousel = ref}
-                    data={LandingData?.banners}
-                    sliderWidth={width}
-                    itemWidth={width}
-                    renderItem={_renderItem}
-                    style={styles.ShoppingBanner}
-                    onSnapToItem={index => setActiveSlide(index)}
-                  />
+                  // <Carousel
+                  //   layout={'default'}
+                  //   resizeMode={'cover'}
+                  //   loop={videoAction}
+                  //   autoplay={videoAction}
+                  //   autoplayInterval={3000}
+                  //   // ref={ref => this.carousel = ref}
+                  //   data={LandingData?.banners}
+                  //   sliderWidth={width}
+                  //   itemWidth={width}
+                  //   renderItem={_renderItem}
+                  //   style={styles.ShoppingBanner}
+                  //   onSnapToItem={index => setActiveSlide(index)}
+                  // />
+                  <>
+                    {LandingData?.banners ? (
+                      <Video
+                        source={{uri: LandingData?.banners[0]?.url}} // Can be a URL or a local file.
+                        // ref={(ref) => { this.player = ref }}  // Store reference
+                        resizeMode={'cover'}
+                        repeat={true}
+                        //  onError={this.onVideoError}
+                        minLoadRetryCount={2}
+                        fullScreen={true}
+                        ignoreSilentSwitch={'obey'}
+                        onLoad={() => setBuffer(false)}
+                        onLoadStart={() => setVideoAction(false)}
+                        controls={false}
+                        onEnd={() => setVideoAction(true)}
+                        style={styles.ShoppingBanner}
+                      />
+                    ) : null}
+                  </>
                 )}
               </View>
               <View style={styles.yellowBtn}>
@@ -703,7 +722,7 @@ const index = props => {
             ModalRef={AddModalState}
             details
             video={
-              'https://winjoy-assets.s3.amazonaws.com/how_it_work/Mostafa_wj-intro.mp4'
+              'https://winjoy-assets.s3.amazonaws.com/how_it_work/Mostafa_wj-intro+(1).mp4'
             }
             cross={true}
             // id={idVideoAdd}
