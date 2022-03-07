@@ -99,11 +99,6 @@ const BackgroundVideo = ({route, navigation}) => {
       if (timeLeft <= 0) {
         clearTimeout(timer);
 
-        // if (timerFlag && gameShowCheck && !showResult) {
-        //     setDisableQuizOptions(true)
-        //     setTimerFlag(false)
-        //     ModalState.current(true);
-        // }
         return false;
       }
       setTimeLeft(timeLeft - 1);
@@ -239,24 +234,8 @@ const BackgroundVideo = ({route, navigation}) => {
                   }
                 }
               }, 3000);
-
-              //  setShowResult(true)
-              // if (userElimante.current === false) {
-              //     setTimeout(() => {
-              //         ModalState.current(true);
-              //     }, 3000);
-              // }
-
-              //  navigation.navigate("WrongAnswer", { Tans: ans })
             }
           }
-          // if (question[question.length - 1].id === question[questionIncrement]?.id) {
-          //     CheckResult()
-          // }
-          // else {
-          //     let inc = questionIncrement + 1;
-          //     setQuestionIncrement(inc)
-          // }
 
           setActivity(false);
           setSelected(null);
@@ -270,10 +249,9 @@ const BackgroundVideo = ({route, navigation}) => {
 
   const onPressOption = (sel, ans, ansId) => {
     setDisableQuizOptions(true);
-    //  setActivity(true)
-    // setAnswerId(ansId)
+
     answerId.current = ansId;
-    // setSelectedAns(ans)
+
     selectedAns.current = ans;
     setSelected(sel);
   };
@@ -289,9 +267,7 @@ const BackgroundVideo = ({route, navigation}) => {
     LifeLineModalState.current(false);
     ModalState.current(true);
   };
-  // useEffect(() => {
-  //     // action on update of movies
-  // }, [answerId]);
+
   useEffect(async () => {
     console.log('uri', uri);
     socket.on('sendHideQuestion', msg => {
@@ -299,7 +275,8 @@ const BackgroundVideo = ({route, navigation}) => {
       setGameShowCheck(false);
     });
     socket.on('sendHideAnswer', msg => {
-      console.log(msg);
+      //alert(msg);
+      console.log({Hideanswer: msg});
     });
     socket.on('sendEndShow', msg => {
       console.log('msg', msg);
@@ -352,21 +329,9 @@ const BackgroundVideo = ({route, navigation}) => {
       winnerModal.current(false);
     });
   }, []);
-  // if (nextQuestion) {
-  //     setTimer(20)
-  //     setGameShowCheck(true)
-  //     let inc = questionIncrement + 1;
-  //     setQuestionIncrement(inc)
-  //     setNextQuestion(!nextQuestion)
-
-  // }
 
   return (
     <View style={{backgroundColor: 'black'}}>
-      {/* <BackgroundRound height={1} />
-            <View style={{ height: 20 }} />
-            <Header back={true} /> */}
-
       <Wrapper>
         <View style={styles.gradientView}>
           {liveStream ? (
@@ -374,7 +339,7 @@ const BackgroundVideo = ({route, navigation}) => {
               // key={keyS}
               source={{
                 // uri: uri,
-                uri: 'https://stream.mux.com/00BxefBTB1vqcrjK2u01a4PbY9IBO9Uuoi5K82I5MuO9k.m3u8',
+                uri: 'https://c75a7e79204e539d.mediapackage.us-east-1.amazonaws.com/out/v1/c09d0b5beca54ffcb2e4d920b465d589/index.m3u8',
               }}
               // onReadyForDisplay={readyToDisplay}
               hls={true}
@@ -393,12 +358,7 @@ const BackgroundVideo = ({route, navigation}) => {
           ) : (
             <ActivityIndicator size="large" color={'#ffffff'} top={300} />
           )}
-          {/* <PlayerView
-                style={styles.backgroundVideo}
-                ref={(e) => {
-                    setPlayer(e);
-                }}
-            /> */}
+
           {activityScreen ? (
             <ActivityIndicator size="large" color={'black'} top={300} />
           ) : (
@@ -461,8 +421,7 @@ const BackgroundVideo = ({route, navigation}) => {
                               ?.question
                           }
                         </Label>
-                        {/* </View> */}
-                        {/* </LinearGradient> */}
+
                         <EliminateQuizResult
                           options={
                             questionRef.current[questionIncrement.current]
@@ -513,15 +472,12 @@ const BackgroundVideo = ({route, navigation}) => {
                               ?.question
                           }
                         </Label>
-                        {/* </View> */}
-                        {/* </LinearGradient> */}
+
                         <EliminateQuizOptions
                           options={
                             questionRef.current[questionIncrement.current]
                               ?.answer
                           }
-                          //  onPressDone={onPressDone}
-                          //  activity={activity}
                           optionSelected={selected}
                           onPressOption={onPressOption}
                           disableOption={true}
@@ -557,8 +513,7 @@ const BackgroundVideo = ({route, navigation}) => {
                               ?.question
                           }
                         </Label>
-                        {/* </View> */}
-                        {/* </LinearGradient> */}
+
                         <QuizResult
                           options={
                             questionRef.current[questionIncrement.current]
@@ -571,9 +526,6 @@ const BackgroundVideo = ({route, navigation}) => {
                       </View>
                     ) : (
                       <View style={styles.quizView}>
-                        {/* <Label primary font={26} bold dark style={{ color: "#FFFF13", }}>
-                                                    {timeLeft <= 0 ? "Time's Up" : timeLeft}
-                                                </Label> */}
                         <View
                           style={{
                             width: '100%',

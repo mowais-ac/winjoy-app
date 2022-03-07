@@ -57,6 +57,9 @@ const ProductDetail = ({props, navigation, route}) => {
     console.log(number, type); // 1, + or -
   };
   const SaveIdInfo = async () => {
+    return alert(
+      'Thank you for your interest. Shopping experience is coming soon.',
+    );
     console.log(counterMain, count);
     setActivity(true);
     var postData = JSON.stringify({

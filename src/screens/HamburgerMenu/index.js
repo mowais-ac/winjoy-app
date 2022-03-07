@@ -13,7 +13,6 @@ import {
 } from 'react-native';
 import Label from '../../Components/Label';
 const {width, height} = Dimensions.get('window');
-
 import {
   widthPercentageToDP,
   heightPercentageToDP,
@@ -21,34 +20,23 @@ import {
   widthConverter,
 } from '../../Components/Helpers/Responsive';
 import Header from '../../Components/Header';
-import {Avatar} from 'react-native-elements';
-import EncryptedStorage from 'react-native-encrypted-storage';
-import Config from 'react-native-config';
-import axios from 'axios';
 import ProfilePicture from '../../Components/ProfilePicture';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import Feather from 'react-native-vector-icons/Feather';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import LongButton from '../../Components/LongButton';
 import {AuthContext} from '../../Components/context';
-import I18n from 'react-native-i18n';
 import {RFValue} from 'react-native-responsive-fontsize';
 import {useTranslation} from 'react-i18next';
-import RNRestart from 'react-native-restart';
 import {WjBackground} from '../../Components';
 import SelectLanguageModal from '../../Components/SelectLanguageModal';
 import SelectCurrencyModal from '../../Components/SelectCurrencyModal';
-import {connect, useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
+import Info_btn from '../../Components/Info';
+
 const index = ({props, navigation}) => {
+  const ModalStateInfo = useRef();
   const userData = useSelector(state => state.app.userData);
   const {t, i18n} = useTranslation();
   const [headerValue, setHeaderValue] = useState(0);
   const ModalStateLanguage = useRef();
   const ModalStateCurrency = useRef();
-  const [friendData, setFriendData] = useState([]);
   const {signOut} = React.useContext(AuthContext);
 
   let data2 = [
@@ -80,35 +68,13 @@ const index = ({props, navigation}) => {
       name: t('view_profile'),
       icon: require('../../assets/imgs/humburgerIcons/viewProfile.png'),
     },
-    {
-      name: t('friends'),
-      icon: require('../../assets/imgs/humburgerIcons/friends.png'),
-    },
+
     {
       name: t('logout'),
       icon: require('../../assets/imgs/humburgerIcons/logout.png'),
     },
   ];
-  const MyFriends = async () => {
-    const Token = await EncryptedStorage.getItem('Token');
-    const requestOptions = {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-        Accept: 'application/json',
-        Authorization: `Bearer ${Token}`,
-      },
-    };
-    // alert(13123);
-    await axios
-      .get(`${Config.API_URL}/accepted-connections/list`, requestOptions)
-      .then(response => {
-        let res = response.data;
-        setFriendData(res.data[0]);
-      });
-  };
-  useEffect(() => {
-    MyFriends();
-  }, []);
+
   const OpenWhatsApp = () => {
     Linking.openURL('http://api.whatsapp.com/send?phone=971501235240');
   };
@@ -246,11 +212,6 @@ const index = ({props, navigation}) => {
                   }}>
                   <TouchableOpacity
                     onPress={() => {
-                      if (item.name === 'Friends') {
-                        navigation.navigate('Profile', {
-                          selected: 3,
-                        });
-                      }
                       if (item.name === 'Wallet') {
                         // navigation.navigate("BottomTabStack");
                         navigation.navigate('BottomTabStack', {
@@ -308,59 +269,10 @@ const index = ({props, navigation}) => {
               );
             }}
           />
-          {/* <View
-            style={{
-              height: 1,
-              width: width,
-              backgroundColor: "#E6DFEE",
-            }}
-          /> */}
-          <View style={{width: '95%', alignItems: 'center', marginTop: 10}}>
-            {/* <Text
-              style={[
-                styles.text,
-                {
-                  color: "#E7003F",
-                  height: heightPercentageToDP("5%"),
-                  width: "93%",
-                  fontSize: RFValue(16),
-                  fontFamily: 'Axiforma-SemiBold'
-                },
-              ]}
-            >
-              {t("setting")}
-            </Text> */}
-            {/* 
-            <View style={styles.rowView}>
 
-              <TouchableOpacity
-                onPress={() => { ModalStateLanguage.current(true) }}
-              >
-                <View style={styles.twoBtnView}>
-                  <Text style={[styles.text, { color: '#E9E3F0' }]}>
-                    Language:{' '}
-                    <Text style={styles.text}>
-                      {i18n.language.toUpperCase()}
-                    </Text>
-                  </Text>
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => { ModalStateCurrency.current(true) }}
-              >
-                <View style={styles.twoBtnView}>
-                  <Text style={[styles.text, { color: '#E9E3F0' }]}>
-                    Currency:{' '}
-                    <Text style={styles.text}>
-                      AED
-                    </Text>
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            </View> */}
+          <View style={{width: '95%', alignItems: 'center', marginTop: 10}}>
             <View
               style={{
-                // marginTop: height * 0.001,
                 height: 1,
                 width: width,
                 backgroundColor: '#E6DFEE',
@@ -371,42 +283,41 @@ const index = ({props, navigation}) => {
               style={{
                 flexDirection: 'row',
                 justifyContent: 'space-around',
-                width: '100%',
                 marginTop: height * 0.001,
               }}>
               <TouchableOpacity onPress={() => OpenInsta()}>
                 <Image
                   style={styles.bottomImage}
                   source={require('../../assets/imgs/humburgerIcons/insta.png')}
-                  resizeMode="center"
+                  resizeMode="contain"
                 />
               </TouchableOpacity>
               <TouchableOpacity onPress={() => OpenFB()}>
                 <Image
                   style={styles.bottomImage}
                   source={require('../../assets/imgs/humburgerIcons/faceBook.png')}
-                  resizeMode="center"
+                  resizeMode="contain"
                 />
               </TouchableOpacity>
               <TouchableOpacity onPress={() => OpenWhatsApp()}>
                 <Image
                   style={styles.bottomImage}
                   source={require('../../assets/imgs/humburgerIcons/whatsApp.png')}
-                  resizeMode="center"
+                  resizeMode="contain"
                 />
               </TouchableOpacity>
               <TouchableOpacity onPress={() => OpenTikTok()}>
                 <Image
                   style={styles.bottomImage}
                   source={require('../../assets/imgs/humburgerIcons/tiktok.png')}
-                  resizeMode="center"
+                  resizeMode="contain"
                 />
               </TouchableOpacity>
               <TouchableOpacity onPress={() => OpenSnapChat()}>
                 <Image
                   style={styles.bottomImage}
                   source={require('../../assets/imgs/humburgerIcons/snapChat.png')}
-                  resizeMode="center"
+                  resizeMode="contain"
                 />
               </TouchableOpacity>
             </View>
@@ -418,14 +329,17 @@ const index = ({props, navigation}) => {
                 backgroundColor: '#E6DFEE',
               }}
             />
+            <Info_btn ModalRef={ModalStateInfo} />
 
             <View
               style={{
-                justifyContent: 'space-around',
+                flexDirection: 'column',
+                justifyContent: 'space-evenly',
                 alignItems: 'center',
                 width: width,
                 height: height * 0.15,
-                marginTop: 5,
+                marginTop: 20,
+                marginBottom: 15,
               }}>
               <Text
                 style={[
@@ -442,14 +356,13 @@ const index = ({props, navigation}) => {
               </Text>
               <View
                 style={{
-                  width: width * 0.9,
-                  height: height * 0.058,
+                  width: width * 0.8,
+                  height: height * 0.059,
                   borderWidth: 1,
                   borderColor: '#E9E3F0',
-                  borderRadius: height * 0.07,
+                  borderRadius: height * 0.06,
                   flexDirection: 'row',
-                  justifyContent: 'center',
-                  marginTop: -10,
+                  marginTop: 16,
                 }}>
                 <TouchableOpacity
                   onPress={() => Linking.openURL(`tel:+971501235240`)}>
@@ -467,21 +380,25 @@ const index = ({props, navigation}) => {
                         styles.text,
                         {
                           color: '#420E92',
-                          fontSize: RFValue(16),
+                          fontSize: RFValue(14),
                           fontFamily: 'Axiforma-SemiBold',
                           textAlign: 'center',
                         },
                       ]}>
-                      Call Us
+                      FAQ's
                     </Text>
                   </View>
                 </TouchableOpacity>
+                {/* onPress={() => Linking.openURL('mailto:support@winjoy.ae')} */}
                 <TouchableOpacity
-                  onPress={() => Linking.openURL('mailto:support@winjoy.ae')}>
+                  onPress={() => {
+                    navigation.navigate('Contactus');
+                  }}>
                   <View
                     style={[
                       styles.bottomBtnView,
                       {
+                        //backgroundColor: '#E9E3F0',
                         borderTopRightRadius: height * 0.035,
                         borderBottomRightRadius: height * 0.035,
                       },
@@ -491,64 +408,47 @@ const index = ({props, navigation}) => {
                         styles.text,
                         {
                           color: '#420E92',
-                          fontSize: RFValue(16),
+                          fontSize: RFValue(14),
                           fontFamily: 'Axiforma-SemiBold',
                           textAlign: 'center',
                         },
                       ]}>
-                      Email Us
+                      Contact Us
                     </Text>
                   </View>
                 </TouchableOpacity>
               </View>
-            </View>
-
-            <View
-              style={{
-                dispaly: 'flex',
-                flexDirection: 'row',
-                flexWrap: 'wrap',
-                width: '100%',
-                marginBottom: 10,
-              }}>
               <TouchableOpacity
-                style={{
-                  width: '50%',
-                  paddingHorizontal: 10,
-                  paddingVertical: 3,
-                }}
-                onPress={() => navigation.navigate('UserAgreement')}>
-                <Text style={{color: '#420E92'}}>User Agreement</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={{
-                  width: '50%',
-                  paddingHorizontal: 10,
-                  paddingVertical: 3,
-                }}
-                onPress={() => navigation.navigate('TermsAndConditions')}>
-                <Text style={{color: '#420E92'}}>Terms and Conditions</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={{
-                  width: '50%',
-                  paddingHorizontal: 10,
-                  paddingVertical: 3,
-                }}
-                onPress={() => navigation.navigate('FAQS')}>
-                <Text style={{color: '#420E92'}}>FAQs</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={{
-                  width: '50%',
-                  paddingHorizontal: 10,
-                  paddingVertical: 3,
-                }}
-                onPress={() => navigation.navigate('PrivacyPolicy')}>
-                <Text style={{color: '#420E92'}}>Privacy Policy</Text>
+                onPress={() => {
+                  ModalStateInfo.current(true);
+                }}>
+                <View
+                  style={{
+                    backgroundColor: '#E9E3F0',
+                    width: width * 0.4,
+                    height: height * 0.059,
+                    borderWidth: 1,
+                    borderColor: '#E9E3F0',
+                    borderRadius: height * 0.06,
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    marginTop: 20,
+                  }}>
+                  <Text
+                    style={[
+                      styles.text,
+                      {
+                        marginTop: 10,
+                        color: '#420E92',
+                        fontSize: RFValue(14),
+                        fontFamily: 'Axiforma-SemiBold',
+                      },
+                    ]}>
+                    Legal
+                  </Text>
+                </View>
               </TouchableOpacity>
             </View>
-
             <SelectLanguageModal ModalRef={ModalStateLanguage} details />
             <SelectCurrencyModal ModalRef={ModalStateCurrency} details />
           </View>
@@ -658,7 +558,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   bottomImage: {
-    width: width * 0.2,
+    width: width * 0.18,
     height: height * 0.1,
     resizeMode: 'contain',
   },
@@ -678,7 +578,7 @@ const styles = StyleSheet.create({
     borderRadius: height * 0.06,
   },
   bottomBtnView: {
-    width: width * 0.45,
+    width: width * 0.4,
     height: height * 0.058,
     justifyContent: 'center',
   },

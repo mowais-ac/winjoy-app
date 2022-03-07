@@ -5,8 +5,6 @@ import Label from '../Label';
 import LinearGradient from 'react-native-linear-gradient';
 import {heightConverter, widthPercentageToDP} from '../Helpers/Responsive';
 import LoaderImage from '../LoaderImage';
-import Config from 'react-native-config';
-import ProgressCircle from 'react-native-progress-circle';
 import {RFValue} from 'react-native-responsive-fontsize';
 import {FormatNumber} from '../../Constants/Functions';
 const {width, height} = Dimensions.get('window');
@@ -24,7 +22,6 @@ function TrendingCards({
       <View style={[{height: height * 0.31}, mainViewStyle]}>
         <LoaderImage
           source={{
-            // uri: ImgUrl.replace("http://", "https://"),
             uri: imageUrl,
           }}
           style={imageStyle}

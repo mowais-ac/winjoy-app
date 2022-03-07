@@ -7,7 +7,8 @@ import BuyLife from '../screens/BuyLife';
 import Orders from '../screens/MyOrders/Orders';
 import LeaderBoard from '../screens/LeaderBoard';
 import RefferAndEarn from '../screens/RefferAndEarn';
-
+import Contactus from '../screens/Contactus/Contactus';
+import Contactsuccess from '../screens/Contactus/Contactsuccess';
 import PrivacyPolicy from '../screens/PrivacyPolicy';
 import UserAgreement from '../screens/UserAgreement';
 import TermsAndConditions from '../screens/TermsAndConditions';
@@ -18,6 +19,8 @@ export default index = () => (
     screenOptions={{
       headerShown: false,
     }}>
+    <Stack.Screen name="Contactsuccess" component={Contactsuccess} />
+    <Stack.Screen name="Contactus" component={Contactus} />
     <Stack.Screen name="HamburgerMenu" component={HamburgerMenu} />
     <Stack.Screen name="Profile" component={Profile} />
     <Stack.Screen name="EditProfile" component={EditProfile} />
@@ -25,7 +28,6 @@ export default index = () => (
     <Stack.Screen name="Orders" component={Orders} />
     <Stack.Screen name="LeaderBoard" component={LeaderBoard} />
     <Stack.Screen name="RefferAndEarn" component={RefferAndEarn} />
-
     <Stack.Screen name="PrivacyPolicy" component={PrivacyPolicy} />
     <Stack.Screen name="UserAgreement" component={UserAgreement} />
     <Stack.Screen name="TermsAndConditions" component={TermsAndConditions} />

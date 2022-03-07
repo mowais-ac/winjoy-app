@@ -1,17 +1,34 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {View, Image, Dimensions, TouchableOpacity, Text} from 'react-native';
 import styles from './Styles';
-import Label from '../Label';
 import LinearGradient from 'react-native-linear-gradient';
-import {heightConverter, widthPercentageToDP} from '../Helpers/Responsive';
-import LoaderImage from '../LoaderImage';
-import Config from 'react-native-config';
-import ProgressCircle from 'react-native-progress-circle';
 import {RFValue} from 'react-native-responsive-fontsize';
 const {width, height} = Dimensions.get('window');
-function FanJoyCard({style, onPress, name, fans, imageUrl}) {
+import {useNavigation} from '@react-navigation/native';
+
+function FanJoyCard({style, id, name, fans, imageUrl}) {
+  function nFormatter(num) {
+    if (num >= 1000000000) {
+      return (num / 1000000000).toFixed(1).replace(/\.0$/, '') + 'G';
+    }
+    if (num >= 1000000) {
+      return (num / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+    }
+    if (num >= 1000) {
+      return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
+    }
+    return num;
+  }
+
+  //console.log({thousands: formatCash(100000)});
+  const navigation = useNavigation();
+  const onPressCard = () => {
+    navigation.navigate('CreatorsPage', {
+      id: id,
+    });
+  };
   return (
-    <TouchableOpacity onPress={onPress} style={[{width: 180}, style]}>
+    <TouchableOpacity onPress={onPressCard} style={[{width: 180}, style]}>
       <View>
         <Image
           style={[styles.bgImage, style]}
@@ -36,7 +53,7 @@ function FanJoyCard({style, onPress, name, fans, imageUrl}) {
               fontFamily: 'Axiforma-Regular',
               fontSize: RFValue(11),
             }}>
-            {fans} Fans
+            {nFormatter(fans)} Fans
           </Text>
         </LinearGradient>
       </View>

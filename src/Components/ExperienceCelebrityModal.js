@@ -140,7 +140,7 @@ const ExperienceCelebrityModal = props => {
                     uri: props?.experienceDetail?.experience?.thumbnail,
                   }}
                 />
-                <View style={{marginLeft: 20}}>
+                <View style={{marginRight: 20}}>
                   <Text
                     style={{
                       color: '#0B2142',
@@ -179,7 +179,6 @@ const ExperienceCelebrityModal = props => {
                 <Avatar
                   rounded
                   size={75}
-                  // title="MD"
                   source={{
                     uri: props?.celebrityData?.profile_image,
                   }}
@@ -276,6 +275,7 @@ const ExperienceCelebrityModal = props => {
                     width: width * 0.9,
                     borderRadius: 10,
                     color: '#000000',
+                    textAlignVertical: 'top',
                   }}
                   onChangeText={text => setInstructions(text)}
                   keyboardType="default"
@@ -309,6 +309,9 @@ const ExperienceCelebrityModal = props => {
             <View style={styles.ModalBody}>
               <TouchableOpacity
                 onPress={() => {
+                  return alert(
+                    'Thank you for your interest. Shopping experience is coming soon.',
+                  );
                   PayModalState.current(true);
                 }}
                 disabled={activity}

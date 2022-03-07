@@ -65,7 +65,7 @@ const index = ({props, navigation}) => {
       dispatch(TriviaJoyAPI());
     });
     console.log('userData', userData);
-    console.log('triviaJoyData', triviaJoyData.banners);
+    console.log('triviaJoyData', triviaJoyData?.banners);
     var date = new Date().toLocaleString();
     console.log('daaate', date);
     console.log(
@@ -77,22 +77,38 @@ const index = ({props, navigation}) => {
     console.log('time', time);
   }, []);
 
-  const LetBegin = () => {
-    dispatch2(CheckGameEnterStatus());
-    console.log('gameEnterStatus', gameEnterStatus);
-    if (gameEnterStatus.status === 'success') {
-      if (gameEnterStatus.message === 'Welcome to Live Game Show') {
-        navigation.navigate('GameStack', {
-          screen: 'Quiz',
-          params: {
-            uri: triviaJoyData?.on_going_gameshow?.live_stream?.key,
-          },
-        });
+  const LetBegin = async () => {
+    const Token = await EncryptedStorage.getItem('Token');
+    const result = await fetch(`${Config.API_URL}/joinGameshow`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        Accept: 'application/json',
+        Authorization: `Bearer ${Token}`,
+      },
+    });
+    const json = await result.json();
+    {
+      console.log({jsondata: json});
+    }
+    if (json) {
+      // alert(json.status);
+      if (json.status === 'success') {
+        if (json.message === 'Welcome to Live Game Show') {
+          navigation.navigate('GameStack', {
+            screen: 'Quiz',
+            params: {
+              uri: triviaJoyData?.on_going_gameshow?.live_stream?.key,
+            },
+          });
+        } else {
+          alert('game not started yet!');
+        }
       } else {
-        alert('game not started yet!');
+        alert('Something went wrong');
       }
     } else {
-      alert('game not started yet!');
+      console.log('Unable to fetch!');
     }
   };
 

@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {
+  Share,
   Image,
   SafeAreaView,
   View,
@@ -104,6 +105,28 @@ const index = ({route, navigation}) => {
       `https://winjoy.ae/invite/token?${livePlans?.refer_code}`,
     );
   };
+  const link = 'https://winjoy.ae/invite/token?${livePlans?.refer_code}';
+  //Share btn
+  const onShare = async () => {
+    try {
+      const result = await Share.share({
+        title: 'Refferal link',
+        message: link,
+        url: 'https://winjoy.ae/invite/token?${livePlans?.refer_code}',
+      });
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          // shared with activity type of result.activityType
+        } else {
+          // shared
+        }
+      } else if (result.action === Share.dismissedAction) {
+        // dismissed
+      }
+    } catch (error) {
+      alert(error.message);
+    }
+  };
   const onPressRefTab = (index, item) => {
     li = [];
     reff = [];
@@ -123,23 +146,12 @@ const index = ({route, navigation}) => {
     }
   };
   const SettingName = (name, index) => {
-    // if (name === "" || name === undefined || name === null) {
-    //   li[index].status = true;
-    // } else {
-    //   li[index].status = false
-    // }
     reff[index].name = name;
   };
   const SettingNumber = (number, index) => {
     reff[index].phone_no = number;
   };
   const SettingCountryCode = (text, index) => {
-    // if (name === "" || name === undefined || name === null) {
-    //   li[index].status = true;
-    // } else {
-    //   li[index].status = false
-    // }
-
     reff[index].countrycode = text;
     console.log('reff', reff);
     setUpdateData(!updateData);
@@ -197,37 +209,6 @@ const index = ({route, navigation}) => {
 
       PostData(postData);
     }
-
-    // if (dataCheck === true) {
-    //   setUpdateData(!updateData)
-    // }
-    // else {
-    //   var postData = "";
-    //   postData = {
-    //     "referrals": reff
-    //   };
-    //   PostData(postData)
-
-    // if (selected === 4) {
-    //   referrals.push({
-    //     name: nameRef1,
-    //     phone_no: numberRef1,
-    //   });
-    // }
-    // else if (selected === 5) {
-    //   var postData = "";
-    //   postData = {
-    //     "referrals": reff
-    //   };
-    //   PostData(postData)
-    // }
-    // else if (selected === 6) {
-    //   var postData = "";
-    //   postData = {
-    //     "referrals": reff
-    //   };
-    //   PostData(postData)
-    // }
   };
   const PostData = async postData => {
     setLoader(true);
@@ -248,7 +229,7 @@ const index = ({route, navigation}) => {
       .then(response => response.json())
       .then(async res => {
         setLoader(false);
-        console.log('res', res);
+        console.log('refer_res', res);
         if (res.status === 'success') {
           dispatch(getLiveShowPlans());
           totalLives.current = res?.lives;
@@ -387,7 +368,7 @@ const index = ({route, navigation}) => {
                       ]}>
                       https:/ /winjoy.ae/invite/token?aaasd
                     </Text>
-                    <TouchableOpacity onPress={copyToClipboard}>
+                    <TouchableOpacity onPress={onShare}>
                       <View
                         style={{
                           width: width * 0.2,
@@ -398,11 +379,11 @@ const index = ({route, navigation}) => {
                           alignItems: 'center',
                         }}>
                         <Text
-                          style={[
-                            styles.mainTextHeading,
-                            {color: '#420E92', fontFamily: 'Axiforma-Bold'},
-                          ]}>
-                          Copy
+                          style={{
+                            color: '#420E92',
+                            fontFamily: 'Axiforma-Bold',
+                          }}>
+                          Share
                         </Text>
                       </View>
                     </TouchableOpacity>

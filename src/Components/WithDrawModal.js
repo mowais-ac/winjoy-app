@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, {useState, useEffect, useRef} from 'react';
 import {
   View,
   StyleSheet,
@@ -9,27 +9,27 @@ import {
   Alert,
   TouchableOpacity,
   TextInput,
-  ActivityIndicator
-} from "react-native";
-import Label from "./Label";
-import LabelButton from "./LabelButton";
-import { Colors, Images } from "../Constants/Index";
-import LongButton from "./LongButton";
-import { useNavigation } from "@react-navigation/native";
-import EncryptedStorage from "react-native-encrypted-storage";
-import Config from "react-native-config";
-import { GetDate } from "../Constants/Functions";
-import ProfilePicture from "./ProfilePicture";
-import { RFValue } from "react-native-responsive-fontsize";
-import LinearGradient from "react-native-linear-gradient";
-import { heightConverter } from "./Helpers/Responsive";
-import { strings } from "../i18n";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
-import { useTranslation } from 'react-i18next';
-const { width, height } = Dimensions.get("window");
+  ActivityIndicator,
+} from 'react-native';
+import Label from './Label';
+import LabelButton from './LabelButton';
+import {Colors, Images} from '../Constants/Index';
+import LongButton from './LongButton';
+import {useNavigation} from '@react-navigation/native';
+import EncryptedStorage from 'react-native-encrypted-storage';
+import Config from 'react-native-config';
+import {GetDate} from '../Constants/Functions';
+import ProfilePicture from './ProfilePicture';
+import {RFValue} from 'react-native-responsive-fontsize';
+import LinearGradient from 'react-native-linear-gradient';
+import {heightConverter} from './Helpers/Responsive';
+import {strings} from '../i18n';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview';
+import {useTranslation} from 'react-i18next';
+const {width, height} = Dimensions.get('window');
 
-const WithDrawModal = (props) => {
-  const { t, i18n } = useTranslation();
+const WithDrawModal = props => {
+  const {t, i18n} = useTranslation();
   const [ModelState, setModelState] = useState({
     state: false,
     details: null,
@@ -44,84 +44,97 @@ const WithDrawModal = (props) => {
   });
 
   const HandleChange = (state, details = null, ForceSuccess = false) => {
-    setModelState({ state, details, ForceSuccess });
+    setModelState({state, details, ForceSuccess});
   };
 
   return (
-
     <Modal
       animationType="slide"
       transparent={true}
       visible={ModelState.state}
-      statusBarTranslucent={false} 
+      statusBarTranslucent={false}
       onRequestClose={() => {
         setModelState({
           ...ModelState,
           state: !ModelState.state,
         });
         if (props.onClose) props.onClose();
-      }}
-    >
-
+      }}>
       <TouchableWithoutFeedback
         onPress={() => {
-            setModelState({
-              ...ModelState,
-              state: !ModelState.state,
-            });
-            if (props.onClose) props.onClose();
-          
-        }}
-      >
+          setModelState({
+            ...ModelState,
+            state: !ModelState.state,
+          });
+          if (props.onClose) props.onClose();
+        }}>
         <View style={styles.MainView} />
       </TouchableWithoutFeedback>
 
       <View style={styles.ModalView}>
         <View style={styles.SmallBorder} />
         <KeyboardAwareScrollView keyboardDismissMode="interactive">
-          <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', marginTop: 20 }}>
-            <Label notAlign primary font={16} bold2 style={{ color: "#E7003F", }}>
-              {t("your_wallet")}
+          <View
+            style={{
+              width: '100%',
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginTop: 20,
+            }}>
+            <Label notAlign primary font={16} bold2 style={{color: '#E7003F'}}>
+              {t('your_wallet')}
             </Label>
 
-            <Label notAlign primary font={18} dark style={{ color: "#0B2142" }}>
-              <Label notAlign primary font={18} dark style={{ color: "#0B2142" }}>
+            <Label notAlign primary font={18} dark style={{color: '#0B2142'}}>
+              <Label notAlign primary font={18} dark style={{color: '#0B2142'}}>
                 AED
-              </Label>
-              {" "}{props.yourBalance}
+              </Label>{' '}
+              {props.yourBalance}
             </Label>
-            <View style={{ width: 20, backgroundColor: '#E7003F', height: 3, alignSelf: 'flex-start', marginTop: 8, marginLeft: 20 }} />
+            <View
+              style={{
+                width: 20,
+                backgroundColor: '#E7003F',
+                height: 3,
+                alignSelf: 'flex-start',
+                marginTop: 8,
+                marginLeft: 20,
+              }}
+            />
           </View>
           <View style={styles.Main1}>
-            <Label notAlign primary font={16} bold2 dark style={{ width: 50, color: "#000000", top: 17, }}>
+            <Label
+              notAlign
+              primary
+              font={16}
+              bold2
+              dark
+              style={{width: 50, color: '#000000', top: 17}}>
               AED
             </Label>
             <TextInput
               placeholderTextColor={Colors.DARK_LABEL}
-              keyboardType={"numeric"}
+              keyboardType={'numeric'}
               // onBlur={onBlur}
               onChangeText={props.AmmountHandleChange}
               style={styles.MarginLarge}
             />
-
           </View>
           <View style={styles.ModalBody}>
-
             <TouchableOpacity
-              onPress={() => { props.onPressWithDrawal() }}
+              onPress={() => {
+                props.onPressWithDrawal();
+              }}
               disabled={props?.activity}
               style={{
                 height: heightConverter(20),
                 width: width * 0.9,
-
                 justifyContent: 'center',
                 alignItems: 'center',
                 marginTop: height * 0.03,
                 marginLeft: width * 0.04,
-              }}
-            >
+              }}>
               <View
-
                 style={{
                   height: heightConverter(65),
                   width: width * 0.9,
@@ -129,24 +142,37 @@ const WithDrawModal = (props) => {
                   alignItems: 'center',
                   backgroundColor: '#420e92',
                   borderRadius: 40,
-                }}
-
-
-              >
-               {props.activity?(
-                 <ActivityIndicator size="large" color="#ffffff" />
-               ):(
-                  <Label primary font={16} bold style={{ color: "#ffffff" }}>
-                  REQUEST WITHDRAWAL
-                </Label>
-               )}
+                }}>
+                {props.activity ? (
+                  <ActivityIndicator size="large" color="#ffffff" />
+                ) : (
+                  <Label primary font={16} bold style={{color: '#ffffff'}}>
+                    REQUEST WITHDRAWAL
+                  </Label>
+                )}
               </View>
             </TouchableOpacity>
-            <Label primary notAlign headingtype="h3" bold2 font={16} style={{ marginTop: height * 0.06, color: '#000000', marginLeft: width * 0.04, }}>
+            <Label
+              primary
+              notAlign
+              headingtype="h3"
+              bold2
+              font={16}
+              style={{
+                marginTop: height * 0.06,
+                color: '#000000',
+                marginLeft: width * 0.04,
+              }}>
               Your remaining balance will be
             </Label>
-            <Label primary notAlign headingtype="h3" bold2 font={16} style={{ marginLeft: width * 0.04, }}>
-              AED {props.yourBalance-props.ammount}
+            <Label
+              primary
+              notAlign
+              headingtype="h3"
+              bold2
+              font={16}
+              style={{marginLeft: width * 0.04}}>
+              AED {props.yourBalance - props.ammount}
             </Label>
           </View>
         </KeyboardAwareScrollView>
@@ -161,7 +187,7 @@ const styles = StyleSheet.create({
   MainView: {
     height: height,
     width: width,
-    position: "absolute",
+    position: 'absolute',
     backgroundColor: Colors.BG_MUTED,
   },
   ModalView: {
@@ -175,12 +201,11 @@ const styles = StyleSheet.create({
     width: width * 0.35,
     height: 4,
     backgroundColor: Colors.SMALL_LINE,
-    alignSelf: "center",
+    alignSelf: 'center',
     marginTop: height * 0.02,
   },
   ModalHead: {
     marginTop: height * 0.01,
-
   },
 
   ModalBody: {
@@ -189,8 +214,8 @@ const styles = StyleSheet.create({
     height: height * 0.3,
   },
   CheckImage: {
-    alignSelf: "center",
-    resizeMode: "contain",
+    alignSelf: 'center',
+    resizeMode: 'contain',
     height: height * 0.1,
     marginTop: height * 0.09,
   },
@@ -203,7 +228,6 @@ const styles = StyleSheet.create({
     lineHeight: height * 0.03,
   },
 
-
   CloseBtn: {
     marginTop: height * 0.02,
   },
@@ -211,8 +235,8 @@ const styles = StyleSheet.create({
   ConView: {
     height: height * 0.1,
     backgroundColor: Colors.WHITE,
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     borderBottomColor: Colors.MUTED,
     borderBottomWidth: 1,
   },
@@ -221,7 +245,7 @@ const styles = StyleSheet.create({
   },
   ProfileInfo: {
     marginLeft: width * 0.02,
-    justifyContent: "center",
+    justifyContent: 'center',
   },
   ReqMsg: {
     marginTop: height * 0.04,
@@ -255,49 +279,48 @@ const styles = StyleSheet.create({
 
   ErrorTxt: {
     width: width * 0.9,
-    alignSelf: "center",
+    alignSelf: 'center',
   },
   ///new added
   Main1: {
     flexDirection: 'row',
-    justifyContent: "center",
+    justifyContent: 'center',
     width: width * 0.9,
     borderRadius: 55,
-    alignSelf: "center",
+    alignSelf: 'center',
     marginTop: height * 0.02,
     backgroundColor: '#f4edef',
     height: height * 0.08,
-
   },
   Main2: {
-    justifyContent: "center",
+    justifyContent: 'center',
     backgroundColor: Colors.WHITE,
     width: width * 0.9,
     borderRadius: 55,
-    alignSelf: "center",
+    alignSelf: 'center',
     marginTop: height * 0.011,
     borderWidth: 1,
-    borderColor: Colors.DARK_LABEL
+    borderColor: Colors.DARK_LABEL,
   },
   mView: {
-    justifyContent: "center",
+    justifyContent: 'center',
 
-    alignSelf: "center",
-
+    alignSelf: 'center',
   },
   MarginLargeNumber: {
     paddingLeft: width * 0.02,
     fontSize: RFValue(12),
     color: Colors.PRIMARY_LABEL,
-    letterSpacing: width * 0.03, width: width * 0.2,
+    letterSpacing: width * 0.03,
+    width: width * 0.2,
   },
   titleTxt: {
-    marginTop: height * 0.01
+    marginTop: height * 0.01,
   },
   MarginLarge: {
     width: width * 0.65,
     paddingLeft: width * 0.06,
     fontSize: RFValue(14),
-    color: Colors.DARK_LABEL
+    color: Colors.DARK_LABEL,
   },
 });

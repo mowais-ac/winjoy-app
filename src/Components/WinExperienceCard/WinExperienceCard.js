@@ -15,53 +15,55 @@ function WinExperienceCard({
   onPress,
   short_desc,
   thumbnail,
+  fun,
 }) {
   return (
-    <View
-      // onPress={onPress}
-      style={style}>
-      <View style={{paddingBottom: 10}}>
+    <TouchableOpacity onPress={fun}>
+      <View style={style}>
         <LoaderImage
           source={{
-            // uri: ImgUrl.replace("http://", "https://"),
             uri: thumbnail,
           }}
           style={imageStyle}
           resizeMode="cover"
         />
-        <View style={{paddingHorizontal: 10}}>
-          <View
+
+        <View style={{paddingTop: 10}}>
+          <Text
             style={{
-              paddingTop: 10,
+              color: '#000000',
+              fontFamily: 'Axiforma-SemiBold',
+              textAlign: 'center',
+              fontSize: RFValue(12),
+              allowFontScaling: false,
+              height: 29,
             }}>
-            <Text
-              style={{
-                color: '#000000',
-                fontFamily: 'Axiforma-SemiBold',
-                textAlign: 'left',
-                fontSize: RFValue(12),
-              }}>
-              {short_desc}
-            </Text>
-          </View>
+            {short_desc}
+          </Text>
+        </View>
+        <View
+          style={{
+            marginBottom: 5,
+            alignItems: 'center',
+          }}>
           <TouchableOpacity onPress={onPress}>
             <LinearGradient
               style={{
-                marginTop: height * 0.01,
                 paddingVertical: 6,
                 borderRadius: height * 0.05,
+                width: 130,
               }}
               start={{x: 0, y: 0}}
               end={{x: 1, y: 0}}
               colors={['#f8d7e8', '#c7dfe8']}>
-              <Text style={[styles.textHeading, {textAlign: 'center'}]}>
+              <Text numberOfLines={3} style={styles.textHeading}>
                 Find Products
               </Text>
             </LinearGradient>
           </TouchableOpacity>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 

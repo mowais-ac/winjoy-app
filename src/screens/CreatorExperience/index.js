@@ -95,10 +95,8 @@ const index = ({route, navigation}) => {
             <FlatList
               data={creatorExpList?.experience_celebrities}
               numColumns={2}
-              //style={{paddingLeft: 8}}
               renderItem={({item}) => (
                 <CreatorExperienceCard
-                  // onPress={() => navigation.navigate('CreatorExperience')}
                   imageUrl={item?.thumbnail}
                   title={item?.title}
                   description={item?.description}
@@ -106,11 +104,7 @@ const index = ({route, navigation}) => {
                 />
               )}
               ItemSeparatorComponent={() => <View style={{height: 10}} />}
-              //keyExtractor={(e) => e.id.toString()}
               contentContainerStyle={{}}
-              // refreshControl={
-              //   <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
-              // }
               keyExtractor={item => item.id}
             />
           </View>

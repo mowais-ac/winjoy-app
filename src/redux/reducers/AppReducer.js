@@ -65,10 +65,7 @@ export default (state = INITIAL_STATE, action) => {
     case types.GET_FANJOY_DATA:
       return {...state, fanjoyData: action.payload};
     case types.CREATOR_ID:
-      return {
-        ...state,
-        creatorId: action.creatorId,
-      };
+      return {...state,creatorId: action.creatorId,};
     case types.GALLERY_DATA:
       return {...state, galleryData: action.payload};
     case types.CREATOR_PAGE_DATA:

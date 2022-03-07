@@ -8,8 +8,7 @@ import {
   TouchableWithoutFeedback,
   FlatList,
   TouchableOpacity,
-  TextInput,
-  ScrollView,
+  Share,
   ActivityIndicator,
   KeyboardAvoidingView,
 } from 'react-native';
@@ -33,8 +32,8 @@ import Modals from '../Components/Modals';
 import BuyLifeCongrats from './BuyLifeCongrats';
 import Clipboard from '@react-native-clipboard/clipboard';
 import types from '../redux/types';
+//ReferralModal here
 const {width, height} = Dimensions.get('window');
-
 let li = [
   {
     sr: 1,
@@ -69,6 +68,28 @@ const RefferLifeLineModal = props => {
   const [totalRef, setTotalRef] = useState([]);
 
   const [loader, setLoader] = useState(false);
+  // share btn
+  const link = 'https://winjoy.ae/invite/token?${livePlans?.refer_code}';
+  const onShare = async () => {
+    try {
+      const result = await Share.share({
+        title: 'Refferal link',
+        message: link,
+        url: 'https://winjoy.ae/invite/token?${livePlans?.refer_code}',
+      });
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          // shared with activity type of result.activityType
+        } else {
+          // shared
+        }
+      } else if (result.action === Share.dismissedAction) {
+        // dismissed
+      }
+    } catch (error) {
+      alert(error.message);
+    }
+  };
 
   const ApproveRef = useRef();
   const DeclineRef = useRef();
@@ -103,7 +124,7 @@ const RefferLifeLineModal = props => {
     setId(idforFirst);
   }, []);
   const copyToClipboard = () => {
-    Clipboard.setString('https:/ /winjoy.ae/invite/token?aaasd');
+    Clipboard.setString('https://winjoy.ae/invite/token?aaasd');
   };
   const onPressRefTab = (index, item) => {
     li = [];
@@ -124,23 +145,12 @@ const RefferLifeLineModal = props => {
     }
   };
   const SettingName = (name, index) => {
-    // if (name === "" || name === undefined || name === null) {
-    //   li[index].status = true;
-    // } else {
-    //   li[index].status = false
-    // }
     reff[index].name = name;
   };
   const SettingNumber = (number, index) => {
     reff[index].phone_no = number;
   };
   const SettingCountryCode = (text, index) => {
-    // if (name === "" || name === undefined || name === null) {
-    //   li[index].status = true;
-    // } else {
-    //   li[index].status = false
-    // }
-
     reff[index].countrycode = text;
     console.log('reff', reff);
     setUpdateData(!updateData);
@@ -198,37 +208,6 @@ const RefferLifeLineModal = props => {
 
       PostData(postData);
     }
-
-    // if (dataCheck === true) {
-    //   setUpdateData(!updateData)
-    // }
-    // else {
-    //   var postData = "";
-    //   postData = {
-    //     "referrals": reff
-    //   };
-    //   PostData(postData)
-
-    // if (selected === 4) {
-    //   referrals.push({
-    //     name: nameRef1,
-    //     phone_no: numberRef1,
-    //   });
-    // }
-    // else if (selected === 5) {
-    //   var postData = "";
-    //   postData = {
-    //     "referrals": reff
-    //   };
-    //   PostData(postData)
-    // }
-    // else if (selected === 6) {
-    //   var postData = "";
-    //   postData = {
-    //     "referrals": reff
-    //   };
-    //   PostData(postData)
-    // }
   };
   const PostData = async postData => {
     setLoader(true);
@@ -321,7 +300,7 @@ const RefferLifeLineModal = props => {
                 ]}>
                 https:/ /winjoy.ae/invite/token?aaasd
               </Text>
-              <TouchableOpacity onPress={copyToClipboard}>
+              <TouchableOpacity onPress={onShare}>
                 <View
                   style={{
                     width: width * 0.2,
@@ -331,12 +310,8 @@ const RefferLifeLineModal = props => {
                     justifyContent: 'center',
                     alignItems: 'center',
                   }}>
-                  <Text
-                    style={[
-                      styles.mainTextHeading,
-                      {color: '#420E92', fontFamily: 'Axiforma-Bold'},
-                    ]}>
-                    Copy
+                  <Text style={{color: '#420E92', fontFamily: 'Axiforma-Bold'}}>
+                    Share
                   </Text>
                 </View>
               </TouchableOpacity>

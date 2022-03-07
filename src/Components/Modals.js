@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, {useState, useEffect, useRef} from 'react';
 import {
   View,
   StyleSheet,
@@ -7,19 +7,19 @@ import {
   Image,
   TouchableWithoutFeedback,
   Alert,
-} from "react-native";
-import Label from "./Label";
-import LabelButton from "./LabelButton";
-import { Colors, Images } from "../Constants/Index";
-import LongButton from "./LongButton";
-import { useNavigation } from "@react-navigation/native";
-import EncryptedStorage from "react-native-encrypted-storage";
-import Config from "react-native-config";
-import { GetDate } from "../Constants/Functions";
-import ProfilePicture from "./ProfilePicture";
-const { width, height } = Dimensions.get("window");
+} from 'react-native';
+import Label from './Label';
+import LabelButton from './LabelButton';
+import {Colors, Images} from '../Constants/Index';
+import LongButton from './LongButton';
+import {useNavigation} from '@react-navigation/native';
+import EncryptedStorage from 'react-native-encrypted-storage';
+import Config from 'react-native-config';
+import {GetDate} from '../Constants/Functions';
+import ProfilePicture from './ProfilePicture';
+const {width, height} = Dimensions.get('window');
 
-const Modals = (props) => {
+const Modals = props => {
   const [ModelState, setModelState] = useState({
     state: false,
     details: null,
@@ -34,7 +34,7 @@ const Modals = (props) => {
   });
 
   const HandleChange = (state, details = null, ForceSuccess = false) => {
-    setModelState({ state, details, ForceSuccess });
+    setModelState({state, details, ForceSuccess});
   };
   if (props.approve && ModelState.details && !ModelState.ForceSuccess) {
     const details = ModelState.details;
@@ -44,25 +44,25 @@ const Modals = (props) => {
         !ApproveRef.current.GetActivity() &&
         !DeclineRef.current.GetActivity()
       ) {
-        const Token = await EncryptedStorage.getItem("Token");
+        const Token = await EncryptedStorage.getItem('Token');
         const requestOptions = {
-          method: "GET",
+          method: 'GET',
           headers: {
-            "Content-Type": "multipart/form-data",
-            Accept: "application/json",
+            'Content-Type': 'multipart/form-data',
+            Accept: 'application/json',
             Authorization: `Bearer ${Token}`,
           },
         };
-        if (ibool === true) ApproveRef.current.SetActivity(true, "WHITE");
+        if (ibool === true) ApproveRef.current.SetActivity(true, 'WHITE');
         else DeclineRef.current.SetActivity(true);
         const URL =
           `${Config.API_URL}/requests/` +
-          (ibool === true ? "approved/" : "decline/") +
+          (ibool === true ? 'approved/' : 'decline/') +
           details.id;
         await fetch(URL, requestOptions)
-          .then(async (response) => response.json())
-          .then(async (res) => {
-            if (res.status && res.status.toLowerCase() === "success") {
+          .then(async response => response.json())
+          .then(async res => {
+            if (res.status && res.status.toLowerCase() === 'success') {
               if (ibool === true) {
                 // await fetch(
                 //   `${Config.API_URL}/user/current-balance`,
@@ -83,48 +83,48 @@ const Modals = (props) => {
                 //   });
                 await fetch(
                   `${Config.API_URL}/user/current-balance`,
-                  requestOptions
+                  requestOptions,
                 )
-                  .then(async (response) => response.json())
-                  .then(async (res) => {
-                    if (res.status && res.status.toLowerCase() === "success") {
+                  .then(async response => response.json())
+                  .then(async res => {
+                    if (res.status && res.status.toLowerCase() === 'success') {
                       let coins = {
-                        Balance: { "Gold Coins": res.data[0]["Gold Coins"] },
+                        Balance: {'Gold Coins': res.data[0]['Gold Coins']},
                         date: GetDate(),
                       };
                       await fetch(
                         `${Config.API_URL}/credit/balance`,
-                        requestOptions
+                        requestOptions,
                       )
-                        .then(async (response) => response.json())
-                        .then((res) => {
+                        .then(async response => response.json())
+                        .then(res => {
                           coins.Balance = {
                             ...coins.Balance,
-                            "Gold Credit": res.outstanding_balance,
+                            'Gold Credit': res.outstanding_balance,
                           };
                         });
                       await EncryptedStorage.setItem(
-                        "Coins",
-                        JSON.stringify(coins)
+                        'Coins',
+                        JSON.stringify(coins),
                       );
                     }
                   });
               }
-              setModelState({ state: false });
+              setModelState({state: false});
               if (props.onHandled) props.onHandled(ibool);
-            } else Alert.alert("Error", res.message);
+            } else Alert.alert('Error', res.message);
           })
-          .catch((e) => console.log(e));
+          .catch(e => console.log(e));
       }
     };
-    const GetCoins = (e) => {
+    const GetCoins = e => {
       switch (e) {
-        case "gold":
-          return ["Gold coins", +details.Coins["Gold Coins"]];
-        case "diamond":
-          return ["Diamond coins", +details.Coins["Diamond Coins"]];
+        case 'gold':
+          return ['Gold coins', +details.Coins['Gold Coins']];
+        case 'diamond':
+          return ['Diamond coins', +details.Coins['Diamond Coins']];
         default:
-          return ["Silver coins", +details.Coins["Silver Coins"]];
+          return ['Silver coins', +details.Coins['Silver Coins']];
       }
     };
     return (
@@ -139,8 +139,7 @@ const Modals = (props) => {
             state: !ModelState.state,
           });
           if (props.onClose) props.onClose();
-        }}
-      >
+        }}>
         <TouchableWithoutFeedback
           onPress={() => {
             if (
@@ -153,8 +152,7 @@ const Modals = (props) => {
               });
               if (props.onClose) props.onClose();
             }
-          }}
-        >
+          }}>
           <View style={styles.MainView} />
         </TouchableWithoutFeedback>
         <View style={styles.ModalView}>
@@ -185,18 +183,18 @@ const Modals = (props) => {
             <Label dark headingtype="h4" style={styles.ReqMsg}>
               <Label dark bold headingtype="h4">
                 {`${details.user_receiver.first_name} ${details.user_receiver.last_name}`}
-              </Label>{" "}
-              requested for{" "}
+              </Label>{' '}
+              requested for{' '}
               <Label dark bold headingtype="h4">
                 {parseInt(details.amount)} {details.coin_type}
-              </Label>{" "}
-              coins{" "}
+              </Label>{' '}
+              coins{' '}
             </Label>
             {GetCoins(details.coin_type)[1] - +details.amount > 0 ? (
               <Label dark style={styles.ConfirmMsg} headingtype="h5">
-                After sending, your remaining balance will be{" "}
+                After sending, your remaining balance will be{' '}
                 <Label primary bold headingtype="h5">
-                  {GetCoins(details.coin_type)[1] - details.amount}{" "}
+                  {GetCoins(details.coin_type)[1] - details.amount}{' '}
                   {details.coin_type} coins
                 </Label>
               </Label>
@@ -243,8 +241,7 @@ const Modals = (props) => {
             state: !ModelState.state,
           });
           if (props.onClose) props.onClose();
-        }}
-      >
+        }}>
         <TouchableWithoutFeedback
           onPress={() => {
             setModelState({
@@ -252,8 +249,7 @@ const Modals = (props) => {
               state: !ModelState.state,
             });
             if (props.onClose) props.onClose();
-          }}
-        >
+          }}>
           <View style={styles.MainView} />
         </TouchableWithoutFeedback>
         <View style={styles.ErrorView}>
@@ -268,8 +264,7 @@ const Modals = (props) => {
                 headingtype="h5"
                 bold2
                 style={styles.TextHeading}
-                notAlign
-              >
+                notAlign>
                 An error has occured in the form:
               </Label>
               <Label
@@ -289,7 +284,7 @@ const Modals = (props) => {
             </View>
             <LongButton
               text="Close"
-              style={[styles.ProfileBtnMargin, styles.ProfileBtn]}
+              style={[{marginTop: height * 0.06}, styles.ProfileBtn]}
               shadowless
               onPress={() => {
                 setModelState({
@@ -316,8 +311,7 @@ const Modals = (props) => {
             state: !ModelState.state,
           });
           if (props.onClose) props.onClose();
-        }}
-      >
+        }}>
         <TouchableWithoutFeedback
           onPress={() => {
             setModelState({
@@ -325,8 +319,7 @@ const Modals = (props) => {
               state: !ModelState.state,
             });
             if (props.onClose) props.onClose();
-          }}
-        >
+          }}>
           <View style={styles.MainView} />
         </TouchableWithoutFeedback>
         <View style={styles.ModalView}>
@@ -345,12 +338,12 @@ const Modals = (props) => {
               ]}
             />
             <Label primary headingtype="h2" bold2 style={styles.TextHeading}>
-              {props.Request ? "Request sent" : "Success"}
+              {props.Request ? 'Request sent' : 'Success'}
             </Label>
             <Label dark style={styles.RequestMsg}>
               {props.ticket
-                ? "Your ticket has been sent to support, please sit back. We usually respond within 24 hours."
-                : "Your request has been processed, if you have any query please contact support"}
+                ? 'Your ticket has been sent to support, please sit back. We usually respond within 24 hours.'
+                : 'Your request has been processed, if you have any query please contact support'}
             </Label>
             <LongButton
               text="Back to Home"
@@ -360,7 +353,7 @@ const Modals = (props) => {
               onPress={() => {
                 navigation.reset({
                   index: 0,
-                  routes: [{ name: "TabsStack" }],
+                  routes: [{name: 'TabsStack'}],
                 });
                 setModelState({
                   ...ModelState,
@@ -383,8 +376,7 @@ const Modals = (props) => {
                   navigation.goBack();
                 }
                 if (props.onClose) props.onClose();
-              }}
-            >
+              }}>
               Close
             </LabelButton>
           </View>
@@ -399,7 +391,7 @@ const styles = StyleSheet.create({
   MainView: {
     height: height,
     width: width,
-    position: "absolute",
+    position: 'absolute',
     backgroundColor: Colors.BG_MUTED,
   },
   ModalView: {
@@ -413,7 +405,7 @@ const styles = StyleSheet.create({
     width: width * 0.35,
     height: 4,
     backgroundColor: Colors.SMALL_LINE,
-    alignSelf: "center",
+    alignSelf: 'center',
     marginTop: height * 0.02,
   },
   ModalHead: {
@@ -426,8 +418,8 @@ const styles = StyleSheet.create({
     height: height * 0.65,
   },
   CheckImage: {
-    alignSelf: "center",
-    resizeMode: "contain",
+    alignSelf: 'center',
+    resizeMode: 'contain',
     height: height * 0.1,
     marginTop: height * 0.09,
   },
@@ -440,11 +432,11 @@ const styles = StyleSheet.create({
     lineHeight: height * 0.03,
   },
   ProfileBtnMargin: {
-    marginTop: height * 0.1,
+    marginTop: height * 0.09,
   },
   ProfileBtn: {
     borderWidth: 2,
-    borderColor: Colors.PRIMARY_LABEL,
+    borderColor: 'red',
     backgroundColor: Colors.INVISIBLE,
     width: width * 0.9,
   },
@@ -455,8 +447,8 @@ const styles = StyleSheet.create({
   ConView: {
     height: height * 0.1,
     backgroundColor: Colors.WHITE,
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     borderBottomColor: Colors.MUTED,
     borderBottomWidth: 1,
   },
@@ -465,7 +457,7 @@ const styles = StyleSheet.create({
   },
   ProfileInfo: {
     marginLeft: width * 0.02,
-    justifyContent: "center",
+    justifyContent: 'center',
   },
   ReqMsg: {
     marginTop: height * 0.04,
@@ -499,6 +491,6 @@ const styles = StyleSheet.create({
 
   ErrorTxt: {
     width: width * 0.9,
-    alignSelf: "center",
+    alignSelf: 'center',
   },
 });

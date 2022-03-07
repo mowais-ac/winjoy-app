@@ -8,32 +8,21 @@ import {
   RefreshControl,
   ActivityIndicator,
   FlatList,
-  ImageBackground,
   Image,
   Text,
 } from 'react-native';
 import {wait} from '../../Constants/Functions';
-import LoaderImage from '../../Components/LoaderImage';
 import Label from '../../Components/Label';
-import {Colors} from '../../Constants/Index';
-import {useFocusEffect} from '@react-navigation/native';
-import EncryptedStorage from 'react-native-encrypted-storage';
-import Config from 'react-native-config';
 const {width, height} = Dimensions.get('window');
-import axios from 'axios';
 import LinearGradient from 'react-native-linear-gradient';
 import HomeBottomList from '../../Components/HomeBottomList';
-import {
-  heightConverter,
-  heightPercentageToDP,
-  widthConverter,
-} from '../../Components/Helpers/Responsive';
+import {widthConverter} from '../../Components/Helpers/Responsive';
 import Header from '../../Components/Header';
 import {DealsJoyAPI} from '../../redux/actions';
-import {connect, useDispatch, useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import Video from 'react-native-video';
 import Carousel from 'react-native-snap-carousel';
-import {ButtonWithRightIcon, ClosingSoonCard} from '../../Components';
+import {ClosingSoonCard} from '../../Components';
 import HowItWorkModal from '../../Components/HowItWorkModal';
 import {RFValue} from 'react-native-responsive-fontsize';
 
@@ -49,7 +38,7 @@ const index = ({props, navigation}) => {
   useEffect(() => {
     dispatch(DealsJoyAPI());
     console.log('dealsJoyData', dealsJoyData);
-    console.log('banner', dealsJoyData.lower_banners);
+    console.log({lower_banners: dealsJoyData?.lower_banners});
   }, []);
   const onRefresh = React.useCallback(() => {
     dispatch(DealsJoyAPI());
@@ -183,7 +172,7 @@ const index = ({props, navigation}) => {
             showsHorizontalScrollIndicator={false}
             data={dealsJoyData?.products}
             renderItem={({item}) => (
-              <TouchableOpacity
+              <ClosingSoonCard
                 onPress={() => {
                   navigation.navigate('BottomTabStack', {
                     screen: 'PRODUCTS',
@@ -194,13 +183,13 @@ const index = ({props, navigation}) => {
                       },
                     },
                   });
-                }}>
-                <ClosingSoonCard props={props} index={item.index} item={item} />
-              </TouchableOpacity>
-              // , { data: item }
+                }}
+                props={props}
+                index={item.index}
+                item={item}
+              />
             )}
             keyExtractor={item => item.id}
-            //   ListEmptyComponent={this.RenderEmptyContainerOnGoing()}
           />
         </View>
 
@@ -235,9 +224,9 @@ const index = ({props, navigation}) => {
         <View style={{marginBottom: height * 0.01}} />
       </LinearGradient>
       <ScrollView horizontal={true}>
-        {dealsJoyData.lower_banners.map(element => {
+        {dealsJoyData?.lower_banners?.map((element, i) => {
           return (
-            <View key={element.key} style={{margin: 10, flexDirection: 'row'}}>
+            <View key={i} style={{margin: 10, flexDirection: 'row'}}>
               <Image
                 source={{uri: element.url}}
                 resizeMode={'cover'}
@@ -262,8 +251,6 @@ const index = ({props, navigation}) => {
         video={
           'https://winjoy-assets.s3.amazonaws.com/how_it_work/Mostafa_dealsjoy-wj.mp4'
         }
-        // id={idVideoAdd}
-        // onPressContinue={onPressContinue}
       />
     </ScrollView>
   );

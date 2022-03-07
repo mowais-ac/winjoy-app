@@ -25,5 +25,6 @@ export default StyleSheet.create({
     fontFamily: 'Axiforma-Bold',
     color: '#eb3d6e',
     fontSize: RFValue(11),
+    textAlign: 'center',
   },
 });

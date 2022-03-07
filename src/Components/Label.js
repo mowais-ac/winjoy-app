@@ -75,7 +75,7 @@ const Label = (props) => {
   ];
   return (
     <>
-      <Text style={TextStyle}>
+      <Text  numberofLines={3} style={TextStyle}>
         {text}
         {children}
       </Text>

@@ -1,59 +1,30 @@
 import React, {useState, useRef, useEffect} from 'react';
 import {
   View,
-  StyleSheet,
   Dimensions,
   ScrollView,
   TouchableOpacity,
   RefreshControl,
   ActivityIndicator,
   FlatList,
-  Animated,
   Text,
   Image,
   ImageBackground,
   SafeAreaView,
   Platform,
 } from 'react-native';
-import {connect, useDispatch, useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {FormatNumber, wait} from '../../Constants/Functions';
-import LoaderImage from '../../Components/LoaderImage';
-import Label from '../../Components/Label';
-import {Colors} from '../../Constants/Index';
-import {useFocusEffect} from '@react-navigation/native';
-import EncryptedStorage from 'react-native-encrypted-storage';
-import Config from 'react-native-config';
 import {SliderBox} from 'react-native-image-slider-box';
 const {width, height} = Dimensions.get('window');
-import axios from 'axios';
 import LinearGradient from 'react-native-linear-gradient';
-import HomeBottomList from '../../Components/HomeBottomList';
-import SafeArea from '../../Components/SafeArea';
-
-import {
-  heightConverter,
-  heightPercentageToDP,
-  widthConverter,
-} from '../../Components/Helpers/Responsive';
-import BackgroundRound from '../../Components/BackgroundRound';
 import Header from '../../Components/Header';
-
-import AvatarBtn from '../../Components/AvatarBtn';
 import {RFValue} from 'react-native-responsive-fontsize';
-import Entypo from 'react-native-vector-icons/Entypo';
 import styles from './styles';
-import {
-  HomeCard,
-  LuckyDrawCard,
-  TriviaAvatar,
-  ProductViewCard,
-  TriviaNightCard,
-  ButtonWithRightIcon,
-  TrendingCards,
-} from '../../Components';
+import {HomeCard, LuckyDrawCard, TriviaNightCard} from '../../Components';
 import dayjs from 'dayjs';
 import LongButton from '../../Components/LongButton';
-import {FanJoyCard, WjBackground, ClosingSoonCard} from '../../Components';
+import {FanJoyCard, ClosingSoonCard} from '../../Components';
 import Carousel from 'react-native-snap-carousel';
 import Video from 'react-native-video';
 import {
@@ -66,20 +37,15 @@ import {
 import socketIO from 'socket.io-client';
 import {useTranslation} from 'react-i18next';
 import HowItWorkModal from '../../Components/HowItWorkModal';
-import types from '../../redux/types';
+import NewVersionmodal from '../../Components/NewVersionmodal';
+import packageJson from '../../../package.json';
 const MYServer = 'https://node-winjoyserver-deploy.herokuapp.com/';
 
 const index = props => {
   const {t, i18n} = useTranslation();
-  // const scrollY = new Animated.Value(0)
-  // const diffClamp = Animated.diffClamp(scrollY, 0, 45)
-  // const translateY = diffClamp.interpolate({
-  //   inputRange: [0, 45],
-  //   outputRange: [0, -45]
-  // })
-
+  const ModelVersioncheck = useRef();
   const [headerValue, setHeaderValue] = useState(0);
-  const {Coins, navigation} = props;
+  const {navigation} = props;
   const [loader, setLoader] = useState(false);
   const [refreshing, setRefreshing] = React.useState(false);
   const [time, setTime] = useState('');
@@ -89,7 +55,6 @@ const index = props => {
   const gameEnterStatus = useSelector(state => state.app.gameEnterStatus);
   const totalLives = useSelector(state => state.app.totalLives);
   const loading = useSelector(state => state.app.loading);
-
   const [buffer, setBuffer] = useState(false);
   const [videoAction, setVideoAction] = useState(true);
   const [imgSlider, setImageSlider] = useState([]);
@@ -101,8 +66,8 @@ const index = props => {
   const dispatch6 = useDispatch();
   const socket = socketIO(MYServer);
   const AddModalState = useRef();
+
   const onRefresh = React.useCallback(() => {
-    // setBanners(null);
     setRefreshing(true);
     dispatch(getLandingScreen());
     var CurrentDate = new Date().toLocaleString();
@@ -128,10 +93,9 @@ const index = props => {
       'seconds',
     );
     setTime(duration);
-    console.log('LandingData', LandingData);
+
     let arr = [];
     LandingData?.host_sliders_data?.map(ele => {
-      console.log('ele', ele.url);
       arr.push(ele.url);
     });
     setImageSlider(arr);
@@ -150,20 +114,14 @@ const index = props => {
 
   const LetBegin = () => {
     dispatch2(CheckGameEnterStatus());
-    // console.log("gameEnterStatus",gameEnterStatus);
-    // navigation.navigate("GameStack", {
-    //   screen: "Quiz",
-    //   params: {
-    //     uri: LandingData?.gameShow?.live_stream?.key
-    //   }
-    // })
+
     if (gameEnterStatus.status === 'success') {
       NavigateToQuiz();
     } else {
       alert('game not started yet!');
     }
   };
-  const onPressCreator = id => {
+  /*   const onPressCreator = id => {
     // alert(id)
     dispatch3({
       type: types.CREATOR_ID,
@@ -171,7 +129,7 @@ const index = props => {
       //  user: res.data.data,
     });
     navigation.navigate('CreatorsPage');
-  };
+  }; */
   function _renderItem({item, index}) {
     if (item.type === 'image') {
       return (
@@ -194,11 +152,9 @@ const index = props => {
           }}>
           {item.url ? (
             <Video
-              source={{uri: item.url}} // Can be a URL or a local file.
-              // ref={(ref) => { this.player = ref }}  // Store reference
+              source={{uri: item.url}}
               resizeMode={'cover'}
               paused={index !== activeSlide}
-              //  onError={this.onVideoError}
               minLoadRetryCount={2}
               fullScreen={true}
               ignoreSilentSwitch={'obey'}
@@ -216,15 +172,6 @@ const index = props => {
   return (
     <SafeAreaView>
       <View>
-        {/* <Animated.View
-        style={{
-          transform: [
-            { translateY: translateY }
-          ],
-          elevation: 4,
-          zIndex: 100,
-        }}
-      > */}
         <Header
           style={{
             position: 'absolute',
@@ -236,7 +183,13 @@ const index = props => {
             top: Platform.OS === 'android' ? 0 : height * 0.038,
           }}
         />
-        {/* </Animated.View> */}
+        {LandingData && LandingData.updated_version ? (
+          <NewVersionmodal
+            updatedVersion={LandingData?.updated_version}
+            currentV={packageJson.version}
+            ModalRef={ModelVersioncheck}
+          />
+        ) : null}
         <ScrollView
           onScroll={e => {
             setHeaderValue(e.nativeEvent.contentOffset.y);
@@ -259,7 +212,6 @@ const index = props => {
                     loop={videoAction}
                     autoplay={videoAction}
                     autoplayInterval={3000}
-                    // ref={ref => this.carousel = ref}
                     data={LandingData?.banners}
                     sliderWidth={width}
                     itemWidth={width}
@@ -270,16 +222,6 @@ const index = props => {
                 )}
               </View>
               <View style={styles.yellowBtn}>
-                {/* <View style={{ borderWidth: 2, borderColor: "#fff", borderRadius: 45, }}>
-                  <AvatarBtn
-                    picture={userData?.profile_image}
-                    // id={userInfo?.id}
-                      name={(userData?.first_name?.slice(0, 1))?.toUpperCase()}
-                    size={50}
-                    font={28}
-                  />
-                </View> */}
-
                 <TouchableOpacity onPress={() => navigation.navigate('WALLET')}>
                   <View style={styles.secondHeaderMiddleView}>
                     <Text
@@ -332,10 +274,6 @@ const index = props => {
                     </Text>
                   </ImageBackground>
                 </TouchableOpacity>
-
-                {/* <TouchableOpacity onPress={() => navigation.navigate("WALLET")}>
-                <Entypo name="chevron-thin-right" size={22} color="#fff" style={{ marginTop: 6.5, marginRight: 6 }} />
-              </TouchableOpacity> */}
               </View>
             </LinearGradient>
 
@@ -382,12 +320,6 @@ const index = props => {
               showsHorizontalScrollIndicator={false}
               data={LandingData?.lowerBanner}
               renderItem={({item, index}) => (
-                // <TouchableOpacity
-                //   onPress={() =>
-                //    // navigation.navigate("SimpeStackScreen", { screen: "ProductDetail", params: item })
-                //    alert("hii")
-                //   }
-                // >
                 <TriviaNightCard
                   uri={item.url}
                   index={item.index}
@@ -402,40 +334,10 @@ const index = props => {
                         navigation.navigate('AllCreatorsPage');
                   }}
                 />
-                // </TouchableOpacity>
               )}
               keyExtractor={item => item.id}
-              //   ListEmptyComponent={this.RenderEmptyContainerOnGoing()}
             />
-            {/* <ScrollView
-              horizontal
-              style={{flex: 1, marginTop: 8, flexDirection: 'row'}}>
-              {LandingData?.host_sliders_data ? (
-                <>
-                  {LandingData?.host_sliders_data.map(hostSlider => {
-                    return (
-                      <View
-                        style={{
-                          width: width - 10,
-                          paddingLeft: 14,
-                          flexDirection: 'column',
-                        }}>
-                        <Image
-                          source={{uri: hostSlider.url}}
-                          resizeMode="stretch"
-                          style={{
-                            overflow: 'hidden',
-                            width: '100%',
-                            height: 150,
-                            borderRadius: 10,
-                          }}
-                        />
-                      </View>
-                    );
-                  })}
-                </>
-              ) : null}
-            </ScrollView> */}
+
             <View
               style={{
                 flex: 1,
@@ -472,10 +374,8 @@ const index = props => {
               style={{justifyContent: 'center', alignItems: 'center'}}></View>
             {LandingData?.home_middle_banners_data ? (
               <HomeCard
-                //onPress={() => navigation.navigate("GameStack")}
                 onPress={() => LetBegin()}
                 images={LandingData?.home_middle_banners_data}
-                //style={{ marginTop: 10, }}
                 time={time}
                 gameShow={LandingData?.gameShow}
                 upcoming_gameshow={LandingData?.upcoming_gameshow}
@@ -548,7 +448,6 @@ const index = props => {
                 />
               )}
               keyExtractor={item => item.id}
-              //   ListEmptyComponent={this.RenderEmptyContainerOnGoing()}
             />
             <View style={{paddingVertical: 12}}>
               <View style={styles.avatarBannerView}>
@@ -641,30 +540,25 @@ const index = props => {
               </View>
 
               <FlatList
+                showsVerticalScrollIndicator={false}
+                showsHorizontalScrollIndicator={false}
                 data={LandingData?.funJoy}
                 horizontal={true}
-                //   style={{ paddingLeft: 12 }}
                 renderItem={({item}) => (
                   <FanJoyCard
-                    onPress={() => {
-                      onPressCreator(item?.id);
-                    }}
                     style={{width: width / 3.45, height: height * 0.2}}
                     name={item?.first_name + ' ' + item.last_name}
                     imageUrl={item?.image}
                     fans={item.fans}
+                    id={item.id}
                   />
                 )}
                 ItemSeparatorComponent={() => {
                   return <View style={{width: width * 0.03}} />;
                 }}
-                //keyExtractor={(e) => e.id.toString()}
                 contentContainerStyle={{
                   marginTop: 10,
                 }}
-                // refreshControl={
-                //   <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
-                // }
                 keyExtractor={item => item.id}
               />
             </LinearGradient>
@@ -689,8 +583,6 @@ const index = props => {
               'https://winjoy-assets.s3.amazonaws.com/how_it_work/Mostafa_wj-intro.mp4'
             }
             cross={true}
-            // id={idVideoAdd}
-            // onPressContinue={onPressContinue}
           />
         </ScrollView>
       </View>

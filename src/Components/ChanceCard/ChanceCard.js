@@ -110,12 +110,14 @@ function ChanceCard({
             </Text>
           </Text>
           <Text
+           numberOfLines={3}
             style={{
               fontFamily: 'Axiforma-Bold',
               fontSize: 12,
               color: '#000000',
               lineHeight: 17,
               width: width * 0.6,
+             
             }}>
             {prize_title}
           </Text>

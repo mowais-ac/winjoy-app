@@ -183,6 +183,7 @@ export const GetGalleryData = id => {
 export const GetCreatorPageData = id => {
   try {
     return async dispatch => {
+      alert(id);
       const Token = await EncryptedStorage.getItem('Token');
       const result = await fetch(`${Config.API_URL}/celebrity/detail/${id}`, {
         method: 'GET',
@@ -598,6 +599,7 @@ export const CreatorExperienceList = id => {
           type: types.CREATORS_EXPERIENCE_LIST,
           payload: json,
         });
+        setLoading(false);
       } else {
         console.log('Unable to fetch!');
       }

@@ -3,10 +3,6 @@ import {View, Image, Dimensions, TouchableOpacity, Text} from 'react-native';
 import styles from './Styles';
 import Label from '../Label';
 import LinearGradient from 'react-native-linear-gradient';
-import {heightConverter, widthPercentageToDP} from '../Helpers/Responsive';
-import LoaderImage from '../LoaderImage';
-import Config from 'react-native-config';
-import ProgressCircle from 'react-native-progress-circle';
 import {RFValue} from 'react-native-responsive-fontsize';
 const {width, height} = Dimensions.get('window');
 function ExperienceCard({

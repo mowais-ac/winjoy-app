@@ -25,6 +25,7 @@ export default StyleSheet.create({
     fontFamily: 'Axiforma-Bold',
     color: '#eb3d6e',
     fontSize: RFValue(13),
+    fontWeight: '400',
     marginLeft: 20,
   },
   Margin: {

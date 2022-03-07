@@ -35,7 +35,7 @@ const GameShow = props => {
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'space-between',
-            paddingHorizontal: 15,
+            paddingHorizontal: 10,
             marginBottom: 6,
           }}>
           <Text
@@ -61,7 +61,7 @@ const GameShow = props => {
         </View>
         <FlatList
           horizontal={true}
-          style={{marginTop: 10}}
+          style={{marginTop: 5}}
           ItemSeparatorComponent={() => <View style={{width: 16}} />}
           scrollEnabled={true}
           contentContainerStyle={{
@@ -69,10 +69,10 @@ const GameShow = props => {
             alignSelf: 'flex-start',
           }}
           ListEmptyComponent={() => (
-            <View style={{}}>
+            <View>
               <Text
                 style={{
-                  paddingLeft: 15,
+                  paddingLeft: 10,
                   color: '#000000',
                   fontFamily: 'Axiforma-Regular',
                   fontSize: RFValue(13),
@@ -141,6 +141,19 @@ const GameShow = props => {
         contentContainerStyle={{
           width: '100%',
         }}
+        ListEmptyComponent={() => (
+          <View style={{}}>
+            <Text
+              style={{
+                marginTop: 15,
+                color: '#000000',
+                fontFamily: 'Axiforma-Regular',
+                fontSize: RFValue(13),
+              }}>
+              No PastWinners Found
+            </Text>
+          </View>
+        )}
         // horizontal={true}
         ListHeaderComponent={() => (
           <Text

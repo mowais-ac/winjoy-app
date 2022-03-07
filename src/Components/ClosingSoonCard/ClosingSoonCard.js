@@ -52,7 +52,7 @@ function ClosingSoonCard({item, onPress}) {
             WIN
           </Label>
         </Label>
-        <Label bold font={10} dark style={{color: '#000000', width: '95%'}}>
+        <Label bold font={10} dark style={{color: '#000000', width: '95%',height:38}}>
           {item?.prize_title}
         </Label>
         {/* <Label  bold font={11} dark style={{ color: "#000000", }}>

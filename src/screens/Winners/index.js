@@ -127,8 +127,8 @@ const index = ({route, navigation}) => {
               <>
                 {selected === 0 ? (
                   <GameShow
-                    lastWinners={gameShowWinners?.winners}
-                    pastWinners={gameShowWinners?.pastWinners}
+                   lastWinners={gameShowWinners?.winners}
+                  pastWinners={gameShowWinners?.pastWinners}
                     navigation={navigation}
                   />
                 ) : (
