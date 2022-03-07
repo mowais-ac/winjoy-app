@@ -64,46 +64,19 @@ const index = ({props, navigation}) => {
     socket.on('sendStartlivegameshow', msg => {
       dispatch(TriviaJoyAPI());
     });
-    console.log('userData', userData);
-    console.log('triviaJoyData', triviaJoyData?.banners);
-    var date = new Date().toLocaleString();
-    console.log('daaate', date);
-    console.log(
-      'start',
-      dayjs(triviaJoyData?.upcoming_gameshow?.start_date).format(
-        'MMMM DD, YYYY - HH:MM A',
-      ),
-    );
-    console.log('time', time);
   }, []);
 
-  const LetBegin = async () => {
-    const Token = await EncryptedStorage.getItem('Token');
-    const result = await fetch(`${Config.API_URL}/joinGameshow`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'multipart/form-data',
-        Accept: 'application/json',
-        Authorization: `Bearer ${Token}`,
-      },
-    });
-    const json = await result.json();
-    {
-      console.log({jsondata: json});
-    }
-    if (json) {
-      // alert(json.status);
-      if (json.status === 'success') {
-        if (json.message === 'Welcome to Live Game Show') {
-          navigation.navigate('GameStack', {
-            screen: 'Quiz',
-            params: {
-              uri: triviaJoyData?.on_going_gameshow?.live_stream?.key,
-            },
-          });
-        } else {
-          alert('game not started yet!');
-        }
+  const LetBegin = () => {
+    dispatch2(CheckGameEnterStatus());
+
+    if (gameEnterStatus.status === 'success') {
+      if (gameEnterStatus.message === 'Welcome to Live Game Show') {
+        navigation.navigate('GameStack', {
+          screen: 'Quiz',
+          params: {
+            uri: triviaJoyData?.on_going_gameshow?.live_stream?.key,
+          },
+        });
       } else {
         alert('Something went wrong');
       }
@@ -310,7 +283,7 @@ const index = ({props, navigation}) => {
         details
         cross={true}
         video={
-          'https://winjoy-assets.s3.amazonaws.com/how_it_work/m-triviajoy.mp4'
+          'https://winjoy-assets.s3.amazonaws.com/how_it_work/m-triviajoy(1).mp4'
         }
         // id={idVideoAdd}
         // onPressContinue={onPressContinue}

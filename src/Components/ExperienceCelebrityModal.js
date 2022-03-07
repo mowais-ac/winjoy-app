@@ -34,9 +34,6 @@ import PaymentModalExperience from '../Components/PaymentModalExperience';
 const {width, height} = Dimensions.get('window');
 
 const ExperienceCelebrityModal = props => {
-  console.log('props.experienceDetail', props);
-  console.log('props.celebrity_id', props.celebrity_id);
-  console.log('props.experience_id', props.experience_id);
   const ModalStateError = useRef();
   const [ModelState, setModelState] = useState({
     state: false,
@@ -79,7 +76,6 @@ const ExperienceCelebrityModal = props => {
       .then(async response => response.json())
       .then(async res => {
         setActivity(false);
-        console.log('resBuy', res);
 
         if (res?.order) {
           SucessModalState.current(true);
@@ -137,7 +133,7 @@ const ExperienceCelebrityModal = props => {
                     borderRadius: 10,
                   }}
                   source={{
-                    uri: props?.experienceDetail?.experience?.thumbnail,
+                    uri: props?.experienceDetail?.experience?.featured_image,
                   }}
                 />
                 <View style={{marginRight: 20}}>

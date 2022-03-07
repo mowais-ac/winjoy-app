@@ -9,7 +9,6 @@ import Config from 'react-native-config';
 import ProgressCircle from 'react-native-progress-circle';
 const {width, height} = Dimensions.get('window');
 function ClosingSoonCard({item, onPress}) {
-  console.log('item.stock', item.stock);
   let progress = item.updated_stocks
     ? (item?.updated_stocks / item?.stock) * 100
     : 0;

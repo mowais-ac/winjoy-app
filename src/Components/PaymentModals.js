@@ -91,14 +91,13 @@ const PaymentModals = props => {
   const PostCreditCardInfo = async () => {
     let expData = await AsyncStorage.getItem('expData');
     let ids = await AsyncStorage.getItem('ids');
-    // console.log("ids", ids);
+
     const expDataParse = JSON.parse(expData);
     const expData1 = [];
     const dat2 = JSON.parse(ids);
-    console.log('dat2', dat2);
+
     if (ids !== null) {
       dat2.forEach((element, index) => {
-        console.log('ele', element);
         expData1.push({
           product_id: element,
           is_from_experience: false,
@@ -110,15 +109,12 @@ const PaymentModals = props => {
         expData1.push(element);
       });
     }
-    console.log('expData1', expData1);
+
     let number = number1 + number2 + number3 + number4;
-    console.log('number ', number1 + number2 + number3 + number4);
-    console.log('cvc', cvc);
-    console.log('expiry', expiryDate);
+
     let month = expiryDate.split('/')[0];
     let year = expiryDate.split('/')[1];
-    console.log('month', month);
-    console.log('year', year);
+
     if (!number) {
       ModalErrorState.current(true, {
         heading: 'Error',
@@ -139,11 +135,8 @@ const PaymentModals = props => {
       const Token = await EncryptedStorage.getItem('Token');
       let dat = [];
       let postData = {};
-      expData1.map(element => {
-        console.log('element', element);
-      });
+      expData1.map(element => {});
 
-      console.log('expData1', expData1);
       postData = {
         products: expData1,
       };
@@ -164,7 +157,7 @@ const PaymentModals = props => {
       data.append('cvc', cvc);
       data.append('type', 'products');
       data.append('products', JSON.stringify(expData1));
-      console.log('data', data);
+
       const requestOptions = {
         method: 'POST',
         headers: {
@@ -178,7 +171,7 @@ const PaymentModals = props => {
         .then(async response => response.json())
         .then(async res => {
           setActivity(true);
-          console.log('res', res);
+
           if (res.status === 'success') {
             await AsyncStorage.removeItem('ids');
             await AsyncStorage.removeItem('expData');
@@ -240,7 +233,7 @@ const PaymentModals = props => {
                   <TextInput
                     placeholder="Name on Card"
                     placeholderTextColor={Colors.DARK_LABEL}
-                    keyboardType={'numeric'}
+                    keyboardType={'default'}
                     // onBlur={onBlur}
 
                     // onChangeText={HandleChange}

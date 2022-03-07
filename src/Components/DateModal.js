@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, {useState, useEffect, useRef} from 'react';
 import {
   View,
   StyleSheet,
@@ -6,23 +6,23 @@ import {
   Dimensions,
   TouchableWithoutFeedback,
   PermissionsAndroid,
-} from "react-native";
+} from 'react-native';
 
-import RNFetchBlob from "rn-fetch-blob";
+import RNFetchBlob from 'rn-fetch-blob';
 
-import { Colors } from "../Constants/Index";
-import Label from "./Label";
-import LabelButton from "./LabelButton";
-import LongButton from "./LongButton";
-import InputField from "./InputField";
-import DateTimePickerModal from "react-native-modal-datetime-picker";
-import { GetDate } from "../Constants/Functions";
-import EncryptedStorage from "react-native-encrypted-storage";
-import Config from "react-native-config";
+import {Colors} from '../Constants/Index';
+import Label from './Label';
+import LabelButton from './LabelButton';
+import LongButton from './LongButton';
+import InputField from './InputField';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import {GetDate} from '../Constants/Functions';
+import EncryptedStorage from 'react-native-encrypted-storage';
+import Config from 'react-native-config';
 
-const { width, height } = Dimensions.get("window");
+const {width, height} = Dimensions.get('window');
 
-const DateModal = (props) => {
+const DateModal = props => {
   const ButtonRef = useRef();
   const [ModelState, setModelState] = useState(false);
 
@@ -34,44 +34,44 @@ const DateModal = (props) => {
 
   const StartProps =
     EndDate !== null
-      ? { maximumDate: new Date(EndDate) }
-      : { maximumDate: new Date() };
+      ? {maximumDate: new Date(EndDate)}
+      : {maximumDate: new Date()};
 
-  const Min = StartDate !== null && { minimumDate: new Date(StartDate) };
+  const Min = StartDate !== null && {minimumDate: new Date(StartDate)};
   const EndProps = {
     ...Min,
     maximumDate: new Date(),
   };
 
-  const downloadFile = async (FILE_URL) => {
+  const downloadFile = async FILE_URL => {
     let date = new Date();
 
-    const { config, fs } = RNFetchBlob;
+    const {config, fs} = RNFetchBlob;
     let RootDir = fs.dirs.DownloadDir;
     let options = {
       fileCache: true,
       addAndroidDownloads: {
         path:
           RootDir +
-          "/AppRewards_Report_" +
+          '/AppRewards_Report_' +
           Math.floor(date.getTime() + date.getSeconds() / 2) +
-          ".pdf",
-        description: "downloading file...",
+          '.pdf',
+        description: 'downloading file...',
         notification: true,
         useDownloadManager: true,
       },
     };
-    const Token = await EncryptedStorage.getItem("Token");
+    const Token = await EncryptedStorage.getItem('Token');
 
     config(options)
-      .fetch("GET", FILE_URL, {
-        "Content-Type": "multipart/form-data",
-        Accept: "application/json",
+      .fetch('GET', FILE_URL, {
+        'Content-Type': 'multipart/form-data',
+        Accept: 'application/json',
         Authorization: `Bearer ${Token}`,
       })
-      .then((res) => {
+      .then(res => {
         ButtonRef.current.SetActivity(false);
-        alert("File Downloaded Successfully in Downloads folder.");
+        alert('File Downloaded Successfully in Downloads folder.');
       });
   };
 
@@ -79,32 +79,31 @@ const DateModal = (props) => {
     const fileUrl = `${
       Config.API_URL
     }/user/credit/statement/download/?from_date=${new Date(
-      StartDate
+      StartDate,
     ).toISOString()}&to_date=${new Date(EndDate).toISOString()}`;
 
-    ButtonRef.current.SetActivity(true, "WHITE");
-    if (Platform.OS === "ios") {
+    ButtonRef.current.SetActivity(true, 'WHITE');
+    if (Platform.OS === 'ios') {
       downloadFile(fileUrl);
     } else {
       try {
         const granted = await PermissionsAndroid.request(
           PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
           {
-            title: "Storage Permission Required",
+            title: 'Storage Permission Required',
             message:
-              "Application needs access to your storage to download File",
-          }
+              'Application needs access to your storage to download File',
+          },
         );
         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
           // Start downloading
           downloadFile(fileUrl);
         } else {
           // If permission denied then show alert
-          Alert.alert("Error", "Storage Permission Not Granted");
+          Alert.alert('Error', 'Storage Permission Not Granted');
         }
       } catch (err) {
         // To handle permission related exception
-        console.log("++++" + err);
       }
     }
   };
@@ -121,8 +120,7 @@ const DateModal = (props) => {
       statusBarTranslucent={false}
       onRequestClose={() => {
         setModelState(!ModelState);
-      }}
-    >
+      }}>
       <TouchableWithoutFeedback onPress={() => setModelState(!ModelState)}>
         <View style={styles.MainView} />
       </TouchableWithoutFeedback>
@@ -135,7 +133,7 @@ const DateModal = (props) => {
           <DateTimePickerModal
             isVisible={StartDatePicker}
             mode="date"
-            onConfirm={(e) => {
+            onConfirm={e => {
               setStartDate(e);
               setStartDatePicker(false);
             }}
@@ -145,7 +143,7 @@ const DateModal = (props) => {
           <DateTimePickerModal
             isVisible={EndDatePicker}
             mode="date"
-            onConfirm={(e) => {
+            onConfirm={e => {
               setEndDate(e);
               setEndDatePicker(false);
             }}
@@ -162,7 +160,7 @@ const DateModal = (props) => {
                 white
                 editable={false}
                 value={StartDate !== null && `${GetDate(StartDate)}`}
-                placeholder={"Select"}
+                placeholder={'Select'}
                 placeholderTextColor={Colors.DARK_MUTED}
               />
               <View style={styles.ChangeConView}>
@@ -186,7 +184,7 @@ const DateModal = (props) => {
                 white
                 editable={false}
                 value={EndDate !== null && `${GetDate(EndDate)}`}
-                placeholder={"Select"}
+                placeholder={'Select'}
                 placeholderTextColor={Colors.DARK_MUTED}
               />
               <View style={styles.ChangeConView}>
@@ -220,7 +218,7 @@ const styles = StyleSheet.create({
   MainView: {
     height: height,
     width: width,
-    position: "absolute",
+    position: 'absolute',
     backgroundColor: Colors.BG_MUTED,
   },
   ModalView: {
@@ -239,7 +237,7 @@ const styles = StyleSheet.create({
     width: width * 0.35,
     height: 4,
     backgroundColor: Colors.SMALL_LINE,
-    alignSelf: "center",
+    alignSelf: 'center',
     marginTop: height * 0.02,
   },
   ModalHead: {
@@ -249,15 +247,15 @@ const styles = StyleSheet.create({
   BtnView: {
     marginTop: height * 0.03,
     width: width * 0.9,
-    alignSelf: "center",
-    justifyContent: "center",
+    alignSelf: 'center',
+    justifyContent: 'center',
   },
   MarginDate: {
     width: width * 0.3,
   },
   DateVal: {
     width: width * 0.3,
-    textAlign: "right",
+    textAlign: 'right',
   },
   Touchable: {
     marginTop: height * 0.03,
@@ -275,13 +273,13 @@ const styles = StyleSheet.create({
   },
 
   ChangeConView: {
-    position: "absolute",
+    position: 'absolute',
     width: width * 0.2,
     marginLeft: width * 0.7,
     height: height * 0.07,
     zIndex: 3,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   ChangeCon: {
     zIndex: 4,

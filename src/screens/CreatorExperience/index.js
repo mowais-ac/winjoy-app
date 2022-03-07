@@ -44,7 +44,6 @@ const index = ({route, navigation}) => {
   const data = useSelector(state => state.app.creatorPageData);
   const creatorExpList = useSelector(state => state.app.creatorExpList);
   useEffect(() => {
-    console.log('creatorExpList', creatorExpList);
     dispatch(CreatorExperienceList(experience_id));
   }, []);
 
@@ -59,7 +58,7 @@ const index = ({route, navigation}) => {
           start={{x: 0, y: 0}}
           end={{x: 1, y: 0}}
           colors={['#f8d7e8', '#c7dfe8']}
-          style={{height: height}}>
+          style={{height: '100%'}}>
           <Image
             source={{uri: creatorExpList?.experience?.cover_photo}}
             style={styles.mainView}

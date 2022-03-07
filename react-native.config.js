@@ -1,8 +1,16 @@
 module.exports = {
-    project: {
-      ios: {},
-      android: {}, // grouped into "project"
+  dependencies: {
+    'react-native-video': {
+      platforms: {
+        android: {
+          sourceDir: '../node_modules/react-native-video/android-exoplayer',
+        },
+      },
     },
-    assets: ["./src/assets/fonts/"], // stays the same
-  };
-  
+  },
+  project: {
+    ios: {},
+    android: {}, // grouped into "project"
+  },
+  assets: ['./src/assets/fonts/'], // stays the same
+};

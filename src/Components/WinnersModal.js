@@ -88,16 +88,14 @@ const WinnersModal = props => {
   useEffect(() => {
     dispatch1(GameShowWinners());
     //   dispatch(getLiveShowPlans);
-    console.log('gameShowWinners', gameShowWinners);
+
     let li = [];
     let idforFirst;
     livePlans?.plan?.forEach(element => {
-      console.log('element', element);
       if (element.type === 'referral') {
         li.push(element);
 
         if (element.required_referrals === 1) {
-          console.log('element', element.id);
           idforFirst = element.id;
         }
       }

@@ -28,15 +28,21 @@ const ProductDetail = ({props, navigation, route}) => {
   const dispatch2 = useDispatch();
   const data = useSelector(state => state?.app?.expProductDetail);
   useEffect(() => {
-    console.log('exid', 'pid', experience_celebrity_id, product_id);
     dispatch(ExperienceProductDetal(experience_celebrity_id, product_id));
-    console.log('dataExp', data);
   }, []);
   let progress = data?.products?.updated_stocks
     ? (data?.products?.updated_stocks / data?.products?.stock) * 100
     : 0;
-
+  //
+  // function uniqBy(a, key) {
+  //     var seen = {};
+  //     return a?.filter(function (item) {
+  //         var k = key(item);
+  //         return seen?.hasOwnProperty(k) ? false : (seen[k] = true);
+  //     })
+  // }
   const SaveIdInfo = async () => {
+    // await EncryptedStorage.setItem("ids","");
     AsyncStorage.getItem('expData').then(favs => {
       favs = favs == null ? [] : JSON.parse(favs);
 
@@ -45,17 +51,19 @@ const ProductDetail = ({props, navigation, route}) => {
         product_id: product_id,
         is_from_experience: true,
       });
-      console.log('favs', favs);
+
       const ids = favs.map(o => o.product_id);
       const filtered = favs.filter(
         ({product_id}, index) => !ids.includes(product_id, index + 1),
       );
-
+      // dispatch2({
+      //     type: types.CART_COUNTER,
+      //     counter:uniqueArray?.length,
+      //   });
       return AsyncStorage.setItem('expData', JSON.stringify(filtered));
     });
 
     let dat = await AsyncStorage.getItem('expData');
-    console.log('dat', dat);
   };
 
   return (
@@ -102,7 +110,7 @@ const ProductDetail = ({props, navigation, route}) => {
           </Label>
         </View>
         <View style={styles.card2}>
-          {/*  <View
+          <View
             style={{
               flexDirection: 'row',
               justifyContent: 'space-between',
@@ -114,8 +122,8 @@ const ProductDetail = ({props, navigation, route}) => {
               {'AED '}
               {+data?.products?.price?.toLocaleString()}
             </Text>
-          </View> */}
-          {/* <View
+          </View>
+          <View
             style={{
               flexDirection: 'row',
               justifyContent: 'space-between',
@@ -124,21 +132,16 @@ const ProductDetail = ({props, navigation, route}) => {
             }}>
             <Text style={[styles.metaText, {fontWeight: 'bold'}]}>
               Buy a {data?.products?.title}
-              <Text style={[styles.text, {fontWeight: 'bold'}]}>
-                {' '}
-                {'AED '}
-                {+data?.products?.price?.toLocaleString()}
-                {' Gold Coin'}
-              </Text>
             </Text>
-            <Text style={styles.text}>Gold Coin</Text> 
-          </View> */}
+            <Text style={styles.text}>Gold Coin</Text>
+          </View>
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate('SimpeStackScreen', {
-                screen: 'Cart',
-              });
-              SaveIdInfo();
+              // navigation.navigate("SimpeStackScreen", {
+              //     screen: "Cart",
+              //   })]
+              // SaveIdInfo();
+              alert('Thankyou for your interest, this feature is comming soon');
             }}
             style={{
               height: heightConverter(55),
@@ -230,14 +233,14 @@ const styles = StyleSheet.create({
   card2: {
     width: width - 25,
     height: height * 0.15,
-    //backgroundColor: '#ffffff',
+    backgroundColor: '#ffffff',
     marginLeft: 10,
     borderRadius: 10,
     padding: 10,
     bottom: 0,
     left: 2,
     alignItems: 'center',
-    // elevation: 3,
+    elevation: 3,
     position: 'absolute',
     marginBottom: 20,
   },

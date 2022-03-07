@@ -49,24 +49,19 @@ const ProductDetail = ({props, navigation, route}) => {
     dispatch2(ProductDetails());
   }, [dispatch2]);
   useEffect(() => {
-    console.log('productId', productId);
     dispatch2(ProductDetails(productId));
   }, []);
   const onChange = (number, type) => {
     setCount(number);
-    console.log(number, type); // 1, + or -
   };
   const SaveIdInfo = async () => {
-    return alert(
-      'Thank you for your interest. Shopping experience is coming soon.',
-    );
-    console.log(counterMain, count);
     setActivity(true);
     var postData = JSON.stringify({
       is_from_experience: false,
-      product_id: productsDetails?.product?.luckydraw?.product_id,
+      product_id: productsDetails?.product?.luckydraw?.product?.id,
       count: count,
     });
+
     const Token = await EncryptedStorage.getItem('Token');
 
     const requestOptions = {
@@ -78,11 +73,10 @@ const ProductDetail = ({props, navigation, route}) => {
       },
       body: postData,
     };
-    console.log('requestOptions', requestOptions);
+
     await fetch(`${Config.API_URL}/add_to_cart`, requestOptions)
       .then(async response => response.json())
       .then(async res => {
-        console.log('res', res);
         if (res.status === 'success') {
           setActivity(false);
           SucessModalState.current(true);
@@ -92,7 +86,7 @@ const ProductDetail = ({props, navigation, route}) => {
           });
         } else {
           setActivity(false);
-          ModalStateError.current(true, {
+          ModalErrorState.current(true, {
             heading: 'Error',
             Error: res.message,
             array: res.errors ? Object.values(res.errors) : [],
@@ -101,7 +95,6 @@ const ProductDetail = ({props, navigation, route}) => {
         setActivity(false);
       })
       .catch(e => {
-        console.log('error', e);
         //  ButtonRef.current.SetActivity(false);
       });
   };
@@ -245,7 +238,10 @@ const ProductDetail = ({props, navigation, route}) => {
             <TouchableOpacity
               disabled={activity}
               onPress={() => {
-                SaveIdInfo();
+                // SaveIdInfo();
+                alert(
+                  'Thankyou for your interest, this feature is comming soon',
+                );
               }}>
               <LinearGradient
                 start={{x: 0, y: 0}}

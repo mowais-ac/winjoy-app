@@ -64,7 +64,6 @@ const index = ({props, navigation}) => {
       const body = JSONtoForm({
         w_amount: ammount,
       });
-      console.log('body', body);
       const requestOptions = {
         method: 'POST',
         headers: {
@@ -78,7 +77,6 @@ const index = ({props, navigation}) => {
       await fetch(`${Config.API_URL}/withdrawal`, requestOptions)
         .then(async response => response.json())
         .then(async res => {
-          console.log('resWithdraw', res);
           if (res.status === 'error') {
             ModalStateError.current(true, {
               heading: 'Error',
@@ -100,7 +98,6 @@ const index = ({props, navigation}) => {
           // }
         })
         .catch(e => {
-          console.log('error', e);
           //  ButtonRef.current.SetActivity(false);
         });
     }

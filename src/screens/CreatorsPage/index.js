@@ -56,7 +56,7 @@ const index = ({route, navigation}) => {
   const {id} = route.params;
   const [data, setdata] = useState([]);
   useEffect(() => {
-    _Api(id);
+    dispatch(GetCreatorPageData(creatorId));
   }, []);
   const _Api = id => {
     const check = async () => {
@@ -207,58 +207,35 @@ const index = ({route, navigation}) => {
                       flexDirection: 'row',
                       justifyContent: 'space-between',
 
-                      marginLeft: width * 0.05,
-                    }}>
-                    <View>
-                      <Text
-                        style={{
-                          fontFamily: 'Axiforma-Bold',
-                          color: '#eb3d6e',
-                          width: width * 0.9,
-                          textAlign: 'center',
-                        }}>
-                        Trending Products
-                      </Text>
-                    </View>
-                  </View>
+              <FlatList
+                data={data?.products}
+                horizontal={true}
+                ListEmptyComponent={() => (
+                  <Text style={{color: '#000000'}}>The list is empty</Text>
+                )}
+                renderItem={({item}) => (
+                  <TrendingCards
+                    // onPress={() => navigation.navigate("AllCreatorsPage")}
+                    onPress={() => {
+                      dispatch5(ProductDetails(item?.id));
 
-                  <FlatList
-                    showsVerticalScrollIndicator={false}
-                    showsHorizontalScrollIndicator={false}
-                    data={data?.products}
-                    horizontal={true}
-                    ListEmptyComponent={() => (
-                      <Text style={{color: '#000000'}}>The list is empty</Text>
-                    )}
-                    renderItem={({item}) => (
-                      <TrendingCards
-                        onPress={() => {
-                          dispatch5(ProductDetails(item.id));
-                          console.log('proDet', productsDetails);
-                          navigation.navigate('PRODUCTS', {
-                            screen: 'ProductDetail',
-                            params: {
-                              experienceId: item.celebrity_id,
-                              productId: item.id,
-                            },
-                          });
-                        }}
-                        title={item.title}
-                        imageUrl={item.image}
-                        price={item.price}
-                        style={{
-                          width: 165,
-                        }}
-                        imageStyle={{
-                          width: 150,
-                          height: height * 0.25,
-                          borderRadius: 15,
-                        }}
-                      />
-                    )}
-                    contentContainerStyle={{
-                      marginTop: 15,
-                      marginLeft: width * 0.03,
+                      navigation.navigate('PRODUCTS', {
+                        screen: 'ProductDetail',
+                        params: {
+                          productId: item?.id,
+                          experienceId: item.celebrity_id,
+                        },
+                      });
+                    }}
+                    title={item?.title}
+                    // description={item.description}
+                    imageUrl={item?.image}
+                    price={item?.price}
+                    style={{width: 150, height: height * 0.33, marginRight: 20}}
+                    imageStyle={{
+                      width: 150,
+                      height: height * 0.25,
+                      borderRadius: 15,
                     }}
                     keyExtractor={item => item.id}
                   />
@@ -372,36 +349,89 @@ const index = ({route, navigation}) => {
                     }}>
                     Buy experience with celebrities
                   </Text>
-                  <FlatList
-                    showsVerticalScrollIndicator={false}
-                    showsHorizontalScrollIndicator={false}
-                    data={data?.experience_celebrities}
-                    horizontal={true}
-                    ListEmptyComponent={() => (
-                      <Text style={{color: '#000000'}}>The list is empty</Text>
-                    )}
-                    renderItem={({item}) => (
-                      <SecondExperienceCard
-                        onPress={() => {
-                          (celebrity_id.current = data.celebrity.id),
-                            (experience_id.current = item.id),
-                            dispatch2(
-                              ExperienceDetals(item.id, data.celebrity.id),
-                            );
-                          ModalState.current(true);
-                        }}
-                        cover_photo={item.featured_image}
-                        short_desc={item.title}
-                        price={item.price}
-                        heading={item.title}
-                        style={{
-                          width: 185,
-                        }}
-                      />
-                    )}
-                    contentContainerStyle={{
-                      marginTop: 15,
-                      marginLeft: width * 0.03,
+                </View>
+              </View>
+              <View>
+                <FlatList
+                  data={data?.win_experiences}
+                  horizontal={true}
+                  style={{paddingLeft: 12}}
+                  ItemSeparatorComponent={() => {
+                    return <View style={{width: width * 0.03}} />;
+                  }}
+                  renderItem={({item}) => (
+                    <WinExperienceCard
+                      onPress={() => {
+                        dispatch3({
+                          type: types.EXPERIENCE_ID,
+                          experienceID: item.id,
+                          //  user: res.data.data,
+                        });
+
+                        dispatch4(ExperienceProductData(item?.id));
+                        celebrityModalState.current(true);
+                      }}
+                      short_desc={item?.title}
+                      thumbnail={item?.thumbnail}
+                      style={{
+                        width: width * 0.4,
+                        backgroundColor: '#fff',
+                        borderRadius: 15,
+                      }}
+                      imageStyle={{
+                        width: width * 0.4,
+                        height: height * 0.18,
+                        borderRadius: 15,
+                        borderBottomLeftRadius: 0,
+                        borderBottomRightRadius: 0,
+                      }}
+                    />
+                  )}
+                  //keyExtractor={(e) => e.id.toString()}
+                  contentContainerStyle={{
+                    marginTop: 10,
+                    paddingRight: width * 0.05,
+                  }}
+                  // refreshControl={
+                  //   <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
+                  // }
+                  keyExtractor={item => item.id}
+                />
+              </View>
+            </View>
+            <View
+              style={{
+                width: '100%',
+                marginLeft: 5,
+                marginTop: 15,
+                paddingBottom: 15,
+                paddingTop: 15,
+              }}>
+              <Text
+                style={{
+                  fontFamily: 'Axiforma-Bold',
+                  color: '#eb3d6e',
+                  width: '100%',
+                  textAlign: 'center',
+                }}>
+                Buy experience with celebrities
+              </Text>
+              <FlatList
+                data={data?.experience_celebrities}
+                horizontal={true}
+                ListEmptyComponent={() => (
+                  <Text style={{color: '#000000'}}>The list is empty</Text>
+                )}
+                renderItem={({item}) => (
+                  <SecondExperienceCard
+                    onPress={() => {
+                      // alert(item.id)
+                      (celebrity_id.current = data?.celebrity?.id),
+                        (experience_id.current = item?.id),
+                        dispatch2(
+                          ExperienceDetals(item?.id, data?.celebrity?.id),
+                        );
+                      ModalState.current(true);
                     }}
                     keyExtractor={item => item.id}
                   />

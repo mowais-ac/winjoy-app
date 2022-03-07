@@ -27,7 +27,7 @@ const index = ({route, navigation}) => {
   // const [experienceId, setExperienceId] = useState();
   useEffect(() => {
     dispatch(AllCreatorsList());
-    console.log('allCreatorsList', allCreatorsList);
+
     setResData(allCreatorsList?.data);
     setInsearchData(allCreatorsList?.data);
   }, []);
@@ -42,7 +42,6 @@ const index = ({route, navigation}) => {
   };
   const searchEmployee = value => {
     const filteredContacts = insearchData.filter(item => {
-      console.log('item', item);
       let contactLowercase = (
         item.first_name +
         ' ' +
@@ -75,21 +74,32 @@ const index = ({route, navigation}) => {
           <Text style={[styles.headerText]}>Our Creators</Text>
           <Text style={styles.subHeaderText}>Created By Stars</Text>
         </View>
-
         <View
           style={{
-            marginTop: 5,
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            marginHorizontal: 20,
+            width: '100%',
+            justifyContent: 'flex-end',
+            alignItems: 'flex-end',
+            paddingHorizontal: 15,
+          }}>
+          <TouchableOpacity
+            onPress={() => {
+              setShowResult(!showResult);
+            }}>
+            <Icon name="search" size={30} color="#ffffff" />
+          </TouchableOpacity>
+        </View>
+        <View
+          style={{
+            width: '100%',
+            alignItems: 'center',
+            marginTop: height * 0.03,
           }}>
           {showResult ? (
             <View
               style={{
                 backgroundColor: '#ffffff',
-                width: '80%',
+                width: '90%',
                 borderRadius: 25,
-                marginRight: 40,
               }}>
               <TextInput
                 style={{
@@ -106,47 +116,42 @@ const index = ({route, navigation}) => {
               />
             </View>
           ) : null}
-          <TouchableOpacity
-            style={{justifyContent: 'center'}}
-            onPress={() => {
-              setShowResult(!showResult);
-            }}>
-            <Icon name="search" size={30} color="#ffffff" />
-          </TouchableOpacity>
-        </View>
+          <View style={{height: height * 0.73}}>
+            <FlatList
+              data={resData}
+              style={{
+                paddingLeft: 20,
+              }}
+              numColumns={2}
+              // horizontal={true}
 
-        <View
-          style={{
-            width: '100%',
-            alignItems: 'center',
-            marginTop: height * 0.07,
-          }}>
-          {resData ? (
-            <ScrollView>
-              {/* height issue here */}
-              <View
-                style={{
-                  flexDirection: 'row',
-                  flexWrap: 'wrap',
-                  margin: 5,
-                  height: 1120,
-                }}>
-                {resData.map((item, index) => {
-                  return (
-                    <View style={{padding: 10, width: '50%'}}>
-                      <FanJoyCard
-                        key={index}
-                        name={item?.first_name + ' ' + item?.last_name}
-                        imageUrl={item?.profile_image}
-                        fans={item.fans}
-                        id={item.id}
-                      />
-                    </View>
-                  );
-                })}
-              </View>
-            </ScrollView>
-          ) : null}
+              renderItem={({item}) => (
+                <FanJoyCard
+                  onPress={() => {
+                    onPressCreator(item?.id);
+                  }}
+                  name={item?.first_name + ' ' + item?.last_name}
+                  imageUrl={item?.profile_image}
+                  fans={item.fans}
+                  style={{
+                    width: 160,
+                    marginRight: 20,
+                    height: 180,
+                  }}
+                />
+              )}
+              //keyExtractor={(e) => e.id.toString()}
+              contentContainerStyle={{
+                marginTop: 10,
+                paddingBottom: 20,
+              }}
+              ItemSeparatorComponent={() => <View style={{height: 15}} />}
+              // refreshControl={
+              //   <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
+              // }
+              keyExtractor={item => item.id}
+            />
+          </View>
         </View>
       </LinearGradient>
     </SafeAreaView>

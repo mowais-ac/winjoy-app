@@ -159,7 +159,7 @@ const BackgroundVideo = ({route, navigation}) => {
       .then(async response => response.json())
       .then(async res => {
         setAvailLifeActivity(false);
-        console.log('resUseLife', res);
+
         if (res.message === 'Live availed successfully') {
           dispatch({
             type: types.TOTAL_LIVES,
@@ -175,12 +175,10 @@ const BackgroundVideo = ({route, navigation}) => {
   };
   const SaveResponse = async () => {
     setActivity(true);
-    console.log('sques', questionRef.current);
+
     let ans = '';
     questionRef.current[questionIncrement.current]?.answer.map(item => {
-      console.log('item', item);
       if (item.is_correct === 1) {
-        console.log('item.answer', item.answer);
         ans = item.answer;
         // setActivity(false)
       }
@@ -188,7 +186,7 @@ const BackgroundVideo = ({route, navigation}) => {
     //        setAnswer(ans)
     answer.current = ans;
     // setTimer(20)
-    console.log('answerId.current ', answerId.current);
+
     if (answerId.current === null || answerId.current === undefined) {
       if (userElimante.current === true) ModalState.current(false);
       else ModalState.current(true);
@@ -200,7 +198,7 @@ const BackgroundVideo = ({route, navigation}) => {
         live_gameshow_id:
           questionRef.current[questionIncrement.current]?.live_gameshow_id,
       });
-      console.log('body', body);
+
       const requestOptions = {
         method: 'POST',
         headers: {
@@ -214,7 +212,6 @@ const BackgroundVideo = ({route, navigation}) => {
       await fetch(`${Config.API_URL}/save/user/response`, requestOptions)
         .then(async response => response.json())
         .then(async res => {
-          console.log('saveRes', res);
           if (res.status === 'success') {
             if (res.message === 'Congrats!! move to next question') {
               setActivity(false);
@@ -269,17 +266,11 @@ const BackgroundVideo = ({route, navigation}) => {
   };
 
   useEffect(async () => {
-    console.log('uri', uri);
     socket.on('sendHideQuestion', msg => {
-      console.log(msg);
       setGameShowCheck(false);
     });
-    socket.on('sendHideAnswer', msg => {
-      //alert(msg);
-      console.log({Hideanswer: msg});
-    });
+    socket.on('sendHideAnswer', msg => {});
     socket.on('sendEndShow', msg => {
-      console.log('msg', msg);
       dispatch2(GameShowWinners());
       navigation.navigate('BottomTabStack', {screen: 'WINNERS'});
     });
@@ -287,15 +278,12 @@ const BackgroundVideo = ({route, navigation}) => {
       setJoinedUsers(msg);
     });
     socket.on('sendShowCorrectAnswer', msg => {
-      console.log('msg', msg);
-
       setGameShowCheck(true);
       setShowResult(true);
       SaveResponse();
     });
 
     socket.on('sendStartlivegameshow', msg => {
-      console.log('questionIncrement', questionIncrement);
       Questions();
       setGameShowCheck(true);
       setTimeLeft(10);
@@ -304,8 +292,6 @@ const BackgroundVideo = ({route, navigation}) => {
       setTimerFlag(true);
     });
     socket.on('sendSwitchNextQuestion', msg => {
-      console.log('msg', msg);
-
       if (msg === 'Next question should switch') {
         let inc = questionIncrement.current + 1;
         questionIncrement.current = inc;
@@ -345,15 +331,8 @@ const BackgroundVideo = ({route, navigation}) => {
               hls={true}
               paused={false}
               style={styles.backgroundVideo}
+              source={require('../../assets/imgs/bgImage.png')}
               resizeMode={'cover'}
-              minLoadRetryCount={2}
-              fullScreen={true}
-              ignoreSilentSwitch={'obey'}
-              onLoad={() => setBuffer(false)}
-              onLoadStart={() => setBuffer(true)}
-              onError={er => {
-                console.log('error', er);
-              }}
             />
           ) : (
             <ActivityIndicator size="large" color={'#ffffff'} top={300} />

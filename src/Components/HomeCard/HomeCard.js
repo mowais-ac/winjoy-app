@@ -13,8 +13,7 @@ import CountDown from 'react-native-countdown-component';
 import LongButton from '../LongButton';
 import Carousel from 'react-native-snap-carousel';
 import {FormatNumber} from '../../Constants/Functions';
-function HomeCard({style, onPress, gameShow, time, images}) {
-  console.log('images', images);
+function HomeCard({style, onPress, gameShow, time, images, upcoming_gameshow}) {
   const {width, height} = Dimensions.get('window');
   const [renderBtn, setRenderBtn] = useState(false);
   function _renderItem({item, index}) {
@@ -73,7 +72,7 @@ function HomeCard({style, onPress, gameShow, time, images}) {
                 onPress={onPress}
               />
             </View>
-          ) : gameShow?.status === 'inprocess' ? (
+          ) : gameShow?.status === 'inprocess' || gameShow === '' ? (
             <View
               style={{
                 flex: 1,
@@ -86,15 +85,16 @@ function HomeCard({style, onPress, gameShow, time, images}) {
                 <Text
                   style={[
                     styles.commingSoonTxt,
-                    {fontFamily: 'Axifroma-Regular'},
+                    {fontFamily: 'Axifroma-Regular', marginBottom: 15},
                   ]}>
                   Prize
                 </Text>
                 <Text style={styles.commingSoonTxt}>
-                  AED {FormatNumber(+gameShow?.price?.toLocaleString())}
+                  AED{' '}
+                  {FormatNumber(+upcoming_gameshow?.price?.toLocaleString())}
                 </Text>
               </View>
-              <View>
+              <View style={{paddingTop: 5}}>
                 <Text style={[styles.commingSoonTxt, {fontSize: 13}]}>
                   TRIVIA
                 </Text>

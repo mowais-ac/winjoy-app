@@ -237,7 +237,6 @@ const index = ({route, navigation}) => {
         }
       })
       .catch(e => {
-        console.log(e);
         Alert.alert('Error', 'An error occured, try again');
         ButtonRef.current.SetActivity(false);
       });

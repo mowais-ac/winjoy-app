@@ -20,9 +20,9 @@ const {width, height} = Dimensions.get('window');
 const Bell = props => {
   const navigation = useNavigation();
   const counter = useSelector(state => state.app.counter);
-  console.log('counter', counter);
+
   const {Bell} = props;
-  console.log('bell', Bell);
+
   return (
     <>
       <TouchableOpacity

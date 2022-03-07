@@ -49,7 +49,7 @@ const Header = props => {
   //         props.UpdateBell(UpdateBell(res.data[0].length));
   //       }
   //     })
-  //     .catch((e) => console.log(e));
+  //     .catch((e) =>
   // };
   // const UpdateValueOnce = async () => {
   //   let dat = await AsyncStorage.getItem('ids');

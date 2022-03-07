@@ -101,7 +101,7 @@ const index = ({navigation}) => {
         cpassref.current.Error();
         return;
       }
-      Buttonref.current.SetActivity(true);
+      //   Buttonref.current.SetActivity(true);
 
       const body = JSONtoForm({
         first_name,
@@ -113,7 +113,7 @@ const index = ({navigation}) => {
         password_confirmation,
         ...(await GetUserDeviceDetails()),
       });
-      console.log('Body', body);
+
       const requestOptions = {
         method: 'POST',
         headers: {
@@ -129,6 +129,7 @@ const index = ({navigation}) => {
           console.log('res', res);
           if (res.status && res.status.toLowerCase() === 'success') {
             await EncryptedStorage.setItem('Token', res.data.token);
+            console.log('res.data.token', res.data.token);
             if (await IsVerified(res.data.token)) {
               navigation.replace('TabsStack');
             } else {

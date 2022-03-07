@@ -16,11 +16,8 @@ function Card({
   stock,
   removeProgressCircle,
 }) {
-  console.log('imag', images);
   let progress = updated_stocks ? (updated_stocks / stock) * 100 : 0;
-  useEffect(() => {
-    console.log('imag', images);
-  }, [images]);
+  useEffect(() => {}, [images]);
 
   return (
     <View
@@ -104,9 +101,9 @@ function Card({
             return (
               <Image
                 source={{uri: item?.image}}
-                resizeMode={'center'}
+                resizeMode={'cover'}
                 style={{
-                  width: width,
+                  width: '100%',
                   height: height * 0.3,
                   // marginTop: height * 0.015,
                   alignSelf: 'center',

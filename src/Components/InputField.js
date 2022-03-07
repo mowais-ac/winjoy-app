@@ -242,7 +242,6 @@ const InputField = React.forwardRef((props, ref) => {
   };
 
   const CheckUserName = async () => {
-    console.log('Config.API_URL', Config.API_URL);
     if (!ActForCheck) {
       if (val !== null && val !== '') {
         setisRight(null);
@@ -262,7 +261,6 @@ const InputField = React.forwardRef((props, ref) => {
         await fetch(`${Config.API_URL}/auth/username`, requestOptions)
           .then(response => response.ok && response.json())
           .then(async res => {
-            console.log('res user name', res);
             if (res.message == 'valid username') {
               setisRight(Images.Right);
             } else {

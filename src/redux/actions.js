@@ -33,7 +33,6 @@ export const getWalletData = () => {
           payload: json,
         });
       } else {
-        console.log('Unable to fetch!', json);
       }
     };
   } catch (error) {
@@ -60,7 +59,6 @@ export const getLandingScreen = () => {
           payload: json,
         });
       } else {
-        console.log('Unable to fetch!');
       }
     };
   } catch (error) {
@@ -68,7 +66,6 @@ export const getLandingScreen = () => {
   }
 };
 export const getProducts = link => {
-  console.log('link', link);
   try {
     return async dispatch => {
       dispatch({type: types.SHOW_LOADER});
@@ -81,9 +78,9 @@ export const getProducts = link => {
           Authorization: `Bearer ${Token}`,
         },
       });
-      console.log('result', result);
+
       const json = await result.json();
-      console.log('json', json);
+
       dispatch({type: types.HIDE_LOADER});
       if (json && json.status === 'success') {
         dispatch({
@@ -91,12 +88,9 @@ export const getProducts = link => {
           payload: json,
         });
       } else {
-        console.log('Unable to fetch!');
       }
     };
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };
 export const getLiveShowPlans = () => {
   try {
@@ -117,12 +111,9 @@ export const getLiveShowPlans = () => {
           payload: json,
         });
       } else {
-        console.log('Unable to fetch!');
       }
     };
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };
 export const getAllCreator = () => {
   try {
@@ -144,12 +135,9 @@ export const getAllCreator = () => {
           payload: json,
         });
       } else {
-        console.log('Unable to fetch fanjoyAPI!');
       }
     };
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };
 export const GetGalleryData = id => {
   try {
@@ -173,12 +161,9 @@ export const GetGalleryData = id => {
           payload: json,
         });
       } else {
-        console.log('Unable to fetch!');
       }
     };
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };
 export const GetCreatorPageData = id => {
   try {
@@ -201,15 +186,11 @@ export const GetCreatorPageData = id => {
           payload: json,
         });
       } else {
-        console.log('Unable to fetch!', json);
       }
     };
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };
 export const ExperienceProductData = id => {
-  console.log('idd', id);
   try {
     return async dispatch => {
       const Token = await EncryptedStorage.getItem('Token');
@@ -225,19 +206,16 @@ export const ExperienceProductData = id => {
         },
       );
       const json = await result.json();
-      console.log('jsonP', json);
+
       if (json && json.status === 'success') {
         dispatch({
           type: types.WIN_EXPERIENCE_PRODUCT_DATA,
           payload: json,
         });
       } else {
-        console.log('Unable to fetch!');
       }
     };
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };
 export const ExperienceProductDetal = (expId, productId) => {
   try {
@@ -262,15 +240,11 @@ export const ExperienceProductDetal = (expId, productId) => {
           payload: json,
         });
       } else {
-        console.log('Unable to fetch!');
       }
     };
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };
 export const ExperienceDetals = (experience_id, celebrity_id) => {
-  console.log(experience_id, celebrity_id);
   try {
     return async dispatch => {
       const Token = await EncryptedStorage.getItem('Token');
@@ -293,12 +267,9 @@ export const ExperienceDetals = (experience_id, celebrity_id) => {
           payload: json,
         });
       } else {
-        console.log('Unable to fetch!');
       }
     };
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };
 export const GameShowWinners = () => {
   try {
@@ -321,12 +292,9 @@ export const GameShowWinners = () => {
           payload: json,
         });
       } else {
-        console.log('Unable to fetch!');
       }
     };
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };
 export const LuckyDrawWinnersAPI = () => {
   try {
@@ -347,12 +315,9 @@ export const LuckyDrawWinnersAPI = () => {
           payload: json,
         });
       } else {
-        console.log('Unable to fetch!');
       }
     };
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };
 export const LeaderBoardWinners = () => {
   try {
@@ -374,12 +339,9 @@ export const LeaderBoardWinners = () => {
           payload: json,
         });
       } else {
-        console.log('Unable to fetch!');
       }
     };
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };
 export const DealsJoyAPI = () => {
   try {
@@ -401,12 +363,9 @@ export const DealsJoyAPI = () => {
           payload: json,
         });
       } else {
-        console.log('Unable to fetch!');
       }
     };
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };
 export const TriviaJoyAPI = () => {
   try {
@@ -427,12 +386,9 @@ export const TriviaJoyAPI = () => {
           payload: json,
         });
       } else {
-        console.log('Unable to fetch!');
       }
     };
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };
 export const CheckGameEnterStatus = () => {
   try {
@@ -453,12 +409,9 @@ export const CheckGameEnterStatus = () => {
           payload: json,
         });
       } else {
-        console.log('Unable to fetch!');
       }
     };
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };
 export const AllCreatorsList = () => {
   try {
@@ -479,12 +432,9 @@ export const AllCreatorsList = () => {
           payload: json,
         });
       } else {
-        console.log('Unable to fetch!');
       }
     };
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };
 export const GetCartData = () => {
   try {
@@ -507,12 +457,9 @@ export const GetCartData = () => {
           payload: json,
         });
       } else {
-        console.log('Unable to fetch!');
       }
     };
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };
 export const RemoveCartData = id => {
   try {
@@ -531,7 +478,7 @@ export const RemoveCartData = id => {
         },
       );
       const json = await result.json();
-      console.log('rrr', json);
+
       dispatch({type: types.HIDE_LOADER});
       if (json) {
         dispatch({
@@ -539,12 +486,9 @@ export const RemoveCartData = id => {
           payload: json,
         });
       } else {
-        console.log('Unable to fetch!');
       }
     };
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };
 export const ProductDetails = id => {
   try {
@@ -568,12 +512,9 @@ export const ProductDetails = id => {
           payload: json,
         });
       } else {
-        console.log('Unable to fetch!');
       }
     };
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };
 export const CreatorExperienceList = id => {
   try {
@@ -601,10 +542,7 @@ export const CreatorExperienceList = id => {
         });
         setLoading(false);
       } else {
-        console.log('Unable to fetch!');
       }
     };
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };

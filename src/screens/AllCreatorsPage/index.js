@@ -46,7 +46,10 @@ const index = ({route, navigation}) => {
   console.log({winEx: data?.win_experience});
   useEffect(() => {
     dispatch(getAllCreator());
+<<<<<<< HEAD
     // console.log('data', data);
+=======
+>>>>>>> 37a797bcd3fd9b44cd5cc70eedc41fb00525f0ae
   }, []);
 
   const onPressContinue = () => {
@@ -210,16 +213,6 @@ const index = ({route, navigation}) => {
                         experienceID: item?.id,
                         type: types.EXPERIENCE_ID,
                       });
-                      console.log('Exp_id', item?.id);
-                      dispatch4(ExperienceProductData(item?.id));
-                      celebrityModalState.current(true);
-                    }}
-                    fun={() => {
-                      dispatch3({
-                        experienceID: item?.id,
-                        type: types.EXPERIENCE_ID,
-                      });
-                      console.log('Exp_id', item?.id);
                       dispatch4(ExperienceProductData(item?.id));
                       celebrityModalState.current(true);
                     }}
@@ -312,7 +305,7 @@ const index = ({route, navigation}) => {
           details
           cross={true}
           video={
-            'https://winjoy-assets.s3.amazonaws.com/how_it_work/Mostafa_fanjoy-wj.mp4'
+            'https://winjoy-assets.s3.amazonaws.com/how_it_work/Mostafa_fanjoy-wj+(1).mp4'
           }
         />
       </ScrollView>
