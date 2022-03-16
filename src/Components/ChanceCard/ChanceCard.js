@@ -53,7 +53,7 @@ function ChanceCard({
             height: height * 0.25,
             borderRadius: 10,
           }}
-          resizeMode="cover"
+          resizeMode="contain"
         />
       </View>
       <View
@@ -110,14 +110,13 @@ function ChanceCard({
             </Text>
           </Text>
           <Text
-           numberOfLines={3}
+            numberOfLines={3}
             style={{
               fontFamily: 'Axiforma-Bold',
               fontSize: 12,
               color: '#000000',
               lineHeight: 17,
               width: width * 0.6,
-             
             }}>
             {prize_title}
           </Text>
@@ -234,8 +233,9 @@ function ChanceCard({
         font={12}
         light
         style={{color: '#000000', paddingVertical: 10, lineHeight: 17}}>
-        Max draw date {dayjs(draw_description).format('MMMM DD, YYYY')} or when
-        the campaign is sold out, which is earliest
+        Draw Date announce to be soon!
+        {/*  Max draw date {dayjs(draw_description).format('MMMM DD, YYYY')} or when
+        the campaign is sold out, which is earliest */}
       </Label>
     </View>
   );

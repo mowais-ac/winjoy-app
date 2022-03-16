@@ -1,32 +1,33 @@
-import React from "react";
-import { Image, Dimensions } from "react-native";
+import React from 'react';
+import {Image, Dimensions} from 'react-native';
 
-const { width, height } = Dimensions.get("window");
-import { Images } from "../Constants/Index";
+const {width, height} = Dimensions.get('window');
+import {Images} from '../Constants/Index';
 
-const TabButton = (props) => {
-  const GetImage = (name) => {
+const TabButton = props => {
+  const GetImage = name => {
     switch (name) {
-      case "Home":
+      case 'HOME':
         return Images.Home;
-      case "PRODUCTS":
+      case 'PRODUCTS':
         return Images.Product;
-      case "PROFILE":
+      case 'PROFILE':
         return Images.Profile;
-      case "WALLET":
+      case 'WALLET':
         return Images.Wallet;
-      case "WINNERS":
+      case 'WINNERS':
         return Images.Leaderboard;
     }
   };
   return (
     <Image
       source={GetImage(props.name)}
-      style={[{
-        width: width * 0.06,
-        height: height * 0.04,
-        resizeMode: "contain",
-      },
+      style={[
+        {
+          width: width * 0.06,
+          height: height * 0.04,
+          resizeMode: 'contain',
+        },
         // props.name === "Trophy" ? {
         //   width: width * 0.5,
         //   height: height * 0.08,

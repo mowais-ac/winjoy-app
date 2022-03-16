@@ -66,6 +66,14 @@ const ProductDetail = ({props, navigation, route}) => {
     let dat = await AsyncStorage.getItem('expData');
   };
 
+  let images = [];
+  images.push({
+    image: data?.products?.image,
+  });
+  if (data && data.product) {
+    images = [...images, data?.products?.images];
+  }
+  console.log({pic: data?.products?.image});
   return (
     <ScrollView>
       <View style={{height: heightPercentageToDP('100%')}}>
@@ -75,7 +83,7 @@ const ProductDetail = ({props, navigation, route}) => {
         </LinearGradient>
         <View style={styles.upperView}>
           <Card
-            imageUrl={data?.products?.image}
+            images={images}
             stock={data?.products?.stock}
             updated_stocks={data?.products?.updated_stocks}
           />
@@ -85,7 +93,7 @@ const ProductDetail = ({props, navigation, route}) => {
             primary
             font={16}
             dark
-            style={{color: '#000000', marginTop: 30}}>
+            style={{color: '#000000', marginTop: 35}}>
             Get a chance to
             <Label notAlign primary font={16} bold style={{color: '#E7003F'}}>
               {' '}
@@ -94,6 +102,21 @@ const ProductDetail = ({props, navigation, route}) => {
           </Label>
           <Label font={16} dark style={{color: '#000000'}}>
             {data?.products?.title}
+          </Label>
+          <Label
+            font={12}
+            light
+            style={{
+              color: '#000000',
+              paddingVertical: 10,
+              lineHeight: 17,
+            }}>
+            {/*    Max draw date{' '}
+              {dayjs(productsDetails?.product?.luckydraw?.end_date).format(
+                'MMMM DD, YYYY',
+              )}{' '}
+              or when the campaign is sold out, which is earliest */}
+            Draw Date announce to be soon!
           </Label>
           <Text style={styles.closingTxt}>Closing Soon</Text>
         </View>
@@ -133,7 +156,7 @@ const ProductDetail = ({props, navigation, route}) => {
             <Text style={[styles.metaText, {fontWeight: 'bold'}]}>
               Buy a {data?.products?.title}
             </Text>
-            <Text style={styles.text}>Gold Coin</Text>
+            {/*  <Text style={styles.text}>Gold Coin</Text> */}
           </View>
           <TouchableOpacity
             onPress={() => {
@@ -141,7 +164,7 @@ const ProductDetail = ({props, navigation, route}) => {
               //     screen: "Cart",
               //   })]
               // SaveIdInfo();
-              alert('Thankyou for your interest, this feature is comming soon');
+              alert('Thank you for your interest. This feature is coming soon');
             }}
             style={{
               height: heightConverter(55),
@@ -213,22 +236,25 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   upperView: {
-    top: heightPercentageToDP('8%'),
-    position: 'absolute',
+    /* top: heightPercentageToDP('8%'),
+    position: 'absolute', */
+    margin: 15,
+    marginTop: -120,
   },
   card: {
     width: width - 25,
-    height: height * 0.1,
+    height: height * 0.17,
     backgroundColor: '#ffffff',
     marginLeft: 10,
     borderRadius: 10,
     padding: 10,
-    top: height * 0.1,
+
     left: 2,
     justifyContent: 'center',
     alignItems: 'center',
     elevation: 3,
     marginBottom: 15,
+    marginTop: 2,
   },
   card2: {
     width: width - 25,
@@ -242,7 +268,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     elevation: 3,
     position: 'absolute',
-    marginBottom: 20,
+    marginBottom: 80,
   },
   closingTxt: {
     color: '#ffffff',
@@ -258,9 +284,10 @@ const styles = StyleSheet.create({
     top: heightConverter(2),
   },
   pdView: {
-    position: 'absolute',
-    bottom: heightPercentageToDP('25'),
-    height: heightPercentageToDP('25'),
+    marginTop: 5,
+    //position: 'absolute',
+
+    //height: heightPercentageToDP('25'),
     padding: 20,
   },
   metaText: {

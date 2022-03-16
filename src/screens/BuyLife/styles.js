@@ -12,6 +12,8 @@ export default StyleSheet.create({
     fontSize: RFValue(22),
   },
   subHeaderText: {
+    lineHeight: 30,
+    fontSize: 14,
     color: '#FFFFFF',
     fontFamily: 'Axiforma-Regular',
   },

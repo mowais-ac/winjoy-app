@@ -58,21 +58,25 @@ const index = ({route, navigation}) => {
           end={{x: 1, y: 0}}
           colors={['#f8d7e8', '#c7dfe8']}
           style={{paddingBottom: 10}}>
-          <WjBackground
+          <LinearGradient
+            start={{x: 0, y: 0}}
+            end={{x: 1, y: 0}}
+            colors={['#420E92', '#E7003F']}
             style={{
-              height: 155,
+              height: 'auto',
               borderBottomRightRadius: 20,
               borderBottomLeftRadius: 20,
-            }}
-          />
-          <Header style={{top: 0, position: 'absolute', marginTop: 10}} />
+            }}>
+            <Header />
 
-          <View style={{marginTop: height * 0.1, alignItems: 'center'}}>
-            <Text style={[styles.headerText]}>Lives</Text>
-            <Text style={styles.subHeaderText}>
-              Stay in the game even with the wrong answer!
-            </Text>
-          </View>
+            <View style={{alignItems: 'center', marginVertical: 20}}>
+              <Text style={[styles.headerText]}>Lives</Text>
+              <Text style={styles.subHeaderText}>
+                Stay in the game even with the wrong answer!
+              </Text>
+            </View>
+          </LinearGradient>
+
           <View
             style={{
               width: '100%',

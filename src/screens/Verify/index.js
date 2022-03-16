@@ -21,7 +21,7 @@ import types from '../../redux/types';
 import {Colors, Images} from '../../Constants/Index';
 import GoBack from '../../Components/GoBack';
 import {useDispatch} from 'react-redux';
-
+import LinearGradient from 'react-native-linear-gradient';
 const {width, height} = Dimensions.get('window');
 const index = ({route, navigation}) => {
   const {signIn} = React.useContext(AuthContext);
@@ -79,33 +79,40 @@ const index = ({route, navigation}) => {
   };
   return (
     <SafeAreaView>
-      <Background height={1} resize="stretch" design />
       <ScrollView>
-        <View style={styles.MainTop}>
-          <GoBack />
-          <Image source={Images.Logo} style={styles.Logo} />
-          <Label bold headingtype="h1" style={styles.Heading}>
-            Verify account
-          </Label>
-          <Label light style={[styles.Margin, {lineHeight: height * 0.03}]}>
-            Enter the 6 digit code which sent to{' '}
-            <Label light underline>
-              {email || 'test@domain.com'}
-            </Label>{' '}
-          </Label>
+        <LinearGradient
+          start={{x: 0, y: 0}}
+          end={{x: 1, y: 0}}
+          colors={['#420E92', '#E7003F']}
+          style={{
+            display: 'flex',
+            flex: 1,
+          }}>
+          <View style={styles.MainTop}>
+            <GoBack />
+            <Image source={Images.Logo} style={styles.Logo} />
+            <Label bold headingtype="h1" style={styles.Heading}>
+              Verify account
+            </Label>
+            <Label light style={[styles.Margin, {lineHeight: height * 0.03}]}>
+              Enter the 6 digit code which sent to{' '}
+              <Label light underline>
+                {email || 'test@domain.com'}
+              </Label>{' '}
+            </Label>
 
-          <Label style={styles.Margin2}>Email Verification</Label>
-          <InputField
-            style={styles.MarginField}
-            fieldstyle={styles.Text}
-            placeholder="******"
-            maxLength={6}
-            ref={evref}
-            verify
-            keyboardType="numeric"
-            placeholderTextColor={Colors.MUTED}
-          />
-          {/* <Label style={styles.Margin3}>Phone verification</Label>
+            <Label style={styles.Margin2}>Email Verification</Label>
+            <InputField
+              style={styles.MarginField}
+              fieldstyle={styles.Text}
+              placeholder="******"
+              maxLength={6}
+              ref={evref}
+              verify
+              keyboardType="numeric"
+              placeholderTextColor={Colors.MUTED}
+            />
+            {/* <Label style={styles.Margin3}>Phone verification</Label>
           <InputField
             style={styles.MarginField}
             fieldstyle={styles.Text}
@@ -116,15 +123,15 @@ const index = ({route, navigation}) => {
             verify
             placeholderTextColor={Colors.MUTED}
           /> */}
-          <LongButton
-            style={[styles.Margin3, {backgroundColor: '#ffffff'}]}
-            text="Verify"
-            onPress={HandleClick}
-            ref={ButtonRef}
-            textstyle={{color: '#E7003F'}}
-          />
-        </View>
-        <View></View>
+            <LongButton
+              style={[styles.Margin3, {backgroundColor: '#ffffff'}]}
+              text="Verify"
+              onPress={HandleClick}
+              ref={ButtonRef}
+              textstyle={{color: '#E7003F'}}
+            />
+          </View>
+        </LinearGradient>
       </ScrollView>
     </SafeAreaView>
   );

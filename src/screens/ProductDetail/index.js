@@ -42,9 +42,11 @@ const ProductDetail = ({props, navigation, route}) => {
   const productId = route?.params?.productId;
   const [activity, setActivity] = useState(false);
   const [count, setCount] = useState(1);
-
+  //dealjoy data
+  const {data} = route.params;
+  console.log({data: data});
   const loading = useSelector(state => state.app.loading);
-
+  //console.log({productsDetailss: productsDetails});
   useEffect(() => {
     dispatch2(ProductDetails());
   }, [dispatch2]);
@@ -55,50 +57,62 @@ const ProductDetail = ({props, navigation, route}) => {
     setCount(number);
   };
   const SaveIdInfo = async () => {
-    setActivity(true);
-    var postData = JSON.stringify({
-      is_from_experience: false,
-      product_id: productsDetails?.product?.luckydraw?.product?.id,
-      count: count,
-    });
-
-    const Token = await EncryptedStorage.getItem('Token');
-
-    const requestOptions = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: `Bearer ${Token}`,
-      },
-      body: postData,
-    };
-
-    await fetch(`${Config.API_URL}/add_to_cart`, requestOptions)
-      .then(async response => response.json())
-      .then(async res => {
-        if (res.status === 'success') {
-          setActivity(false);
-          SucessModalState.current(true);
-          dispatch({
-            type: types.CART_COUNTER,
-            counter: counterMain + count,
-          });
-        } else {
-          setActivity(false);
-          ModalErrorState.current(true, {
-            heading: 'Error',
-            Error: res.message,
-            array: res.errors ? Object.values(res.errors) : [],
-          });
-        }
-        setActivity(false);
-      })
-      .catch(e => {
-        //  ButtonRef.current.SetActivity(false);
+    if (!productsDetails?.product?.luckydraw.enable_buy) {
+      alert('Thank you for your interest. This feature is coming soon');
+    } else {
+      setActivity(true);
+      var postData = JSON.stringify({
+        is_from_experience: false,
+        product_id: productsDetails?.product?.luckydraw?.product?.id,
+        count: count,
       });
+
+      const Token = await EncryptedStorage.getItem('Token');
+
+      const requestOptions = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          Authorization: `Bearer ${Token}`,
+        },
+        body: postData,
+      };
+
+      await fetch(`${Config.API_URL}/add_to_cart`, requestOptions)
+        .then(async response => response.json())
+        .then(async res => {
+          if (res.status === 'success') {
+            console.log({ProductDetails: res});
+            setActivity(false);
+            SucessModalState.current(true);
+            dispatch({
+              type: types.CART_COUNTER,
+              counter: counterMain + count,
+            });
+          } else {
+            setActivity(false);
+            ModalErrorState.current(true, {
+              heading: 'Error',
+              Error: res.message,
+              array: res.errors ? Object.values(res.errors) : [],
+            });
+          }
+          setActivity(false);
+        })
+        .catch(e => {
+          //  ButtonRef.current.SetActivity(false);
+        });
+    }
   };
 
+  let images = [];
+  images.push({
+    image: data?.product?.image || productsDetails?.product?.image,
+  });
+  if (productsDetails && productsDetails.product) {
+    images = [...images, productsDetails?.product?.images];
+  }
   return (
     <SafeAreaView style={{height: '100%', paddingBottom: 120}}>
       <ScrollView style={{}}>
@@ -113,9 +127,14 @@ const ProductDetail = ({props, navigation, route}) => {
             <View style={{paddingHorizontal: 15}}>
               <View style={[styles.upperView]}>
                 <Card
-                  images={productsDetails?.product?.images}
-                  updated_stocks={productsDetails?.product?.updated_stocks}
-                  stock={productsDetails?.product?.stock}
+                  images={images}
+                  updated_stocks={
+                    productsDetails?.product?.updated_stocks ||
+                    data?.product?.updated_stocks
+                  }
+                  stock={
+                    productsDetails?.product?.stock || data?.product?.stock
+                  }
                 />
               </View>
               <View style={styles.card}>
@@ -137,17 +156,21 @@ const ProductDetail = ({props, navigation, route}) => {
                   primary
                   font={16}
                   dark
-                  style={{color: '#E7003F', marginTop: 10}}>
+                  style={{color: '#E7003F', marginTop: 10, lineHeight: 20}}>
                   Get a chance to win
                 </Label>
 
                 {productsDetails?.product?.luckydraw?.experience ? (
-                  <Label font={16} dark style={{color: '#000000'}}>
+                  <Label
+                    font={16}
+                    dark
+                    style={{color: '#000000', lineHeight: 20}}>
                     {productsDetails?.product?.luckydraw?.experience?.title}
                   </Label>
                 ) : (
                   <Label font={16} dark style={{color: '#000000'}}>
-                    {productsDetails?.product?.luckydraw?.prize_title}
+                    {productsDetails?.product?.luckydraw?.prize_title ||
+                      data?.prize_title}
                   </Label>
                 )}
                 <Label
@@ -158,11 +181,12 @@ const ProductDetail = ({props, navigation, route}) => {
                     paddingVertical: 10,
                     lineHeight: 17,
                   }}>
-                  Max draw date{' '}
-                  {dayjs(productsDetails?.product?.luckydraw?.end_date).format(
-                    'MMMM DD, YYYY',
-                  )}{' '}
-                  or when the campaign is sold out, which is earliest
+                  {/*    Max draw date{' '}
+              {dayjs(productsDetails?.product?.luckydraw?.end_date).format(
+                'MMMM DD, YYYY',
+              )}{' '}
+              or when the campaign is sold out, which is earliest */}
+                  Draw Date announce to be soon!
                 </Label>
                 <Text style={styles.closingTxt}>Closing Soon</Text>
               </View>
@@ -180,7 +204,8 @@ const ProductDetail = ({props, navigation, route}) => {
                   font={11}
                   dark
                   style={{color: '#000000', lineHeight: 20}}>
-                  {productsDetails?.product?.description}
+                  {productsDetails?.product?.description ||
+                    data?.product?.description}
                 </Label>
               </View>
             </View>
@@ -201,7 +226,7 @@ const ProductDetail = ({props, navigation, route}) => {
             <View>
               <Text style={styles.metaText}>To enter in the lucky draw</Text>
               <Text style={[styles.metaText, {fontWeight: 'bold'}]}>
-                Buy a {productsDetails?.product?.title}
+                Buy a {productsDetails?.product?.title || data?.product?.title}
               </Text>
             </View>
             <Text
@@ -209,7 +234,9 @@ const ProductDetail = ({props, navigation, route}) => {
                 styles.text,
                 {fontWeight: 'bold', fontSize: RFValue(14)},
               ]}>
-              AED {+productsDetails?.product?.price?.toLocaleString()}
+              AED{' '}
+              {+productsDetails?.product?.price?.toLocaleString() ||
+                +data?.product?.price?.toLocaleString()}
             </Text>
           </View>
           <View
@@ -238,10 +265,7 @@ const ProductDetail = ({props, navigation, route}) => {
             <TouchableOpacity
               disabled={activity}
               onPress={() => {
-                // SaveIdInfo();
-                alert(
-                  'Thankyou for your interest, this feature is comming soon',
-                );
+                SaveIdInfo();
               }}>
               <LinearGradient
                 start={{x: 0, y: 0}}
@@ -318,7 +342,7 @@ const styles = StyleSheet.create({
   },
   upperView: {
     marginTop: -height * 0.13,
-    //  position: 'absolute',
+    //position: 'absolute',
     width: '100%',
   },
   card: {

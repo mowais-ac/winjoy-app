@@ -15,7 +15,7 @@ import Background from '../../Components/Background';
 import SafeArea from '../../Components/SafeArea';
 import Label from '../../Components/Label';
 import Header from '../../Components/Header';
-
+import LinearGradient from 'react-native-linear-gradient';
 import {Colors, Images} from '../../Constants/Index';
 import Section from '../../Components/Section';
 import UserInfo from '../../Components/UserInfo';
@@ -172,11 +172,21 @@ const Orders = ({navigation}) => {
 
   return (
     <SafeArea>
-      <Background height={0.14} />
-      <Header value={3} />
-      <View style={styles.MainTop}>
-        <UserInfo style={styles.header} OwnUser popup status />
-      </View>
+      <LinearGradient
+        start={{x: 0, y: 0}}
+        end={{x: 1, y: 0}}
+        colors={['#420E92', '#E7003F']}
+        style={{
+          height: 'auto',
+          borderBottomRightRadius: 20,
+          borderBottomLeftRadius: 20,
+        }}>
+        <Header />
+        <View style={styles.MainTop}>
+          <UserInfo style={styles.header} OwnUser popup status />
+        </View>
+      </LinearGradient>
+
       {Data === null ? (
         <ActivityIndicator size="large" color={Colors.BLACK} />
       ) : (
@@ -187,7 +197,7 @@ const Orders = ({navigation}) => {
               <>
                 {Data?.length >= 1 && (
                   <Label primary bold headingtype="h4">
-                    Orders
+                    Purchases
                   </Label>
                 )}
               </>
@@ -210,12 +220,12 @@ const Orders = ({navigation}) => {
 
 const styles = StyleSheet.create({
   MainTop: {
-    height: height * 0.15,
+    // height: height * 0.15,
+    marginVertical: 10,
   },
   header: {
     flexDirection: 'row',
-    marginTop: height * 0.03,
-    marginLeft: width * 0.034,
+    marginHorizontal: 10,
   },
   Section: {
     marginTop: 10,

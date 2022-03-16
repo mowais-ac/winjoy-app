@@ -29,6 +29,8 @@ import SelectLanguageModal from '../../Components/SelectLanguageModal';
 import SelectCurrencyModal from '../../Components/SelectCurrencyModal';
 import {useSelector} from 'react-redux';
 import Info_btn from '../../Components/Info';
+import LinearGradient from 'react-native-linear-gradient';
+import packageJson from '../../../package.json';
 
 const index = ({props, navigation}) => {
   const ModalStateInfo = useRef();
@@ -41,32 +43,37 @@ const index = ({props, navigation}) => {
 
   let data2 = [
     {
-      name: t('wallet'),
-      icon: require('../../assets/imgs/humburgerIcons/wallet.png'),
+      name: t('view_profile'),
+      icon: require('../../assets/imgs/humburgerIcons/viewProfile.png'),
     },
     {
-      name: t('played_games'),
-      icon: require('../../assets/imgs/humburgerIcons/playedGames.png'),
+      name: t('wallet'),
+      icon: require('../../assets/imgs/humburgerIcons/wallet.png'),
     },
     {
       name: t('my_order'),
       icon: require('../../assets/imgs/humburgerIcons/myOrders.png'),
     },
     {
-      name: t('leaderboard'),
-      icon: require('../../assets/imgs/humburgerIcons/leaderBoard.png'),
-    },
-    {
-      name: t('Buy Lives'),
-      icon: require('../../assets/imgs/humburgerIcons/buyLives.png'),
+      name: t('My Tickets'),
+      icon: require('../../assets/imgs/humburgerIcons/myOrders.png'),
     },
     {
       name: t('refer_&_Earn'),
       icon: require('../../assets/imgs/humburgerIcons/reffer.png'),
     },
     {
-      name: t('view_profile'),
-      icon: require('../../assets/imgs/humburgerIcons/viewProfile.png'),
+      name: t('Buy Lives'),
+      icon: require('../../assets/imgs/humburgerIcons/buyLives.png'),
+    },
+    {
+      name: t('leaderboard'),
+      icon: require('../../assets/imgs/humburgerIcons/leaderBoard.png'),
+    },
+
+    {
+      name: t('played_games'),
+      icon: require('../../assets/imgs/humburgerIcons/playedGames.png'),
     },
 
     {
@@ -118,73 +125,56 @@ const index = ({props, navigation}) => {
   return (
     <View style={{backgroundColor: '#ffffff'}}>
       <Header
-        noBell={true}
-        back={true}
         style={{
           position: 'absolute',
           zIndex: 1000,
-          height: height * 0.06,
           backgroundColor: headerValue !== 0 ? 'rgba(0,0,0,0.5)' : null,
           width: '100%',
           borderBottomRightRadius: 10,
           borderBottomLeftRadius: 10,
-          paddingTop: height * 0.017,
         }}
       />
       <ScrollView
         onScroll={e => {
           setHeaderValue(e.nativeEvent.contentOffset.y);
         }}>
-        <WjBackground
+        <LinearGradient
+          start={{x: 0, y: 0}}
+          end={{x: 1, y: 0}}
+          colors={['#420E92', '#E7003F']}
           style={{
-            height: height * 0.2,
+            height: 'auto',
             borderBottomRightRadius: 20,
             borderBottomLeftRadius: 20,
-          }}
-        />
-        <View style={styles.aView}>
-          <View style={styles.bView}>
-            <View style={[styles.topView]}>
-              <ProfilePicture
-                picture={userData?.profile_image}
-                id={userData?.id}
-                name={
-                  userData?.first_name?.slice(0, 1) +
-                  userData?.last_name?.slice(0, 1)
-                }
-                style={styles.avatarView}
-              />
+          }}>
+          <View style={[styles.topView]}>
+            <ProfilePicture
+              picture={userData?.profile_image}
+              id={userData?.id}
+              name={
+                userData?.first_name?.slice(0, 1) +
+                userData?.last_name?.slice(0, 1)
+              }
+              style={styles.avatarView}
+            />
 
-              <View
-                style={{
-                  width: widthConverter(250),
-                  marginLeft: 20,
-                  justifyContent: 'center',
-                }}>
-                <Label font={14} notAlign bold style={{color: '#FFFFFF'}}>
-                  {userData?.first_name?.charAt(0)?.toUpperCase() +
-                    userData?.first_name?.slice(1)}{' '}
-                  {userData?.last_name?.charAt(0)?.toUpperCase() +
-                    userData?.last_name?.slice(1)}
-                </Label>
-                <Label
-                  primary
-                  notAlign
-                  font={14}
-                  bold
-                  style={{color: '#FFFFFF'}}>
-                  {userData?.designation}
-                  {userData?.company_name ? (
-                    <Label primary font={14} style={{color: '#e2acc7'}}>
-                      {' '}
-                      at
-                    </Label>
-                  ) : null}{' '}
-                  {userData?.company_name}
-                </Label>
-              </View>
+            <View
+              style={{
+                width: widthConverter(250),
+                marginLeft: 20,
+                justifyContent: 'center',
+              }}>
+              <Label font={14} notAlign bold style={{color: '#FFFFFF'}}>
+                {userData?.first_name?.charAt(0)?.toUpperCase() +
+                  userData?.first_name?.slice(1)}{' '}
+                {userData?.last_name?.charAt(0)?.toUpperCase() +
+                  userData?.last_name?.slice(1)}
+              </Label>
             </View>
           </View>
+        </LinearGradient>
+
+        <View style={styles.aView}>
           <FlatList
             data={data2}
             contentContainerStyle={{
@@ -208,7 +198,6 @@ const index = ({props, navigation}) => {
                 <View
                   style={{
                     width: width,
-                    marginTop: 5,
                   }}>
                   <TouchableOpacity
                     onPress={() => {
@@ -231,8 +220,11 @@ const index = ({props, navigation}) => {
                           selected: 1,
                         });
                       }
-                      if (item.name === 'My order') {
+                      if (item.name === 'My purchases') {
                         navigation.navigate('Orders');
+                      }
+                      if (item.name === 'My Tickets') {
+                        navigation.navigate('Entries');
                       }
                       if (item.name === 'Logout') {
                         signOut();
@@ -246,19 +238,22 @@ const index = ({props, navigation}) => {
                       }
                     }}>
                     <View
-                      style={{flexDirection: 'row', marginLeft: width * 0.05}}>
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        marginLeft: width * 0.05,
+                        paddingVertical: 4,
+                      }}>
                       <Image
                         style={styles.iconImage}
                         source={item?.icon}
-                        resizeMode="center"
+                        resizeMode="contain"
                       />
                       <Text
                         style={[
                           styles.text,
                           {
                             color: '#0B2142',
-                            height: heightPercentageToDP('5%'),
-                            top: 10,
                           },
                         ]}>
                         {item.name}
@@ -270,7 +265,7 @@ const index = ({props, navigation}) => {
             }}
           />
 
-          <View style={{width: '95%', alignItems: 'center', marginTop: 10}}>
+          <View style={{width: '95%', alignItems: 'center'}}>
             <View
               style={{
                 height: 1,
@@ -364,8 +359,7 @@ const index = ({props, navigation}) => {
                   flexDirection: 'row',
                   marginTop: 16,
                 }}>
-                <TouchableOpacity
-                  onPress={() => Linking.openURL(`tel:+971501235240`)}>
+                <TouchableOpacity onPress={() => navigation.navigate('FAQS')}>
                   <View
                     style={[
                       styles.bottomBtnView,
@@ -425,25 +419,22 @@ const index = ({props, navigation}) => {
                 <View
                   style={{
                     backgroundColor: '#E9E3F0',
-                    width: width * 0.4,
+                    width: width * 0.5,
                     height: height * 0.059,
                     borderWidth: 1,
                     borderColor: '#E9E3F0',
                     borderRadius: height * 0.06,
                     flexDirection: 'row',
                     justifyContent: 'center',
+                    alignItems: 'center',
                     marginTop: 20,
                   }}>
                   <Text
-                    style={[
-                      styles.text,
-                      {
-                        marginTop: 10,
-                        color: '#420E92',
-                        fontSize: RFValue(14),
-                        fontFamily: 'Axiforma-SemiBold',
-                      },
-                    ]}>
+                    style={{
+                      color: '#420E92',
+                      fontSize: RFValue(14),
+                      fontFamily: 'Axiforma-SemiBold',
+                    }}>
                     Legal
                   </Text>
                 </View>
@@ -453,6 +444,16 @@ const index = ({props, navigation}) => {
             <SelectCurrencyModal ModalRef={ModalStateCurrency} details />
           </View>
         </View>
+
+        <Text
+          style={{
+            fontSize: 11,
+            color: '#cccccc',
+            paddingHorizontal: 8,
+            paddingBottom: 8,
+          }}>
+          Version: 0.0.{packageJson.version}
+        </Text>
       </ScrollView>
     </View>
   );
@@ -483,7 +484,7 @@ const styles = StyleSheet.create({
   aView: {
     alignItems: 'center',
     width: widthPercentageToDP('100%'),
-    marginTop: height * 0.05,
+    // marginTop: height * 0.05,
   },
   bView: {
     // backgroundColor: "rgba(0,0,0,0.4)",
@@ -508,8 +509,11 @@ const styles = StyleSheet.create({
   },
   topView: {
     width: widthPercentageToDP('100%'),
-    paddingVertical: 10,
+    marginTop: 50,
+    paddingVertical: 20,
     flexDirection: 'row',
+    display: 'flex',
+    alignItems: 'center',
   },
   avatarView: {
     width: height * 0.105,
@@ -530,9 +534,10 @@ const styles = StyleSheet.create({
     marginLeft: 15,
   },
   text: {
-    fontFamily: 'Axiformam Regular',
+    fontFamily: 'Axiforma-Regular',
     color: '#0B2142',
     fontSize: RFValue(13),
+    textTransform: 'capitalize',
   },
   rowView: {
     width: width * 0.9,
@@ -551,15 +556,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   iconImage: {
-    width: width * 0.06,
-    height: height * 0.04,
-    resizeMode: 'contain',
-    marginTop: 6,
+    width: width * 0.05,
+    height: height * 0.05,
     marginRight: 10,
   },
   bottomImage: {
-    width: width * 0.18,
-    height: height * 0.1,
+    width: 55,
+    height: 55,
+    margin: 10,
+
     resizeMode: 'contain',
   },
   Margin: {

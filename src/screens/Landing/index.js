@@ -12,6 +12,7 @@ import {
   ImageBackground,
   SafeAreaView,
   Platform,
+  StatusBar,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {FormatNumber, wait} from '../../Constants/Functions';
@@ -102,7 +103,10 @@ const index = props => {
     NavigateToQuiz();
   }, []);
   const NavigateToQuiz = () => {
-    if (LandingData?.gameShow?.status === 'on_boarding') {
+    if (
+      parseInt(LandingData.updatedVersion) === parseInt(packageJson.version) &&
+      LandingData?.gameShow?.status === 'on_boarding'
+    ) {
       navigation.navigate('GameStack', {
         screen: 'Quiz',
         params: {
@@ -177,6 +181,7 @@ const index = props => {
   }
   return (
     <SafeAreaView>
+      {/* <StatusBar barStyle="#420E92" /> */}
       <View>
         <Header
           style={{
@@ -259,7 +264,7 @@ const index = props => {
                           fontFamily: 'Axiforma-SemiBold',
                         },
                       ]}>
-                      Your balance:{' '}
+                      Your Balance:{' '}
                       <Text
                         style={[
                           styles.text,
@@ -462,7 +467,6 @@ const index = props => {
               renderItem={({item}) => (
                 <ClosingSoonCard
                   onPress={() => {
-                    dispatch6(ProductDetails(item?.product?.id));
                     navigation.navigate('PRODUCTS', {
                       screen: 'ProductDetail',
                       params: {productId: item?.product?.id},
@@ -553,7 +557,7 @@ const index = props => {
                       fontSize: 20,
                       fontFamily: 'Axiforma-Bold',
                     }}>
-                    FANJOY
+                    Fanjoy
                   </Text>
                   <Text
                     style={{
@@ -561,7 +565,7 @@ const index = props => {
                       fontSize: 16,
                       fontFamily: 'Axiforma-Regular',
                     }}>
-                    Products By Creators
+                    Products by creators
                   </Text>
                 </View>
                 <LongButton
@@ -574,7 +578,7 @@ const index = props => {
                     fontFamily: 'Axiforma-SemiBold',
                     fontSize: 14,
                   }}
-                  text="View all Creators"
+                  text="View all stars"
                   font={16}
                   shadowless
                   onPress={() => {

@@ -1,24 +1,23 @@
-import React, { useRef } from "react";
-import { View, Image, StyleSheet, Dimensions } from "react-native";
+import React, {useRef} from 'react';
+import {View, Image, StyleSheet, Dimensions} from 'react-native';
 
-import { Images, Colors } from "../Constants/Index";
-import Label from "./Label";
-import LongButton from "./LongButton";
+import {Images, Colors} from '../Constants/Index';
+import Label from './Label';
+import LongButton from './LongButton';
 
+import {useNavigation} from '@react-navigation/native';
 
-import { useNavigation } from "@react-navigation/native";
+const {width, height} = Dimensions.get('window');
 
-const { width, height } = Dimensions.get("window");
-
-const NotFound = (props) => {
+const NotFound = props => {
   return (
     <View style={props.style}>
-      <Label primary bold headingtype="h1" style={styles.Heading}>
-        No {props.text} found
+      <Label dark bold headingtype="h1" style={styles.Heading}>
+        No {props.text} found!
       </Label>
       <Label dark style={styles.Info}>
         {props.desc ||
-          "Sorry, we don’t have enough data to show you right now. Please check again later."}
+          'Sorry, we don’t have enough data to show you right now. Please check again later.'}
       </Label>
     </View>
   );
@@ -27,31 +26,31 @@ const NotFound = (props) => {
 const styles = StyleSheet.create({
   Img: {
     marginTop: height * 0.03,
-    resizeMode: "contain",
+    resizeMode: 'contain',
     width: width * 0.625,
     height: height * 0.2,
-    alignSelf: "center",
+    alignSelf: 'center',
   },
   Heading: {
     marginTop: height * 0.02,
-    color:"#fff"
+    color: '#ffff',
   },
   Info: {
     marginTop: height * 0.01,
     width: width * 0.8,
     lineHeight: height * 0.025,
-    color:"#ffffff"
+    color: '#ffff',
   },
   SmallBorder: {
     width: width * 0.15,
     height: 2,
     backgroundColor: Colors.SMALL_LINE,
-    alignSelf: "center",
+    alignSelf: 'center',
     marginTop: height * 0.03,
   },
   HeadingQuestion: {
     marginTop: height * 0.02,
-    color:"red"
+    color: 'red',
   },
   Btn: {
     marginTop: height * 0.02,

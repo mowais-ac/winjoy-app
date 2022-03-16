@@ -24,6 +24,7 @@ function Contactus() {
   const [success, setSuccess] = useState(false);
   console.log(message);
   const post_Api = async () => {
+    setIsLoading(true);
     const token = await EncryptedStorage.getItem('Token');
     const body = {message: message};
     const requestOptions = {
@@ -41,9 +42,8 @@ function Contactus() {
     )
       .then(async response => response.json())
       .then(async res => {
-        setIsLoading(true);
-        console.log(res);
         setSuccess(true);
+        setIsLoading(false);
       })
       .catch(e => {
         console.log(e);
@@ -57,21 +57,28 @@ function Contactus() {
           end={{x: 1, y: 0}}
           colors={['#f8d7e8', '#c7dfe8']}
           style={{paddingBottom: 10, height: 750}}>
-          <WjBackground
+          <LinearGradient
+            start={{x: 0, y: 0}}
+            end={{x: 1, y: 0}}
+            colors={['#420E92', '#E7003F']}
             style={{
-              height: 155,
+              height: 'auto',
               borderBottomRightRadius: 20,
               borderBottomLeftRadius: 20,
-            }}
-          />
-          <Header style={{top: 0, position: 'absolute', marginTop: 10}} />
+            }}>
+            <Header />
+            <View
+              style={{
+                alignItems: 'center',
+                marginVertical: 15,
+              }}>
+              <Text style={[styles.headerText]}>Contact Us</Text>
+              <Text style={styles.subHeaderText}>
+                We're here to help and answer any questions you might have.
+              </Text>
+            </View>
+          </LinearGradient>
 
-          <View style={{marginTop: height * 0.1, alignItems: 'center'}}>
-            <Text style={[styles.headerText]}>Contact Us</Text>
-            <Text style={styles.subHeaderText}>
-              We're here to help and answer any questions you might have.
-            </Text>
-          </View>
           {!success ? (
             <>
               <View
@@ -109,11 +116,8 @@ function Contactus() {
                       backgroundColor: '#420e92',
                       borderRadius: 40,
                     }}>
-                    {/* {isLoading && (
-                      <ActivityIndicator size="large" color="#ffff" />
-                    )} */}
                     {isLoading ? (
-                      <ActivityIndicator size="large" color="white" />
+                      <ActivityIndicator size="large" color="#ffffff" />
                     ) : (
                       <Text
                         style={{
@@ -125,15 +129,19 @@ function Contactus() {
                         Send Message
                       </Text>
                     )}
-                    {/*   <Text
-                      style={{
-                        fontSize: 17,
-                        color: '#ffff',
-                        textAlign: 'center',
-                        fontFamily: 'Axiforma-Bold',
-                      }}>
-                      Send Message
-                    </Text> */}
+                    {/* {isLoading ? (
+                      <ActivityIndicator size="large" color="white" />
+                    ) : (
+                      <Text
+                        style={{
+                          fontSize: 17,
+                          color: '#ffff',
+                          textAlign: 'center',
+                          fontFamily: 'Axiforma-Bold',
+                        }}>
+                        Send Message
+                      </Text>
+                    )} */}
                   </View>
                 </TouchableOpacity>
               </View>

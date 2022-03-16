@@ -104,16 +104,27 @@ const index = ({props, navigation}) => {
           <Text
             style={[
               styles.heading,
+              {
+                marginHorizontal: 50,
+              },
+            ]}>
+            Play daily at 8 PM and <Text style={{color: '#D9FE51'}}>WIN</Text>{' '}
+            cash prizes
+          </Text>
+
+          {/* <Text
+            style={[
+              styles.heading,
               {width: width * 0.8, marginTop: height * 0.08},
             ]}>
             Daily Challenge &<Text style={{color: '#D9FE51'}}>WIN</Text>
-          </Text>
+          </Text> */}
           <Label
             primary
             font={16}
             bold
             dark
-            style={{color: '#ffff', lineHeight: 27}}>
+            style={{color: '#ffff', lineHeight: 25, marginVertical: 5}}>
             Answer 10 simple questions and WIN amazing prizes
           </Label>
 
@@ -196,7 +207,12 @@ const index = ({props, navigation}) => {
             onPress={() => {
               AddModalState.current(true);
             }}>
-            <View style={{flexDirection: 'row', marginTop: height * 0.03}}>
+            <View
+              style={{
+                flexDirection: 'row',
+                marginTop: height * 0.03,
+                marginVertical: 10,
+              }}>
               <Image
                 style={{width: 35, height: 35}}
                 source={require('../../assets/imgs/circlePlaybtn.png')}
@@ -207,7 +223,7 @@ const index = ({props, navigation}) => {
                 bold
                 dark
                 style={{color: '#ffff', width: width * 0.4}}>
-                How it works
+                How to play
               </Label>
             </View>
           </TouchableOpacity>
@@ -230,7 +246,7 @@ const index = ({props, navigation}) => {
                 Buy/Earn Lives
               </Label>
               <Text style={{color: '#000000'}}>
-                Stay in the game even after the wrong answer
+                Stay in the game even after answering a question incorrectly
               </Text>
             </View>
             <ImageBackground
@@ -268,16 +284,19 @@ const index = ({props, navigation}) => {
             }
             style={{paddingVertical: 14}}>
             <Label primary font={13} bold style={{color: '#E61C54'}}>
-              View Detail
+              View details
             </Label>
           </TouchableOpacity>
         </View>
-        {triviaJoyData?.banners ? (
-          <TriviaJoyBottomList data={triviaJoyData.banners} />
-        ) : null}
+        <View style={{marginVertical: 10}}>
+          {triviaJoyData?.banners ? (
+            <TriviaJoyBottomList data={triviaJoyData.banners} />
+          ) : null}
+        </View>
 
         <View style={{marginBottom: height * 0.05}} />
       </LinearGradient>
+
       <HowItWorkModal
         ModalRef={AddModalState}
         details
@@ -294,13 +313,14 @@ const index = ({props, navigation}) => {
 
 const styles = StyleSheet.create({
   mainView: {
-    height: height * 0.5,
+    height: 'auto',
     width: width,
     // borderBottomLeftRadius: 20,
     // borderBottomRightRadius: 20,
     borderTopLeftRadius: 0,
     borderTopRightRadius: 0,
     alignItems: 'center',
+    paddingVertical: 25,
   },
   newGameView: {
     marginTop: 10,
@@ -320,11 +340,11 @@ const styles = StyleSheet.create({
   heading: {
     color: '#ffff',
     fontFamily: 'Axiforma-Bold',
-    fontSize: 30,
-    width: widthConverter(210),
+    fontSize: 20,
+    //width: widthConverter(210),
     textAlign: 'center',
-    lineHeight: heightConverter(40),
-    marginTop: heightConverter(30),
+    lineHeight: 27,
+    marginTop: 65,
   },
   viewLifeDetails: {
     backgroundColor: '#F6EEF1',

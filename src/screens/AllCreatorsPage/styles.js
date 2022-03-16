@@ -11,10 +11,12 @@ export default StyleSheet.create({
     color: '#D9FE51',
     fontFamily: 'Axiforma-SemiBold',
     fontSize: RFValue(22),
+    lineHeight: 30,
   },
   subHeaderText: {
     color: '#FFFFFF',
     fontFamily: 'Axiforma-Regular',
+    lineHeight: 20,
   },
   playBtn: {
     width: 60,
@@ -22,6 +24,7 @@ export default StyleSheet.create({
     marginTop: 15,
   },
   textHeading: {
+    textAlign: 'center',
     fontFamily: 'Axiforma-Bold',
     color: '#eb3d6e',
     fontSize: RFValue(13),

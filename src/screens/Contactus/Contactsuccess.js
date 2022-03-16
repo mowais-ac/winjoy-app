@@ -10,10 +10,11 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
-
+import {useNavigation} from '@react-navigation/native';
 const {width, height} = Dimensions.get('window');
 
-function Contactsuccess() {
+const Contactsuccess = () => {
+  const navigation = useNavigation();
   return (
     <>
       <View
@@ -36,6 +37,7 @@ function Contactsuccess() {
         </Text>
         <View>
           <TouchableOpacity
+            onPress={() => navigation.goBack()}
             style={{
               alignSelf: 'center',
             }}>
@@ -62,7 +64,7 @@ function Contactsuccess() {
       </View>
     </>
   );
-}
+};
 
 export default Contactsuccess;
 

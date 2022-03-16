@@ -1,12 +1,12 @@
-import React from "react";
-import { StyleSheet, Text, Dimensions } from "react-native";
-import { RFValue } from "react-native-responsive-fontsize";
+import React from 'react';
+import {StyleSheet, Text, Dimensions} from 'react-native';
+import {RFValue} from 'react-native-responsive-fontsize';
 
-import { Colors } from "../Constants/Index";
+import {Colors} from '../Constants/Index';
 
-const { width, height } = Dimensions.get("window");
+const {width, height} = Dimensions.get('window');
 
-const Label = (props) => {
+const Label = props => {
   const {
     style,
     underline,
@@ -22,30 +22,31 @@ const Label = (props) => {
     muted,
     darkmuted,
     font,
+    marginVertical,
   } = props;
 
   const styles = StyleSheet.create({
     text: {
       color: Colors.LABEL,
       width: width * 0.9,
-      fontFamily: "Axiforma-Regular",
+      fontFamily: 'Axiforma-Regular',
       fontSize: GetFontSize(props.headingtype),
     },
     light: {
-      fontFamily: "Axiforma-Light",
+      fontFamily: 'Axiforma-Light',
     },
-    underline: { textDecorationLine: "underline" },
-    centered: { textAlign: "center", alignSelf: "center" },
+    underline: {textDecorationLine: 'underline'},
+    centered: {textAlign: 'center', alignSelf: 'center'},
     bold: {
-      fontFamily: "Axiforma-SemiBold",
+      fontFamily: 'Axiforma-SemiBold',
     },
-    bold2: { fontFamily: "Axiforma-Bold" },
-    dark: { color: Colors.DARK_LABEL },
+    bold2: {fontFamily: 'Axiforma-Bold'},
+    dark: {color: Colors.DARK_LABEL},
     primary: {
       color: Colors.REDESH,
     },
     medium: {
-      fontFamily: "Axiforma-Medium",
+      fontFamily: 'Axiforma-Medium',
     },
     ChangeFont: {
       fontSize: RFValue(parseInt(font)),
@@ -56,6 +57,7 @@ const Label = (props) => {
     darkmuted: {
       color: Colors.DARK_MUTED,
     },
+    marginVertical: {marginVertical: 10},
   });
 
   const TextStyle = [
@@ -71,11 +73,12 @@ const Label = (props) => {
     medium && styles.medium,
     muted && styles.muted,
     darkmuted && styles.darkmuted,
+    marginVertical && styles.marginVertical,
     style,
   ];
   return (
     <>
-      <Text  numberofLines={3} style={TextStyle}>
+      <Text numberofLines={3} style={TextStyle}>
         {text}
         {children}
       </Text>
@@ -83,17 +86,17 @@ const Label = (props) => {
   );
 };
 
-const GetFontSize = (e) => {
+const GetFontSize = e => {
   switch (e) {
-    case "h1":
+    case 'h1':
       return RFValue(22);
-    case "h2":
+    case 'h2':
       return RFValue(20);
-    case "h3":
+    case 'h3':
       return RFValue(18);
-    case "h4":
+    case 'h4':
       return RFValue(16);
-    case "h5":
+    case 'h5':
       return RFValue(14);
     default:
       return RFValue(12);

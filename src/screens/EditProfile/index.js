@@ -8,7 +8,7 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
-
+import LinearGradient from 'react-native-linear-gradient';
 import Background from '../../Components/Background';
 import SafeArea from '../../Components/SafeArea';
 import Label from '../../Components/Label';
@@ -246,7 +246,7 @@ const index = ({route, navigation}) => {
     const {name, value, style} = props;
     return (
       <View style={[styles.InputView, style]}>
-        <Label notAlign darkmuted>
+        <Label marginVertical notAlign darkmuted>
           {name}
         </Label>
         <InputField
@@ -495,16 +495,25 @@ const index = ({route, navigation}) => {
   return (
     <ScrollView>
       <SafeArea>
-        <Background height={0.15} />
-        <Header value={3} />
-        <View style={styles.MainTop}>
-          {userData !== null && (
-            <UserInfo style={styles.header} OwnUser popup status />
-          )}
-        </View>
-        {OldUser && <GetData />}
+        <LinearGradient
+          start={{x: 0, y: 0}}
+          end={{x: 1, y: 0}}
+          colors={['#420E92', '#E7003F']}
+          style={{
+            height: 'auto',
+            borderBottomRightRadius: 20,
+            borderBottomLeftRadius: 20,
+          }}>
+          <Header />
+          <View style={styles.MainTop}>
+            {userData !== null && (
+              <UserInfo style={styles.header} OwnUser popup status />
+            )}
+          </View>
+          {OldUser && <GetData />}
 
-        <View style={styles.Margin} />
+          <View style={styles.Margin} />
+        </LinearGradient>
       </SafeArea>
     </ScrollView>
   );

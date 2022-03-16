@@ -58,13 +58,13 @@ const index = ({route, navigation}) => {
           start={{x: 0, y: 0}}
           end={{x: 1, y: 0}}
           colors={['#f8d7e8', '#c7dfe8']}
-          style={{height: '100%'}}>
+          style={{flex: 1, flexDirection: 'column'}}>
           <Image
             source={{uri: creatorExpList?.experience?.cover_photo}}
             style={styles.mainView}
           />
           <Header style={{top: 0, position: 'absolute', width: width}} />
-          <View style={{marginTop: height * 0.085}}>
+          <View style={{marginTop: -107}}>
             <Text
               style={{
                 color: '#ffffff',
@@ -87,9 +87,39 @@ const index = ({route, navigation}) => {
           </View>
           <View
             style={{
+              marginTop: 50,
+              width: '100%',
+              flexDirection: 'row',
+              justifyContent: 'center',
+            }}>
+            <View>
+              <Text
+                style={[
+                  styles.textHeading,
+                  {textAlign: 'center', marginLeft: 3},
+                ]}>
+                {creatorExpList?.experience?.title}
+              </Text>
+
+              <Text
+                style={{
+                  color: '#000000',
+                  fontFamily: 'Axiforma-Regular',
+                  textAlign: 'center',
+                  fontSize: RFValue(12),
+                  marginTop: 4,
+                  paddingHorizontal: 15,
+                  lineHeight: height * 0.025,
+                }}>
+                {creatorExpList?.experience?.short_desc}
+              </Text>
+            </View>
+          </View>
+          <View
+            style={{
               paddingVertical: height * 0.04,
               paddingHorizontal: 5,
-              marginTop: height * 0.07,
+              marginTop: height * 0.001,
             }}>
             <FlatList
               data={creatorExpList?.experience_celebrities}

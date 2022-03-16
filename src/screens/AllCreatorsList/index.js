@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {
+  FlatList,
   SafeAreaView,
   View,
   Dimensions,
@@ -25,6 +26,7 @@ const index = ({route, navigation}) => {
   const [showResult, setShowResult] = useState(false);
   const allCreatorsList = useSelector(state => state.app.allCreatorsList);
   // const [experienceId, setExperienceId] = useState();
+  console.log({ProductList: resData});
   useEffect(() => {
     dispatch(AllCreatorsList());
 
@@ -56,104 +58,94 @@ const index = ({route, navigation}) => {
   };
   return (
     <SafeAreaView style={styles.safeStyle}>
-      <LinearGradient
-        start={{x: 0, y: 0}}
-        end={{x: 1, y: 0}}
-        colors={['#f8d7e8', '#c7dfe8']}
-        style={{height: height}}>
-        <WjBackground
-          style={{
-            height: height * 0.25,
-            borderBottomRightRadius: 20,
-            borderBottomLeftRadius: 20,
-          }}
-        />
-        <Header style={{top: 0, position: 'absolute', marginTop: 10}} />
-
-        <View style={{marginTop: 55, alignItems: 'center'}}>
-          <Text style={[styles.headerText]}>Our Creators</Text>
-          <Text style={styles.subHeaderText}>Created By Stars</Text>
-        </View>
-        <View
-          style={{
-            width: '100%',
-            justifyContent: 'flex-end',
-            alignItems: 'flex-end',
-            paddingHorizontal: 15,
-          }}>
-          <TouchableOpacity
-            onPress={() => {
-              setShowResult(!showResult);
+      <ScrollView>
+        <LinearGradient
+          start={{x: 0, y: 0}}
+          end={{x: 1, y: 0}}
+          colors={['#f8d7e8', '#c7dfe8']}
+          style={{flex: 1}}>
+          <LinearGradient
+            start={{x: 0, y: 0}}
+            end={{x: 1, y: 0}}
+            colors={['#420E92', '#E7003F']}
+            style={{
+              height: 'auto',
+              borderBottomRightRadius: 20,
+              borderBottomLeftRadius: 20,
             }}>
-            <Icon name="search" size={30} color="#ffffff" />
-          </TouchableOpacity>
-        </View>
-        <View
-          style={{
-            width: '100%',
-            alignItems: 'center',
-            marginTop: height * 0.03,
-          }}>
-          {showResult ? (
+            <Header />
+            <View style={{marginTop: 20, alignItems: 'center'}}>
+              <Text style={[styles.headerText]}>Our Creators</Text>
+              <Text style={styles.subHeaderText}>Created By Stars</Text>
+            </View>
             <View
               style={{
-                backgroundColor: '#ffffff',
-                width: '90%',
-                borderRadius: 25,
+                width: '100%',
+                justifyContent: 'flex-end',
+                alignItems: 'flex-end',
+                paddingHorizontal: 15,
               }}>
-              <TextInput
-                style={{
-                  paddingVertical: height * 0.015,
-                  paddingLeft: 20,
-                  fontFamily: 'Axiforma-Regular',
-                  color: '#000000',
-                }}
-                onChangeText={text => searchEmployee(text)}
-                // value={number}
-                placeholder="Search by name"
-                placeholderTextColor={'#420E92'}
-                keyboardType="default"
-              />
+              <TouchableOpacity
+                onPress={() => {
+                  setShowResult(!showResult);
+                }}>
+                <Icon name="search" size={30} color="#ffffff" />
+              </TouchableOpacity>
             </View>
-          ) : null}
-          <View style={{height: height * 0.73}}>
-            <FlatList
-              data={resData}
-              style={{
-                paddingLeft: 20,
-              }}
-              numColumns={2}
-              // horizontal={true}
+          </LinearGradient>
 
-              renderItem={({item}) => (
-                <FanJoyCard
-                  onPress={() => {
-                    onPressCreator(item?.id);
-                  }}
-                  name={item?.first_name + ' ' + item?.last_name}
-                  imageUrl={item?.profile_image}
-                  fans={item.fans}
+          <View
+            style={{
+              width: '100%',
+              alignItems: 'center',
+              marginTop: height * 0.03,
+            }}>
+            {showResult ? (
+              <View
+                style={{
+                  backgroundColor: '#ffffff',
+                  width: '90%',
+                  borderRadius: 25,
+                }}>
+                <TextInput
                   style={{
-                    width: 160,
-                    marginRight: 20,
-                    height: 180,
+                    paddingVertical: height * 0.015,
+                    paddingLeft: 20,
+                    fontFamily: 'Axiforma-Regular',
+                    color: '#000000',
                   }}
+                  onChangeText={text => searchEmployee(text)}
+                  // value={number}
+                  placeholder="Search by name"
+                  placeholderTextColor={'#420E92'}
+                  keyboardType="default"
                 />
-              )}
-              //keyExtractor={(e) => e.id.toString()}
-              contentContainerStyle={{
-                marginTop: 10,
-                paddingBottom: 20,
-              }}
-              ItemSeparatorComponent={() => <View style={{height: 15}} />}
-              // refreshControl={
-              //   <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
-              // }
-              keyExtractor={item => item.id}
-            />
+              </View>
+            ) : null}
+            <View
+              style={{
+                flexDirection: 'row',
+                flexWrap: 'wrap',
+                width: '100%',
+              }}>
+              {resData?.map((item, index) => {
+                return (
+                  <View style={{padding: 8, width: '50%'}}>
+                    <FanJoyCard
+                      key={index}
+                      name={item?.first_name + ' ' + item?.last_name}
+                      imageUrl={item?.profile_image}
+                      fans={item.fans}
+                      id={item.id}
+                      fluid={true}
+                    />
+                  </View>
+                );
+              })}
+            </View>
           </View>
-        </View>
-      </LinearGradient>
+        </LinearGradient>
+      </ScrollView>
     </SafeAreaView>
   );
 };

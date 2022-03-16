@@ -491,6 +491,7 @@ export const RemoveCartData = id => {
   } catch (error) {}
 };
 export const ProductDetails = id => {
+  console.log({Product_id: id});
   try {
     return async dispatch => {
       dispatch({type: types.SHOW_LOADER});

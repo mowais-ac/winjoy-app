@@ -160,17 +160,21 @@ const index = ({navigation}) => {
 
   return (
     <SafeAreaView style={{height: height}}>
-      <WjBackground
+      <LinearGradient
+        start={{x: 0, y: 0}}
+        end={{x: 1, y: 0}}
+        colors={['#420E92', '#E7003F']}
         style={{
-          height: height * 0.19,
+          height: 'auto',
           borderBottomRightRadius: 20,
           borderBottomLeftRadius: 20,
-        }}
-      />
-      <Header value={3} />
-      <View style={{alignItems: 'center'}}>
-        <Text style={[styles.headerText, {marginTop: 20}]}>Cart</Text>
-      </View>
+        }}>
+        <Header />
+        <View style={{alignItems: 'center'}}>
+          <Text style={[styles.headerText, {marginVertical: 20}]}>Cart</Text>
+        </View>
+      </LinearGradient>
+
       {cartData?.data === null ? (
         <Label primary bold headingtype="h4" style={{marginTop: 15}}>
           No data
@@ -270,7 +274,7 @@ const index = ({navigation}) => {
                   // ModalState.current(true);
                   // PostData();
                   alert(
-                    'Thankyou for your interest, this feature is comming soon',
+                    'Thank you for your interest. This feature is coming soon',
                   );
                 }}
                 disabled={activity}

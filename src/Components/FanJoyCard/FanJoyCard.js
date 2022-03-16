@@ -6,7 +6,7 @@ import {RFValue} from 'react-native-responsive-fontsize';
 const {width, height} = Dimensions.get('window');
 import {useNavigation} from '@react-navigation/native';
 
-function FanJoyCard({style, id, name, fans, imageUrl}) {
+function FanJoyCard({style, id, name, fans, imageUrl, fluid}) {
   function nFormatter(num) {
     if (num >= 1000000000) {
       return (num / 1000000000).toFixed(1).replace(/\.0$/, '') + 'G';
@@ -28,35 +28,35 @@ function FanJoyCard({style, id, name, fans, imageUrl}) {
     });
   };
   return (
-    <TouchableOpacity onPress={onPressCard} style={[{width: 180}, style]}>
-      <View>
-        <Image
-          style={[styles.bgImage, style]}
-          source={{
-            uri: imageUrl,
-          }}
-        />
-        <LinearGradient
-          colors={['rgba(0,0,128,0)', 'rgba(0,0,128,0)', 'rgba(0,0,128,0.9)']}
-          style={[styles.bgView, style]}>
-          <Text
-            style={{
-              color: '#ffffff',
-              fontFamily: 'Axiforma-SemiBold',
-              fontSize: RFValue(11),
-            }}>
-            {name}
-          </Text>
-          <Text
-            style={{
-              color: '#ffffff',
-              fontFamily: 'Axiforma-Regular',
-              fontSize: RFValue(11),
-            }}>
-            {nFormatter(fans)} Fans
-          </Text>
-        </LinearGradient>
-      </View>
+    <TouchableOpacity
+      onPress={onPressCard}
+      style={[!fluid ? {width: 180} : {width: '100%'}, style]}>
+      <Image
+        style={[styles.bgImage, style]}
+        source={{
+          uri: imageUrl,
+        }}
+      />
+      <LinearGradient
+        colors={['rgba(0,0,128,0)', 'rgba(0,0,128,0)', 'rgba(0,0,128,0.9)']}
+        style={[styles.bgView, style]}>
+        <Text
+          style={{
+            color: '#ffffff',
+            fontFamily: 'Axiforma-SemiBold',
+            fontSize: RFValue(11),
+          }}>
+          {name}
+        </Text>
+        <Text
+          style={{
+            color: '#ffffff',
+            fontFamily: 'Axiforma-Regular',
+            fontSize: RFValue(11),
+          }}>
+          {nFormatter(fans)} Fans
+        </Text>
+      </LinearGradient>
     </TouchableOpacity>
   );
 }

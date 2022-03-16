@@ -35,6 +35,9 @@ const index = ({props, navigation}) => {
   const [activeSlide, setActiveSlide] = useState();
   const [refreshing, setRefreshing] = useState(false);
   const AddModalState = useRef();
+
+  console.log({props: dealsJoyData?.products});
+
   useEffect(() => {
     dispatch(DealsJoyAPI());
   }, []);
@@ -91,6 +94,20 @@ const index = ({props, navigation}) => {
       }>
       <LinearGradient colors={['#5B0C86', '#E7003F']} style={styles.mainView}>
         <Header style={{top: 5, position: 'absolute', zIndex: 1000, left: 0}} />
+        {/*  <View style={{marginTop: 65, alignItems: 'center'}}>
+          <Text style={[styles.headerText]}>DEALSJOY</Text>
+          <Text style={styles.subHeaderText}>
+            Dont Miss YOUR chance to WIN Great DEALS!
+          </Text>
+          <View
+            style={{
+              height: 1,
+              width: width * 1,
+              backgroundColor: 'rgba(178, 190, 181,0.5)',
+              marginTop: height * 0.02,
+            }}
+          />
+        </View> */}
         <View style={styles.wrap}>
           {loader ? (
             <ActivityIndicator size="large" color="#fff" />
@@ -156,7 +173,7 @@ const index = ({props, navigation}) => {
             marginTop: 10,
             marginBottom: 10,
           }}>
-          Closing Soon
+          LATEST OFFER
         </Label>
         <View>
           <FlatList
@@ -222,7 +239,7 @@ const index = ({props, navigation}) => {
         <View style={{marginBottom: height * 0.01}} />
       </LinearGradient>
       <ScrollView horizontal={true}>
-        {dealsJoyData?.lower_banners?.map(element => {
+        {dealsJoyData?.lower_banners?.map((element, i) => {
           return (
             <View key={i} style={{margin: 10, flexDirection: 'row'}}>
               <Image
@@ -278,6 +295,12 @@ const styles = StyleSheet.create({
     borderRadius: 9,
     height: 9,
   },
+  headerText: {
+    color: '#D9FE51',
+    fontFamily: 'Axiforma-SemiBold',
+    fontSize: RFValue(22),
+    lineHeight: 30,
+  },
   GreybarWidth: {
     width: widthConverter(120),
     height: 9,
@@ -309,6 +332,20 @@ const styles = StyleSheet.create({
     height: height * 0.3,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  subHeaderText: {
+    color: '#FFFFFF',
+    fontFamily: 'Axiforma-Regular',
+    //lineHeight: 20,
+    alignItems: 'center',
+  },
+  textHeading: {
+    textAlign: 'center',
+    fontFamily: 'Axiforma-Bold',
+    color: '#eb3d6e',
+    fontSize: RFValue(13),
+    fontWeight: '400',
+    marginLeft: 20,
   },
 });
 

@@ -23,6 +23,7 @@ function Card({
     <View
       style={{
         width: '100%',
+        height: 230,
         backgroundColor: '#ffffff',
         borderRadius: 10,
         justifyContent: 'center',
@@ -87,12 +88,13 @@ function Card({
       <View
         style={{
           flex: 1,
-          marginTop: 8,
+          // marginTop: 8,
           flexDirection: 'row',
         }}>
+        {console.log({'images::': images})}
         <Carousel
           layout={'default'}
-          resizeMode={'cover'}
+          resizeMode={'contain'}
           autoplayInterval={3000}
           data={images}
           sliderWidth={width}
@@ -101,11 +103,11 @@ function Card({
             return (
               <Image
                 source={{uri: item?.image}}
-                resizeMode={'cover'}
+                resizeMode={'contain'}
                 style={{
                   width: '100%',
                   height: height * 0.3,
-                  // marginTop: height * 0.015,
+                  //marginTop: height * 0.015,
                   alignSelf: 'center',
                 }}
               />

@@ -3,11 +3,10 @@ import {View, Image, Dimensions, TouchableOpacity, Text} from 'react-native';
 import styles from './Styles';
 import Label from '../Label';
 import LinearGradient from 'react-native-linear-gradient';
-import {heightConverter, widthPercentageToDP} from '../Helpers/Responsive';
 import LoaderImage from '../LoaderImage';
-import Config from 'react-native-config';
-import ProgressCircle from 'react-native-progress-circle';
+
 const {width, height} = Dimensions.get('window');
+
 function ClosingSoonCard({item, onPress}) {
   let progress = item.updated_stocks
     ? (item?.updated_stocks / item?.stock) * 100
@@ -19,7 +18,7 @@ function ClosingSoonCard({item, onPress}) {
     <View
       style={{
         width: width * 0.38,
-        height: height * 0.24,
+        height: 'auto',
         backgroundColor: '#ffffff',
         marginLeft: 10,
         borderRadius: 10,
@@ -38,7 +37,11 @@ function ClosingSoonCard({item, onPress}) {
           }}
           resizeMode="center"
         />
-        <Label primary font={11} dark style={{color: '#000000', marginTop: 7}}>
+        <Label
+          primary
+          font={11}
+          dark
+          style={{color: '#000000', marginVerstical: 5}}>
           Get a chance to
           <Label
             notAlign
@@ -51,7 +54,11 @@ function ClosingSoonCard({item, onPress}) {
             WIN
           </Label>
         </Label>
-        <Label bold font={10} dark style={{color: '#000000', width: '95%',height:38}}>
+        <Label
+          bold
+          font={10}
+          dark
+          style={{color: '#000000', height: 38, lineHeight: 12, width: '85%'}}>
           {item?.prize_title}
         </Label>
         {/* <Label  bold font={11} dark style={{ color: "#000000", }}>

@@ -17,7 +17,7 @@ import InputField from '../../Components/InputField';
 import Label from '../../Components/Label';
 import LabelButton from '../../Components/LabelButton';
 import LongButton from '../../Components/LongButton';
-
+import LinearGradient from 'react-native-linear-gradient';
 import {
   JSONtoForm,
   IsVerified,
@@ -101,7 +101,7 @@ const index = ({navigation}) => {
         cpassref.current.Error();
         return;
       }
-      //   Buttonref.current.SetActivity(true);
+      //Buttonref.current.SetActivity(true);
 
       const body = JSONtoForm({
         first_name,
@@ -130,11 +130,11 @@ const index = ({navigation}) => {
           if (res.status && res.status.toLowerCase() === 'success') {
             await EncryptedStorage.setItem('Token', res.data.token);
             console.log('res.data.token', res.data.token);
-            if (await IsVerified(res.data.token)) {
-              navigation.replace('TabsStack');
-            } else {
-              navigation.replace('Verify', {email, phone: phone_no});
-            }
+            /* if (await IsVerified(res.data.token)) {
+              navigation.replace('BottomTabStack');
+            } else { */
+            navigation.replace('Verify', {email, phone: phone_no});
+            /*  } */
           } else {
             Buttonref.current.SetActivity(false);
             const array = res.errors
@@ -172,8 +172,14 @@ const index = ({navigation}) => {
     );
   };
   return (
-    <SafeAreaView>
-      <Background height={1.08} design />
+    <LinearGradient
+      start={{x: 0, y: 0}}
+      end={{x: 1, y: 0}}
+      colors={['#420E92', '#E7003F']}
+      style={{
+        display: 'flex',
+        flex: 1,
+      }}>
       <ScrollView>
         <KeyboardAwareScrollView keyboardDismissMode="interactive">
           <View style={styles.MainTop}>
@@ -282,7 +288,7 @@ const index = ({navigation}) => {
           <View style={{marginTop: height * 0.05}} />
         </KeyboardAwareScrollView>
       </ScrollView>
-    </SafeAreaView>
+    </LinearGradient>
   );
 };
 

@@ -81,30 +81,19 @@ const index = ({route, navigation}) => {
         start={{x: 0, y: 0}}
         end={{x: 1, y: 0}}
         colors={['#f8d7e8', '#c7dfe8']}>
-        <Header
+        <LinearGradient
+          start={{x: 0, y: 0}}
+          end={{x: 1, y: 0}}
+          colors={['#420E92', '#E7003F']}
           style={{
-            position: 'absolute',
-            zIndex: 1000,
-            backgroundColor: headerValue !== 0 ? 'rgba(0,0,0,0.5)' : null,
-            width: '100%',
-            borderBottomRightRadius: 10,
-            borderBottomLeftRadius: 10,
-          }}
-        />
-        <ScrollView
-          onScroll={e => {
-            setHeaderValue(e.nativeEvent.contentOffset.y);
+            height: 'auto',
+            borderBottomRightRadius: 20,
+            borderBottomLeftRadius: 20,
           }}>
-          <WjBackground
-            style={{
-              height: height * 0.24,
-              borderBottomRightRadius: 20,
-              borderBottomLeftRadius: 20,
-            }}
-          />
+          <Header />
           <View
             style={{
-              marginTop: height * 0.09,
+              marginTop: 5,
               height: height * 0.15,
               alignItems: 'center',
             }}>
@@ -119,6 +108,12 @@ const index = ({route, navigation}) => {
               secondText={'Lucky Draw'}
             />
           </View>
+        </LinearGradient>
+
+        <ScrollView
+          onScroll={e => {
+            setHeaderValue(e.nativeEvent.contentOffset.y);
+          }}>
           <View style={{width: '100%', alignItems: 'center'}}>
             {loading ? (
               <ActivityIndicator size="large" color="#000000" />
@@ -126,8 +121,8 @@ const index = ({route, navigation}) => {
               <>
                 {selected === 0 ? (
                   <GameShow
-                   lastWinners={gameShowWinners?.winners}
-                  pastWinners={gameShowWinners?.pastWinners}
+                    lastWinners={gameShowWinners?.winners}
+                    pastWinners={gameShowWinners?.pastWinners}
                     navigation={navigation}
                   />
                 ) : (

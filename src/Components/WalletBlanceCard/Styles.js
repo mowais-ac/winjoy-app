@@ -34,8 +34,9 @@ export default StyleSheet.create({
   },
   Margin: {
     height: height * 0.065,
-    width: width * 0.65,
+    width: '45%',
     backgroundColor: '#fcd9e2',
     borderRadius: 10,
+    margin: 10,
   },
 });

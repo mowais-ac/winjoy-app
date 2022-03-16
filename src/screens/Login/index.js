@@ -10,6 +10,7 @@ import {
   Keyboard,
   I18nManager,
 } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 import {AuthContext} from '../../Components/context';
 import Background from '../../Components/Background';
 import InputField from '../../Components/InputField';
@@ -197,8 +198,14 @@ const index = ({navigation}) => {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <SafeAreaView>
-        <Background height={1} design />
+      <LinearGradient
+        start={{x: 0, y: 0}}
+        end={{x: 1, y: 0}}
+        colors={['#420E92', '#E7003F']}
+        style={{
+          display: 'flex',
+          flex: 1,
+        }}>
         <View style={styles.MainTop}>
           <Image source={Images.Logo} style={styles.Logo} />
           <Label bold2 headingtype="h2" style={[styles.MarginLarge]}>
@@ -212,14 +219,7 @@ const index = ({navigation}) => {
             keyboardType="number-pad"
             phone
           />
-          {/* <InputField
-            style={styles.MarginLarge}
-            ref={emailref}
-            placeholder="Phone number"
-            Icon="user"
-            maxLength={9}
-            keyboardType="number-pad"
-          /> */}
+
           <InputField
             style={styles.MarginSmall}
             ref={passref}
@@ -242,7 +242,7 @@ const index = ({navigation}) => {
             onPress={() => navigation.navigate('ForgotPassword')}
           />
         </View>
-        {/* <SmallButton style={styles.ORButton} text="OR" /> */}
+
         <Label
           bold
           muted
@@ -257,12 +257,6 @@ const index = ({navigation}) => {
             style={[styles.Margin, {backgroundColor: '#ffffff'}]}
             textstyle={{color: '#E7003F'}}
           />
-          {/* <LongButton
-            style={styles.MarginMed}
-            text="Sign in with Google"
-            black
-            Icon="google"
-          /> */}
         </View>
         <SelectLanguageModal
           ModalRef={ModalStateLanguage}
@@ -274,7 +268,7 @@ const index = ({navigation}) => {
           onSelect={LanguageChange}
           activityLang={activityLang.current}
         />
-      </SafeAreaView>
+      </LinearGradient>
     </TouchableWithoutFeedback>
   );
 };
@@ -296,10 +290,6 @@ const styles = StyleSheet.create({
   Margin: {marginTop: height * 0.027},
   MarginMed: {marginTop: height * 0.022},
   MarginSmall: {marginTop: height * 0.015},
-  ORButton: {
-    position: 'absolute',
-    marginTop: height * 0.68,
-  },
 });
 
 export default index;

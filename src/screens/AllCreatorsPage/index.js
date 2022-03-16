@@ -39,17 +39,13 @@ const index = ({route, navigation}) => {
   const dispatch2 = useDispatch();
   const dispatch3 = useDispatch();
   const dispatch4 = useDispatch();
-  const [loading, setLoading] = useState(true);
   const data = useSelector(state => state.app.fanjoyData);
   const expData = useSelector(state => state.app.winExperienceProductData);
   const experienceDetail = useSelector(state => state.app.experienceDetail);
-  console.log({winEx: data?.win_experience});
+  // console.log({winEx: data?.win_experience});
   useEffect(() => {
-    dispatch(getAllCreator());
-<<<<<<< HEAD
+    //dispatch(getAllCreator());
     // console.log('data', data);
-=======
->>>>>>> 37a797bcd3fd9b44cd5cc70eedc41fb00525f0ae
   }, []);
 
   const onPressContinue = () => {
@@ -62,48 +58,48 @@ const index = ({route, navigation}) => {
           start={{x: 0, y: 0}}
           end={{x: 1, y: 0}}
           colors={['#f8d7e8', '#c7dfe8']}>
-          <WjBackground
+          <LinearGradient
+            start={{x: 0, y: 0}}
+            end={{x: 1, y: 0}}
+            colors={['#420E92', '#E7003F']}
             style={{
-              height: height * 0.24,
+              height: 'auto',
               borderBottomRightRadius: 20,
               borderBottomLeftRadius: 20,
-            }}
-          />
-          <Header style={{top: 0, position: 'absolute', marginTop: 10}} />
-
-          <View style={{marginTop: height * 0.08, alignItems: 'center'}}>
-            <Text style={[styles.headerText]}>FANJOY</Text>
-            <Text style={styles.subHeaderText}>
-              {strings('fan_joy.created_by_stars')}
-            </Text>
-            <View
-              style={{
-                height: 1,
-                width: width * 1,
-                backgroundColor: 'rgba(178, 190, 181,0.5)',
-                marginTop: height * 0.02,
-              }}
-            />
-            <TouchableOpacity
-              onPress={() => {
-                AddModalState.current(true);
-              }}>
-              <View style={{flexDirection: 'row', marginTop: height * 0.015}}>
-                <Image
-                  style={{width: 30, height: 30}}
-                  source={require('../../assets/imgs/circlePlaybtn.png')}
-                />
-                <Label
-                  primary
-                  font={RFValue(13)}
-                  bold
-                  dark
-                  style={{color: '#ffff', width: width * 0.4}}>
-                  How it works
-                </Label>
-              </View>
-            </TouchableOpacity>
-          </View>
+            }}>
+            <Header />
+            <View style={{marginTop: height * 0.015, alignItems: 'center'}}>
+              <Text style={[styles.headerText]}>FanJoy</Text>
+              <Text style={styles.subHeaderText}>Created by stars</Text>
+              <View
+                style={{
+                  height: 1,
+                  width: width * 1,
+                  backgroundColor: 'rgba(178, 190, 181,0.5)',
+                  marginTop: height * 0.02,
+                }}
+              />
+              <TouchableOpacity
+                onPress={() => {
+                  AddModalState.current(true);
+                }}>
+                <View style={{flexDirection: 'row', marginVertical: 10}}>
+                  <Image
+                    style={{width: 30, height: 30}}
+                    source={require('../../assets/imgs/circlePlaybtn.png')}
+                  />
+                  <Label
+                    primary
+                    font={RFValue(13)}
+                    bold
+                    dark
+                    style={{color: '#ffff', width: width * 0.4}}>
+                    How it works
+                  </Label>
+                </View>
+              </TouchableOpacity>
+            </View>
+          </LinearGradient>
 
           <View
             style={{
@@ -128,7 +124,7 @@ const index = ({route, navigation}) => {
                   fontFamily: 'Axiforma-SemiBold',
                   fontSize: 14,
                 }}
-                text="View all Creators"
+                text="View all Stars"
                 font={16}
                 shadowless
                 onPress={() => navigation.navigate('AllCreatorsList')}
@@ -179,8 +175,9 @@ const index = ({route, navigation}) => {
                     styles.textHeading,
                     {textAlign: 'center', marginLeft: 3},
                   ]}>
-                  Win an Experience
+                  Win an experience
                 </Text>
+
                 <Text
                   style={{
                     color: '#000000',
@@ -191,8 +188,8 @@ const index = ({route, navigation}) => {
                     paddingHorizontal: 15,
                     lineHeight: height * 0.025,
                   }}>
-                  You just need to shop a product to win an amazing experience
-                  with your favourite stars.
+                  Shop a product to win an amazing experience with your favorite
+                  creator
                 </Text>
               </View>
             </View>
@@ -216,11 +213,19 @@ const index = ({route, navigation}) => {
                       dispatch4(ExperienceProductData(item?.id));
                       celebrityModalState.current(true);
                     }}
+                    fun={() => {
+                      dispatch3({
+                        experienceID: item?.id,
+                        type: types.EXPERIENCE_ID,
+                      });
+                      dispatch4(ExperienceProductData(item?.id));
+                      celebrityModalState.current(true);
+                    }}
                     short_desc={item?.title}
                     thumbnail={item?.thumbnail}
                     style={{
                       marginTop: 5,
-                      height: 210,
+                      height: 218,
                       width: width * 0.4,
                       backgroundColor: '#fff',
                       borderRadius: 15,
@@ -250,7 +255,20 @@ const index = ({route, navigation}) => {
               marginTop: 15,
               paddingBottom: 10,
             }}>
-            <Text style={styles.textHeading}>Buy experience with creators</Text>
+            <Text style={styles.textHeading}>Buy an experience</Text>
+
+            <Text
+              style={{
+                color: '#000000',
+                fontFamily: 'Axiforma-Regular',
+                textAlign: 'center',
+                fontSize: RFValue(12),
+                marginTop: 4,
+                paddingHorizontal: 15,
+                lineHeight: height * 0.025,
+              }}>
+              Simply buy an experience with your favorite creator
+            </Text>
             <FlatList
               showsVerticalScrollIndicator={false}
               showsHorizontalScrollIndicator={false}
@@ -269,7 +287,8 @@ const index = ({route, navigation}) => {
                   short_desc={item?.short_desc}
                   style={{
                     width: width * 0.43,
-                    height: height * 0.32,
+                    flex: 1,
+                    display: 'flex',
                     marginRight: 10,
                   }}
                   textStyle={{lineHeight: 17, paddingBottom: 5}}

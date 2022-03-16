@@ -305,7 +305,6 @@ const PaymentModals = props => {
                   flexDirection: 'row',
                   width: width * 0.9,
                   justifyContent: 'space-between',
-
                   alignSelf: 'center',
                 }}>
                 <View style={[styles.mView, {width: width * 0.4}]}>

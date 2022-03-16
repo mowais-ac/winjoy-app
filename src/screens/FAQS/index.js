@@ -57,29 +57,27 @@ const index = ({route, navigation}) => {
           onScroll={e => {
             setHeaderValue(e.nativeEvent.contentOffset.y);
           }}>
-          <WjBackground
+          <LinearGradient
+            start={{x: 0, y: 0}}
+            end={{x: 1, y: 0}}
+            colors={['#420E92', '#E7003F']}
             style={{
-              height: height * 0.18,
+              height: 'auto',
               borderBottomRightRadius: 20,
               borderBottomLeftRadius: 20,
-            }}
-          />
-          <View
-            style={{
-              marginTop: height * 0.07,
-              height: height * 0.15,
-              alignItems: 'center',
             }}>
-            <View style={{marginBottom: height * 0.01}}>
+            <View
+              style={{marginVertical: 10, alignItems: 'center', marginTop: 50}}>
               <Text style={[styles.headerText]}>FAQS</Text>
             </View>
-          </View>
+          </LinearGradient>
+
           <View
             style={{
               width: '100%',
               alignItems: 'center',
               flex: 1,
-              paddingHorizontal: 10,
+              padding: 10,
             }}>
             <View
               style={{

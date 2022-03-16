@@ -59,6 +59,13 @@ const ModalCelebrityProducts = props => {
           state: !ModelState.state,
         });
         if (props.onClose) props.onClose();
+      }}
+      onDismiss={() => {
+        setModelState({
+          ...ModelState,
+          state: !ModelState.state,
+        });
+        if (props.onClose) props.onClose();
       }}>
       <TouchableWithoutFeedback
         onPress={() => {
@@ -78,7 +85,7 @@ const ModalCelebrityProducts = props => {
             styles.text,
             {textAlign: 'center', marginTop: height * 0.03, width: width * 0.8},
           ]}>
-          Buy one of the following and win
+          Buy one of the following and WIN an experience with
           <Text style={{fontFamily: 'Axiforma-Bold'}}>
             {' '}
             {props?.expData?.experience?.title}{' '}
@@ -88,7 +95,7 @@ const ModalCelebrityProducts = props => {
             ' ' +
             props?.expData?.celebrity?.last_name}
         </Text>
-
+        {/*  {console.log({experiance: props?.expData?.experience?.products})} */}
         <View style={[styles.ModalBody]}>
           <FlatList
             data={props?.expData?.experience?.products}
@@ -100,13 +107,18 @@ const ModalCelebrityProducts = props => {
             renderItem={({item}) => (
               <>
                 <TrendingCards
-                  onPress={() =>
+                  onPress={() => {
+                    setModelState({
+                      ...ModelState,
+                      state: !ModelState.state,
+                    });
+                    if (props.onClose) props.onClose();
                     navigation.navigate('ExperienceProductDetail', {
                       experience_celebrity_id:
                         item?.pivot?.experience_celebrity_id,
                       product_id: item?.pivot?.product_id,
-                    })
-                  }
+                    });
+                  }}
                   imageUrl={item.image}
                   title={item?.title}
                   price={item?.price}
@@ -159,6 +171,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 37,
     backgroundColor: Colors.WHITE,
     alignItems: 'center',
+    borderWidth: 2,
   },
   SmallBorder: {
     width: width * 0.35,

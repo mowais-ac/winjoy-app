@@ -131,6 +131,11 @@ const BackgroundVideo = ({route, navigation}) => {
         questionRef.current = res;
         // setQuestion(res)
         setActivityScreen(false);
+        setGameShowCheck(true);
+        setTimeLeft(10);
+        clearTimeout(timer);
+        startTimer();
+        setTimerFlag(true);
       });
   };
   const DeductLive = async () => {
@@ -212,6 +217,9 @@ const BackgroundVideo = ({route, navigation}) => {
       await fetch(`${Config.API_URL}/save/user/response`, requestOptions)
         .then(async response => response.json())
         .then(async res => {
+          {
+            console.log({quizres: res});
+          }
           if (res.status === 'success') {
             if (res.message === 'Congrats!! move to next question') {
               setActivity(false);
@@ -285,11 +293,6 @@ const BackgroundVideo = ({route, navigation}) => {
 
     socket.on('sendStartlivegameshow', msg => {
       Questions();
-      setGameShowCheck(true);
-      setTimeLeft(10);
-      clearTimeout(timer);
-      startTimer();
-      setTimerFlag(true);
     });
     socket.on('sendSwitchNextQuestion', msg => {
       if (msg === 'Next question should switch') {
@@ -324,14 +327,14 @@ const BackgroundVideo = ({route, navigation}) => {
             <Video
               // key={keyS}
               source={{
-                // uri: uri,
+                //uri: uri,
                 uri: 'https://c75a7e79204e539d.mediapackage.us-east-1.amazonaws.com/out/v1/c09d0b5beca54ffcb2e4d920b465d589/index.m3u8',
               }}
               // onReadyForDisplay={readyToDisplay}
               hls={true}
               paused={false}
               style={styles.backgroundVideo}
-              source={require('../../assets/imgs/bgImage.png')}
+              // source={require('../../assets/imgs/bgImage.png')}
               resizeMode={'cover'}
             />
           ) : (
@@ -593,6 +596,7 @@ const BackgroundVideo = ({route, navigation}) => {
 
 const styles = StyleSheet.create({
   backgroundVideo: {
+    //borderWidth: 2,
     height: height,
     width: '100%',
     position: 'absolute',

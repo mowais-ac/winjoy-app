@@ -20,7 +20,7 @@ const Info_btn = props => {
   const navigation = useNavigation();
 
   useEffect(() => {
-    if (props.updatedVersion > props.currentV) {
+    if (parseInt(props.updatedVersion) !== parseInt(props.currentV)) {
       setShowModal(true);
     }
   }, []);
