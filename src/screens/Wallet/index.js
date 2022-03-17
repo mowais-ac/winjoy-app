@@ -24,6 +24,7 @@ import {useTranslation} from 'react-i18next';
 //import TopupModal from '../../Components/TopupModal';
 import {FormatNumber, wait} from '../../Constants/Functions';
 import TopupPaymentModals from '../../TopupPaymentModals';
+import dayjs from 'dayjs';
 //I18n.locale = "ar";
 import axios from 'axios';
 import {
@@ -36,7 +37,7 @@ const {width, height} = Dimensions.get('window');
 //import { getWalletData } from '../../redux/actions/Wallet';
 import {useDispatch, useSelector} from 'react-redux';
 import {getWalletData} from '../../redux/actions';
-import dayjs from 'dayjs';
+
 import WithDrawModal from '../../Components/WithDrawModal';
 import SuccessModal from '../../Components/SuccessModal';
 import {JSONtoForm} from '../../Constants/Functions';
@@ -44,9 +45,9 @@ import Modals from '../../Components/Modals';
 import PaymentModalExperience from '../../Components/PaymentModalExperience';
 const index = ({props, navigation}) => {
   const {t} = useTranslation();
+  const [refreshing, setRefreshing] = React.useState(false);
   const [productData, setProductData] = useState([]);
   const [ammount, setAmmount] = useState(null);
-  const [Topupamount, settopupammount] = useState('10');
   const userData = useSelector(state => state.app.userData);
   const walletData = useSelector(state => state.app.walletData);
   const dispatch = useDispatch();
@@ -56,7 +57,14 @@ const index = ({props, navigation}) => {
   const ModalStateError = useRef();
   const [headerValue, setHeaderValue] = useState(0);
   const [activity, setActivity] = useState(false);
-  console.log({walletData: walletData?.transaction});
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+
+    dispatch(getWalletData());
+
+    wait(500).then(() => setRefreshing(false));
+  }, []);
+  //console.log({walletData: walletData?.transaction});  
   useEffect(() => {
     dispatch(getWalletData());
   }, []);
@@ -105,7 +113,10 @@ const index = ({props, navigation}) => {
 
   return (
     <SafeAreaView>
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
+        }>
         <LinearGradient
           start={{x: 0, y: 0}}
           end={{x: 1, y: 0}}
@@ -160,9 +171,13 @@ const index = ({props, navigation}) => {
 
         <WalletBlanceCard
           yourBalance={
-            FormatNumber(walletData?.wallet?.your_balance) === null
+            walletData?.wallet?.your_balance
+              .toString()
+              .replace(/\B(?=(\d{3})+(?!\d))/g, ',') === null
               ? 0
-              : FormatNumber(walletData?.wallet?.your_balance)
+              : walletData?.wallet?.your_balance
+                  .toString()
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
           }
           onPressWithdraw={() => ModalState.current(true)}
           onPressTopup={() => ModalStateTopup.current(true)}

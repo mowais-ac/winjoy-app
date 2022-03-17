@@ -34,6 +34,7 @@ import {useDispatch} from 'react-redux';
 const {width, height} = Dimensions.get('window');
 
 const PaymentModals = props => {
+  const [Topupamount, settopupammount] = useState('10');
   const ref_input2 = useRef();
   const ref_input3 = useRef();
   const [ModelState, setModelState] = useState({
@@ -56,7 +57,6 @@ const PaymentModals = props => {
   const ModalErrorState = useRef();
   const dispatch = useDispatch();
   const navigation = useNavigation();
-  const [Topupamount, settopupammount] = useState(10);
 
   useEffect(() => {
     if (props.ModalRef) props.ModalRef.current = HandleChange;
@@ -117,7 +117,7 @@ const PaymentModals = props => {
     let month = expiryDate.split('/')[0];
     let year = expiryDate.split('/')[1];
 
-    if (!number) {
+    if (!number2) {
       ModalErrorState.current(true, {
         heading: 'Error',
         Error: 'Card Number Required',
@@ -153,13 +153,11 @@ const PaymentModals = props => {
       // };
 
       var data = new FormData();
-      data.append('card_number', number);
+      data.append('card_number', number2);
       data.append('exp_month', month);
       data.append('exp_year', year);
       data.append('cvc', cvc);
       data.append('topup_amount', parseInt(Topupamount));
-      /* data.append('type', 'products');
-      data.append('products', JSON.stringify(expData1)); */
 
       const requestOptions = {
         method: 'POST',
@@ -240,7 +238,7 @@ const PaymentModals = props => {
                   paddingTop: 15,
                 }}>
                 <Text style={{color: Colors.DARK_LABEL}}>
-                  Enter your Topup amount
+                  Enter your topup amount
                 </Text>
                 <Text style={{color: Colors.DARK_LABEL}}>Min. AED 5</Text>
               </View>
@@ -269,7 +267,7 @@ const PaymentModals = props => {
               </Label>
               <View style={styles.Main2}>
                 <TextInput
-                  placeholder="Name on Card"
+                  placeholder="Name on card"
                   placeholderTextColor={Colors.DARK_LABEL}
                   keyboardType={'default'}
                   style={styles.MarginLarge}
@@ -278,10 +276,10 @@ const PaymentModals = props => {
             </View>
             <View style={styles.mView}>
               <Label notAlign darkmuted style={styles.titleTxt}>
-                Card Number
+                Card number
               </Label>
               <View style={[styles.Main2, {flexDirection: 'row'}]}>
-                <TextInput
+                {/* <TextInput
                   placeholder="••••"
                   placeholderTextColor={Colors.DARK_LABEL}
                   keyboardType={'numeric'}
@@ -294,8 +292,22 @@ const PaymentModals = props => {
                     setNumber1(text);
                   }}
                   style={styles.MarginLargeNumber}
-                />
+                /> */}
                 <TextInput
+                  placeholder="•••• •••• •••• ••••"
+                  placeholderTextColor={Colors.DARK_LABEL}
+                  keyboardType={'numeric'}
+                  maxLength={16}
+                  //onSubmitEditing={() => ref_input3.current.focus()}
+                  ref={ref_input2}
+                  // onBlur={onBlur}
+
+                  onChangeText={text => {
+                    setNumber2(text);
+                  }}
+                  style={styles.MarginLargeNumber}
+                />
+                {/* <TextInput
                   placeholder="••••"
                   placeholderTextColor={Colors.DARK_LABEL}
                   keyboardType={'numeric'}
@@ -332,7 +344,7 @@ const PaymentModals = props => {
                     setNumber4(text);
                   }}
                   style={styles.MarginLargeNumber}
-                />
+                /> */}
               </View>
             </View>
             <View
@@ -410,7 +422,7 @@ const PaymentModals = props => {
                   <ActivityIndicator size="small" color="#ffffff" />
                 ) : (
                   <Label primary font={16} bold style={{color: '#ffffff'}}>
-                    Pay AED {props?.total?.toLocaleString()}
+                    Pay AED {Topupamount.toLocaleString()}
                   </Label>
                 )}
               </LinearGradient>
@@ -598,16 +610,16 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   MarginLarge: {
-    paddingLeft: width * 0.06,
-    fontSize: RFValue(12),
-    color: Colors.PRIMARY_LABEL,
+    paddingLeft: 15,
+    fontSize: RFValue(14),
+    color: Colors.DARK_LABEL,
   },
   MarginLargeNumber: {
-    paddingLeft: width * 0.01,
-    fontSize: RFValue(12),
-    color: Colors.PRIMARY_LABEL,
-    letterSpacing: width * 0.03,
-    width: width * 0.2,
+    paddingLeft: 15,
+    fontSize: RFValue(14),
+    color: Colors.DARK_LABEL,
+    letterSpacing: 5,
+    width: '100%',
   },
   titleTxt: {
     marginTop: height * 0.01,

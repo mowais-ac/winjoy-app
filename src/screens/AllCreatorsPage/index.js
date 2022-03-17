@@ -44,7 +44,7 @@ const index = ({route, navigation}) => {
   const experienceDetail = useSelector(state => state.app.experienceDetail);
   // console.log({winEx: data?.win_experience});
   useEffect(() => {
-    //dispatch(getAllCreator());
+    dispatch(getAllCreator());
     // console.log('data', data);
   }, []);
 

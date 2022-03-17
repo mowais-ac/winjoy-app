@@ -9,6 +9,7 @@ import Config from 'react-native-config';
 import ProgressCircle from 'react-native-progress-circle';
 import {FormatNumber} from '../../Constants/Functions';
 import dayjs from 'dayjs';
+import {useDispatch, useSelector} from 'react-redux';
 const {width, height} = Dimensions.get('window');
 function ChanceCard({
   onPress,
@@ -19,6 +20,7 @@ function ChanceCard({
   image,
   price,
   prize_title,
+  data,
 }) {
   let progress = updated_stocks ? (updated_stocks / stock) * 100 : 0;
 
@@ -182,32 +184,7 @@ function ChanceCard({
           style={{
             justifyContent: 'center',
             alignItems: 'center',
-          }}>
-          <View
-            style={{
-              paddingHorizontal: 20,
-              paddingVertical: 8,
-
-              borderWidth: 1,
-              borderColor: '#E7003F',
-              borderRadius: 35,
-              marginRight: 12,
-            }}>
-            <Text
-              style={{
-                fontFamily: 'Axiforma-Regular',
-                fontSize: 16,
-                color: '#E7003F',
-              }}>
-              Prize Details
-            </Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={onPress}
-          style={{
-            justifyContent: 'center',
-            alignItems: 'center',
+            width: '100%',
           }}>
           <LinearGradient
             start={{x: 0, y: 0}}
@@ -216,6 +193,8 @@ function ChanceCard({
               paddingHorizontal: 40,
               paddingVertical: 10,
               borderRadius: 35,
+              width: 250,
+              alignItems: 'center',
             }}
             colors={['#E7003F', '#420E92']}>
             <Text
@@ -229,14 +208,30 @@ function ChanceCard({
           </LinearGradient>
         </TouchableOpacity>
       </View>
-      <Label
-        font={12}
-        light
-        style={{color: '#000000', paddingVertical: 10, lineHeight: 17}}>
-        Draw Date announce to be soon!
-        {/*  Max draw date {dayjs(draw_description).format('MMMM DD, YYYY')} or when
-        the campaign is sold out, which is earliest */}
-      </Label>
+      {data.enable_buy ? (
+        <Label
+          font={12}
+          light
+          style={{
+            color: '#000000',
+            paddingVertical: 10,
+            lineHeight: 17,
+          }}>
+          Max draw date {dayjs(draw_description).format('MMMM DD, YYYY')} or
+          when the campaign is sold out, which is earliest
+        </Label>
+      ) : (
+        <Label
+          font={12}
+          light
+          style={{
+            color: '#000000',
+            paddingVertical: 10,
+            lineHeight: 17,
+          }}>
+          Draw Date announce to be soon!
+        </Label>
+      )}
     </View>
   );
 }

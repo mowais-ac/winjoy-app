@@ -28,6 +28,7 @@ import LongButton from '../../Components/LongButton';
 import {FanJoyCard, ClosingSoonCard} from '../../Components';
 import Carousel from 'react-native-snap-carousel';
 import Video from 'react-native-video';
+import PushNotification from 'react-native-push-notification';
 import {
   getLandingScreen,
   CheckGameEnterStatus,
@@ -78,7 +79,7 @@ const index = props => {
     );
     setTime(duration);
     NavigateToQuiz();
-    wait(2000).then(() => setRefreshing(false));
+    wait(300).then(() => setRefreshing(false));
   }, []);
 
   useEffect(() => {
@@ -101,7 +102,16 @@ const index = props => {
     });
     setImageSlider(arr);
     NavigateToQuiz();
+    CreateChannal();
   }, []);
+
+  //PushNotification
+  const CreateChannal = () => {
+    PushNotification.createChannel({
+      channelId: 'Winjoy',
+      channelName: 'Winjoy',
+    });
+  };
   const NavigateToQuiz = () => {
     if (
       parseInt(LandingData.updatedVersion) === parseInt(packageJson.version) &&
@@ -179,6 +189,12 @@ const index = props => {
       );
     }
   }
+  /*   const handleNotification = item => {
+    PushNotification.localNotification({
+      channelId: 'Winjoy',
+      title: 'Winjoy',
+    });
+  }; */
   return (
     <SafeAreaView>
       {/* <StatusBar barStyle="#420E92" /> */}
@@ -454,6 +470,7 @@ const index = props => {
                 }
               />
             </View>
+            {console.log({LandingData: LandingData?.products})}
             <FlatList
               horizontal={true}
               style={{}}
@@ -478,6 +495,21 @@ const index = props => {
                 />
               )}
               keyExtractor={item => item.id}
+              ListEmptyComponent={() => (
+                <>
+                  {loading ? (
+                    <ActivityIndicator size="large" color="#000000" />
+                  ) : (
+                    <Text
+                      style={{
+                        color: '#000000',
+                        textAlign: 'center',
+                      }}>
+                      The list is empty
+                    </Text>
+                  )}
+                </>
+              )}
             />
             <View style={{paddingVertical: 12}}>
               <View style={styles.avatarBannerView}>

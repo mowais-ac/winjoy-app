@@ -51,6 +51,7 @@ const index = ({props, navigation}) => {
     dispatch(getProducts(link));
     setUpdateData(!updateData);
   };
+  //console.log(productsData);
   return (
     <SafeAreaView>
       <BackgroundRound height={0.3} />
@@ -210,7 +211,7 @@ const index = ({props, navigation}) => {
                         top: 300,
                         textAlign: 'center',
                         width: width,
-                        height: 300,
+                        height: 350,
                       }}>
                       The list is empty
                     </Text>

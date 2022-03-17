@@ -1,6 +1,6 @@
 {
   "name": "winjoy",
-  "version": "17",
+  "version": "19",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -20,6 +20,7 @@
     "@react-native-firebase/analytics": "^14.5.0",
     "@react-native-firebase/app": "^14.5.0",
     "@react-native-firebase/app-distribution": "^14.5.1",
+    "@react-native-firebase/messaging": "^14.5.1",
     "@react-navigation/bottom-tabs": "^6.0.9",
     "@react-navigation/material-top-tabs": "^6.0.6",
     "@react-navigation/native": "^6.0.6",
@@ -48,6 +49,7 @@
     "react-native-pager-view": "^5.4.9",
     "react-native-progress": "^5.0.0",
     "react-native-progress-circle": "^2.1.0",
+    "react-native-push-notification": "^8.1.1",
     "react-native-responsive-fontsize": "^0.5.1",
     "react-native-restart": "^0.0.23",
     "react-native-safe-area-context": "^3.3.2",

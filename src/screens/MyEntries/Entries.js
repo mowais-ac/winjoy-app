@@ -86,7 +86,7 @@ const Entries = ({navigation}) => {
       </TouchableOpacity>
     );
   };
-  console.log(Data);
+  // console.log(Data);
   return (
     <SafeArea>
       <LinearGradient

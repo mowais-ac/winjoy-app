@@ -496,6 +496,7 @@ export const ProductDetails = id => {
     return async dispatch => {
       dispatch({type: types.SHOW_LOADER});
       const Token = await EncryptedStorage.getItem('Token');
+      console.log("Token:",Token)
       const result = await fetch(`${Config.API_URL}/product/show/${id}`, {
         method: 'GET',
         headers: {

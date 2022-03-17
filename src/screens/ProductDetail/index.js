@@ -173,21 +173,33 @@ const ProductDetail = ({props, navigation, route}) => {
                       data?.prize_title}
                   </Label>
                 )}
-                <Label
-                  font={12}
-                  light
-                  style={{
-                    color: '#000000',
-                    paddingVertical: 10,
-                    lineHeight: 17,
-                  }}>
-                  {/*    Max draw date{' '}
-              {dayjs(productsDetails?.product?.luckydraw?.end_date).format(
-                'MMMM DD, YYYY',
-              )}{' '}
-              or when the campaign is sold out, which is earliest */}
-                  Draw Date announce to be soon!
-                </Label>
+                {productsDetails?.product?.luckydraw?.enable_buy ? (
+                  <Label
+                    font={12}
+                    light
+                    style={{
+                      color: '#000000',
+                      paddingVertical: 10,
+                      lineHeight: 17,
+                    }}>
+                    Max draw date
+                    {dayjs(
+                      productsDetails?.product?.luckydraw?.end_date,
+                    ).format('MMMM DD, YYYY')}
+                    or when the campaign is sold out, which is earliest
+                  </Label>
+                ) : (
+                  <Label
+                    font={12}
+                    light
+                    style={{
+                      color: '#000000',
+                      paddingVertical: 10,
+                      lineHeight: 17,
+                    }}>
+                    Draw Date announce to be soon!
+                  </Label>
+                )}
                 <Text style={styles.closingTxt}>Closing Soon</Text>
               </View>
               <View style={styles.pdView}>
