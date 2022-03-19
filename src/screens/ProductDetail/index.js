@@ -30,7 +30,7 @@ import Counter from 'react-native-counters';
 import BuyLifeCongrats from '../../Components/BuyLifeCongrats';
 import Modals from '../../Components/Modals';
 import {ProductDetails} from '../../redux/actions';
-import {useIsFocused} from '@react-navigation/native';
+import {useIsFocused, useFocusEffect} from '@react-navigation/native';
 const ProductDetail = ({props, navigation, route}) => {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
@@ -38,32 +38,65 @@ const ProductDetail = ({props, navigation, route}) => {
   const SucessModalState = useRef();
   const ModalErrorState = useRef();
   const counterMain = useSelector(state => state.app.counter);
-  const productsDetails = useSelector(state => state.app.productsDetals);
-  const productId = route?.params?.productId;
+  //const pd = useSelector(state => state.app.productsDetals);
+  const [pd, setpd] = useState([]);
+  const {productId} = route?.params;
   const [activity, setActivity] = useState(false);
   const [count, setCount] = useState(1);
+  const [Loading, setLoading] = useState(true);
+  const [images, setImages] = useState([]);
   //dealjoy data
-  const {data} = route.params;
-  console.log({data: data});
+  const {data} = route?.params;
+  //  console.log({data: data});
   const loading = useSelector(state => state.app.loading);
-  //console.log({productsDetailss: productsDetails});
+  //console.log({productId: productId});
+  /*  useFocusEffect(() => {
+    // dispatch2(ProductDetails(productId));
+    _Api(productId);
+  }, []); */
   useEffect(() => {
-    dispatch2(ProductDetails());
-  }, [dispatch2]);
-  useEffect(() => {
-    dispatch2(ProductDetails(productId));
+    _Api(productId);
   }, []);
+  const _Api = async productId => {
+    // alert(productId);
+    const Token = await EncryptedStorage.getItem('Token');
+    const requestOptions = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        Accept: 'application/json',
+        Authorization: `Bearer ${Token}`,
+      },
+    };
+    await fetch(`${Config.API_URL}/product/show/${productId}`, requestOptions)
+      .then(async response => response.json())
+      .then(res => {
+        setpd(res);
+        setLoading(false);
+        // if (pd?.product?.image) {
+        //   images.push({
+        //     image: pd?.product?.image,
+        //   });
+        // }
+        // if (pd && pd.product) {
+        // let imagesArr = [...images, pd?.product?.images];
+        // console.log('imagesArr:: ', imagesArr);
+        setImages(pd?.product?.images);
+        // }
+      });
+  };
+
   const onChange = (number, type) => {
     setCount(number);
   };
   const SaveIdInfo = async () => {
-    if (!productsDetails?.product?.luckydraw.enable_buy) {
+    if (!pd?.product?.luckydraw.enable_buy) {
       alert('Thank you for your interest. This feature is coming soon');
     } else {
       setActivity(true);
       var postData = JSON.stringify({
         is_from_experience: false,
-        product_id: productsDetails?.product?.luckydraw?.product?.id,
+        product_id: pd?.product?.luckydraw?.product?.id,
         count: count,
       });
 
@@ -83,9 +116,9 @@ const ProductDetail = ({props, navigation, route}) => {
         .then(async response => response.json())
         .then(async res => {
           if (res.status === 'success') {
-            console.log({ProductDetails: res});
+            //console.log({ProductDetails: res});
             setActivity(false);
-            SucessModalState.current(true);
+            //SucessModalState.current(true);
             dispatch({
               type: types.CART_COUNTER,
               counter: counterMain + count,
@@ -106,13 +139,6 @@ const ProductDetail = ({props, navigation, route}) => {
     }
   };
 
-  let images = [];
-  images.push({
-    image: data?.product?.image || productsDetails?.product?.image,
-  });
-  if (productsDetails && productsDetails.product) {
-    images = [...images, productsDetails?.product?.images];
-  }
   return (
     <SafeAreaView style={{height: '100%', paddingBottom: 120}}>
       <ScrollView style={{}}>
@@ -120,21 +146,18 @@ const ProductDetail = ({props, navigation, route}) => {
           <View style={{height: 20}} />
           <Header back={true} />
         </LinearGradient>
-        {loading ? (
+        {Loading ? (
           <ActivityIndicator size="large" color="#000000" />
         ) : (
           <>
             <View style={{paddingHorizontal: 15}}>
               <View style={[styles.upperView]}>
                 <Card
-                  images={images}
+                  images={pd?.product?.images}
                   updated_stocks={
-                    productsDetails?.product?.updated_stocks ||
-                    data?.product?.updated_stocks
+                    pd?.product?.updated_stocks || data?.product?.updated_stocks
                   }
-                  stock={
-                    productsDetails?.product?.stock || data?.product?.stock
-                  }
+                  stock={pd?.product?.stock || data?.product?.stock}
                 />
               </View>
               <View style={styles.card}>
@@ -149,7 +172,7 @@ const ProductDetail = ({props, navigation, route}) => {
                     textAlign: 'center',
                     paddingVertical: 10,
                   }}>
-                  {productsDetails?.product?.title}
+                  {pd?.product?.title}
                 </Text>
 
                 <Label
@@ -160,20 +183,19 @@ const ProductDetail = ({props, navigation, route}) => {
                   Get a chance to win
                 </Label>
 
-                {productsDetails?.product?.luckydraw?.experience ? (
+                {pd?.product?.luckydraw?.experience ? (
                   <Label
                     font={16}
                     dark
                     style={{color: '#000000', lineHeight: 20}}>
-                    {productsDetails?.product?.luckydraw?.experience?.title}
+                    {pd?.product?.luckydraw?.experience?.title}
                   </Label>
                 ) : (
                   <Label font={16} dark style={{color: '#000000'}}>
-                    {productsDetails?.product?.luckydraw?.prize_title ||
-                      data?.prize_title}
+                    {pd?.product?.luckydraw?.prize_title || data?.prize_title}
                   </Label>
                 )}
-                {productsDetails?.product?.luckydraw?.enable_buy ? (
+                {pd?.product?.luckydraw?.enable_buy ? (
                   <Label
                     font={12}
                     light
@@ -182,10 +204,11 @@ const ProductDetail = ({props, navigation, route}) => {
                       paddingVertical: 10,
                       lineHeight: 17,
                     }}>
-                    Max draw date
-                    {dayjs(
-                      productsDetails?.product?.luckydraw?.end_date,
-                    ).format('MMMM DD, YYYY')}
+                    Max draw date{' '}
+                    {dayjs(pd?.product?.luckydraw?.end_date).format(
+                      'MMMM DD, YYYY',
+                    )}
+                    {'  '}
                     or when the campaign is sold out, which is earliest
                   </Label>
                 ) : (
@@ -216,8 +239,7 @@ const ProductDetail = ({props, navigation, route}) => {
                   font={11}
                   dark
                   style={{color: '#000000', lineHeight: 20}}>
-                  {productsDetails?.product?.description ||
-                    data?.product?.description}
+                  {pd?.product?.description || data?.product?.description}
                 </Label>
               </View>
             </View>
@@ -235,21 +257,27 @@ const ProductDetail = ({props, navigation, route}) => {
               paddingHorizontal: 15,
               paddingVertical: 15,
             }}>
-            <View>
-              <Text style={styles.metaText}>To enter in the lucky draw</Text>
-              <Text style={[styles.metaText, {fontWeight: 'bold'}]}>
-                Buy a {productsDetails?.product?.title || data?.product?.title}
+            {!Loading ? (
+              <View>
+                <Text style={styles.metaText}>To enter in the lucky draw</Text>
+                <Text style={[styles.metaText, {fontWeight: 'bold'}]}>
+                  Buy a {pd?.product?.title || data?.product?.title}
+                </Text>
+              </View>
+            ) : null}
+            {Loading ? (
+              <ActivityIndicator size="small" color="#000000" />
+            ) : (
+              <Text
+                style={[
+                  styles.text,
+                  {fontWeight: 'bold', fontSize: RFValue(14)},
+                ]}>
+                AED{' '}
+                {+pd?.product?.price?.toLocaleString() ||
+                  +data?.product?.price?.toLocaleString()}
               </Text>
-            </View>
-            <Text
-              style={[
-                styles.text,
-                {fontWeight: 'bold', fontSize: RFValue(14)},
-              ]}>
-              AED{' '}
-              {+productsDetails?.product?.price?.toLocaleString() ||
-                +data?.product?.price?.toLocaleString()}
-            </Text>
+            )}
           </View>
           <View
             style={{
@@ -269,7 +297,7 @@ const ProductDetail = ({props, navigation, route}) => {
                   color: '#000000',
                   fontFamily: 'Axiforma-Bold',
                 }}
-                max={parseInt(productsDetails?.product?.stock)}
+                max={parseInt(pd?.product?.stock)}
                 countTextStyle={{color: '#000000', fontFamily: 'Axiforma-Bold'}}
                 onChange={(number, type) => onChange(number, type)}
               />
@@ -277,7 +305,7 @@ const ProductDetail = ({props, navigation, route}) => {
             <TouchableOpacity
               disabled={activity}
               onPress={() => {
-                SaveIdInfo();
+                !Loading && SaveIdInfo();
               }}>
               <LinearGradient
                 start={{x: 0, y: 0}}
@@ -293,9 +321,16 @@ const ProductDetail = ({props, navigation, route}) => {
                 {activity ? (
                   <ActivityIndicator size="small" color="#ffffff" />
                 ) : (
-                  <Text style={{color: '#ffffff', fontFamily: 'Axiforma-Bold'}}>
-                    Add to Cart
-                  </Text>
+                  <>
+                    {Loading ? (
+                      <ActivityIndicator size="small" color="#ffffff" />
+                    ) : (
+                      <Text
+                        style={{color: '#ffffff', fontFamily: 'Axiforma-Bold'}}>
+                        Add to Cart
+                      </Text>
+                    )}
+                  </>
                 )}
               </LinearGradient>
             </TouchableOpacity>
@@ -364,7 +399,6 @@ const styles = StyleSheet.create({
     paddingBottom: 22,
     marginBottom: 30,
     borderRadius: 10,
-
     justifyContent: 'center',
     alignItems: 'center',
     elevation: 3,

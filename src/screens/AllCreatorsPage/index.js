@@ -232,7 +232,7 @@ const index = ({route, navigation}) => {
                     }}
                     imageStyle={{
                       width: width * 0.4,
-                      height: height * 0.18,
+                      height: height * 0.19,
                       borderRadius: 15,
                       borderBottomLeftRadius: 0,
                       borderBottomRightRadius: 0,

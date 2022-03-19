@@ -180,7 +180,7 @@ const index = ({navigation}) => {
           No data
         </Label>
       ) : (
-        <View style={{marginTop: height * 0.06}}>
+        <View style={{marginTop: 10}}>
           <View style={{height: '85%'}}>
             <FlatList
               data={cartData?.data}
@@ -211,54 +211,55 @@ const index = ({navigation}) => {
             />
           </View>
           {cartData?.data?.length > 0 ? (
-            <View style={styles.card2}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  width: widthPercentageToDP('83'),
-                }}>
-                <Text style={[styles.metaText, {fontSize: RFValue(17)}]}>
-                  Total
-                </Text>
-                <Text
-                  style={[
-                    styles.text,
-                    {fontWeight: 'bold', fontSize: RFValue(17)},
-                  ]}>
-                  {'AED '}
-                  {FormatNumber(+cartData?.sub_total)}
-                </Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  width: widthPercentageToDP('83'),
-                }}>
-                <Text style={styles.metaText}>Sub Total</Text>
-                <Text style={styles.text}>
-                  {'AED '}
-                  {FormatNumber(Math.trunc(cartData?.total))}
-                </Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  width: widthPercentageToDP('83'),
-                }}>
-                <Text style={styles.metaText}>Vat 5%</Text>
-                <Text style={styles.text}>
-                  {'AED '}
-                  {FormatNumber(Math.trunc(cartData?.vat))}
-                </Text>
-              </View>
+            <View style={styles.card2Wrap}>
+              <View style={styles.card2}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    width: widthPercentageToDP('83'),
+                  }}>
+                  <Text style={[styles.metaText, {fontSize: RFValue(17)}]}>
+                    Total
+                  </Text>
+                  <Text
+                    style={[
+                      styles.text,
+                      {fontWeight: 'bold', fontSize: RFValue(17)},
+                    ]}>
+                    {'AED '}
+                    {FormatNumber(+cartData?.sub_total)}
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    width: widthPercentageToDP('83'),
+                  }}>
+                  <Text style={styles.metaText}>Sub Total</Text>
+                  <Text style={styles.text}>
+                    {'AED '}
+                    {FormatNumber(Math.trunc(cartData?.total))}
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    width: widthPercentageToDP('83'),
+                  }}>
+                  <Text style={styles.metaText}>Vat 5%</Text>
+                  <Text style={styles.text}>
+                    {'AED '}
+                    {FormatNumber(Math.trunc(cartData?.vat))}
+                  </Text>
+                </View>
 
-              {/* <View style={{
+                {/* <View style={{
               flexDirection: 'row',
               justifyContent: 'space-between',
               alignItems: 'center',
@@ -269,28 +270,15 @@ const index = ({navigation}) => {
 
             </View> */}
 
-              <TouchableOpacity
-                onPress={() => {
-                  // ModalState.current(true);
-                  // PostData();
-                  alert(
-                    'Thank you for your interest. This feature is coming soon',
-                  );
-                }}
-                disabled={activity}
-                style={{
-                  height: heightConverter(55),
-                  width: width - 25,
-                  position: 'absolute',
-                  bottom: 0,
-                  borderBottomLeftRadius: 10,
-                  borderBottomRightRadius: 10,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
-                <LinearGradient
-                  start={{x: 0, y: 0}}
-                  end={{x: 1, y: 0}}
+                <TouchableOpacity
+                  onPress={() => {
+                    ModalState.current(true);
+                    PostData();
+                    //   alert(
+                    //    'Thank you for your interest. This feature is coming soon',
+                    // );
+                  }}
+                  disabled={activity}
                   style={{
                     height: heightConverter(55),
                     width: width - 25,
@@ -300,22 +288,40 @@ const index = ({navigation}) => {
                     borderBottomRightRadius: 10,
                     justifyContent: 'center',
                     alignItems: 'center',
-                  }}
-                  colors={['#420E92', '#E7003F']}>
-                  {activity ? (
-                    <ActivityIndicator size="small" color={'#fff'} />
-                  ) : (
-                    <Label primary font={16} bold style={{color: '#ffffff'}}>
-                      Checkout
-                    </Label>
-                  )}
-                </LinearGradient>
-              </TouchableOpacity>
+                  }}>
+                  <LinearGradient
+                    start={{x: 0, y: 0}}
+                    end={{x: 1, y: 0}}
+                    style={{
+                      height: heightConverter(55),
+                      width: width - 25,
+                      position: 'absolute',
+                      bottom: 0,
+                      borderBottomLeftRadius: 10,
+                      borderBottomRightRadius: 10,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                    colors={['#420E92', '#E7003F']}>
+                    {activity ? (
+                      <ActivityIndicator size="small" color={'#fff'} />
+                    ) : (
+                      <Label primary font={16} bold style={{color: '#ffffff'}}>
+                        Checkout
+                      </Label>
+                    )}
+                  </LinearGradient>
+                </TouchableOpacity>
+              </View>
             </View>
           ) : null}
         </View>
       )}
-      <PaymentModals ModalRef={ModalState} details total={cartData?.total} />
+      <PaymentModals
+        ModalRef={ModalState}
+        details
+        total={cartData?.sub_total}
+      />
       <Modals
         ModalRef={ModalStateError}
         Error
@@ -348,6 +354,13 @@ const index = ({navigation}) => {
 const styles = StyleSheet.create({
   MainTop: {
     height: height * 0.18,
+  },
+  card2Wrap: {
+    bottom: 10,
+    left: 0,
+    position: 'absolute',
+    paddingHorizontal: 10,
+    width: '100%',
   },
   header: {
     flexDirection: 'row',
@@ -400,6 +413,7 @@ const styles = StyleSheet.create({
     elevation: 3,
     position: 'absolute',
     paddingTop: 13,
+    marginVertical: 30,
   },
   metaText: {
     color: '#000000',

@@ -44,7 +44,7 @@ const CountryModal = props => {
         await fetch(`${Config.API_URL}/countries/list`, requestOptions)
           .then(async response => response.json())
           .then(async res => {
-            console.log('res', res);
+            // console.log('res', res);
             if (!isActive) return;
             setData(res.sort((a, b) => (a.name > b.name ? 1 : -1)));
           });

@@ -298,7 +298,7 @@ const BackgroundVideo = ({route, navigation}) => {
       if (msg === 'Next question should switch') {
         let inc = questionIncrement.current + 1;
         questionIncrement.current = inc;
-
+        answerId.current = null;
         setGameShowCheck(true);
         setDisableQuizOptions(false);
         setShowResult(false);

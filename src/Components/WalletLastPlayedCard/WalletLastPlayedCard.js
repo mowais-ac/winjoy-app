@@ -35,7 +35,7 @@ function WalletLastPlayedCard({
     <TouchableOpacity
       style={{
         width: width - 25,
-        height: height * 0.19,
+        height: height * 0.16,
         backgroundColor: '#ffffff',
         marginLeft: 10,
         borderRadius: 10,
@@ -49,19 +49,22 @@ function WalletLastPlayedCard({
       }}
       onPress={onPress}>
       <View style={{marginLeft: 30}}>
-        <Label notAlign primary font={16} bold style={{color: '#E7003F'}}>
+        <Label
+          notAlign
+          primary
+          font={16}
+          bold
+          style={{color: '#E7003F', lineHeight: 40}}>
           {t('last_played_game')}
         </Label>
 
         <Label
-          marginVertical
           notAlign
           primary
           font={14}
           dark
           style={{
             color: '#000000',
-            marginTop: 20,
             fontFamily: 'Axiforma-SemiBold',
             width: width * 0.8,
             lineHeight: 20,
@@ -69,12 +72,11 @@ function WalletLastPlayedCard({
           Answer {noOfQuestions} simple questions and WIN amazing prizes
         </Label>
         <Label
-          marginVertical
           notAlign
           primary
           font={14}
           bold
-          style={{color: '#E7003F', marginTop: 7}}>
+          style={{color: '#E7003F', lineHeight: 30}}>
           {t('Prizes won')}
           <Label notAlign primary font={14} dark style={{color: '#000000'}}>
             {' '}

@@ -115,7 +115,7 @@ const PaymentModals = props => {
     let month = expiryDate.split('/')[0];
     let year = expiryDate.split('/')[1];
 
-    if (!number) {
+    if (!number2) {
       ModalErrorState.current(true, {
         heading: 'Error',
         Error: 'Card Number Required',
@@ -151,7 +151,7 @@ const PaymentModals = props => {
       // };
 
       var data = new FormData();
-      data.append('card_number', number);
+      data.append('card_number', number2);
       data.append('exp_month', month);
       data.append('exp_year', year);
       data.append('cvc', cvc);
@@ -207,46 +207,60 @@ const PaymentModals = props => {
         });
         if (props.onClose) props.onClose();
       }}>
-      <ScrollView>
-        <KeyboardAvoidingView>
-          <TouchableWithoutFeedback
-            onPress={() => {
-              setModelState({
-                ...ModelState,
-                state: !ModelState.state,
-              });
-              if (props.onClose) props.onClose();
-            }}>
-            <View style={styles.MainView} />
-          </TouchableWithoutFeedback>
-          <View style={styles.ModalView}>
-            <View style={styles.SmallBorder} />
-            <Label primary headingtype="h3" bold2 style={styles.ModalHead}>
-              Payment Details
-            </Label>
-            <View style={styles.ModalBody}>
-              <View style={styles.mView}>
-                <Label notAlign darkmuted style={styles.titleTxt}>
-                  Name on Card
-                </Label>
-                <View style={styles.Main2}>
-                  <TextInput
-                    placeholder="Name on Card"
-                    placeholderTextColor={Colors.DARK_LABEL}
-                    keyboardType={'default'}
-                    // onBlur={onBlur}
+      <KeyboardAvoidingView>
+        <TouchableWithoutFeedback
+          onPress={() => {
+            setModelState({
+              ...ModelState,
+              state: !ModelState.state,
+            });
+            if (props.onClose) props.onClose();
+          }}>
+          <View style={styles.MainView} />
+        </TouchableWithoutFeedback>
+        <View style={styles.ModalView}>
+          <View style={styles.SmallBorder} />
+          <Label primary headingtype="h3" bold2 style={styles.ModalHead}>
+            Payment Details
+          </Label>
+          <View style={styles.ModalBody}>
+            <View style={styles.mView}>
+              <Label notAlign darkmuted style={styles.titleTxt}>
+                Name on Card
+              </Label>
+              <View style={styles.Main2}>
+                <TextInput
+                  placeholder="Name on Card"
+                  placeholderTextColor={Colors.DARK_LABEL}
+                  keyboardType={'default'}
+                  // onBlur={onBlur}
 
-                    // onChangeText={HandleChange}
-                    style={styles.MarginLarge}
-                  />
-                </View>
+                  // onChangeText={HandleChange}
+                  style={styles.MarginLarge}
+                />
               </View>
-              <View style={styles.mView}>
-                <Label notAlign darkmuted style={styles.titleTxt}>
-                  Card Number
-                </Label>
-                <View style={[styles.Main2, {flexDirection: 'row'}]}>
-                  <TextInput
+            </View>
+            <View style={styles.mView}>
+              <Label notAlign darkmuted style={styles.titleTxt}>
+                Card Number
+              </Label>
+              <View style={[styles.Main2, {flexDirection: 'row'}]}>
+                <TextInput
+                  placeholder="•••• •••• •••• ••••"
+                  placeholderTextColor={Colors.DARK_LABEL}
+                  keyboardType={'numeric'}
+                  maxLength={16}
+                  //onSubmitEditing={() => ref_input3.current.focus()}
+                  ref={ref_input2}
+                  // onBlur={onBlur}
+
+                  onChangeText={text => {
+                    setNumber2(text);
+                  }}
+                  style={styles.MarginLargeNumber}
+                />
+
+                {/*   <TextInput
                     placeholder="••••"
                     placeholderTextColor={Colors.DARK_LABEL}
                     keyboardType={'numeric'}
@@ -297,126 +311,125 @@ const PaymentModals = props => {
                       setNumber4(text);
                     }}
                     style={styles.MarginLargeNumber}
+                  /> */}
+              </View>
+            </View>
+            <View
+              style={{
+                flexDirection: 'row',
+                width: width * 0.9,
+                justifyContent: 'space-between',
+                alignSelf: 'center',
+              }}>
+              <View style={[styles.mView, {width: width * 0.4}]}>
+                <Label notAlign darkmuted style={styles.titleTxt}>
+                  Expiry date
+                </Label>
+                <View style={styles.Main1}>
+                  <TextInput
+                    placeholder="MM/YY "
+                    placeholderTextColor={Colors.DARK_LABEL}
+                    keyboardType={'numeric'}
+                    maxLength={5}
+                    // onBlur={onBlur}
+                    //value={formatFunction(cardExpiry)}
+                    // onChangeText={(text) => HandleExpiryDate(text)}
+                    // value={formatFunction(expiryDate)}
+                    onChangeText={text => formatFunction(text)}
+                    value={expiryDate}
+                    style={styles.MarginLarge}
                   />
                 </View>
               </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  width: width * 0.9,
-                  justifyContent: 'space-between',
-                  alignSelf: 'center',
-                }}>
-                <View style={[styles.mView, {width: width * 0.4}]}>
-                  <Label notAlign darkmuted style={styles.titleTxt}>
-                    Expiry date
-                  </Label>
-                  <View style={styles.Main1}>
-                    <TextInput
-                      placeholder="MM/YY "
-                      placeholderTextColor={Colors.DARK_LABEL}
-                      keyboardType={'numeric'}
-                      maxLength={5}
-                      // onBlur={onBlur}
-                      //value={formatFunction(cardExpiry)}
-                      // onChangeText={(text) => HandleExpiryDate(text)}
-                      // value={formatFunction(expiryDate)}
-                      onChangeText={text => formatFunction(text)}
-                      value={expiryDate}
-                      style={styles.MarginLarge}
-                    />
-                  </View>
-                </View>
-                <View style={[styles.mView, {width: width * 0.4}]}>
-                  <Label notAlign darkmuted style={styles.titleTxt}>
-                    CVV
-                  </Label>
-                  <View style={styles.Main1}>
-                    <TextInput
-                      placeholder="CVV"
-                      placeholderTextColor={Colors.DARK_LABEL}
-                      keyboardType={'numeric'}
-                      maxLength={3}
-                      // onBlur={onBlur}
+              <View style={[styles.mView, {width: width * 0.4}]}>
+                <Label notAlign darkmuted style={styles.titleTxt}>
+                  CVV
+                </Label>
+                <View style={styles.Main1}>
+                  <TextInput
+                    placeholder="CVV"
+                    placeholderTextColor={Colors.DARK_LABEL}
+                    keyboardType={'numeric'}
+                    maxLength={3}
+                    // onBlur={onBlur}
 
-                      onChangeText={text => setCvc(text)}
-                      style={styles.MarginLarge}
-                    />
-                  </View>
+                    onChangeText={text => setCvc(text)}
+                    style={styles.MarginLarge}
+                  />
                 </View>
               </View>
+            </View>
 
-              <TouchableOpacity
-                disabled={activity}
-                onPress={() => {
-                  PostCreditCardInfo();
-                }}
+            <TouchableOpacity
+              disabled={activity}
+              onPress={() => {
+                PostCreditCardInfo();
+              }}
+              style={{
+                height: heightConverter(20),
+                width: width * 0.9,
+                borderRadius: 10,
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginTop: height * 0.06,
+                marginLeft: width * 0.04,
+              }}>
+              <LinearGradient
+                start={{x: 0, y: 0}}
+                end={{x: 1, y: 0}}
                 style={{
-                  height: heightConverter(20),
+                  height: heightConverter(55),
                   width: width * 0.9,
-                  borderRadius: 10,
+                  borderRadius: 20,
                   justifyContent: 'center',
                   alignItems: 'center',
-                  marginTop: height * 0.06,
-                  marginLeft: width * 0.04,
-                }}>
-                <LinearGradient
-                  start={{x: 0, y: 0}}
-                  end={{x: 1, y: 0}}
-                  style={{
-                    height: heightConverter(55),
-                    width: width * 0.9,
-                    borderRadius: 20,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                  colors={['#420E92', '#E7003F']}>
-                  {activity ? (
-                    <ActivityIndicator size="small" color="#ffffff" />
-                  ) : (
-                    <Label primary font={16} bold style={{color: '#ffffff'}}>
-                      Pay AED {props?.total?.toLocaleString()}
-                    </Label>
-                  )}
-                </LinearGradient>
-              </TouchableOpacity>
-              <LabelButton
-                primary
-                headingtype="h3"
-                bold
-                style={styles.CloseBtn}
-                onPress={() => {
-                  setModelState({
-                    ...ModelState,
-                    state: !ModelState.state,
-                  });
-                  if (props.BothClose) {
-                    navigation.goBack();
-                  }
-                  if (props.onClose) props.onClose();
-                }}>
-                Close
-              </LabelButton>
-            </View>
+                }}
+                colors={['#420E92', '#E7003F']}>
+                {activity ? (
+                  <ActivityIndicator size="small" color="#ffffff" />
+                ) : (
+                  <Label primary font={16} bold style={{color: '#ffffff'}}>
+                    Pay AED {props?.total}
+                  </Label>
+                )}
+              </LinearGradient>
+            </TouchableOpacity>
+            <LabelButton
+              primary
+              headingtype="h3"
+              bold
+              style={styles.CloseBtn}
+              onPress={() => {
+                setModelState({
+                  ...ModelState,
+                  state: !ModelState.state,
+                });
+                if (props.BothClose) {
+                  navigation.goBack();
+                }
+                if (props.onClose) props.onClose();
+              }}>
+              Close
+            </LabelButton>
           </View>
-          <BuyLifeCongrats
-            ModalRef={SucessModalState}
-            heading={'Congratulations'}
-            description={'Products Bought'}
-            requestOnPress={() => {
-              SucessModalState.current(false);
-            }}
-            closeOnPress={() => {
-              SucessModalState.current(false);
-              setModelState({
-                ...ModelState,
-                state: !ModelState.state,
-              });
-            }}
-          />
-          <Modals ModalRef={ModalErrorState} Error />
-        </KeyboardAvoidingView>
-      </ScrollView>
+        </View>
+        <BuyLifeCongrats
+          ModalRef={SucessModalState}
+          heading={'Congratulations'}
+          description={'Products Bought'}
+          requestOnPress={() => {
+            SucessModalState.current(false);
+          }}
+          closeOnPress={() => {
+            SucessModalState.current(false);
+            setModelState({
+              ...ModelState,
+              state: !ModelState.state,
+            });
+          }}
+        />
+        <Modals ModalRef={ModalErrorState} Error />
+      </KeyboardAvoidingView>
     </Modal>
   );
 };
@@ -431,8 +444,8 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.BG_MUTED,
   },
   ModalView: {
-    height: height * 0.65,
-    marginTop: height * 0.35,
+    height: height * 0.68,
+    marginTop: height * 0.32,
     borderTopLeftRadius: 37,
     borderTopRightRadius: 37,
     backgroundColor: Colors.BENEFICIARY,
@@ -548,16 +561,17 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   MarginLarge: {
-    paddingLeft: width * 0.06,
+    paddingLeft: width * 0.04,
     fontSize: RFValue(12),
-    color: Colors.PRIMARY_LABEL,
+    color: Colors.DARK_LABEL,
   },
   MarginLargeNumber: {
-    paddingLeft: width * 0.01,
+    //paddingLeft: width * 0.01,
+    marginLeft: 10,
     fontSize: RFValue(12),
-    color: Colors.PRIMARY_LABEL,
-    letterSpacing: width * 0.03,
-    width: width * 0.2,
+    color: Colors.DARK_LABEL,
+    letterSpacing: 10,
+    width: '100%',
   },
   titleTxt: {
     marginTop: height * 0.01,

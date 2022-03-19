@@ -39,12 +39,12 @@ function WalletBlanceCard({
     //   }}
     //   onPress={onPress}
     // >
-    <View style={{paddingHorizontal: 10, width: '100%'}}>
+    <View style={{paddingHorizontal: 15, width: '100%'}}>
       <View
         style={{
           backgroundColor: '#ffffff',
           borderRadius: 10,
-          //padding: 10,
+          padding: 6,
           marginVertical: 10,
           // top: height * 0.06,
           justifyContent: 'center',
@@ -56,12 +56,11 @@ function WalletBlanceCard({
         }}>
         <View>
           <Label
-            marginVertical
             notAlign
             primary
             font={14}
             bold2
-            style={{color: '#E7003F', marginLeft: 20}}>
+            style={{color: '#E7003F', marginLeft: 16, lineHeight: 25}}>
             {t('your_wallet')}
           </Label>
 
@@ -71,7 +70,7 @@ function WalletBlanceCard({
             bold2
             font={14}
             dark
-            style={{color: '#000000', marginLeft: 20}}>
+            style={{color: '#000000', marginLeft: 16, lineHeight: 25}}>
             AED {yourBalance}
           </Label>
         </View>
@@ -79,7 +78,7 @@ function WalletBlanceCard({
           style={{
             flexDirection: 'row',
             justifyContent: 'space-around',
-            marginTop: 10,
+            //marginTop: 10,
           }}>
           <LongButton
             style={styles.Margin}

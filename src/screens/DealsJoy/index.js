@@ -36,14 +36,14 @@ const index = ({props, navigation}) => {
   const [refreshing, setRefreshing] = useState(false);
   const AddModalState = useRef();
 
-  console.log({props: dealsJoyData?.products});
+  //console.log({props: dealsJoyData});
 
   useEffect(() => {
     dispatch(DealsJoyAPI());
   }, []);
   const onRefresh = React.useCallback(() => {
     dispatch(DealsJoyAPI());
-    wait(2000).then(() => setRefreshing(false));
+    wait(1000).then(() => setRefreshing(false));
   }, []);
   function _renderItem({item, index}) {
     if (item.type === 'image') {
@@ -204,7 +204,7 @@ const index = ({props, navigation}) => {
                 item={item}
               />
             )}
-            keyExtractor={item => item.id}
+            keyExtractor={index => index}
           />
         </View>
 

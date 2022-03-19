@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     top: -3,
   },
   Label: {
-    textColor: '#ffffff',
+    color: '#ffffff',
     fontWeight: 'bold',
     fontFamily: 'Poppins',
     position: 'absolute',

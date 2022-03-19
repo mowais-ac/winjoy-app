@@ -121,7 +121,17 @@ const Entries = ({navigation}) => {
             }
             renderItem={renderItem}
             keyExtractor={i => i}
-            ListEmptyComponent={<NotFound text="Entries" />}
+            ListEmptyComponent={
+              <View style={{marginVertical: 5}}>
+                <Label dark bold headingtype="h1" style={styles.Heading}>
+                  No Tickets found!
+                </Label>
+                <Label dark style={styles.Info}>
+                  Sorry, we don’t have enough data to show you right now. Please
+                  check again later.
+                </Label>
+              </View>
+            }
             refreshControl={
               <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
             }
@@ -176,6 +186,16 @@ const styles = StyleSheet.create({
   Image: {
     height: height * 0.1,
     resizeMode: 'contain',
+  },
+  Heading: {
+    marginTop: height * 0.02,
+    color: 'black',
+  },
+  Info: {
+    marginTop: height * 0.01,
+    width: width * 0.8,
+    lineHeight: height * 0.025,
+    color: 'black',
   },
   TextView: {},
   LessMargin: {

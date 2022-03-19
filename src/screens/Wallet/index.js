@@ -64,7 +64,7 @@ const index = ({props, navigation}) => {
 
     wait(500).then(() => setRefreshing(false));
   }, []);
-  //console.log({walletData: walletData?.transaction});  
+  //console.log({walletData: walletData?.transaction});
   useEffect(() => {
     dispatch(getWalletData());
   }, []);
@@ -160,10 +160,10 @@ const index = ({props, navigation}) => {
                   fontFamily: 'Axiforma-Bold',
                   fontSize: 15,
                 }}>
-                {userData?.first_name?.charAt(0).toUpperCase() +
-                  userData?.first_name.slice(1)}{' '}
-                {userData?.last_name?.charAt(0).toUpperCase() +
-                  userData?.last_name.slice(1)}
+                {userData?.first_name?.charAt(0)?.toUpperCase() +
+                  userData?.first_name?.slice(1)}{' '}
+                {userData?.last_name?.charAt(0)?.toUpperCase() +
+                  userData?.last_name?.slice(1)}
               </Text>
             </View>
           </View>
@@ -171,13 +171,15 @@ const index = ({props, navigation}) => {
 
         <WalletBlanceCard
           yourBalance={
-            walletData?.wallet?.your_balance
-              .toString()
-              .replace(/\B(?=(\d{3})+(?!\d))/g, ',') === null
+            walletData?.wallet?.your_balance?.replace(
+              /\B(?=(\d{3})+(?!\d))/g,
+              ',',
+            ) === null
               ? 0
-              : walletData?.wallet?.your_balance
-                  .toString()
-                  .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+              : walletData?.wallet?.your_balance?.replace(
+                  /\B(?=(\d{3})+(?!\d))/g,
+                  ',',
+                )
           }
           onPressWithdraw={() => ModalState.current(true)}
           onPressTopup={() => ModalStateTopup.current(true)}

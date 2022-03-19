@@ -136,7 +136,7 @@ const ExperienceCelebrityModal = props => {
                     uri: props?.experienceDetail?.experience?.featured_image,
                   }}
                 />
-                <View style={{marginRight: 20}}>
+                <View style={{marginHorizontal: 10}}>
                   <Text
                     style={{
                       color: '#0B2142',

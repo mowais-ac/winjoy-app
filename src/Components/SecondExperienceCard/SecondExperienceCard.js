@@ -22,8 +22,10 @@ function SecondExperienceCard({
         />
       </View>
       <Text
+        numberOfLines={3}
         style={{
           color: '#000000',
+          height: 30,
           fontFamily: 'Axiforma-SemiBold',
           width: width * 0.44,
           textAlign: 'center',
@@ -32,12 +34,13 @@ function SecondExperienceCard({
       </Text>
       <Text
         style={{
-          color: 'blue',
+          color: '#eb3d6e',
           fontFamily: 'Axiforma-Regular',
           textAlign: 'center',
           width: '85%',
+          fontWeight: '700',
         }}>
-        {price} AED
+        AED {price}
       </Text>
     </TouchableOpacity>
   );

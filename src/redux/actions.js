@@ -356,7 +356,7 @@ export const DealsJoyAPI = () => {
         },
       });
       const json = await result.json();
-
+      console.log(json);
       if (json) {
         dispatch({
           type: types.DEALS_JOY,
@@ -491,12 +491,12 @@ export const RemoveCartData = id => {
   } catch (error) {}
 };
 export const ProductDetails = id => {
-  console.log({Product_id: id});
+  // console.log({Product_id: id});
   try {
     return async dispatch => {
       dispatch({type: types.SHOW_LOADER});
       const Token = await EncryptedStorage.getItem('Token');
-      console.log("Token:",Token)
+      console.log('Token:', Token);
       const result = await fetch(`${Config.API_URL}/product/show/${id}`, {
         method: 'GET',
         headers: {
@@ -513,6 +513,7 @@ export const ProductDetails = id => {
           type: types.PRODUCTS_DETAILS,
           payload: json,
         });
+        setLoading(false);
       } else {
       }
     };
@@ -542,7 +543,7 @@ export const CreatorExperienceList = id => {
           type: types.CREATORS_EXPERIENCE_LIST,
           payload: json,
         });
-        setLoading(false);
+        //setLoading(false);
       } else {
       }
     };

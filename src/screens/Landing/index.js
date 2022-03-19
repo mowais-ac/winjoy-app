@@ -470,7 +470,7 @@ const index = props => {
                 }
               />
             </View>
-            {console.log({LandingData: LandingData?.products})}
+
             <FlatList
               horizontal={true}
               style={{}}

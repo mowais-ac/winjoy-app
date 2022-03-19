@@ -76,23 +76,24 @@ const index = ({route, navigation}) => {
         end={{x: 1, y: 0}}
         colors={['#f8d7e8', '#c7dfe8']}
         style={{paddingBottom: 10, flex: 1}}>
-        <LinearGradient
-          start={{x: 0, y: 0}}
-          end={{x: 1, y: 0}}
-          colors={['#420E92', '#E7003F']}
-          style={{
-            height: 'auto',
-            borderBottomRightRadius: 20,
-            borderBottomLeftRadius: 20,
-          }}>
-          <Header />
-          <ScrollView
-            onScroll={e => {
-              setHeaderValue(e.nativeEvent.contentOffset.y);
-            }}
-            refreshControl={
-              <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
-            }>
+        <ScrollView
+          onScroll={e => {
+            setHeaderValue(e.nativeEvent.contentOffset.y);
+          }}
+          refreshControl={
+            <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
+          }>
+          <LinearGradient
+            start={{x: 0, y: 0}}
+            end={{x: 1, y: 0}}
+            colors={['#420E92', '#E7003F']}
+            style={{
+              height: 300,
+              borderBottomRightRadius: 20,
+              borderBottomLeftRadius: 20,
+            }}>
+            <Header />
+
             <View
               style={{
                 // marginTop: height * 0.04,
@@ -160,7 +161,7 @@ const index = ({route, navigation}) => {
                         </View>
                         <View
                           style={{
-                            width: width * 0.25,
+                            width: width * 0.28,
                             alignItems: 'center',
                             marginTop: height * 0.009,
                           }}>
@@ -190,90 +191,94 @@ const index = ({route, navigation}) => {
                 )}
               </View>
             </View>
-            <View
-              style={{
-                width: '100%',
-                alignItems: 'center',
-                marginTop: height * 0.19,
-              }}>
-              {loading ? (
-                <ActivityIndicator size="large" color="#E7003F" />
-              ) : (
-                <FlatList
-                  data={leaderBoardWinners?.leaders?.slice(3)}
-                  // horizontal={true}
-                  ItemSeparatorComponent={() => (
-                    <View
-                      style={{
-                        backgroundColor: 'rgba(255, 255, 255, 0.5)',
-                        height: 1,
-                        width: width,
-                      }}
-                    />
-                  )}
-                  renderItem={({item, index}) => {
-                    return (
-                      <TouchableOpacity
-                      // onPress={() => alert("test")}
-                      >
-                        <View
-                          style={[
-                            styles.mainView,
-                            {marginLeft: width * 0.05, paddingVertical: 10},
-                          ]}>
-                          <View style={styles.avatarViewSecondList}>
-                            <ProfilePicture
-                              picture={item?.profile_image}
-                              // id={userInfo?.id || userData?.id}
-                              name={item?.first_name?.charAt(0)?.toUpperCase()}
-                              style={styles.avatarViewSecondList}
-                            />
-                            <View
-                              style={{
-                                position: 'absolute',
-                                width: width * 0.14,
-                                height: width * 0.14,
-                                top: height * 0.012,
-                                left: -3,
-                              }}>
-                              <Image
-                                source={require('../../assets/imgs/redStar.png')}
-                                style={{width: 15, height: 15}}
-                              />
-                            </View>
-                          </View>
-
+          </LinearGradient>
+          <View
+            style={{
+              width: '100%',
+              alignItems: 'center',
+              //marginTop: height * 0.19,
+            }}>
+            {loading ? (
+              <ActivityIndicator size="large" color="#E7003F" />
+            ) : (
+              <FlatList
+                data={leaderBoardWinners?.leaders?.slice(3)}
+                // horizontal={true}
+                ItemSeparatorComponent={() => (
+                  <View
+                    style={{
+                      backgroundColor: 'rgba(255, 255, 255, 0.5)',
+                      height: 1,
+                      width: width,
+                    }}
+                  />
+                )}
+                renderItem={({item, index}) => {
+                  return (
+                    <TouchableOpacity
+                    // onPress={() => alert("test")}
+                    >
+                      <View
+                        style={[
+                          styles.mainView,
+                          {
+                            marginLeft: width * 0.06,
+                            paddingVertical: 10,
+                          },
+                        ]}>
+                        <View style={styles.avatarViewSecondList}>
+                          <ProfilePicture
+                            picture={item?.profile_image}
+                            // id={userInfo?.id || userData?.id}
+                            name={item?.first_name?.charAt(0)?.toUpperCase()}
+                            style={styles.avatarViewSecondList}
+                          />
                           <View
                             style={{
-                              width: width * 0.36,
-                              height: height * 0.08,
-                              justifyContent: 'center',
+                              position: 'absolute',
+                              width: width * 0.14,
+                              height: width * 0.14,
+                              top: height * 0.012,
+                              left: -3,
                             }}>
-                            <Text style={styles.text}>@{item.user_name}</Text>
-                            <Text style={styles.text2}>
-                              {item?.first_name?.charAt(0)?.toUpperCase() +
-                                item?.first_name?.slice(1) +
-                                ' ' +
-                                item?.last_name?.charAt(0)?.toUpperCase() +
-                                item?.last_name?.slice(1)}
-                            </Text>
+                            <Image
+                              source={require('../../assets/imgs/redStar.png')}
+                              style={{width: 15, height: 15}}
+                            />
                           </View>
+                        </View>
 
-                          <Text
-                            style={[
-                              styles.text2,
-                              {width: width * 0.25, color: '#E7003F'},
-                            ]}>
-                            AED {item?.trivia_total_prize.toLocaleString()}
+                        <View
+                          style={{
+                            width: width * 0.36,
+                            height: height * 0.08,
+                            justifyContent: 'center',
+                          }}>
+                          <Text style={styles.text}>@{item.user_name}</Text>
+                          <Text style={styles.text2}>
+                            {item?.first_name?.charAt(0)?.toUpperCase() +
+                              item?.first_name?.slice(1) +
+                              ' ' +
+                              item?.last_name?.charAt(0)?.toUpperCase() +
+                              item?.last_name?.slice(1)}
                           </Text>
                         </View>
-                      </TouchableOpacity>
-                    );
-                  }}
-                />
-              )}
 
-              {/* {selected === 0 ? (
+                        <Text
+                          style={[
+                            styles.text2,
+                            {width: width * 0.25, color: '#E7003F'},
+                          ]}>
+                          AED {item?.trivia_total_prize.toLocaleString()}
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                  );
+                }}
+              />
+            )}
+
+            {/* {selected === 0 ? (
               <GameShow
                 lastWinners={gameShowWinners?.winners}
                 pastWinners={gameShowWinners?.pastWinners}
@@ -284,9 +289,8 @@ const index = ({route, navigation}) => {
               />
 
             )} */}
-            </View>
-          </ScrollView>
-        </LinearGradient>
+          </View>
+        </ScrollView>
       </LinearGradient>
     </SafeAreaView>
   );
