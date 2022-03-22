@@ -77,6 +77,7 @@ const index = props => {
       dayjs(CurrentDate),
       'seconds',
     );
+    console.log('duration', duration);
     setTime(duration);
     NavigateToQuiz();
     wait(300).then(() => setRefreshing(false));
@@ -89,13 +90,14 @@ const index = props => {
     });
 
     dispatch(getLandingScreen());
-    var CurrentDate = new Date().toLocaleString();
-    var duration = dayjs(LandingData?.upcoming_gameshow?.start_date).diff(
-      dayjs(CurrentDate),
-      'seconds',
-    );
-    setTime(duration);
-
+    if (LandingData) {
+      var CurrentDate = new Date().toLocaleString();
+      var duration = dayjs(LandingData?.upcoming_gameshow?.start_date).diff(
+        dayjs(CurrentDate),
+        'seconds',
+      );
+      setTime(duration);
+    }
     let arr = [];
     LandingData?.host_sliders_data?.map(ele => {
       arr.push(ele.url);
@@ -392,7 +394,7 @@ const index = props => {
                 flexDirection: 'row',
               }}>
               {loading ? (
-                <ActivityIndicator size="large" color="#000000" />
+                <ActivityIndicator size="small" color="#fffff" />
               ) : (
                 <SliderBox
                   images={imgSlider}
@@ -403,6 +405,7 @@ const index = props => {
                     width: '95%',
                     marginTop: 5,
                   }}
+                  imageLoadingColor="black"
                   dotColor="#FFEE58"
                   inactiveDotColor="#90A4AE"
                   dotStyle={{top: 5}}
@@ -484,9 +487,8 @@ const index = props => {
               renderItem={({item}) => (
                 <ClosingSoonCard
                   onPress={() => {
-                    navigation.navigate('PRODUCTS', {
-                      screen: 'ProductDetail',
-                      params: {productId: item?.product?.id},
+                    navigation.navigate('ProductDetail', {
+                      productId: item?.product?.id,
                     });
                   }}
                   props={props}

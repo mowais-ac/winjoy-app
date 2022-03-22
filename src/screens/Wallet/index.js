@@ -42,12 +42,13 @@ import WithDrawModal from '../../Components/WithDrawModal';
 import SuccessModal from '../../Components/SuccessModal';
 import {JSONtoForm} from '../../Constants/Functions';
 import Modals from '../../Components/Modals';
-import PaymentModalExperience from '../../Components/PaymentModalExperience';
+
+import AddaccountModal from '../../Components/AddaccountModal';
 const index = ({props, navigation}) => {
   const {t} = useTranslation();
   const [refreshing, setRefreshing] = React.useState(false);
   const [productData, setProductData] = useState([]);
-  const [ammount, setAmmount] = useState(null);
+  const [ammount, setAmmount] = useState('10');
   const userData = useSelector(state => state.app.userData);
   const walletData = useSelector(state => state.app.walletData);
   const dispatch = useDispatch();
@@ -57,6 +58,7 @@ const index = ({props, navigation}) => {
   const ModalStateError = useRef();
   const [headerValue, setHeaderValue] = useState(0);
   const [activity, setActivity] = useState(false);
+  const accountmodal = useRef();
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
 
@@ -68,14 +70,16 @@ const index = ({props, navigation}) => {
   useEffect(() => {
     dispatch(getWalletData());
   }, []);
-  const HandleWithdraw = async () => {
+  const HandleWithdraw = async accountId => {
     setActivity(true);
+    console.log('account id', accountId);
     if (!ammount) {
       // alert('hiii');
     } else {
       const Token = await EncryptedStorage.getItem('Token');
       const body = JSONtoForm({
         w_amount: ammount,
+        account_id: accountId,
       });
       const requestOptions = {
         method: 'POST',
@@ -97,18 +101,20 @@ const index = ({props, navigation}) => {
               array: res.errors ? Object.values(res.errors) : [],
             });
           } else {
+            dispatch(getWalletData());
             ModalState.current(false);
             ModalStateTopup.current(false);
             ModalState2.current(true);
           }
+
           setActivity(false);
         })
         .catch(e => {});
     }
   };
 
-  const onPress = () => {
-    HandleWithdraw();
+  const onPressRequestWithdrawal = accountId => {
+    HandleWithdraw(accountId);
   };
 
   return (
@@ -181,7 +187,8 @@ const index = ({props, navigation}) => {
                   ',',
                 )
           }
-          onPressWithdraw={() => ModalState.current(true)}
+          onPressaccountdetails={() => accountmodal.current(true)}
+          //onPressWithdraw={() => ModalState.current(true)}
           onPressTopup={() => ModalStateTopup.current(true)}
         />
         <WalletLastPlayedCard
@@ -268,6 +275,19 @@ const index = ({props, navigation}) => {
           </View>
         </View>
 
+        <AddaccountModal
+          ModalRef={accountmodal}
+          details
+          onPressWithDrawal={accountId => onPressRequestWithdrawal(accountId)}
+          yourBalance={
+            walletData?.wallet?.your_balance === null
+              ? 0
+              : walletData?.wallet?.your_balance
+          }
+          AmmountHandleChange={text => setAmmount(text)}
+          ammount={ammount}
+          activity={activity}
+        />
         <TopupPaymentModals ModalRef={ModalStateTopup} />
 
         <WithDrawModal

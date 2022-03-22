@@ -10,8 +10,8 @@ import ExperienceProductDetail from '../screens/ExperienceProductDetail';
 import AllCreatorsList from '../screens/AllCreatorsList';
 import SimpleProductDetailInExperience from '../screens/SimpleProductDetailInExperience';
 import CreatorExperience from '../screens/CreatorExperience';
-/* import PrizeList from '../screens/PrizeList';
-import ProductDetail from '../screens/ProductDetail'; */
+
+import ProductDetail from '../screens/ProductDetail';
 const Stack = createNativeStackNavigator();
 export default index = () => (
   <Stack.Navigator
@@ -28,8 +28,8 @@ export default index = () => (
       name="ExperienceProductDetail"
       component={ExperienceProductDetail}
     />
-    {/* <Stack.Screen name="PrizeList" component={PrizeList} />
-    <Stack.Screen name="ProductDetail" component={ProductDetail} /> */}
+
+    <Stack.Screen name="ProductDetail" component={ProductDetail} />
     <Stack.Screen name="AllCreatorsList" component={AllCreatorsList} />
     <Stack.Screen
       name="SimpleProductDetailInExperience"

@@ -75,9 +75,9 @@ const index = ({route, navigation}) => {
         .then(res => {
           setdata(res);
           setLoading(false);
-          {
+          /* {
             console.log({data: res});
-          }
+          } */
         });
     };
     check();
@@ -233,14 +233,11 @@ const index = ({route, navigation}) => {
                     renderItem={({item}) => (
                       <TrendingCards
                         onPress={() => {
-                          dispatch5(ProductDetails(item.id));
+                          // dispatch5(ProductDetails(item.id));
                           //console.log('proDet', productsDetails);
-                          navigation.navigate('PRODUCTS', {
-                            screen: 'ProductDetail',
-                            params: {
-                              experienceId: item.celebrity_id,
-                              productId: item.id,
-                            },
+                          navigation.navigate('ProductDetail', {
+                            experienceId: item.celebrity_id,
+                            productId: item.id,
                           });
                         }}
                         title={item.title}
@@ -331,7 +328,7 @@ const index = ({route, navigation}) => {
                               experienceID: item?.id,
                               type: types.EXPERIENCE_ID,
                             });
-                            console.log('id_exp', item.id);
+                            // console.log('id_exp', item.id);
                             dispatch4(ExperienceProductData(item?.id));
                             celebrityModalState.current(true);
                           }}

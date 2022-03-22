@@ -23,7 +23,7 @@ function ClosingSoonCard({item, onPress}) {
         marginLeft: 10,
         borderRadius: 10,
       }}>
-      <TouchableOpacity onPress={onPress}>
+      <TouchableOpacity activeOpacity={0.7} onPress={onPress}>
         <LoaderImage
           source={{
             // uri: ImgUrl.replace("http://", "https://"),

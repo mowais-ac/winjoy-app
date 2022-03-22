@@ -44,11 +44,10 @@ const ProductDetail = ({props, navigation, route}) => {
   const [activity, setActivity] = useState(false);
   const [count, setCount] = useState(1);
   const [Loading, setLoading] = useState(true);
-  const [images, setImages] = useState([]);
-  //dealjoy data
-  const {data} = route?.params;
+  // const [images, setImages] = useState([]);
+
   //  console.log({data: data});
-  const loading = useSelector(state => state.app.loading);
+
   //console.log({productId: productId});
   /*  useFocusEffect(() => {
     // dispatch2(ProductDetails(productId));
@@ -81,7 +80,7 @@ const ProductDetail = ({props, navigation, route}) => {
         // if (pd && pd.product) {
         // let imagesArr = [...images, pd?.product?.images];
         // console.log('imagesArr:: ', imagesArr);
-        setImages(pd?.product?.images);
+        //setImages(pd?.product?.images);
         // }
       });
   };
@@ -138,7 +137,15 @@ const ProductDetail = ({props, navigation, route}) => {
         });
     }
   };
-
+  /* 
+  let images = [];
+  images.push({
+    image: pd?.product?.image,
+  });
+  if (pd) {
+    images = [...images, pd?.product?.images.images];
+  }
+  console.log('Images', pd?.product?.images); */
   return (
     <SafeAreaView style={{height: '100%', paddingBottom: 120}}>
       <ScrollView style={{}}>
@@ -154,10 +161,8 @@ const ProductDetail = ({props, navigation, route}) => {
               <View style={[styles.upperView]}>
                 <Card
                   images={pd?.product?.images}
-                  updated_stocks={
-                    pd?.product?.updated_stocks || data?.product?.updated_stocks
-                  }
-                  stock={pd?.product?.stock || data?.product?.stock}
+                  updated_stocks={pd?.product?.updated_stocks}
+                  stock={pd?.product?.stock}
                 />
               </View>
               <View style={styles.card}>
@@ -192,7 +197,7 @@ const ProductDetail = ({props, navigation, route}) => {
                   </Label>
                 ) : (
                   <Label font={16} dark style={{color: '#000000'}}>
-                    {pd?.product?.luckydraw?.prize_title || data?.prize_title}
+                    {pd?.product?.luckydraw?.prize_title}
                   </Label>
                 )}
                 {pd?.product?.luckydraw?.enable_buy ? (
@@ -239,7 +244,7 @@ const ProductDetail = ({props, navigation, route}) => {
                   font={11}
                   dark
                   style={{color: '#000000', lineHeight: 20}}>
-                  {pd?.product?.description || data?.product?.description}
+                  {pd?.product?.description}
                 </Label>
               </View>
             </View>
@@ -261,7 +266,7 @@ const ProductDetail = ({props, navigation, route}) => {
               <View>
                 <Text style={styles.metaText}>To enter in the lucky draw</Text>
                 <Text style={[styles.metaText, {fontWeight: 'bold'}]}>
-                  Buy a {pd?.product?.title || data?.product?.title}
+                  Buy a {pd?.product?.title}
                 </Text>
               </View>
             ) : null}

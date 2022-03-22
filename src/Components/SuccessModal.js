@@ -143,8 +143,8 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.BG_MUTED,
   },
   ModalView: {
-    height: height * 0.55,
-    marginTop: height * 0.45,
+    height: height * 0.5,
+    marginTop: height * 0.55,
     borderTopLeftRadius: 37,
     borderTopRightRadius: 37,
     backgroundColor: Colors.WHITE,

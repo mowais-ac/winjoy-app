@@ -14,6 +14,7 @@ import PrivacyPolicy from '../screens/PrivacyPolicy';
 import UserAgreement from '../screens/UserAgreement';
 import TermsAndConditions from '../screens/TermsAndConditions';
 import FAQS from '../screens/FAQS';
+import ProductDetail from '../screens/ProductDetail';
 import Landing from '../screens/Landing';
 const Stack = createNativeStackNavigator();
 export default index = () => (
@@ -29,6 +30,7 @@ export default index = () => (
     <Stack.Screen name="EditProfile" component={EditProfile} />
     <Stack.Screen name="BuyLife" component={BuyLife} />
     <Stack.Screen name="Orders" component={Orders} />
+    <Stack.Screen name="ProductDetail" component={ProductDetail} />
     <Stack.Screen name="Entries" component={Entries} />
     <Stack.Screen name="LeaderBoard" component={LeaderBoard} />
     <Stack.Screen name="RefferAndEarn" component={RefferAndEarn} />

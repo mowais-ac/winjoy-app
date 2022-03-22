@@ -212,6 +212,11 @@ export const ExperienceProductData = id => {
           type: types.WIN_EXPERIENCE_PRODUCT_DATA,
           payload: json,
         });
+        /*  dispatch({
+          type: types.WIN_EXPERIENCE_PRODUCT_DATA,
+           payload: json,
+          l: false,
+        }); */
       } else {
       }
     };

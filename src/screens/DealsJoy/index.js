@@ -189,14 +189,8 @@ const index = ({props, navigation}) => {
             renderItem={({item}) => (
               <ClosingSoonCard
                 onPress={() => {
-                  navigation.navigate('BottomTabStack', {
-                    screen: 'PRODUCTS',
-                    params: {
-                      screen: 'ProductDetail',
-                      params: {
-                        data: item,
-                      },
-                    },
+                  navigation.navigate('ProductDetail', {
+                    productId: item?.product?.id,
                   });
                 }}
                 props={props}

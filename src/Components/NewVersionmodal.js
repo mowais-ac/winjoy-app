@@ -8,6 +8,7 @@ import {
   Dimensions,
   TouchableOpacity,
   Linking,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import {Colors, Images} from '../Constants/Index';
 import {useNavigation} from '@react-navigation/native';
@@ -18,11 +19,19 @@ const {width, height} = Dimensions.get('window');
 const Info_btn = props => {
   const [showModal, setShowModal] = useState(false);
   const navigation = useNavigation();
+  const [ModelState, setModelState] = useState({
+    state: false,
+    details: null,
+  });
 
+  const HandleChange = (state, details = null, ForceSuccess = false) => {
+    setModelState({state, details, ForceSuccess});
+  };
   useEffect(() => {
     if (parseInt(props.updatedVersion) !== parseInt(props.currentV)) {
       setShowModal(true);
     }
+    if (props.ModalRef) props.ModalRef.current = HandleChange;
   }, []);
 
   return (
@@ -30,7 +39,18 @@ const Info_btn = props => {
       animationType="slide"
       transparent={true}
       visible={showModal}
-      statusBarTranslucent={false}>
+      statusBarTranslucent={false}
+      onRequestClose={() => {
+        setShowModal(false);
+        if (props.onClose) props.onClose();
+      }}>
+      <TouchableWithoutFeedback
+        onPress={() => {
+          setShowModal(false);
+          if (props.onClose) props.onClose();
+        }}>
+        <View style={styles.MainView} />
+      </TouchableWithoutFeedback>
       <View style={styles.ModalView}>
         <View style={styles.SmallBorder} />
         <View>
@@ -38,16 +58,16 @@ const Info_btn = props => {
             source={require('../../src/assets/imgs/newlogo.png')}
             style={{
               marginTop: 15,
-              width: 85,
-              height: 85,
+              width: 70,
+              height: 70,
               alignSelf: 'center',
             }}
           />
           <Text
             style={{
-              fontSize: 22,
+              fontSize: 18,
               textAlign: 'center',
-              marginTop: 25,
+              marginTop: 18,
               color: '#420e92',
               fontFamily: 'Axiforma-Bold',
             }}>
@@ -55,8 +75,8 @@ const Info_btn = props => {
           </Text>
           <Text
             style={{
-              lineHeight: 25,
-              fontSize: 15.5,
+              lineHeight: 22,
+              fontSize: 14,
               textAlign: 'center',
               marginTop: 10,
               fontWeight: '400',
@@ -96,6 +116,23 @@ const Info_btn = props => {
                   Go to Goolge Play Store
                 </Text>
               </View>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => setShowModal(false)}
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'center',
+                paddingVertical: 8,
+              }}>
+              <Text
+                style={{
+                  color: Colors.DARK_LABEL,
+                  fontSize: 18,
+                  fontWeight: '600',
+                }}>
+                Skip
+              </Text>
             </TouchableOpacity>
           </View>
         </View>

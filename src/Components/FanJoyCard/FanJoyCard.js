@@ -29,6 +29,7 @@ function FanJoyCard({style, id, name, fans, imageUrl, fluid}) {
   };
   return (
     <TouchableOpacity
+      activeOpacity={0.6}
       onPress={onPressCard}
       style={[!fluid ? {width: 180} : {width: '100%'}, style]}>
       <Image

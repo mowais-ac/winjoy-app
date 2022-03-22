@@ -17,6 +17,7 @@ function WalletBlanceCard({
   onPressWithdraw,
   result,
   optionDisable,
+  onPressaccountdetails,
   data,
 }) {
   const {t} = useTranslation();
@@ -80,6 +81,13 @@ function WalletBlanceCard({
             justifyContent: 'space-around',
             //marginTop: 10,
           }}>
+          {/*   <LongButton
+            style={[styles.Margin, {backgroundColor: '#e3dbef'}]}
+            textstyle={{color: '#420e92'}}
+            text={t('Withdraw')}
+            font={16}
+            onPress={onPressWithdraw}
+          /> */}
           <LongButton
             style={styles.Margin}
             textstyle={{color: '#eb2b5f'}}
@@ -87,12 +95,13 @@ function WalletBlanceCard({
             font={16}
             onPress={onPressTopup}
           />
+
           <LongButton
             style={[styles.Margin, {backgroundColor: '#e3dbef'}]}
             textstyle={{color: '#420e92'}}
-            text={t('Withdraw')}
-            font={16}
-            onPress={onPressWithdraw}
+            text={'Withdraw'}
+            font={15}
+            onPress={onPressaccountdetails}
           />
         </View>
       </View>

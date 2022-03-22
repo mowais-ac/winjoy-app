@@ -14,7 +14,7 @@ function WinExperienceCard({
   fun,
 }) {
   return (
-    <TouchableOpacity onPress={fun}>
+    <TouchableOpacity activeOpacity={0.6} onPress={fun}>
       <View style={style}>
         <LoaderImage
           source={{

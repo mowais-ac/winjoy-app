@@ -224,15 +224,13 @@ const index = ({route, navigation}) => {
                     short_desc={item?.title}
                     thumbnail={item?.thumbnail}
                     style={{
-                      marginTop: 5,
-                      height: 218,
                       width: width * 0.4,
                       backgroundColor: '#fff',
                       borderRadius: 15,
                     }}
                     imageStyle={{
                       width: width * 0.4,
-                      height: height * 0.19,
+                      height: height * 0.18,
                       borderRadius: 15,
                       borderBottomLeftRadius: 0,
                       borderBottomRightRadius: 0,

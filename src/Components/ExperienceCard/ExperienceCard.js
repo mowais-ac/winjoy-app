@@ -14,7 +14,10 @@ function ExperienceCard({
   imageUrl,
 }) {
   return (
-    <TouchableOpacity onPress={onPress} style={[{width: 200}, style]}>
+    <TouchableOpacity
+      activeOpacity={0.6}
+      onPress={onPress}
+      style={[{width: 200}, style]}>
       <View>
         <Image
           style={[styles.bgImage, style]}

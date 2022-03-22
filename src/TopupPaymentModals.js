@@ -262,7 +262,7 @@ const PaymentModals = props => {
               </View>
             </View>
             <View style={styles.mView}>
-              <Label notAlign darkmuted style={styles.titleTxt}>
+              <Label notAlign dark style={styles.titleTxt}>
                 Name on Card
               </Label>
               <View style={styles.Main2}>
@@ -275,7 +275,7 @@ const PaymentModals = props => {
               </View>
             </View>
             <View style={styles.mView}>
-              <Label notAlign darkmuted style={styles.titleTxt}>
+              <Label notAlign dark style={styles.titleTxt}>
                 Card number
               </Label>
               <View style={[styles.Main2, {flexDirection: 'row'}]}>
@@ -355,7 +355,7 @@ const PaymentModals = props => {
                 alignSelf: 'center',
               }}>
               <View style={[styles.mView, {width: width * 0.4}]}>
-                <Label notAlign darkmuted style={styles.titleTxt}>
+                <Label notAlign dark style={styles.titleTxt}>
                   Expiry date
                 </Label>
                 <View style={styles.Main1}>
@@ -375,7 +375,7 @@ const PaymentModals = props => {
                 </View>
               </View>
               <View style={[styles.mView, {width: width * 0.4}]}>
-                <Label notAlign darkmuted style={styles.titleTxt}>
+                <Label notAlign dark style={styles.titleTxt}>
                   CVV
                 </Label>
                 <View style={styles.Main1}>
@@ -478,7 +478,7 @@ const styles = StyleSheet.create({
   },
   ModalView: {
     height: height * 0.8,
-    marginTop: height * 0.2,
+    marginTop: height * 0.25,
     borderTopLeftRadius: 37,
     borderTopRightRadius: 37,
     backgroundColor: Colors.BENEFICIARY,

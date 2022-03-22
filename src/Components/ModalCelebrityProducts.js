@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 37,
     backgroundColor: Colors.WHITE,
     alignItems: 'center',
-    borderWidth: 2,
+    //  borderWidth: 2,
   },
   SmallBorder: {
     width: width * 0.35,
