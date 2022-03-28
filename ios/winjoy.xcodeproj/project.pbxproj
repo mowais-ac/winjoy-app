@@ -20,6 +20,9 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		23B7EBC3DD428C18AB8C9AE9 /* libPods-winjoy.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E1D76227EBF3DD6E17A3A14D /* libPods-winjoy.a */; };
 		995DB81B118EA3753E374C28 /* libPods-winjoy-winjoyTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 82F107FF97DD422E6F74B891 /* libPods-winjoy-winjoyTests.a */; };
+		BB4806A227F1BE6200015541 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB4806A127F1BE6200015541 /* GoogleService-Info.plist */; };
+		BB5B533C27EDEBC3006AD705 /* appstore.png in Resources */ = {isa = PBXBuildFile; fileRef = BB5B533A27EDEBC2006AD705 /* appstore.png */; };
+		BB5B533D27EDEBC3006AD705 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BB5B533B27EDEBC3006AD705 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,6 +73,10 @@
 		8D84E802D806EABA113919D1 /* Pods-winjoy.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-winjoy.debug.xcconfig"; path = "Target Support Files/Pods-winjoy/Pods-winjoy.debug.xcconfig"; sourceTree = "<group>"; };
 		9798F9FDE1FA46B9B167CA05 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
 		A57D785A9F3D481EAFFB8BD8 /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
+		BB4806A127F1BE6200015541 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		BB5B533A27EDEBC2006AD705 /* appstore.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = appstore.png; sourceTree = "<group>"; };
+		BB5B533B27EDEBC3006AD705 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		BB5B533E27EDF8B4006AD705 /* winjoy.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = winjoy.entitlements; path = winjoy/winjoy.entitlements; sourceTree = "<group>"; };
 		BB5DBCFB0B78E0D28BDE4997 /* Pods-winjoy-winjoyTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-winjoy-winjoyTests.release.xcconfig"; path = "Target Support Files/Pods-winjoy-winjoyTests/Pods-winjoy-winjoyTests.release.xcconfig"; sourceTree = "<group>"; };
 		BBBD72CF80794D1ABE803B9E /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		BBC6CEE53CC34DC5B6C6B05D /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
@@ -121,6 +128,10 @@
 		13B07FAE1A68108700A75B9A /* winjoy */ = {
 			isa = PBXGroup;
 			children = (
+				BB4806A127F1BE6200015541 /* GoogleService-Info.plist */,
+				BB5B533E27EDF8B4006AD705 /* winjoy.entitlements */,
+				BB5B533A27EDEBC2006AD705 /* appstore.png */,
+				BB5B533B27EDEBC3006AD705 /* Assets.xcassets */,
 				04A0D6D427BBFC2A0099E825 /* Axiforma-Bold.ttf */,
 				04A0D6D927BBFC2B0099E825 /* Axiforma-Light.ttf */,
 				04A0D6D827BBFC2A0099E825 /* Axiforma-Medium.ttf */,
@@ -319,9 +330,12 @@
 				04A0D6DE27BBFC2B0099E825 /* Axiforma-SemiBold.ttf in Resources */,
 				04A0D6DC27BBFC2B0099E825 /* Axiforma-Bold.ttf in Resources */,
 				04A0D6E227BBFC2B0099E825 /* Poppins-Bold.ttf in Resources */,
+				BB5B533D27EDEBC3006AD705 /* Assets.xcassets in Resources */,
 				04A0D6DB27BBFC2B0099E825 /* Axiforma-Regular.ttf in Resources */,
 				04A0D6DD27BBFC2B0099E825 /* ProximaNova-Regular.ttf in Resources */,
 				04A0D6E127BBFC2B0099E825 /* Axiforma-Light.ttf in Resources */,
+				BB4806A227F1BE6200015541 /* GoogleService-Info.plist in Resources */,
+				BB5B533C27EDEBC3006AD705 /* appstore.png in Resources */,
 				04A0D6DF27BBFC2B0099E825 /* Poppins-Regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -523,7 +537,7 @@
 			baseConfigurationReference = 0EA32DDC837DAE96D862E6A9 /* Pods-winjoy-winjoyTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				EXCLUDED_ARCHS = "";
+				DEVELOPMENT_TEAM = 326QC92L42;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -535,7 +549,6 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",
@@ -552,10 +565,8 @@
 			baseConfigurationReference = BB5DBCFB0B78E0D28BDE4997 /* Pods-winjoy-winjoyTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				COPY_PHASE_STRIP = NO;
 				DEVELOPMENT_TEAM = 326QC92L42;
-				EXCLUDED_ARCHS = "";
 				INFOPLIST_FILE = winjoyTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -563,7 +574,6 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",
@@ -580,19 +590,21 @@
 			baseConfigurationReference = 8D84E802D806EABA113919D1 /* Pods-winjoy.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 3;
+				CODE_SIGN_ENTITLEMENTS = winjoy/winjoy.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = 326QC92L42;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = winjoy/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2;
-				ONLY_ACTIVE_ARCH = YES;
+				MARKETING_VERSION = 1.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -600,7 +612,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.winjoyae.app;
 				PRODUCT_NAME = winjoy;
-				PROVISIONING_PROFILE_SPECIFIER = "Muhammad Owais - macbook";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -612,18 +624,20 @@
 			baseConfigurationReference = BFF0577049A580ADBA0E0908 /* Pods-winjoy.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 3;
+				CODE_SIGN_ENTITLEMENTS = winjoy/winjoy.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = 326QC92L42;
 				INFOPLIST_FILE = winjoy/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2;
-				ONLY_ACTIVE_ARCH = YES;
+				MARKETING_VERSION = 1.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -631,7 +645,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.winjoyae.app;
 				PRODUCT_NAME = winjoy;
-				PROVISIONING_PROFILE_SPECIFIER = "Muhammad Owais - macbook";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -757,7 +771,6 @@
 					"\"$(inherited)\"",
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
-				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};

@@ -56,6 +56,10 @@ const PaymentModals = props => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
+  const Combined_closed = () => {
+    SucessModalState.current(false);
+    props.onload();
+  };
   useEffect(() => {
     if (props.ModalRef) props.ModalRef.current = HandleChange;
   });
@@ -141,15 +145,6 @@ const PaymentModals = props => {
         products: expData1,
       };
 
-      // const body = {
-      //   card_number: number,
-      //   exp_month: month,
-      //   exp_year: year,
-      //   cvc: cvc,
-      //   type: "products",
-      //   products:  JSON.stringify(dat)
-      // };
-
       var data = new FormData();
       data.append('card_number', number2);
       data.append('exp_month', month);
@@ -233,9 +228,6 @@ const PaymentModals = props => {
                   placeholder="Name on Card"
                   placeholderTextColor={Colors.DARK_LABEL}
                   keyboardType={'default'}
-                  // onBlur={onBlur}
-
-                  // onChangeText={HandleChange}
                   style={styles.MarginLarge}
                 />
               </View>
@@ -259,59 +251,6 @@ const PaymentModals = props => {
                   }}
                   style={styles.MarginLargeNumber}
                 />
-
-                {/*   <TextInput
-                    placeholder="••••"
-                    placeholderTextColor={Colors.DARK_LABEL}
-                    keyboardType={'numeric'}
-                    maxLength={4}
-                    returnKeyType={'next'}
-                    onSubmitEditing={() => ref_input2.current.focus()}
-                    // onBlur={onBlur}
-
-                    onChangeText={text => {
-                      setNumber1(text);
-                    }}
-                    style={styles.MarginLargeNumber}
-                  />
-                  <TextInput
-                    placeholder="••••"
-                    placeholderTextColor={Colors.DARK_LABEL}
-                    keyboardType={'numeric'}
-                    maxLength={4}
-                    onSubmitEditing={() => ref_input3.current.focus()}
-                    ref={ref_input2}
-                    // onBlur={onBlur}
-
-                    onChangeText={text => {
-                      setNumber2(text);
-                    }}
-                    style={styles.MarginLargeNumber}
-                  />
-                  <TextInput
-                    placeholder="••••"
-                    placeholderTextColor={Colors.DARK_LABEL}
-                    keyboardType={'numeric'}
-                    maxLength={4}
-                    // onBlur={onBlur}
-
-                    onChangeText={text => {
-                      setNumber3(text);
-                    }}
-                    style={styles.MarginLargeNumber}
-                  />
-                  <TextInput
-                    placeholder="••••"
-                    placeholderTextColor={Colors.DARK_LABEL}
-                    keyboardType={'numeric'}
-                    maxLength={4}
-                    // onBlur={onBlur}
-
-                    onChangeText={text => {
-                      setNumber4(text);
-                    }}
-                    style={styles.MarginLargeNumber}
-                  /> */}
               </View>
             </View>
             <View
@@ -421,7 +360,7 @@ const PaymentModals = props => {
             SucessModalState.current(false);
           }}
           closeOnPress={() => {
-            SucessModalState.current(false);
+            Combined_closed();
             setModelState({
               ...ModelState,
               state: !ModelState.state,

@@ -321,6 +321,9 @@ const index = ({navigation}) => {
         ModalRef={ModalState}
         details
         total={cartData?.sub_total}
+        onload={() => {
+          onRefresh();
+        }}
       />
       <Modals
         ModalRef={ModalStateError}
@@ -341,6 +344,7 @@ const index = ({navigation}) => {
         }}
         closeOnPress={() => {
           SucessModalState.current(false);
+          onRefresh();
           setModelState({
             ...ModelState,
             state: !ModelState.state,

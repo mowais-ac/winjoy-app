@@ -44,6 +44,10 @@ const index = ({props, navigation}) => {
   const totalLives = useSelector(state => state.app.totalLives);
   const socket = socketIO(MYServer);
   const [refreshing, setRefreshing] = useState(false);
+  const onCountDownFinish = () => {
+    setRenderBtn(true);
+    onRefresh();
+  };
   const [time, setTime] = useState(() => {
     dispatch(TriviaJoyAPI());
     var CurrentDate = new Date().toLocaleString();
@@ -58,13 +62,30 @@ const index = ({props, navigation}) => {
     // setBanners(null);
     setRefreshing(true);
     dispatch(TriviaJoyAPI());
-    wait(2000).then(() => setRefreshing(false));
+    var CurrentDate = new Date().toLocaleString();
+    var duration = dayjs(triviaJoyData?.upcoming_gameshow?.start_date).diff(
+      dayjs(CurrentDate),
+      'seconds',
+    );
+
+    console.log('duration', duration);
+    setTime(duration);
+    wait(1000).then(() => setRefreshing(false));
   }, []);
   useEffect(() => {
     socket.on('sendStartlivegameshow', msg => {
       dispatch(TriviaJoyAPI());
     });
-  }, []);
+
+    dispatch(TriviaJoyAPI());
+    var CurrentDate = new Date().toLocaleString();
+    var duration = dayjs(triviaJoyData?.upcoming_gameshow?.start_date).diff(
+      dayjs(CurrentDate),
+      'seconds',
+    );
+
+    setTime(duration);
+  }, [TriviaJoyAPI]);
 
   const LetBegin = () => {
     dispatch2(CheckGameEnterStatus());
@@ -112,13 +133,6 @@ const index = ({props, navigation}) => {
             cash prizes
           </Text>
 
-          {/* <Text
-            style={[
-              styles.heading,
-              {width: width * 0.8, marginTop: height * 0.08},
-            ]}>
-            Daily Challenge &<Text style={{color: '#D9FE51'}}>WIN</Text>
-          </Text> */}
           <Label
             primary
             font={16}
@@ -175,7 +189,9 @@ const index = ({props, navigation}) => {
                 style={{marginTop: 6}}
                 size={16}
                 until={time}
-                onFinish={() => setRenderBtn(true)}
+                onFinish={() => {
+                  onCountDownFinish();
+                }}
                 digitStyle={{
                   borderColor: '#ffffff',
                   borderWidth: 1,

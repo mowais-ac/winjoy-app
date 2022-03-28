@@ -15,6 +15,7 @@ import UserAgreement from '../screens/UserAgreement';
 import TermsAndConditions from '../screens/TermsAndConditions';
 import FAQS from '../screens/FAQS';
 import ProductDetail from '../screens/ProductDetail';
+import GamesRules from '../screens/GamesRules';
 import Landing from '../screens/Landing';
 const Stack = createNativeStackNavigator();
 export default index = () => (
@@ -38,5 +39,6 @@ export default index = () => (
     <Stack.Screen name="UserAgreement" component={UserAgreement} />
     <Stack.Screen name="TermsAndConditions" component={TermsAndConditions} />
     <Stack.Screen name="FAQS" component={FAQS} />
+    <Stack.Screen name="GamesRules" component={GamesRules} />
   </Stack.Navigator>
 );

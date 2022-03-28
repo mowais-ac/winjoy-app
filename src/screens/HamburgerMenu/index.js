@@ -336,19 +336,33 @@ const index = ({props, navigation}) => {
                 marginTop: 20,
                 marginBottom: 15,
               }}>
-              <Text
-                style={[
-                  styles.text,
-                  {
-                    color: '#E7003F',
-                    width: width,
-                    fontSize: RFValue(16),
-                    fontFamily: 'Axiforma-SemiBold',
-                    textAlign: 'center',
-                  },
-                ]}>
-                Need Help?
-              </Text>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate('Contactus');
+                }}>
+                <View
+                  style={[
+                    styles.bottomBtnView,
+                    {
+                      //backgroundColor: '#E9E3F0',
+                      borderTopRightRadius: height * 0.035,
+                      borderBottomRightRadius: height * 0.035,
+                    },
+                  ]}>
+                  <Text
+                    style={[
+                      styles.text,
+                      {
+                        color: '#E7003F',
+                        fontSize: RFValue(15),
+                        fontFamily: 'Axiforma-SemiBold',
+                        textAlign: 'center',
+                      },
+                    ]}>
+                    Contact Us
+                  </Text>
+                </View>
+              </TouchableOpacity>
               <View
                 style={{
                   width: width * 0.8,
@@ -386,7 +400,7 @@ const index = ({props, navigation}) => {
                 {/* onPress={() => Linking.openURL('mailto:support@winjoy.ae')} */}
                 <TouchableOpacity
                   onPress={() => {
-                    navigation.navigate('Contactus');
+                    navigation.navigate('GamesRules');
                   }}>
                   <View
                     style={[
@@ -407,7 +421,7 @@ const index = ({props, navigation}) => {
                           textAlign: 'center',
                         },
                       ]}>
-                      Contact Us
+                      Game Rules
                     </Text>
                   </View>
                 </TouchableOpacity>

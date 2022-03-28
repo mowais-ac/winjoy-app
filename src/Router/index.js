@@ -14,6 +14,7 @@ import {Provider} from 'react-redux';
 import MenuStack from '../Router/MenuStack';
 import GameStack from './GameStack';
 import Cart from '../screens/Cart';
+import NotificationBellList from '../screens/NotificationBellList';
 import WebView from '../screens/WebView';
 import '../i18n/index';
 const Stack = createNativeStackNavigator();
@@ -121,6 +122,10 @@ function index() {
               <Stack.Screen name="BottomTabStack" component={BottomTabStack} />
               <Stack.Screen name="MenuStack" component={MenuStack} />
               <Stack.Screen name="Cart" component={Cart} />
+              <Stack.Screen
+                name="NotificationBellList"
+                component={NotificationBellList}
+              />
               <Stack.Screen name="GameStack" component={GameStack} />
               <Stack.Screen name="WebView" component={WebView} />
             </>

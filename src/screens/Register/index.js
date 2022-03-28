@@ -6,6 +6,9 @@ import {
   Dimensions,
   ScrollView,
   SafeAreaView,
+  TouchableOpacity,
+  Text,
+  ActivityIndicator,
 } from 'react-native';
 
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview';
@@ -23,13 +26,11 @@ import {
   IsVerified,
   GetUserDeviceDetails,
 } from '../../Constants/Functions';
-
 import {Images} from '../../Constants/Index';
 import Modals from '../../Components/Modals';
 import GoBack from '../../Components/GoBack';
 import {useDispatch} from 'react-redux';
 import types from '../../redux/types';
-
 const {width, height} = Dimensions.get('window');
 
 const index = ({navigation}) => {
@@ -41,7 +42,7 @@ const index = ({navigation}) => {
   const passref = useRef();
   const phoneref = useRef();
   const cpassref = useRef();
-  const Buttonref = useRef();
+  const r = useRef();
   const ModalState = useRef();
   const dispatch = useDispatch();
 
@@ -50,7 +51,7 @@ const index = ({navigation}) => {
     if (
       emailref.current.validateEmail() &&
       phoneref.current.validatePhone() &&
-      !Buttonref.current.GetActivity()
+      !r.current.GetActivity()
     ) {
       for (let e of [
         fnameref,
@@ -101,8 +102,7 @@ const index = ({navigation}) => {
         cpassref.current.Error();
         return;
       }
-      //Buttonref.current.SetActivity(true);
-
+      r.current.SetActivity(true);
       const body = JSONtoForm({
         first_name,
         last_name,
@@ -126,17 +126,14 @@ const index = ({navigation}) => {
       await fetch(`${Config.API_URL}/auth/new_register`, requestOptions)
         .then(response => response.json())
         .then(async res => {
-          console.log('res', res);
+          // console.log('res', res);
           if (res.status && res.status.toLowerCase() === 'success') {
             await EncryptedStorage.setItem('Token', res.data.token);
-            console.log('res.data.token', res.data.token);
-            /* if (await IsVerified(res.data.token)) {
-              navigation.replace('BottomTabStack');
-            } else { */
+            //console.log('res.data.token', res.data.token);
+            r.current.SetActivity(false);
             navigation.replace('Verify', {email, phone: phone_no});
-            /*  } */
           } else {
-            Buttonref.current.SetActivity(false);
+            r.current.SetActivity(false);
             const array = res.errors
               ? Object.values(res.errors).reduce((p, n) => {
                   p.push(
@@ -244,12 +241,13 @@ const index = ({navigation}) => {
               ref={cpassref}
               Icon="lock"
             />
+
             <LongButton
               style={[styles.Margin, {backgroundColor: '#ffffff'}]}
               text={t('create_account')}
               font={17}
               onPress={HandleClick}
-              ref={Buttonref}
+              ref={r}
               textstyle={{color: '#E7003F'}}
             />
             <Label
@@ -279,12 +277,7 @@ const index = ({navigation}) => {
               />
             </Label>
           </View>
-          {/* <LabelButton
-          style={styles.MarginBack}
-          text="Go Back"
-          black
-          onPress={() => navigation.replace("Splash")}
-        /> */}
+
           <View style={{marginTop: height * 0.05}} />
         </KeyboardAwareScrollView>
       </ScrollView>

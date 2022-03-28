@@ -13,7 +13,19 @@ import CountDown from 'react-native-countdown-component';
 import LongButton from '../LongButton';
 import Carousel from 'react-native-snap-carousel';
 import {FormatNumber} from '../../Constants/Functions';
-function HomeCard({style, onPress, gameShow, time, images, upcoming_gameshow}) {
+function HomeCard({
+  style,
+  onPress,
+  gameShow,
+  time,
+  images,
+  upcoming_gameshow,
+  countDownFinish,
+}) {
+  const onCountDownFinish = () => {
+    setRenderBtn(true);
+    countDownFinish();
+  };
   const {width, height} = Dimensions.get('window');
   const [renderBtn, setRenderBtn] = useState(false);
   function _renderItem({item, index}) {
@@ -103,41 +115,43 @@ function HomeCard({style, onPress, gameShow, time, images, upcoming_gameshow}) {
                     styles.commingSoonTxt,
                     {color: '#ffffff', fontSize: 13},
                   ]}>
-                  COMING SOON
+                  COMING SOON 
                 </Text>
-                <CountDown
-                  style={{marginTop: 3}}
-                  size={12}
-                  until={time}
-                  onFinish={() => setRenderBtn(true)}
-                  digitStyle={{
-                    backgroundColor: '#ffffff',
-                    height: 25,
-                  }}
-                  digitTxtStyle={{
-                    color: '#420E92',
-                    fontSize: 13,
-                    fontFamily: 'Axiforma-Medium',
-                  }}
-                  timeLabelStyle={{color: 'red'}}
-                  separatorStyle={{
-                    color: '#D9FE51',
-                    paddingLeft: 5,
-                    paddingRight: 5,
-                  }}
-                  timeToShow={['D', 'H', 'M', 'S']}
-                  timeLabels={{
-                    d: 'days',
-                    h: 'hours',
-                    m: 'minutes',
-                    s: 'seconds',
-                  }}
-                  timeLabelStyle={{
-                    color: '#ffffff',
-                    fontFamily: 'Axiforma-Regular',
-                  }}
-                  showSeparator
-                />
+                {time ? (
+                  <CountDown
+                    style={{marginTop: 3}}
+                    size={12}
+                    until={time}
+                    onFinish={() => onCountDownFinish()}
+                    digitStyle={{
+                      backgroundColor: '#ffffff',
+                      height: 25,
+                    }}
+                    digitTxtStyle={{
+                      color: '#420E92',
+                      fontSize: 13,
+                      fontFamily: 'Axiforma-Medium',
+                    }}
+                    timeLabelStyle={{color: 'red'}}
+                    separatorStyle={{
+                      color: '#D9FE51',
+                      paddingLeft: 5,
+                      paddingRight: 5,
+                    }}
+                    timeToShow={['D', 'H', 'M', 'S']}
+                    timeLabels={{
+                      d: 'days',
+                      h: 'hours',
+                      m: 'minutes',
+                      s: 'seconds',
+                    }}
+                    timeLabelStyle={{
+                      color: '#ffffff',
+                      fontFamily: 'Axiforma-Regular',
+                    }}
+                    showSeparator
+                  />
+                ) : null}
               </View>
             </View>
           ) : null}

@@ -21,6 +21,7 @@ import {heightConverter, widthConverter} from './Helpers/Responsive';
 const {width, height} = Dimensions.get('window');
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {UpdateBell} from '../redux/actions';
+import NotificationBell from './NotificationBell';
 const Header = props => {
   const navigation = useNavigation();
 
@@ -94,6 +95,7 @@ const Header = props => {
             />
           </TouchableOpacity>
         )}
+        <NotificationBell style={styles.N_Bell} />
         {!props.noBell && <Bell style={styles.Bell} value={props.value} />}
         <TouchableOpacity
           style={styles.Lines}
@@ -138,8 +140,11 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     marginLeft: width * 0.043,
   },
+  N_Bell: {
+    marginLeft: width * 0.51,
+  },
   Bell: {
-    marginLeft: width * 0.64,
+    marginLeft: 10,
   },
   Heading: {
     marginLeft: width * 0.05,

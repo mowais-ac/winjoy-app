@@ -8,6 +8,7 @@ import {
   ScrollView,
   SafeAreaView,
   ActivityIndicator,
+  RefreshControl,
 } from 'react-native';
 import Label from '../../Components/Label';
 const {width, height} = Dimensions.get('window');
@@ -18,6 +19,7 @@ import {
   heightPercentageToDP,
   heightConverter,
 } from '../../Components/Helpers/Responsive';
+import {wait} from '../../Constants/Functions';
 import {connect, useDispatch, useSelector} from 'react-redux';
 import Header from '../../Components/Header';
 import EncryptedStorage from 'react-native-encrypted-storage';
@@ -38,21 +40,19 @@ const ProductDetail = ({props, navigation, route}) => {
   const SucessModalState = useRef();
   const ModalErrorState = useRef();
   const counterMain = useSelector(state => state.app.counter);
-  //const pd = useSelector(state => state.app.productsDetals);
+  const [refreshing, setRefreshing] = React.useState(false);
   const [pd, setpd] = useState([]);
   const {productId} = route?.params;
   const [activity, setActivity] = useState(false);
   const [count, setCount] = useState(1);
   const [Loading, setLoading] = useState(true);
-  // const [images, setImages] = useState([]);
 
-  //  console.log({data: data});
-
-  //console.log({productId: productId});
-  /*  useFocusEffect(() => {
-    // dispatch2(ProductDetails(productId));
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
     _Api(productId);
-  }, []); */
+    wait(2000).then(() => setRefreshing(false));
+  }, []);
+
   useEffect(() => {
     _Api(productId);
   }, []);
@@ -72,16 +72,6 @@ const ProductDetail = ({props, navigation, route}) => {
       .then(res => {
         setpd(res);
         setLoading(false);
-        // if (pd?.product?.image) {
-        //   images.push({
-        //     image: pd?.product?.image,
-        //   });
-        // }
-        // if (pd && pd.product) {
-        // let imagesArr = [...images, pd?.product?.images];
-        // console.log('imagesArr:: ', imagesArr);
-        //setImages(pd?.product?.images);
-        // }
       });
   };
 
@@ -137,18 +127,13 @@ const ProductDetail = ({props, navigation, route}) => {
         });
     }
   };
-  /* 
-  let images = [];
-  images.push({
-    image: pd?.product?.image,
-  });
-  if (pd) {
-    images = [...images, pd?.product?.images.images];
-  }
-  console.log('Images', pd?.product?.images); */
+
   return (
     <SafeAreaView style={{height: '100%', paddingBottom: 120}}>
-      <ScrollView style={{}}>
+      <ScrollView
+        refreshControl={
+          <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
+        }>
         <LinearGradient style={styles.mainView} colors={['#420E92', '#E7003F']}>
           <View style={{height: 20}} />
           <Header back={true} />

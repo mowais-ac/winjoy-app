@@ -1,9 +1,9 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {
+  RefreshControl,
   ScrollView,
   View,
   StyleSheet,
-  Modal,
   Dimensions,
   Image,
   TouchableWithoutFeedback,
@@ -13,6 +13,8 @@ import {
   KeyboardAvoidingView,
   ActivityIndicator,
   Text,
+  Keyboard,
+  Platform,
 } from 'react-native';
 import Label from './Label';
 import LabelButton from './LabelButton';
@@ -32,8 +34,10 @@ import Modals from './Modals';
 import WithDrawModal from '../Components/WithDrawModal';
 import SuccessModal from '../Components/SuccessModal';
 import axios from 'axios';
-
+import {FormatNumber, wait} from '../Constants/Functions';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 const {width, height} = Dimensions.get('window');
+import Modal from 'react-native-modal';
 
 const AddaccountModal = props => {
   const [Topupamount, settopupammount] = useState('10');
@@ -43,17 +47,15 @@ const AddaccountModal = props => {
     state: false,
     details: null,
   });
+  const [refreshing, setRefreshing] = React.useState(false);
   const ModalState = useRef();
   const ModalState2 = useRef();
-
-  const [type, settype] = useState();
+  //console.log('IDlist', accountsList);
   const [title, settitle] = useState();
   const [account_no, setaccount_no] = useState();
   const [iban, setiban] = useState();
-  const [branch_name, setbranch_name] = useState();
   const [bankName, setBankName] = useState();
   const [paypal_id, setPaypalId] = useState();
-  const [branch_code, setbranch_code] = useState();
   const [activity, setActivity] = useState(false);
   const [activeTab, setActiveTab] = useState('bank');
   const [activeList, setActiveList] = useState('Bank Al Habib');
@@ -62,6 +64,8 @@ const AddaccountModal = props => {
   const [deleteProcess, setDeleteProcess] = useState(false);
   const [accountAddFormVisibility, setAccountAddFormVisibility] =
     useState(false);
+
+  const [listloading, setlistloading] = useState(false);
   const ApproveRef = useRef();
   const DeclineRef = useRef();
   const SucessModalState = useRef();
@@ -76,6 +80,12 @@ const AddaccountModal = props => {
     setModelState({state, details, ForceSuccess});
   };
 
+  /*  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    ModalState.current(true);
+    wait(2000).then(() => setRefreshing(false));
+  }, []); */
+
   const Postaddaccount = async () => {
     if (!activeTab) {
       ModalErrorState.current(true, {
@@ -83,12 +93,6 @@ const AddaccountModal = props => {
         Error: 'Enter account type',
       });
     } else {
-      /* else if (!bankName) {
-      ModalErrorState.current(true, {
-        heading: 'Error',
-        Error: 'Bank name Required',
-      });
-    } */
       setActivity(true);
       const Token = await EncryptedStorage.getItem('Token');
 
@@ -100,8 +104,6 @@ const AddaccountModal = props => {
           account_no: account_no,
           iban: iban,
           bank_name: bankName,
-          branch_name: branch_name,
-          branch_code: branch_code,
         };
       } else {
         console.log('pi: ', paypal_id);
@@ -127,10 +129,9 @@ const AddaccountModal = props => {
 
           setActivity(false);
           if (res.data.status === 'success') {
-            ModalState.current(true);
             setSelectedAccount(res.data.id);
-            // ModalState2.current(true);
-            // SucessModalState.current(true);
+            // onRefresh();
+            ModalState.current(true);
             loadAccountsList();
           } else {
             ModalErrorState.current(true, {
@@ -148,6 +149,7 @@ const AddaccountModal = props => {
   };
 
   const loadAccountsList = async () => {
+    setlistloading(true);
     const Token = await EncryptedStorage.getItem('Token');
     const requestOptions = {
       method: 'GET',
@@ -162,6 +164,8 @@ const AddaccountModal = props => {
       .then(async res => {
         const accountsData = res.data.account_detail;
         setAccountsList(accountsData);
+
+        setlistloading(true);
       });
   };
 
@@ -212,8 +216,9 @@ const AddaccountModal = props => {
   return (
     <Modal
       animationType="slide"
-      transparent={true}
-      visible={ModelState.state}
+      style={{margin: 0}}
+      avoidKeyboard={true}
+      isVisible={ModelState.state}
       statusBarTranslucent={false}
       onRequestClose={() => {
         modalCloseHandle();
@@ -386,37 +391,7 @@ const AddaccountModal = props => {
                 </View>
 
                 {activeTab === 'bank' ? (
-                  <KeyboardAvoidingView
-                    behavior="padding"
-                    style={styles.container}>
-                    <View style={styles.mView}>
-                      <Label notAlign dark style={styles.titleTxt}>
-                        Branch code
-                      </Label>
-                      <View style={styles.Main2}>
-                        <TextInput
-                          keyboardType={'numeric'}
-                          placeholder=""
-                          placeholderTextColor={Colors.DARK_LABEL}
-                          onChangeText={text => setbranch_code(text)}
-                          style={styles.MarginLarge}
-                        />
-                      </View>
-                    </View>
-                    <View style={styles.mView}>
-                      <Label notAlign dark style={styles.titleTxt}>
-                        Branch name
-                      </Label>
-                      <View style={styles.Main2}>
-                        <TextInput
-                          keyboardType={'default'}
-                          placeholder=""
-                          placeholderTextColor={Colors.DARK_LABEL}
-                          onChangeText={text => setbranch_name(text)}
-                          style={styles.MarginLarge}
-                        />
-                      </View>
-                    </View>
+                  <>
                     <View style={styles.mView}>
                       <Label notAlign dark style={styles.titleTxt}>
                         Bank name
@@ -445,6 +420,7 @@ const AddaccountModal = props => {
                         />
                       </View>
                     </View>
+
                     <View style={styles.mView}>
                       <Label notAlign dark style={styles.titleTxt}>
                         Account number / IBAN
@@ -465,7 +441,7 @@ const AddaccountModal = props => {
                         />
                       </View>
                     </View>
-                  </KeyboardAvoidingView>
+                  </>
                 ) : (
                   <View style={styles.mView}>
                     <Label notAlign dark style={styles.titleTxt}>
@@ -668,8 +644,8 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.BG_MUTED,
   },
   ModalView: {
-    height: height * 0.85,
-    marginTop: height * 0.15,
+    height: height * 0.65,
+    marginTop: height * 0.32,
     borderTopLeftRadius: 37,
     borderTopRightRadius: 37,
     backgroundColor: Colors.BENEFICIARY,

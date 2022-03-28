@@ -129,19 +129,6 @@ function Contactus() {
                         Send Message
                       </Text>
                     )}
-                    {/* {isLoading ? (
-                      <ActivityIndicator size="large" color="white" />
-                    ) : (
-                      <Text
-                        style={{
-                          fontSize: 17,
-                          color: '#ffff',
-                          textAlign: 'center',
-                          fontFamily: 'Axiforma-Bold',
-                        }}>
-                        Send Message
-                      </Text>
-                    )} */}
                   </View>
                 </TouchableOpacity>
               </View>

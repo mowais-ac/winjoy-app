@@ -12,21 +12,21 @@ PODS:
     - React-Core (= 0.66.4)
     - React-jsi (= 0.66.4)
     - ReactCommon/turbomodule/core (= 0.66.4)
-  - Firebase/Analytics (8.12.1):
+  - Firebase/Analytics (8.14.0):
     - Firebase/Core
-  - Firebase/AppDistribution (8.12.1):
+  - Firebase/AppDistribution (8.14.0):
     - Firebase/CoreOnly
-    - FirebaseAppDistribution (~> 8.12.0-beta)
-  - Firebase/Core (8.12.1):
+    - FirebaseAppDistribution (~> 8.14.0-beta)
+  - Firebase/Core (8.14.0):
     - Firebase/CoreOnly
-    - FirebaseAnalytics (~> 8.12.0)
-  - Firebase/CoreOnly (8.12.1):
-    - FirebaseCore (= 8.12.1)
-  - Firebase/Messaging (8.12.1):
+    - FirebaseAnalytics (~> 8.14.0)
+  - Firebase/CoreOnly (8.14.0):
+    - FirebaseCore (= 8.14.0)
+  - Firebase/Messaging (8.14.0):
     - Firebase/CoreOnly
-    - FirebaseMessaging (~> 8.12.0)
-  - FirebaseAnalytics (8.12.0):
-    - FirebaseAnalytics/AdIdSupport (= 8.12.0)
+    - FirebaseMessaging (~> 8.14.0)
+  - FirebaseAnalytics (8.14.0):
+    - FirebaseAnalytics/AdIdSupport (= 8.14.0)
     - FirebaseCore (~> 8.0)
     - FirebaseInstallations (~> 8.0)
     - GoogleUtilities/AppDelegateSwizzler (~> 7.7)
@@ -34,36 +34,36 @@ PODS:
     - GoogleUtilities/Network (~> 7.7)
     - "GoogleUtilities/NSData+zlib (~> 7.7)"
     - nanopb (~> 2.30908.0)
-  - FirebaseAnalytics/AdIdSupport (8.12.0):
+  - FirebaseAnalytics/AdIdSupport (8.14.0):
     - FirebaseCore (~> 8.0)
     - FirebaseInstallations (~> 8.0)
-    - GoogleAppMeasurement (= 8.12.0)
+    - GoogleAppMeasurement (= 8.14.0)
     - GoogleUtilities/AppDelegateSwizzler (~> 7.7)
     - GoogleUtilities/MethodSwizzler (~> 7.7)
     - GoogleUtilities/Network (~> 7.7)
     - "GoogleUtilities/NSData+zlib (~> 7.7)"
     - nanopb (~> 2.30908.0)
-  - FirebaseAppDistribution (8.12.0-beta):
+  - FirebaseAppDistribution (8.14.0-beta):
     - FirebaseCore (~> 8.0)
     - FirebaseInstallations (~> 8.0)
     - GoogleDataTransport (~> 9.1)
     - GoogleUtilities/AppDelegateSwizzler (~> 7.7)
     - GoogleUtilities/UserDefaults (~> 7.7)
-  - FirebaseCore (8.12.1):
+  - FirebaseCore (8.14.0):
     - FirebaseCoreDiagnostics (~> 8.0)
     - GoogleUtilities/Environment (~> 7.7)
     - GoogleUtilities/Logger (~> 7.7)
-  - FirebaseCoreDiagnostics (8.12.0):
+  - FirebaseCoreDiagnostics (8.14.0):
     - GoogleDataTransport (~> 9.1)
     - GoogleUtilities/Environment (~> 7.7)
     - GoogleUtilities/Logger (~> 7.7)
     - nanopb (~> 2.30908.0)
-  - FirebaseInstallations (8.12.0):
+  - FirebaseInstallations (8.14.0):
     - FirebaseCore (~> 8.0)
     - GoogleUtilities/Environment (~> 7.7)
     - GoogleUtilities/UserDefaults (~> 7.7)
     - PromisesObjC (< 3.0, >= 1.2)
-  - FirebaseMessaging (8.12.0):
+  - FirebaseMessaging (8.14.0):
     - FirebaseCore (~> 8.0)
     - FirebaseInstallations (~> 8.0)
     - GoogleDataTransport (~> 9.1)
@@ -134,21 +134,21 @@ PODS:
     - FlipperKit/FlipperKitNetworkPlugin
   - fmt (6.2.1)
   - glog (0.3.5)
-  - GoogleAppMeasurement (8.12.0):
-    - GoogleAppMeasurement/AdIdSupport (= 8.12.0)
+  - GoogleAppMeasurement (8.14.0):
+    - GoogleAppMeasurement/AdIdSupport (= 8.14.0)
     - GoogleUtilities/AppDelegateSwizzler (~> 7.7)
     - GoogleUtilities/MethodSwizzler (~> 7.7)
     - GoogleUtilities/Network (~> 7.7)
     - "GoogleUtilities/NSData+zlib (~> 7.7)"
     - nanopb (~> 2.30908.0)
-  - GoogleAppMeasurement/AdIdSupport (8.12.0):
-    - GoogleAppMeasurement/WithoutAdIdSupport (= 8.12.0)
+  - GoogleAppMeasurement/AdIdSupport (8.14.0):
+    - GoogleAppMeasurement/WithoutAdIdSupport (= 8.14.0)
     - GoogleUtilities/AppDelegateSwizzler (~> 7.7)
     - GoogleUtilities/MethodSwizzler (~> 7.7)
     - GoogleUtilities/Network (~> 7.7)
     - "GoogleUtilities/NSData+zlib (~> 7.7)"
     - nanopb (~> 2.30908.0)
-  - GoogleAppMeasurement/WithoutAdIdSupport (8.12.0):
+  - GoogleAppMeasurement/WithoutAdIdSupport (8.14.0):
     - GoogleUtilities/AppDelegateSwizzler (~> 7.7)
     - GoogleUtilities/MethodSwizzler (~> 7.7)
     - GoogleUtilities/Network (~> 7.7)
@@ -389,11 +389,11 @@ PODS:
     - React-Core
   - react-native-encrypted-storage (4.0.2):
     - React-Core
-  - react-native-pager-view (5.4.9):
+  - react-native-pager-view (5.4.15):
     - React-Core
   - react-native-restart (0.0.23):
     - React-Core
-  - react-native-safe-area-context (3.3.2):
+  - react-native-safe-area-context (3.4.1):
     - React-Core
   - react-native-sensitive-info (5.5.8):
     - React
@@ -469,46 +469,48 @@ PODS:
     - React-jsi (= 0.66.4)
     - React-logger (= 0.66.4)
     - React-perflogger (= 0.66.4)
-  - RNCAsyncStorage (1.15.14):
+  - RNCAsyncStorage (1.17.0):
     - React-Core
   - RNCClipboard (1.8.5):
     - React-Core
-  - RNDeviceInfo (8.4.8):
+  - RNCPushNotificationIOS (1.10.1):
     - React-Core
-  - RNFBAnalytics (14.5.1):
-    - Firebase/Analytics (= 8.12.1)
+  - RNDeviceInfo (8.5.1):
     - React-Core
-    - RNFBApp
-  - RNFBApp (14.5.1):
-    - Firebase/CoreOnly (= 8.12.1)
-    - React-Core
-  - RNFBAppDistribution (14.5.1):
-    - Firebase/AppDistribution (= 8.12.1)
+  - RNFBAnalytics (14.7.0):
+    - Firebase/Analytics (= 8.14.0)
     - React-Core
     - RNFBApp
-  - RNFBMessaging (14.5.1):
-    - Firebase/Messaging (= 8.12.1)
+  - RNFBApp (14.7.0):
+    - Firebase/CoreOnly (= 8.14.0)
+    - React-Core
+  - RNFBAppDistribution (14.7.0):
+    - Firebase/AppDistribution (= 8.14.0)
     - React-Core
     - RNFBApp
-  - RNGestureHandler (2.2.0):
+  - RNFBMessaging (14.7.0):
+    - Firebase/Messaging (= 8.14.0)
+    - React-Core
+    - RNFBApp
+  - RNGestureHandler (2.3.2):
     - React-Core
   - RNI18n (2.0.15):
     - React
-  - RNImageCropPicker (0.37.2):
+  - RNImageCropPicker (0.37.3):
     - React-Core
     - React-RCTImage
-    - RNImageCropPicker/QBImagePickerController (= 0.37.2)
+    - RNImageCropPicker/QBImagePickerController (= 0.37.3)
     - TOCropViewController
-  - RNImageCropPicker/QBImagePickerController (0.37.2):
+  - RNImageCropPicker/QBImagePickerController (0.37.3):
     - React-Core
     - React-RCTImage
     - TOCropViewController
-  - RNScreens (3.10.1):
+  - RNScreens (3.13.1):
     - React-Core
     - React-RCTImage
-  - RNSVG (12.1.1):
-    - React
-  - RNVectorIcons (9.0.0):
+  - RNSVG (12.3.0):
+    - React-Core
+  - RNVectorIcons (9.1.0):
     - React-Core
   - TOCropViewController (2.6.1)
   - Yoga (1.14.0)
@@ -579,6 +581,7 @@ DEPENDENCIES:
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - "RNCClipboard (from `../node_modules/@react-native-clipboard/clipboard`)"
+  - "RNCPushNotificationIOS (from `../node_modules/@react-native-community/push-notification-ios`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - "RNFBAnalytics (from `../node_modules/@react-native-firebase/analytics`)"
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
@@ -703,6 +706,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-async-storage/async-storage"
   RNCClipboard:
     :path: "../node_modules/@react-native-clipboard/clipboard"
+  RNCPushNotificationIOS:
+    :path: "../node_modules/@react-native-community/push-notification-ios"
   RNDeviceInfo:
     :path: "../node_modules/react-native-device-info"
   RNFBAnalytics:
@@ -735,13 +740,13 @@ SPEC CHECKSUMS:
   DoubleConversion: 831926d9b8bf8166fd87886c4abab286c2422662
   FBLazyVector: e5569e42a1c79ca00521846c223173a57aca1fe1
   FBReactNativeSpec: fe08c1cd7e2e205718d77ad14b34957cce949b58
-  Firebase: 580d09e8edafc3073ebf09c03fd42e4d80d35fe9
-  FirebaseAnalytics: bd10d7706ba8d6e01ea2816f8fe9e9b881cb0918
-  FirebaseAppDistribution: d1cf955c7e2d08567646b3eb453309d4ae850b23
-  FirebaseCore: 8138de860a90ca7eec5e324da5788fb0ebf1d93c
-  FirebaseCoreDiagnostics: 3b40dfadef5b90433a60ae01f01e90fe87aa76aa
-  FirebaseInstallations: 25764cf322e77f99449395870a65b2bef88e1545
-  FirebaseMessaging: 23db8bf05585e929ada8af0f0968933c25252808
+  Firebase: 7e8fe528c161b9271d365217a74c16aaf834578e
+  FirebaseAnalytics: 2fc3876e2eb347673ad2f35e249ae7b15d6c88f5
+  FirebaseAppDistribution: 54c3de22099cd46d93b6a24b1e70474530bb3188
+  FirebaseCore: b84a44ee7ba999e0f9f76d198a9c7f60a797b848
+  FirebaseCoreDiagnostics: fd0c8490f34287229c1d6c103d3a55f81ec85712
+  FirebaseInstallations: 7d1d967a307c12f1aadd76844fc321cef699b1ce
+  FirebaseMessaging: 5ebc42d281567658a2cb72b9ef3506e4a1a1a6e4
   Flipper: 30e8eeeed6abdc98edaf32af0cda2f198be4b733
   Flipper-Boost-iOSX: fd1e2b8cbef7e662a122412d7ac5f5bea715403c
   Flipper-DoubleConversion: 57ffbe81ef95306cc9e69c4aa3aeeeeb58a6a28c
@@ -753,7 +758,7 @@ SPEC CHECKSUMS:
   FlipperKit: d8d346844eca5d9120c17d441a2f38596e8ed2b9
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
   glog: 5337263514dd6f09803962437687240c5dc39aa4
-  GoogleAppMeasurement: ae033c3aad67e68294369373056b4d74cc8ae0d6
+  GoogleAppMeasurement: 71156240babd3cc6ced03e0d54816f01a880c730
   GoogleDataTransport: 629c20a4d363167143f30ea78320d5a7eb8bd940
   GoogleUtilities: e0913149f6b0625b553d70dae12b49fc62914fd1
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
@@ -773,13 +778,13 @@ SPEC CHECKSUMS:
   React-jsinspector: d0374f7509d407d2264168b6d0fad0b54e300b85
   React-logger: 933f80c97c633ee8965d609876848148e3fef438
   react-native-config: 6502b1879f97ed5ac570a029961fc35ea606cd14
-  react-native-encrypted-storage: e78d848ce0fb663c2ce306e37921d026809322e6
-  react-native-pager-view: 3ee7d4c7697fb3ef788346e834a60cca97ed8540
-  react-native-restart: aaad36f3ed7031daac3565f4a79d67e4f3884a50
-  react-native-safe-area-context: 584dc04881deb49474363f3be89e4ca0e854c057
+  react-native-encrypted-storage: 837c733334debf626204f03d867c7e01d8741e2f
+  react-native-pager-view: 15ae71c52a8a40bd8a10505b5c64fb129fc437e2
+  react-native-restart: 841a166b7fd9243c86ae36148f329e6666967a1f
+  react-native-safe-area-context: 5b8a418400eb3d8364aa87300e865c0262cc17b9
   react-native-sensitive-info: 400c6e3d27945e15c8cddb5b4b92233c85ee06f8
-  react-native-video: a4c2635d0802f983594b7057e1bce8f442f0ad28
-  react-native-webview: 380c1a03ec94b7ed764dac8db1e7c9952d08c93a
+  react-native-video: 77ce22be7abff9e373527ca10106a99dea3ba56c
+  react-native-webview: 77ee909f73e1fcab76380f7dcc3344771fe61bd8
   React-perflogger: 93075d8931c32cd1fce8a98c15d2d5ccc4d891bd
   React-RCTActionSheet: 7d3041e6761b4f3044a37079ddcb156575fb6d89
   React-RCTAnimation: 743e88b55ac62511ae5c2e22803d4f503f2a3a13
@@ -792,19 +797,20 @@ SPEC CHECKSUMS:
   React-RCTVibration: e3ffca672dd3772536cb844274094b0e2c31b187
   React-runtimeexecutor: dec32ee6f2e2a26e13e58152271535fadff5455a
   ReactCommon: 57b69f6383eafcbd7da625bfa6003810332313c4
-  RNCAsyncStorage: ea6b5c280997b2b32a587793163b1f10e580c4f7
-  RNCClipboard: cc054ad1e8a33d2a74cd13e565588b4ca928d8fd
-  RNDeviceInfo: 0400a6d0c94186d1120c3cbd97b23abc022187a9
-  RNFBAnalytics: 74cd9c60531ed33e5347b2dccafa172ae1a851a4
-  RNFBApp: 5bae3002117e55f3c9aa0fb38175dd16c8046c90
-  RNFBAppDistribution: dbd4a831d48c3eb1fbb6e68adc5b2ecb889fa871
-  RNFBMessaging: ae6c40883868cd01fa802395174ec7d61cfa0920
-  RNGestureHandler: bf572f552ea324acd5b5464b8d30755b2d8c1de6
+  RNCAsyncStorage: f385be27befc6e094ef1be9e5d640bdf4cc1be4e
+  RNCClipboard: 471860adba60079ac22058c663c91b3a875a7609
+  RNCPushNotificationIOS: 089da3b657e1e3d464f38195fd2e3069608ef5af
+  RNDeviceInfo: 84bc8b2f6e2a17361d6246e5623ff93f1389869f
+  RNFBAnalytics: 776634be8c549e920df68c67907506805efcb6ae
+  RNFBApp: 097a31d372b3db15b41c7a1a5c429433b0609e12
+  RNFBAppDistribution: d35fc33abfa30df1d647cf4105562c2e14cabf97
+  RNFBMessaging: 06a7a73883f3f43da61507dbfcf4db2245c22869
+  RNGestureHandler: 6e757e487a4834e7280e98e9bac66d2d9c575e9c
   RNI18n: e2f7e76389fcc6e84f2c8733ea89b92502351fd8
-  RNImageCropPicker: 448d3c6e923fde3466b49caf3c2457c2a0ba02dd
-  RNScreens: 522705f2e5c9d27efb17f24aceb2bf8335bc7b8e
-  RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
-  RNVectorIcons: 4143ba35feebab8fdbe6bc43d1e776b393d47ac8
+  RNImageCropPicker: 44e2807bc410741f35d4c45b6586aedfe3da39d2
+  RNScreens: 40a2cb40a02a609938137a1e0acfbf8fc9eebf19
+  RNSVG: 302bfc9905bd8122f08966dc2ce2d07b7b52b9f8
+  RNVectorIcons: 7923e585eaeb139b9f4531d25a125a1500162a0b
   TOCropViewController: edfd4f25713d56905ad1e0b9f5be3fbe0f59c863
   Yoga: e7dc4e71caba6472ff48ad7d234389b91dadc280
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a

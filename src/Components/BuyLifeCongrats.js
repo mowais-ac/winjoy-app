@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, {useState, useEffect, useRef} from 'react';
 import {
   View,
   StyleSheet,
@@ -8,23 +8,23 @@ import {
   TouchableWithoutFeedback,
   Alert,
   TouchableOpacity,
-  TextInput
-} from "react-native";
-import Label from "./Label";
-import LabelButton from "./LabelButton";
-import { Colors, Images } from "../Constants/Index";
-import LongButton from "./LongButton";
-import { useNavigation } from "@react-navigation/native";
-import EncryptedStorage from "react-native-encrypted-storage";
-import Config from "react-native-config";
-import { GetDate } from "../Constants/Functions";
-import ProfilePicture from "./ProfilePicture";
-import { RFValue } from "react-native-responsive-fontsize";
-import LinearGradient from "react-native-linear-gradient";
-import { heightConverter } from "./Helpers/Responsive";
-const { width, height } = Dimensions.get("window");
+  TextInput,
+} from 'react-native';
+import Label from './Label';
+import LabelButton from './LabelButton';
+import {Colors, Images} from '../Constants/Index';
+import LongButton from './LongButton';
+import {useNavigation} from '@react-navigation/native';
+import EncryptedStorage from 'react-native-encrypted-storage';
+import Config from 'react-native-config';
+import {GetDate} from '../Constants/Functions';
+import ProfilePicture from './ProfilePicture';
+import {RFValue} from 'react-native-responsive-fontsize';
+import LinearGradient from 'react-native-linear-gradient';
+import {heightConverter} from './Helpers/Responsive';
+const {width, height} = Dimensions.get('window');
 
-const BuyLifeCongrats = (props) => {
+const BuyLifeCongrats = props => {
   const [ModelState, setModelState] = useState({
     state: false,
     details: null,
@@ -39,7 +39,7 @@ const BuyLifeCongrats = (props) => {
   });
 
   const HandleChange = (state, details = null, ForceSuccess = false) => {
-    setModelState({ state, details, ForceSuccess });
+    setModelState({state, details, ForceSuccess});
   };
 
   return (
@@ -54,15 +54,19 @@ const BuyLifeCongrats = (props) => {
           state: !ModelState.state,
         });
         if (props.onClose) props.onClose();
-      }}
-    >
-
+      }}>
       <View style={styles.MainView} />
 
       <View style={styles.ModalView}>
         <View style={styles.SmallBorder} />
 
-        <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', marginTop: 10 }}>
+        <View
+          style={{
+            width: '100%',
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginTop: 10,
+          }}>
           <Image
             style={{
               width: 100,
@@ -72,26 +76,29 @@ const BuyLifeCongrats = (props) => {
           />
         </View>
         <View style={styles.ModalBody}>
-          <Label primary headingtype="h1" bold2 style={{ color: "#420E92" }}>
+          <Label primary headingtype="h1" bold2 style={{color: '#420E92'}}>
             {props.heading}
           </Label>
-          <Label primary headingtype="h1" font={16} style={{ color: "#0B2142", lineHeight: 25 }}>
+          <Label
+            primary
+            headingtype="h1"
+            font={16}
+            style={{color: '#0B2142', lineHeight: 25}}>
             {props.description}
           </Label>
           <TouchableOpacity
-            onPress={() => { props.closeOnPress() }}
+            onPress={() => {
+              props.closeOnPress();
+            }}
             style={{
               height: heightConverter(20),
               width: width * 0.9,
-
               justifyContent: 'center',
               alignItems: 'center',
               marginTop: height * 0.06,
               marginLeft: width * 0.04,
-            }}
-          >
+            }}>
             <View
-
               style={{
                 height: heightConverter(55),
                 width: width * 0.9,
@@ -99,15 +106,12 @@ const BuyLifeCongrats = (props) => {
                 alignItems: 'center',
                 backgroundColor: '#420e92',
                 borderRadius: 40,
-              }}
-
-
-            >
-              <Label primary font={16} bold style={{ color: "#ffffff" }}>
-               Close
+              }}>
+              <Label primary font={16} bold style={{color: '#ffffff'}}>
+                Close
               </Label>
             </View>
-          </TouchableOpacity> 
+          </TouchableOpacity>
         </View>
       </View>
     </Modal>
@@ -120,7 +124,7 @@ const styles = StyleSheet.create({
   MainView: {
     height: height,
     width: width,
-    position: "absolute",
+    position: 'absolute',
     backgroundColor: Colors.BG_MUTED,
   },
   ModalView: {
@@ -134,12 +138,11 @@ const styles = StyleSheet.create({
     width: width * 0.35,
     height: 4,
     backgroundColor: Colors.SMALL_LINE,
-    alignSelf: "center",
+    alignSelf: 'center',
     marginTop: height * 0.02,
   },
   ModalHead: {
     marginTop: height * 0.01,
-
   },
 
   ModalBody: {
@@ -148,8 +151,8 @@ const styles = StyleSheet.create({
     height: height * 0.3,
   },
   CheckImage: {
-    alignSelf: "center",
-    resizeMode: "contain",
+    alignSelf: 'center',
+    resizeMode: 'contain',
     height: height * 0.1,
     marginTop: height * 0.09,
   },
@@ -162,7 +165,6 @@ const styles = StyleSheet.create({
     lineHeight: height * 0.03,
   },
 
-
   CloseBtn: {
     marginTop: height * 0.02,
   },
@@ -170,8 +172,8 @@ const styles = StyleSheet.create({
   ConView: {
     height: height * 0.1,
     backgroundColor: Colors.WHITE,
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     borderBottomColor: Colors.MUTED,
     borderBottomWidth: 1,
   },
@@ -180,7 +182,7 @@ const styles = StyleSheet.create({
   },
   ProfileInfo: {
     marginLeft: width * 0.02,
-    justifyContent: "center",
+    justifyContent: 'center',
   },
   ReqMsg: {
     marginTop: height * 0.04,
@@ -214,47 +216,47 @@ const styles = StyleSheet.create({
 
   ErrorTxt: {
     width: width * 0.9,
-    alignSelf: "center",
+    alignSelf: 'center',
   },
   ///new added
   Main1: {
-    justifyContent: "center",
+    justifyContent: 'center',
     backgroundColor: Colors.WHITE,
     width: width * 0.4,
     borderRadius: 55,
-    alignSelf: "center",
+    alignSelf: 'center',
     marginTop: height * 0.011,
     borderWidth: 1,
-    borderColor: Colors.DARK_LABEL
+    borderColor: Colors.DARK_LABEL,
   },
   Main2: {
-    justifyContent: "center",
+    justifyContent: 'center',
     backgroundColor: Colors.WHITE,
     width: width * 0.9,
     borderRadius: 55,
-    alignSelf: "center",
+    alignSelf: 'center',
     marginTop: height * 0.011,
     borderWidth: 1,
-    borderColor: Colors.DARK_LABEL
+    borderColor: Colors.DARK_LABEL,
   },
   mView: {
-    justifyContent: "center",
+    justifyContent: 'center',
 
-    alignSelf: "center",
-
+    alignSelf: 'center',
   },
   MarginLarge: {
     paddingLeft: width * 0.06,
     fontSize: RFValue(12),
-    color: Colors.PRIMARY_LABEL
+    color: Colors.PRIMARY_LABEL,
   },
   MarginLargeNumber: {
     paddingLeft: width * 0.02,
     fontSize: RFValue(12),
     color: Colors.PRIMARY_LABEL,
-    letterSpacing: width * 0.03, width: width * 0.2,
+    letterSpacing: width * 0.03,
+    width: width * 0.2,
   },
   titleTxt: {
-    marginTop: height * 0.01
-  }
+    marginTop: height * 0.01,
+  },
 });

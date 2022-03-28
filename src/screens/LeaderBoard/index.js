@@ -129,8 +129,6 @@ const index = ({route, navigation}) => {
                             : styles.leftRightavatarView
                         }>
                         <ProfilePicture
-                          // picture={item?.profile_image}
-                          // id={userInfo?.id || userData?.id}
                           name={
                             item?.first_name?.charAt(0)?.toUpperCase() +
                             item?.last_name?.charAt(0)?.toUpperCase()

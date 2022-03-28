@@ -59,11 +59,14 @@ const index = ({props, navigation}) => {
   const [headerValue, setHeaderValue] = useState(0);
   const [activity, setActivity] = useState(false);
   const accountmodal = useRef();
+  const Combined_closed = () => {
+    ModalState2.current(false);
+    accountmodal.current(false);
+    onRefresh();
+  };
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-
     dispatch(getWalletData());
-
     wait(500).then(() => setRefreshing(false));
   }, []);
   //console.log({walletData: walletData?.transaction});
@@ -307,7 +310,8 @@ const index = ({props, navigation}) => {
           ModalRef={ModalState2}
           details
           requestOnPress={() => ModalState2.current(false)}
-          closeOnPress={() => ModalState2.current(false)}
+          closeOnPress={() => Combined_closed()}
+          ammount={ammount}
           yourBalance={
             walletData?.wallet?.your_balance === null
               ? 0
@@ -337,7 +341,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderColor: '#ffffff',
     elevation: 5,
-    shadowColor: '#000',
+    shadowColor: '#0000',
     shadowOffset: {
       width: 0,
       height: 7,

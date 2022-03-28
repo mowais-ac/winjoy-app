@@ -69,6 +69,10 @@ const index = props => {
   const socket = socketIO(MYServer);
   const AddModalState = useRef();
 
+  const countDownFinishHandler = () => {
+    console.log('hello');
+    onRefresh();
+  };
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     dispatch(getLandingScreen());
@@ -77,10 +81,10 @@ const index = props => {
       dayjs(CurrentDate),
       'seconds',
     );
-    console.log('duration', duration);
+    console.log('show', duration);
     setTime(duration);
     NavigateToQuiz();
-    wait(300).then(() => setRefreshing(false));
+    wait(500).then(() => setRefreshing(false));
   }, []);
 
   useEffect(() => {
@@ -88,16 +92,20 @@ const index = props => {
     socket.on('sendStartlivegameshow', msg => {
       dispatch(getLandingScreen());
     });
+    {
+      console.log('First time render');
+    }
 
     dispatch(getLandingScreen());
-    if (LandingData) {
-      var CurrentDate = new Date().toLocaleString();
-      var duration = dayjs(LandingData?.upcoming_gameshow?.start_date).diff(
-        dayjs(CurrentDate),
-        'seconds',
-      );
-      setTime(duration);
-    }
+
+    var CurrentDate = new Date().toLocaleString();
+    var duration = dayjs(LandingData?.upcoming_gameshow?.start_date).diff(
+      dayjs(CurrentDate),
+      'seconds',
+    );
+    console.log('duration', duration);
+    setTime(duration);
+
     let arr = [];
     LandingData?.host_sliders_data?.map(ele => {
       arr.push(ele.url);
@@ -105,7 +113,7 @@ const index = props => {
     setImageSlider(arr);
     NavigateToQuiz();
     CreateChannal();
-  }, []);
+  }, [getLandingScreen]);
 
   //PushNotification
   const CreateChannal = () => {
@@ -130,28 +138,14 @@ const index = props => {
 
   const LetBegin = () => {
     dispatch2(CheckGameEnterStatus());
-    //
-    // navigation.navigate("GameStack", {
-    //   screen: "Quiz",
-    //   params: {
-    //     uri: LandingData?.gameShow?.live_stream?.key
-    //   }
-    // })
+
     if (gameEnterStatus.status === 'success') {
       NavigateToQuiz();
     } else {
       alert('game not started yet!');
     }
   };
-  /*   const onPressCreator = id => {
-    // alert(id)
-    dispatch3({
-      type: types.CREATOR_ID,
-      creatorId: id,
-      //  user: res.data.data,
-    });
-    navigation.navigate('CreatorsPage');
-  }; */
+
   function _renderItem({item, index}) {
     if (item.type === 'image') {
       return (
@@ -191,12 +185,7 @@ const index = props => {
       );
     }
   }
-  /*   const handleNotification = item => {
-    PushNotification.localNotification({
-      channelId: 'Winjoy',
-      title: 'Winjoy',
-    });
-  }; */
+
   return (
     <SafeAreaView>
       {/* <StatusBar barStyle="#420E92" /> */}
@@ -212,12 +201,14 @@ const index = props => {
             top: Platform.OS === 'android' ? 0 : height * 0.038,
           }}
         />
-        {LandingData && LandingData.updated_version ? (
-          <NewVersionmodal
-            updatedVersion={LandingData?.updated_version}
-            currentV={packageJson.version}
-            ModalRef={ModelVersioncheck}
-          />
+        {Platform.OS === 'android' ? (
+          LandingData && LandingData.updated_version ? (
+            <NewVersionmodal
+              updatedVersion={LandingData?.updated_version}
+              currentV={packageJson.version}
+              ModalRef={ModelVersioncheck}
+            />
+          ) : null
         ) : null}
         <ScrollView
           onScroll={e => {
@@ -235,28 +226,12 @@ const index = props => {
                 {loader ? (
                   <ActivityIndicator size="large" color="#fff" />
                 ) : (
-                  // <Carousel
-                  //   layout={'default'}
-                  //   resizeMode={'cover'}
-                  //   loop={videoAction}
-                  //   autoplay={videoAction}
-                  //   autoplayInterval={3000}
-                  //   // ref={ref => this.carousel = ref}
-                  //   data={LandingData?.banners}
-                  //   sliderWidth={width}
-                  //   itemWidth={width}
-                  //   renderItem={_renderItem}
-                  //   style={styles.ShoppingBanner}
-                  //   onSnapToItem={index => setActiveSlide(index)}
-                  // />
                   <>
                     {LandingData?.banners ? (
                       <Video
                         source={{uri: LandingData?.banners[0]?.url}} // Can be a URL or a local file.
-                        // ref={(ref) => { this.player = ref }}  // Store reference
                         resizeMode={'cover'}
                         repeat={true}
-                        //  onError={this.onVideoError}
                         minLoadRetryCount={2}
                         fullScreen={true}
                         ignoreSilentSwitch={'obey'}
@@ -429,6 +404,9 @@ const index = props => {
                 time={time}
                 gameShow={LandingData?.gameShow}
                 upcoming_gameshow={LandingData?.upcoming_gameshow}
+                countDownFinish={() => {
+                  countDownFinishHandler();
+                }}
               />
             ) : null}
             <View

@@ -125,7 +125,7 @@ const index = ({navigation}) => {
       await fetch(`${Config.API_URL}/auth/login`, requestOptions)
         .then(async response => response.json())
         .then(async res => {
-          console.log('res', res);
+          // console.log('res', res);
           tokenForLang.current = res?.data?.token;
           ButtonRef.current.SetActivity(false);
           if (res?.data?.token) {

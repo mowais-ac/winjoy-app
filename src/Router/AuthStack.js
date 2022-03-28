@@ -5,7 +5,7 @@ import ForgotPassword from '../screens/ForgotPassword';
 import Register from '../screens/Register';
 import Verify from '../screens/Verify';
 import BottomTabStack from './BottomTabStack';
-
+import NotificationBellList from '../screens/NotificationBellList';
 import Cart from '../screens/Cart';
 import MenuStack from '../Router/MenuStack';
 import GameStack from './GameStack';
@@ -24,6 +24,10 @@ export default AuthStack = () => (
     <Stack.Screen name="BottomTabStack" component={BottomTabStack} />
     <Stack.Screen name="MenuStack" component={MenuStack} />
     <Stack.Screen name="Cart" component={Cart} />
+    <Stack.Screen
+      name="NotificationBellList"
+      component={NotificationBellList}
+    />
     <Stack.Screen name="GameStack" component={GameStack} />
     <Stack.Screen name="WebView" component={WebView} />
   </Stack.Navigator>

@@ -53,6 +53,7 @@ export const getLandingScreen = () => {
         },
       });
       const json = await result.json();
+      console.log('landingdata', json);
       if (json && json.status === 'success') {
         dispatch({
           type: types.GET_LANDING_DATA,
@@ -385,6 +386,7 @@ export const TriviaJoyAPI = () => {
         },
       });
       const json = await result.json();
+      console.log('trivia', json);
       if (json) {
         dispatch({
           type: types.TRIVIA_JOY,

@@ -2,7 +2,6 @@ import React, {useState, useEffect, useRef} from 'react';
 import {
   View,
   StyleSheet,
-  Modal,
   Dimensions,
   Image,
   TouchableWithoutFeedback,
@@ -28,6 +27,7 @@ import {strings} from '../i18n';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview';
 import {useTranslation} from 'react-i18next';
 import AddaccountModal from '../Components/AddaccountModal';
+import Modal from 'react-native-modal';
 const {width, height} = Dimensions.get('window');
 
 const WithDrawModal = props => {
@@ -37,7 +37,16 @@ const WithDrawModal = props => {
     details: null,
   });
   const accountmodal = useRef();
-
+  const withdrawprocessHandle = () => {
+    const a = props.yourBalance - props.ammount;
+    //alert(a);
+    if (a <= 50) {
+      alert('You wallet balance can not be below AED 50');
+    } else {
+      //alert('sccuess');
+      props.onPressWithDrawal(props.accountId);
+    }
+  };
   useEffect(() => {
     if (props.ModalRef) props.ModalRef.current = HandleChange;
   });
@@ -49,8 +58,10 @@ const WithDrawModal = props => {
   return (
     <Modal
       animationType="slide"
+      style={{margin: 0}}
       transparent={true}
-      visible={ModelState.state}
+      avoidKeyboard={true}
+      isVisible={ModelState.state}
       statusBarTranslucent={false}
       onRequestClose={() => {
         setModelState({
@@ -101,7 +112,7 @@ const WithDrawModal = props => {
               <TouchableOpacity
                 disabled={props?.activity}
                 onPress={() => {
-                  props.onPressWithDrawal(props.accountId);
+                  withdrawprocessHandle();
                 }}
                 style={{
                   height: 55,

@@ -10,13 +10,12 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 import Config from 'react-native-config';
-
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {Colors} from '../Constants/Index';
 import InputField from './InputField';
 import Label from './Label';
-
 const {width, height} = Dimensions.get('window');
+
 const CountryModal = props => {
   const [Data, setData] = useState(null);
   const [IsVisible, setIsVisible] = useState(false);
@@ -31,28 +30,32 @@ const CountryModal = props => {
     if (props.CountryRef) props.CountryRef.current = setIsVisible;
 
     const check = async () => {
-      if (Data === null) {
-        const Token = await EncryptedStorage.getItem('Token');
-        const requestOptions = {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            Accept: 'application/json',
-            Authorization: `Bearer ${Token}`,
-          },
-        };
-        await fetch(`${Config.API_URL}/countries/list`, requestOptions)
-          .then(async response => response.json())
-          .then(async res => {
-            // console.log('res', res);
-            if (!isActive) return;
-            setData(res.sort((a, b) => (a.name > b.name ? 1 : -1)));
-          });
+      try {
+        if (Data === null) {
+          const Token = await EncryptedStorage.getItem('Token');
+          const requestOptions = {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              Accept: 'application/json',
+              Authorization: `Bearer ${Token}`,
+            },
+          };
+          await fetch(`${Config.API_URL}/countries/list`, requestOptions)
+            .then(async response => response.json())
+            .then(async res => {
+              // console.log('res', res);
+              if (!isActive) return;
+              setData(res.sort((a, b) => (a.name > b.name ? 1 : -1)));
+            });
+        }
+      } catch (err) {
+        console.log(err);
       }
     };
     check();
     return () => (isActive = false);
-  });
+  }, []);
 
   const HandleTextChange = t => {
     if (!t || t === '') return setFiltered(null);

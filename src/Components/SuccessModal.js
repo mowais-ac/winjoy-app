@@ -7,6 +7,7 @@ import {
   Image,
   TouchableWithoutFeedback,
   Alert,
+  Text,
   TouchableOpacity,
   TextInput,
 } from 'react-native';
@@ -81,42 +82,14 @@ const SuccessModal = props => {
           </Label>
           <Label
             primary
-            headingtype="h1"
-            font={16}
+            headingtype="h2"
+            font={15}
             style={{color: '#0B2142', lineHeight: 25}}>
-            Your withdrawal request has been sent succcessfully, You will be
-            informed via your email or sms.
+            You have successfully withdrawn{' '}
+            <Text style={{fontWeight: '600'}}>AED {props.ammount}! </Text>Your
+            request will be processed in 7 business days.
           </Label>
-          {/*  <TouchableOpacity
-            onPress={() => { props.requestOnPress() }}
-            style={{
-              height: heightConverter(20),
-              width: width * 0.9,
 
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginTop: height * 0.06,
-              marginLeft: width * 0.04,
-            }}
-          >
-            <View
-
-              style={{
-                height: heightConverter(65),
-                width: width * 0.9,
-                justifyContent: 'center',
-                alignItems: 'center',
-                backgroundColor: '#420e92',
-                borderRadius: 40,
-              }}
-
-
-            >
-              <Label primary font={16} bold style={{ color: "#ffffff" }}>
-                REQUEST WITHDRAWAL
-              </Label>
-            </View>
-          </TouchableOpacity> */}
           <LabelButton
             primary
             headingtype="h3"
