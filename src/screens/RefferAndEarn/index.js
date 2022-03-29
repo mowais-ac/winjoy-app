@@ -28,7 +28,6 @@ import EncryptedStorage from 'react-native-encrypted-storage';
 import I18n from 'react-native-i18n';
 import axios from 'axios';
 import {heightConverter} from '../../Components/Helpers/Responsive';
-
 import {RFValue} from 'react-native-responsive-fontsize';
 import RefferLifeLineModal from '../../Components/RefferLifeLineModal';
 import {getLiveShowPlans} from '../../redux/actions';

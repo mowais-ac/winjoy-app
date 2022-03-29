@@ -56,14 +56,17 @@ import socketIO from 'socket.io-client';
 import ProgressCircle from 'react-native-progress-circle';
 import {connect, useDispatch, useSelector} from 'react-redux';
 import types from '../../redux/types';
-import {GameShowWinners} from '../../redux/actions';
+import {CheckGameEnterStatus, GameShowWinners} from '../../redux/actions';
 import WinnersModal from '../../Components/WinnersModal';
 const MYServer = 'https://node-winjoyserver-deploy.herokuapp.com/';
 const {width, height} = Dimensions.get('window');
 let timer = () => {};
 const BackgroundVideo = ({route, navigation}) => {
+  //lives dispatch
   const dispatch = useDispatch();
+  //gameshow Winners dispatch
   const dispatch2 = useDispatch();
+
   const dispatch3 = useDispatch();
   const userData = useSelector(state => state.app.userData);
   const totalLives = useSelector(state => state.app.totalLives);
@@ -75,11 +78,9 @@ const BackgroundVideo = ({route, navigation}) => {
   const [timeLeft, setTimeLeft] = useState(10);
   const [activityScreen, setActivityScreen] = useState(false);
   const [activity, setActivity] = useState(false);
-  //  const [answer, setAnswer] = useState("");
   const [liveStream, setLiveStream] = useState(true);
   const [gameShowCheck, setGameShowCheck] = useState(false);
   const [showResult, setShowResult] = useState(false);
-  // const [selectedAns, setSelectedAns] = useState("");
   const [timerFlag, setTimerFlag] = useState(false);
   const [disableQuizOptions, setDisableQuizOptions] = useState(false);
   const [joinedUsers, setJoinedUsers] = useState(0);
@@ -88,17 +89,19 @@ const BackgroundVideo = ({route, navigation}) => {
   const answer = useRef(null);
   const questionRef = useRef([]);
   const questionIncrement = useRef(0);
-  const attemptWrong = useRef(false);
   const ModalState = useRef();
   const userElimante = useRef(false);
   const LifeLineModalState = useRef();
   const winnerModal = useRef();
 
+  const [updatedAnswer, setUpdatedAnswer] = useState();
+
+  const dispatchGameEnter = useDispatch();
+
   const startTimer = () => {
     timer = setTimeout(() => {
       if (timeLeft <= 0) {
         clearTimeout(timer);
-
         return false;
       }
       setTimeLeft(timeLeft - 1);
@@ -110,6 +113,9 @@ const BackgroundVideo = ({route, navigation}) => {
     return () => clearTimeout(timer);
   });
 
+  useEffect(() => {
+    dispatchGameEnter(CheckGameEnterStatus());
+  }, []);
   const Questions = async () => {
     setActivityScreen(true);
     const Token = await EncryptedStorage.getItem('Token');
@@ -129,7 +135,7 @@ const BackgroundVideo = ({route, navigation}) => {
       .then(response => {
         let res = response.data;
         questionRef.current = res;
-        // setQuestion(res)
+
         setActivityScreen(false);
         setGameShowCheck(true);
         setTimeLeft(10);
@@ -185,12 +191,10 @@ const BackgroundVideo = ({route, navigation}) => {
     questionRef.current[questionIncrement.current]?.answer.map(item => {
       if (item.is_correct === 1) {
         ans = item.answer;
-        // setActivity(false)
       }
     });
-    //        setAnswer(ans)
+
     answer.current = ans;
-    // setTimer(20)
 
     if (answerId.current === null || answerId.current === undefined) {
       if (userElimante.current === true) ModalState.current(false);
@@ -220,6 +224,8 @@ const BackgroundVideo = ({route, navigation}) => {
           {
             console.log({quizres: res});
           }
+          setActivity(false);
+          console.log('res:', res);
           if (res.status === 'success') {
             if (res.message === 'Congrats!! move to next question') {
               setActivity(false);
@@ -228,7 +234,6 @@ const BackgroundVideo = ({route, navigation}) => {
             if (
               res.message === "Wrong Answer!! Don't loose hope try next time"
             ) {
-              setActivity(false);
               setTimeout(() => {
                 if (userElimante.current !== true) {
                   ModalState.current(true);
@@ -239,6 +244,8 @@ const BackgroundVideo = ({route, navigation}) => {
                   }
                 }
               }, 3000);
+            } else {
+              alert(res.message);
             }
           }
 
@@ -273,6 +280,19 @@ const BackgroundVideo = ({route, navigation}) => {
     ModalState.current(true);
   };
 
+  const updateAnswer = () => {
+    let ans = '';
+    questionRef.current[questionIncrement.current]?.answer.map(item => {
+      console.log('ans item:', item);
+      if (item.is_correct === 1) {
+        ans = item.answer;
+      }
+    });
+    console.log('current ans:', answer.current);
+    console.log('ans:', ans);
+    setUpdatedAnswer(ans);
+  };
+
   useEffect(async () => {
     socket.on('sendHideQuestion', msg => {
       setGameShowCheck(false);
@@ -288,7 +308,11 @@ const BackgroundVideo = ({route, navigation}) => {
     socket.on('sendShowCorrectAnswer', msg => {
       setGameShowCheck(true);
       setShowResult(true);
-      SaveResponse();
+      if (!userElimante.current) {
+        SaveResponse();
+      } else {
+        updateAnswer();
+      }
     });
 
     socket.on('sendStartlivegameshow', msg => {
@@ -305,8 +329,6 @@ const BackgroundVideo = ({route, navigation}) => {
         setTimeLeft(10);
         clearTimeout(timer);
         startTimer();
-
-        //  setTimer(20)
       }
     });
 
@@ -325,16 +347,12 @@ const BackgroundVideo = ({route, navigation}) => {
         <View style={styles.gradientView}>
           {liveStream ? (
             <Video
-              // key={keyS}
               source={{
-                //uri: uri,
                 uri: 'https://c75a7e79204e539d.mediapackage.us-east-1.amazonaws.com/out/v1/c09d0b5beca54ffcb2e4d920b465d589/index.m3u8',
               }}
-              // onReadyForDisplay={readyToDisplay}
               hls={true}
               paused={false}
               style={styles.backgroundVideo}
-              // source={require('../../assets/imgs/bgImage.png')}
               resizeMode={'cover'}
             />
           ) : (
@@ -409,8 +427,9 @@ const BackgroundVideo = ({route, navigation}) => {
                             questionRef.current[questionIncrement.current]
                               ?.answer
                           }
-                          answer={answer.current}
+                          answer={updatedAnswer}
                           activity={activity}
+                          optionSelected={selected}
                         />
                       </View>
                     ) : (
@@ -553,15 +572,12 @@ const BackgroundVideo = ({route, navigation}) => {
                               ?.question
                           }
                         </Label>
-                        {/* </View> */}
-                        {/* </LinearGradient> */}
+
                         <QuizOptions
                           options={
                             questionRef.current[questionIncrement.current]
                               ?.answer
                           }
-                          //  onPressDone={onPressDone}
-                          //  activity={activity}
                           optionSelected={selected}
                           onPressOption={onPressOption}
                           disableOption={
@@ -596,18 +612,14 @@ const BackgroundVideo = ({route, navigation}) => {
 
 const styles = StyleSheet.create({
   backgroundVideo: {
-    //borderWidth: 2,
     height: height,
     width: '100%',
     position: 'absolute',
-    // top: 70,
     left: 0,
     alignItems: 'stretch',
     bottom: 0,
     right: 0,
     borderColor: '#ffffff',
-    // borderTopRightRadius: 30,
-    // borderTopLeftRadius: 30
   },
   quizView: {
     height: height * 0.6,

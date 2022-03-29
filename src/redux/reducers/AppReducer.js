@@ -38,21 +38,11 @@ const INITIAL_STATE = {
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case types.CART_COUNTER:
-      return {
-        ...state,
-        counter: action.counter,
-      };
+      return {...state, counter: action.CART_COUNTER};
     case types.LAST_GAME_DATA:
-      return {
-        ...state,
-        lastGameData: action.lastGameData,
-      };
+      return {...state, lastGameData: action.lastGameData};
     case types.USER_DATA:
-      return {
-        ...state,
-        userData: action.userData,
-      };
-
+      return {...state, userData: action.userData};
     case types.GET_WALLET_DATA:
       return {...state, walletData: action.payload};
     case types.GET_LANDING_DATA:

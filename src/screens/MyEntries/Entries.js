@@ -181,7 +181,11 @@ const Entries = ({navigation}) => {
                 textAlign: 'center',
                 lineHeight: 20,
               }}>
-              Draw Date: March 28 2022
+              {item?.lucky_draw?.created_at
+                ? dayjs(item?.lucky_draw?.created_at).format(
+                    'dddd, MMMM D YYYY',
+                  )
+                : NAN}
             </Text>
             <Text
               style={{
@@ -218,25 +222,7 @@ const Entries = ({navigation}) => {
       </TouchableOpacity>
     );
   };
-  /*   <TouchableOpacity
-        onPress={() => navigation.navigate('OrderDetails', {item})}>
-        <View
-          style={{
-            backgroundColor: '#fff',
-            overflow: 'hidden',
-            borderRAdius: 10,
-            padding: 10,
-            marginVertical: 6,
-          }}>
-          <View>
-            <Text>ID: {item?.entry_code}</Text>
-          </View>
-          <View>
-            <Text>lucky_draw Name: {item?.lucky_draw?.name}</Text>
-          </View>
-        </View>
-      </TouchableOpacity> */
-  // console.log(Data);
+
   return (
     <SafeArea>
       <LinearGradient

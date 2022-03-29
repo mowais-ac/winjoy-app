@@ -1,6 +1,6 @@
 {
   "name": "winjoy",
-  "version": "22",
+  "version": "23",
   "private": true,
   "scripts": {
     "android": "react-native run-android",

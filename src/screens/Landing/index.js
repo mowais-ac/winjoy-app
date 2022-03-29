@@ -83,6 +83,7 @@ const index = props => {
     );
     console.log('show', duration);
     setTime(duration);
+    Testnavigate();
     NavigateToQuiz();
     wait(500).then(() => setRefreshing(false));
   }, []);
@@ -91,6 +92,10 @@ const index = props => {
     dispatch5(AllCreatorsList());
     socket.on('sendStartlivegameshow', msg => {
       dispatch(getLandingScreen());
+    });
+    socket.on('sendOnboarding', msg => {
+      console.log('Should navigate');
+      NavigateToQuiz(true);
     });
     {
       console.log('First time render');
@@ -112,6 +117,7 @@ const index = props => {
     });
     setImageSlider(arr);
     NavigateToQuiz();
+    Testnavigate();
     CreateChannal();
   }, [getLandingScreen]);
 
@@ -122,22 +128,41 @@ const index = props => {
       channelName: 'Winjoy',
     });
   };
-  const NavigateToQuiz = () => {
+  /*  console.log('LandingData', LandingData); */
+  const NavigateToQuiz = fromSocket => {
+    console.log('NQ: ', LandingData?.gameShow);
     if (
-      parseInt(LandingData.updatedVersion) === parseInt(packageJson.version) &&
-      LandingData?.gameShow?.status === 'on_boarding'
+      parseInt(LandingData.updatedVersion) === parseInt(packageJson.version)
     ) {
+      if (
+        LandingData?.gameShow?.status === 'on_boarding' ||
+        LandingData?.gameShow?.status === 'started' ||
+        fromSocket
+      )
+        navigation.navigate('GameStack', {
+          screen: 'Quiz',
+          params: {
+            uri: LandingData?.gameShow?.live_stream?.key,
+          },
+        });
+    }
+  };
+
+  const Testnavigate = () => {
+    if (LandingData?.internalEmails && LandingData?.is_testing === true) {
       navigation.navigate('GameStack', {
         screen: 'Quiz',
         params: {
           uri: LandingData?.gameShow?.live_stream?.key,
         },
       });
+    } else {
+      return null;
     }
   };
 
   const LetBegin = () => {
-    dispatch2(CheckGameEnterStatus());
+    // dispatch2(CheckGameEnterStatus());
 
     if (gameEnterStatus.status === 'success') {
       NavigateToQuiz();
