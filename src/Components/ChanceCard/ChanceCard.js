@@ -25,7 +25,9 @@ function ChanceCard({
   let progress = updated_stocks ? (updated_stocks / stock) * 100 : 0;
 
   return (
-    <View
+    <TouchableOpacity
+      activeOpacity={0.85}
+      onPress={onPress}
       style={{
         width: '100%',
         //  height: height * 0.53,
@@ -232,7 +234,7 @@ function ChanceCard({
           Draw Date announce to be soon!
         </Label>
       )}
-    </View>
+    </TouchableOpacity>
   );
 }
 

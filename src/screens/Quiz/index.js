@@ -66,7 +66,6 @@ const BackgroundVideo = ({route, navigation}) => {
   const dispatch = useDispatch();
   //gameshow Winners dispatch
   const dispatch2 = useDispatch();
-
   const dispatch3 = useDispatch();
   const userData = useSelector(state => state.app.userData);
   const totalLives = useSelector(state => state.app.totalLives);

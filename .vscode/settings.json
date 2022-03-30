@@ -1,4 +1,17 @@
 {
-	"files.autoSave": "afterDelay",
-	"editor.quickSuggestionsDelay": 3
+  "files.autoSave": "afterDelay",
+  "editor.quickSuggestionsDelay": 3,
+  "cSpell.words": [
+    "Axiforma",
+    "darkmuted",
+    "headingtype",
+    "idealz",
+    "paynow",
+    "selectedcheck",
+    "setaddress",
+    "setselectedcheck",
+    "shippingtype",
+    "Sucess",
+    "zayed"
+  ]
 }

@@ -59,7 +59,9 @@ const AddaccountModal = props => {
   const [activity, setActivity] = useState(false);
   const [activeTab, setActiveTab] = useState('bank');
   const [activeList, setActiveList] = useState('Bank Al Habib');
+  //data
   const [accountsList, setAccountsList] = useState([]);
+  //pass the id
   const [selectedAccount, setSelectedAccount] = useState(0);
   const [deleteProcess, setDeleteProcess] = useState(false);
   const [accountAddFormVisibility, setAccountAddFormVisibility] =

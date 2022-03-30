@@ -89,6 +89,11 @@ const index = ({navigation}) => {
       counter: counterMain - qty,
     });
   };
+  const [active, setactive] = useState(false);
+
+  const Switchhandle = tab => {
+    setactive(tab);
+  };
   const renderItem = ({item}) => {
     return (
       // <TouchableOpacity
@@ -259,24 +264,10 @@ const index = ({navigation}) => {
                   </Text>
                 </View>
 
-                {/* <View style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              width: widthPercentageToDP("83")
-            }}>
-              <Text style={[styles.metaText, { fontWeight: 'bold' }]}>Buy a test</Text>
-              <Text style={styles.text}>Gold Coin</Text>
-
-            </View> */}
-
                 <TouchableOpacity
                   onPress={() => {
                     ModalState.current(true);
                     PostData();
-                    //   alert(
-                    //    'Thank you for your interest. This feature is coming soon',
-                    // );
                   }}
                   disabled={activity}
                   style={{

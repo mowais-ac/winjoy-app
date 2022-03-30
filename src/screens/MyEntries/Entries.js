@@ -27,6 +27,7 @@ import {FormatNumber, wait} from '../../Constants/Functions';
 
 import LinearGradient from 'react-native-linear-gradient';
 import dayjs from 'dayjs';
+import {ScrollView} from 'react-native-gesture-handler';
 
 const {width, height} = Dimensions.get('window');
 
@@ -36,61 +37,61 @@ const Entries = ({navigation}) => {
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    setData(null);
+    check();
     wait(500).then(() => setRefreshing(false));
   }, []);
 
+  const check = async () => {
+    if (Data === null) {
+      const Token = await EncryptedStorage.getItem('Token');
+      const requestOptions = {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Accept: 'application/json',
+          Authorization: `Bearer ${Token}`,
+        },
+      };
+      await fetch(`${Config.API_URL}/luckydraw_winner_list`, requestOptions)
+        .then(async response => response.json())
+        .then(res => {
+          {
+            console.log({winnerlist: res.data});
+          }
+          setData(res.data);
+        });
+    }
+  };
   useEffect(() => {
-    let isActive = true;
-    const check = async () => {
-      if (Data === null) {
-        const Token = await EncryptedStorage.getItem('Token');
-        const requestOptions = {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            Accept: 'application/json',
-            Authorization: `Bearer ${Token}`,
-          },
-        };
-        await fetch(`${Config.API_URL}/luckydraw_winner_list`, requestOptions)
-          .then(async response => response.json())
-          .then(res => {
-            {
-              console.log({winnerlist: res.data});
-            }
-            setData(res.data);
-          });
-      }
-    };
     check();
   }, []);
   const renderItem = ({item, i}) => {
     return (
       <TouchableOpacity
-        onPress={() => navigation.navigate('OrderDetails', {item})}>
+        onPress={() => navigation.navigate('OrderDetails', {item})}
+        activeOpacity={0.8}>
         <View
           style={{
-            marginTop: 10,
+            marginTop: 14,
             width: 33,
             height: 33,
-            marginLeft: 285,
+            marginLeft: 286,
             zIndex: 100,
             position: 'absolute',
             borderRadius: 100,
-            backgroundColor: '#faf7f7',
+            backgroundColor: '#c7dfe8',
           }}
         />
         <View
           style={{
             width: 33,
             height: 33,
-            marginLeft: 280,
+            marginLeft: 286,
             zIndex: 100,
             position: 'absolute',
             borderRadius: 100,
-            marginTop: 190,
-            backgroundColor: '#faf7f7',
+            marginTop: 193,
+            backgroundColor: '#c7dfe8',
           }}
         />
         {/*     <LinearGradient
@@ -103,13 +104,16 @@ const Entries = ({navigation}) => {
             flexDirection: 'row',
             marginVertical: 10,
           }}> */}
-        <View
+
+        <LinearGradient
+          start={{x: 0, y: 0}}
+          end={{x: 1, y: 0}}
+          colors={['#f8d7e8', '#c7dfe8']}
           style={{
-            height: 215,
+            height: 240,
             alignItems: 'center',
             flexDirection: 'row',
-            marginVertical: 10,
-            backgroundColor: '#faf7f7',
+            marginBottom: 10,
           }}>
           <View
             style={{
@@ -162,13 +166,14 @@ const Entries = ({navigation}) => {
                 fontWeight: '600',
                 textAlign: 'center',
                 lineHeight: 20,
+                paddingHorizontal: 10,
               }}>
               THIS COUPON GIVES YOU A CHANCE TO ENTER THE LUCKY DRAW
             </Text>
             <View
               style={{
                 color: 'black',
-                borderWidth: 1,
+                borderWidth: 0.7,
                 width: '80%',
                 marginLeft: 25,
                 //marginTop: 10,
@@ -214,17 +219,23 @@ const Entries = ({navigation}) => {
             <Text style={{color: '#ffff', fontWeight: '700', lineHeight: 25}}>
               COUPON TOWN
             </Text>
-            <Text style={{color: 'black', fontWeight: '700', lineHeight: 25}}>
+            <Text
+              numberOfLines={5}
+              style={{
+                color: 'black',
+                fontWeight: '700',
+                lineHeight: 25,
+              }}>
               {item?.lucky_draw?.name}
             </Text>
           </View>
-        </View>
+        </LinearGradient>
       </TouchableOpacity>
     );
   };
 
   return (
-    <SafeArea>
+    <>
       <LinearGradient
         start={{x: 0, y: 0}}
         end={{x: 1, y: 0}}
@@ -238,6 +249,11 @@ const Entries = ({navigation}) => {
         <View style={styles.MainTop}>
           <UserInfo style={styles.header} OwnUser popup status />
         </View>
+        <View style={{marginVertical: 5}}>
+          <Label bold headingtype="h2">
+            Tickets
+          </Label>
+        </View>
       </LinearGradient>
 
       {Data === null ? (
@@ -245,15 +261,15 @@ const Entries = ({navigation}) => {
       ) : (
         <FlatList
           data={Data}
-          ListHeaderComponent={
-            <>
-              {Data?.length >= 1 && (
-                <Label primary bold headingtype="h3" marginVertical>
-                  Tickets
-                </Label>
-              )}
-            </>
-          }
+          // ListHeaderComponent={
+          //   <View>
+          //     {Data?.length >= 1 && (
+          //       <Label primary bold headingtype="h2">
+          //         Tickets
+          //       </Label>
+          //     )}
+          //   </View>
+          // }
           renderItem={renderItem}
           keyExtractor={i => i}
           ListEmptyComponent={
@@ -281,14 +297,10 @@ const Entries = ({navigation}) => {
           refreshControl={
             <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
           }
-          contentContainerStyle={
-            {
-              //  paddingHorizontal: 10,
-            }
-          }
+          // contentContainerStyle={{}}
         />
       )}
-    </SafeArea>
+    </>
   );
 };
 
@@ -301,17 +313,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginHorizontal: 10,
   },
-  Section: {
-    marginTop: 10,
-    padding: 10,
-  },
-  SectionView: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    alignSelf: 'center',
-    borderWidth: 1,
-    width: '100%',
-  },
+
   ImageView: {
     shadowColor: Colors.SHADOW,
     shadowOffset: {
