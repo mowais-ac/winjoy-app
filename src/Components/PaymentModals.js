@@ -52,9 +52,9 @@ const PaymentModals = props => {
   const [address, setaddress] = useState(
     'Floor # 24,Room # 2402, API World Tower, Sheikh zayedRoad,Dubai',
   );
-  const Pickup = 'Pickup';
-  const Deliver = 'Deliver';
-  const Donation = 'Donation';
+  const Pickup = 'pickup';
+  const Deliver = 'deliver';
+  const Donation = 'donation';
 
   const [activity, setActivity] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -106,11 +106,13 @@ const PaymentModals = props => {
   const PostCreditCardInfo = async () => {
     let expData = await AsyncStorage.getItem('expData');
     let ids = await AsyncStorage.getItem('ids');
-
+    {
+      console.log('expData', expData);
+    }
     const expDataParse = JSON.parse(expData);
     const expData1 = [];
     const dat2 = JSON.parse(ids);
-
+    console.log('dat2: ', dat2);
     if (ids !== null) {
       dat2.forEach((element, index) => {
         expData1.push({
@@ -151,30 +153,18 @@ const PaymentModals = props => {
       let dat = [];
       let postData = {};
       expData1.map(element => {});
-
       postData = {
         products: expData1,
       };
 
-      /* var data = new FormData();
-      data.append('card_number', number2);
-      data.append('exp_month', month);
-      data.append('exp_year', year);
-      data.append('cvc', cvc);
-      data.append('type', 'products');
-      data.append('products', JSON.stringify(expData1)); */
-
-      let data = '';
-
-      data = {
+      const data = {
         shippingtype: selectedcheck,
         address: address,
         card_number: number2,
         exp_month: month,
         exp_year: year,
         cvc: cvc,
-        type: products,
-        products: JSON.stringify(expData1),
+        type: 'products',
       };
 
       const requestOptions = {
@@ -184,32 +174,45 @@ const PaymentModals = props => {
           Accept: 'application/json',
           Authorization: `Bearer ${Token}`,
         },
-        body: data,
+        body: JSONtoForm(data),
       };
+      {
+        console.log('paymentbody', requestOptions);
+      }
       await fetch(`${Config.API_URL}/paynow`, requestOptions)
         .then(async response => response.json())
         .then(async res => {
-          setActivity(true);
-
-          if (res.status === 'success') {
-            await AsyncStorage.removeItem('ids');
-            await AsyncStorage.removeItem('expData');
-            dispatch({
-              type: types.CART_COUNTER,
-              counter: '',
-            });
-            //setSuccess(false);
-            SucessModalState.current(true);
-          } else if (res.status === 'action_required') {
-            navigation.navigate('WebView', {
-              uri: res?.next_action?.use_stripe_sdk?.stripe_js,
-            });
-          } else {
-            ModalErrorState.current(true, {
-              heading: 'Error',
-              Error: res?.error,
-            });
-            setActivity(false);
+          setActivity(false);
+          try {
+            console.log('res', res);
+            if (res.status === 'success') {
+              {
+                console.log('res', res);
+              }
+              await AsyncStorage.removeItem('ids');
+              await AsyncStorage.removeItem('expData');
+              dispatch({
+                type: types.CART_COUNTER,
+                counter: '',
+              });
+              //setSuccess(false);
+              SucessModalState.current(true);
+            } else if (res.status === 'action_required') {
+              navigation.navigate('WebView', {
+                uri: res?.next_action?.use_stripe_sdk?.stripe_js,
+              });
+            }
+            /*  else {
+              ModalErrorState.current(true, {
+                heading: 'Error',
+                Error: res?.error,
+              });
+              setActivity(false);
+            } */
+          } catch (error) {
+            {
+              console.log(error);
+            }
           }
         });
     }
@@ -250,7 +253,7 @@ const PaymentModals = props => {
                   style={{
                     borderWidth: 1.5,
                     borderColor: '#EFEAF4',
-                    margin: 10,
+                    margin: 5,
                     borderRadius: 6,
                   }}>
                   <TouchableOpacity
@@ -268,13 +271,13 @@ const PaymentModals = props => {
                         onValueChange={() => {
                           setselectedcheck(Pickup);
                         }}
-                        style={styles.checkbox}
+                        style={{marginLeft: 3, alignSelf: 'flex-start'}}
                       />
                       <View
                         style={{
                           flexDirection: 'column',
                           justifyContent: 'center',
-                          marginLeft: 10,
+                          marginLeft: 8,
                         }}>
                         <Text style={{color: '#420E92', fontWeight: '700'}}>
                           Pickup
@@ -285,8 +288,7 @@ const PaymentModals = props => {
                             fontFamily: 'Axiforma',
                             lineHeight: 20,
                           }}>
-                          Floor # 24,Room # 2402, API World Tower, Sheikh zayed
-                          Road,Dubai
+                          2, 2402, API World Tower, Sheikh Zayed Road, Dubai.
                         </Text>
                       </View>
                     </View>
@@ -370,7 +372,7 @@ const PaymentModals = props => {
                     }}>
                     <View
                       style={[
-                        {flexDirection: 'row', padding: 10},
+                        {flexDirection: 'row', padding: 15},
                         selectedcheck === Donation ? styles.selectedBox : null,
                       ]}>
                       {/*   {console.log(selectedcheck)} */}
@@ -417,9 +419,12 @@ const PaymentModals = props => {
                               fontFamily: 'Axiforma',
                               lineHeight: 20,
                             }}>
-                            Our mission objective at idealz is to transform
-                            lives, not just those of our customers but of
-                            children who are less fortunate around the world.
+                            We at Winjoy believe in changing the lives of people
+                            all over the world, not just our customers. The rate
+                            of hunger is rising as the world faces a record
+                            number of emergencies. More people than ever before
+                            require life-saving food assistance. Your minimal
+                            amount of share could help this growing need.
                           </Text>
                         </View>
                         <Image
@@ -430,7 +435,7 @@ const PaymentModals = props => {
                     </View>
                   </TouchableOpacity>
                 </View>
-                <View style={{alignItems: 'center'}}>
+                <View style={{alignItems: 'center', marginTop: 10}}>
                   <TouchableOpacity
                     onPress={() => {
                       setSuccess(true);
@@ -591,7 +596,10 @@ const PaymentModals = props => {
                       <ActivityIndicator size="small" color="#ffffff" />
                     ) : (
                       <Label primary font={16} bold style={{color: '#ffffff'}}>
-                        Pay AED {props?.total + 15}
+                        Pay AED{' '}
+                        {selectedcheck === Deliver
+                          ? props.total + 15
+                          : props.total}
                       </Label>
                     )}
                   </LinearGradient>
@@ -690,8 +698,8 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.BG_MUTED,
   },
   ModalView: {
-    height: height * 0.7,
-    marginTop: height * 0.3,
+    height: height * 0.82,
+    marginTop: height * 0.2,
     borderTopLeftRadius: 37,
     borderTopRightRadius: 37,
     backgroundColor: Colors.BENEFICIARY,
@@ -710,7 +718,7 @@ const styles = StyleSheet.create({
   ModalBody: {
     marginTop: height * 0.01,
     backgroundColor: Colors.WHITE,
-    height: height * 0.65,
+    height: height * 0.72,
   },
   CheckImage: {
     alignSelf: 'center',

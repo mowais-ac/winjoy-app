@@ -49,7 +49,6 @@ const PaymentModals = props => {
   const DeclineRef = useRef();
   const SucessModalState = useRef();
   const ModalErrorState = useRef();
-
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -86,7 +85,6 @@ const PaymentModals = props => {
 
   const PostCreditCardInfo = async () => {
     let number = number1 + number2 + number3 + number4;
-
     let month = expiryDate.split('/')[0];
     let year = expiryDate.split('/')[1];
 
@@ -136,7 +134,7 @@ const PaymentModals = props => {
         experience_id: props?.experience_id,
         instructions: props.instructions,
       });
-
+      
       const requestOptions = {
         method: 'POST',
         headers: {

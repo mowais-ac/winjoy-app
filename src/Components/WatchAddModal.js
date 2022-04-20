@@ -27,6 +27,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import Video from 'react-native-video';
 import * as Progress from 'react-native-progress';
 import {getLiveShowPlans} from '../redux/actions';
+import {FormatNumber, wait} from '../Constants/Functions';
 import types from '../redux/types';
 const {width, height} = Dimensions.get('window');
 //let timer = () => { };
@@ -41,8 +42,14 @@ const WatchAddModal = props => {
   });
   const ApproveRef = useRef();
   const DeclineRef = useRef();
-
+  const [refreshing, setRefreshing] = useState(false);
   const navigation = useNavigation();
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    dispatch(getLiveShowPlans());
+    props.refreshVideo();
+    wait(500).then(() => setRefreshing(false));
+  }, []);
   const getData = async () => {
     try {
       const Token = await EncryptedStorage.getItem('Token');
@@ -58,7 +65,9 @@ const WatchAddModal = props => {
         },
       );
       const json = await result.json();
-
+      /* {
+        console.log('buyliveplan', json);
+      } */
       if (json.status === 'success') {
         if (json.message === 'Lives buy successfully') {
           dispatch2({
@@ -70,6 +79,7 @@ const WatchAddModal = props => {
             state: (ModelState.state = false),
           });
           dispatch(getLiveShowPlans());
+          onRefresh();
         } else {
           alert(json);
         }
@@ -85,23 +95,6 @@ const WatchAddModal = props => {
   const HandleChange = (state, details = null, ForceSuccess = false) => {
     setModelState({state, details, ForceSuccess});
   };
-
-  // const startTimer = () => {
-  //   timer = setTimeout(() => {
-  //     if (timeLeft >= 30) {
-
-  //       clearTimeout(timer);
-  //       setModelState({
-  //         ...ModelState,
-  //         state: ModelState.state=false,
-  //       });
-  //      // getData()
-  //       return false;
-
-  //     }
-  //     setTimeLeft(timeLeft +0.1);
-  //   }, 100)
-  // }
 
   return (
     <Modal
@@ -167,27 +160,22 @@ const WatchAddModal = props => {
           minLoadRetryCount={2}
           fullScreen={true}
           ignoreSilentSwitch={'obey'}
-          // onLoad={() => setBuffer(false)}
-          // onLoadStart={() => {
-          //   setTimeLeft(0)
-          //   clearTimeout(timer);
-          //   startTimer();
-          // }}
           onEnd={() => getData()}
           onProgress={e => {
             setTimer(e.currentTime);
-
             setTotalTime(e.seekableDuration);
           }}
         />
-
         <Progress.Bar
-          style={{bottom: -0.001, position: 'absolute'}}
-          //borderRadius={0}
-          color="#430E92"
+          style={{
+            bottom: -0.001,
+            position: 'absolute',
+          }}
+          borderRadius={30}
+          color="#E61C54"
           progress={timer / totalTime}
-          width={372}
-          unfilledColor={'#E61C54'}
+          width={width * 0.95}
+          unfilledColor={'#e3e3e3'}
           borderWidth={0}
         />
       </View>

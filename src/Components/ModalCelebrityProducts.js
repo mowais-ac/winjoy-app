@@ -58,6 +58,7 @@ const ModalCelebrityProducts = props => {
           ...ModelState,
           state: !ModelState.state,
         });
+        props.onPressContinue();
         if (props.onClose) props.onClose();
       }}
       onDismiss={() => {
@@ -65,6 +66,7 @@ const ModalCelebrityProducts = props => {
           ...ModelState,
           state: !ModelState.state,
         });
+        props.onPressContinue();
         if (props.onClose) props.onClose();
       }}>
       <TouchableWithoutFeedback
@@ -73,83 +75,100 @@ const ModalCelebrityProducts = props => {
             ...ModelState,
             state: !ModelState.state,
           });
+          props.onPressContinue();
           if (props.onClose) props.onClose();
         }}>
         <View style={styles.MainView} />
       </TouchableWithoutFeedback>
+
       <View style={styles.ModalView}>
         <View style={styles.SmallBorder} />
-
-        <Text
-          style={[
-            styles.text,
-            {textAlign: 'center', marginTop: height * 0.03, width: width * 0.8},
-          ]}>
-          Buy one of the following and WIN an experience with
-          <Text style={{fontFamily: 'Axiforma-Bold'}}>
-            {' '}
-            {props?.expData?.experience?.title}{' '}
-          </Text>
-          with{' '}
-          {props?.expData?.celebrity?.first_name +
-            ' ' +
-            props?.expData?.celebrity?.last_name}
-        </Text>
-        {/*  {console.log({experiance: props?.expData?.experience?.products})} */}
-        <View style={[styles.ModalBody]}>
-          <FlatList
-            data={props?.expData?.experience?.products}
+        {props.loading1 ? (
+          <View
             style={{
-              paddingHorizontal: 5,
-              width: '100%',
-            }}
-            numColumns={2}
-            renderItem={({item}) => (
-              <>
-                <TrendingCards
-                  onPress={() => {
-                    setModelState({
-                      ...ModelState,
-                      state: !ModelState.state,
-                    });
-                    if (props.onClose) props.onClose();
-                    navigation.navigate('ExperienceProductDetail', {
-                      experience_celebrity_id:
-                        item?.pivot?.experience_celebrity_id,
-                      product_id: item?.pivot?.product_id,
-                    });
-                  }}
-                  imageUrl={item.image}
-                  title={item?.title}
-                  price={item?.price}
-                  mainViewStyle={{
-                    backgroundColor: '#F2F2FA',
+              justifyContent: 'center',
+              height: 350,
+            }}>
+            <ActivityIndicator size="large" color="black" />
+          </View>
+        ) : (
+          <>
+            <Text
+              style={[
+                styles.text,
+                {
+                  textAlign: 'center',
+                  marginTop: height * 0.03,
+                  width: width * 0.8,
+                },
+              ]}>
+              Buy one of the following and WIN an experience with
+              <Text style={{fontFamily: 'Axiforma-Bold'}}>
+                {' '}
+                {props?.expData?.experience?.title}{' '}
+              </Text>
+              with{' '}
+              {props?.expData?.celebrity?.first_name +
+                ' ' +
+                props?.expData?.celebrity?.last_name}
+            </Text>
+            {/*  {console.log({experiance: props?.expData?.experience?.products})} */}
 
-                    height: height * 0.31,
-                    borderRadius: 15,
-                    borderWidth: 1,
-                    borderColor: '#F2F2FA',
-                  }}
-                  style={{
-                    height: height * 0.33,
-                    width: '50%',
-                    paddingHorizontal: 8,
-                  }}
-                  imageStyle={{
-                    height: height * 0.22,
-                    borderRadius: 15,
-                  }}
-                />
-              </>
-            )}
-            //keyExtractor={(e) => e.id.toString()}
-            contentContainerStyle={{
-              paddingBottom: 12,
-              marginTop: 10,
-            }}
-            keyExtractor={item => item.id}
-          />
-        </View>
+            <View style={[styles.ModalBody]}>
+              <FlatList
+                data={props?.expData?.experience?.products}
+                style={{
+                  paddingHorizontal: 5,
+                  width: '100%',
+                }}
+                numColumns={2}
+                renderItem={({item}) => (
+                  <>
+                    <TrendingCards
+                      onPress={() => {
+                        setModelState({
+                          ...ModelState,
+                          state: !ModelState.state,
+                        });
+                        if (props.onClose) props.onClose();
+                        navigation.navigate('ExperienceProductDetail', {
+                          experience_celebrity_id:
+                            item?.pivot?.experience_celebrity_id,
+                          product_id: item?.pivot?.product_id,
+                        });
+                      }}
+                      imageUrl={item.image}
+                      title={item?.title}
+                      price={item?.price}
+                      mainViewStyle={{
+                        backgroundColor: '#F2F2FA',
+
+                        height: height * 0.31,
+                        borderRadius: 15,
+                        borderWidth: 1,
+                        borderColor: '#F2F2FA',
+                      }}
+                      style={{
+                        height: height * 0.33,
+                        width: '50%',
+                        paddingHorizontal: 8,
+                      }}
+                      imageStyle={{
+                        height: height * 0.22,
+                        borderRadius: 15,
+                      }}
+                    />
+                  </>
+                )}
+                contentContainerStyle={{
+                  paddingBottom: 12,
+                  marginTop: 10,
+                }}
+                keyExtractor={item => item}
+              />
+            </View>
+          </>
+        )}
       </View>
     </Modal>
   );

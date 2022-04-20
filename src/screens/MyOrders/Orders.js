@@ -10,7 +10,7 @@ import {
   Text,
   ImageBackground,
 } from 'react-native';
-
+import NotFoundPurchase from '../../Components/NotFoundPurchase';
 import Background from '../../Components/Background';
 import SafeArea from '../../Components/SafeArea';
 import Label from '../../Components/Label';
@@ -71,7 +71,7 @@ const Orders = ({navigation}) => {
         onPress={() => navigation.navigate('OrderDetails', {item})}>
         <View
           style={{
-            backgroundColor: '#fff',
+            backgroundColor: '#ffff',
             overflow: 'hidden',
             borderRAdius: 10,
             padding: 10,
@@ -203,17 +203,21 @@ const Orders = ({navigation}) => {
               </>
             }
             renderItem={renderItem}
-            keyExtractor={e => e.id}
+            keyExtractor={i => i}
             ListEmptyComponent={
-              <View style={{marginVertical: 5}}>
-                <Label dark bold headingtype="h1" style={styles.Heading}>
-                  No Purchases found!
-                </Label>
-                <Label dark style={styles.Info}>
-                  Sorry, we don’t have enough data to show you right now. Please
-                  check again later.
-                </Label>
-              </View>
+              <NotFoundPurchase
+                text="Cart"
+                onPress={() => navigation.navigate('DealsJoy')}
+              />
+              // <View style={{marginVertical: 5}}>
+              //   <Label dark bold headingtype="h1" style={styles.Heading}>
+              //     No Purchases found!
+              //   </Label>
+              //   <Label dark style={styles.Info}>
+              //     Sorry, we don’t have enough data to show you right now. Please
+              //     check again later.
+              //   </Label>
+              // </View>
             }
             refreshControl={
               <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />

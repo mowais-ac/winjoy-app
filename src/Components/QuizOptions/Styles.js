@@ -4,42 +4,41 @@ import {
   heightConverter,
   widthConverter,
 } from '../Helpers/Responsive';
-import { RFValue } from 'react-native-responsive-fontsize';
+import {RFValue} from 'react-native-responsive-fontsize';
 import Colors from '../../Constants/Colors';
 
-const { StyleSheet, Dimensions } = require('react-native');
-const { width, height } = Dimensions.get("window");
+const {StyleSheet, Dimensions} = require('react-native');
+const {width, height} = Dimensions.get('window');
 export default StyleSheet.create({
   optionsViewMain: {
     position: 'absolute',
-    bottom: height*0.05,
-    left: widthPercentageToDP("7%")
-
-
+    bottom: height * 0.1,
+    left: widthPercentageToDP('7%'),
   },
   optionView: {
-    width: widthPercentageToDP("85%"),
-    height: heightPercentageToDP("7%"),
+    width: widthPercentageToDP('85%'),
+    height: heightPercentageToDP('7%'),
     backgroundColor: '#ffffff',
     borderColor: '#ffffff',
     borderWidth: 2,
     justifyContent: 'center',
     paddingLeft: 20,
-    borderRadius: 25, marginTop: 15
+    borderRadius: 25,
+    marginTop: 15,
   },
   optionsText: {
-    fontSize: RFValue(13), color: "#0032B5",
+    fontSize: RFValue(13),
+    color: '#0032B5',
     //lineHeight: heightConverter(30),
     textAlign: 'left',
-    fontFamily: "Axiforma-Regular",
+    fontFamily: 'Axiforma-Regular',
   },
   Margin: {
-   
     width: width * 0.85,
     backgroundColor: '#e7003f',
-    height: heightPercentageToDP("7%"),
+    height: heightPercentageToDP('7%'),
     borderRadius: 25,
-    alignSelf: "center",
-    justifyContent: "center",
+    alignSelf: 'center',
+    justifyContent: 'center',
   },
 });

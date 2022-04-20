@@ -34,6 +34,7 @@ const index = ({props, navigation}) => {
   const [link, setLink] = useState('');
   const loading = useSelector(state => state.event.loading);
   const dispatch = useDispatch();
+  console.log('productsData', productsData?.data);
   useEffect(() => {
     dispatch(getProducts('?is_closing_soon=0'));
 
@@ -184,8 +185,8 @@ const index = ({props, navigation}) => {
               renderItem={({item}) => (
                 <ChanceCard
                   title={item?.product?.title}
-                  updated_stocks={item?.product?.updated_stocks}
-                  stock={item?.product?.stock}
+                  updated_stocks={item?.updated_stock}
+                  stock={item?.stock}
                   image={item?.product?.image}
                   description={item?.description}
                   price={item?.product?.price}

@@ -143,6 +143,18 @@ const WinnersModal = props => {
             contentContainerStyle={{
               width: '100%',
             }}
+            ListEmptyComponent={
+              <Text
+                style={{
+                  marginVertical: 20,
+                  fontFamily: 'Axiforma-Regular',
+                  fontSize: 14,
+                  fontWeight: '500',
+                  alignSelf: 'center',
+                }}>
+                no winners found
+              </Text>
+            }
             // horizontal={true}
             ListHeaderComponent={() => (
               <Text
@@ -169,7 +181,7 @@ const WinnersModal = props => {
                     item?.user?.last_name?.slice(1)
                   }
                   date={dayjs(item.created_at).format('MMMM DD, YYYY')}
-                  ammount={FormatNumber(+item?.price)}
+                  ammount={parseFloat(FormatNumber(+item?.price)).toFixed(2)}
                   profile_image={item?.user?.profile_image}
                 />
               );
@@ -191,8 +203,8 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.BG_MUTED,
   },
   ModalView: {
-    height: height * 0.5,
-    marginTop: height * 0.555,
+    height: height * 0.6,
+    marginTop: height * 0.45,
     borderTopLeftRadius: 37,
     borderTopRightRadius: 37,
     backgroundColor: Colors.WHITE,

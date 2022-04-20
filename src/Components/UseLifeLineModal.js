@@ -52,6 +52,7 @@ const UseLifeLineModal = props => {
           ...ModelState,
           state: (ModelState.state = false),
         });
+
         return false;
       }
       setTimeLeft(timeLeft - 1);
@@ -73,13 +74,15 @@ const UseLifeLineModal = props => {
         clearTimeout(timer);
         startTimer();
       }}
-      onRequestClose={() => {
-        setModelState({
-          ...ModelState,
-          state: !ModelState.state,
-        });
-        if (props.onClose) props.onClose();
-      }}>
+      // onRequestClose={() => {
+      //   setModelState({
+      //     ...ModelState,
+      //     state: !ModelState.state,
+      //   });
+
+      //   if (props.onClose) props.onClose();
+      // }}
+    >
       <View style={styles.MainView} />
 
       <View style={styles.ModalView}>

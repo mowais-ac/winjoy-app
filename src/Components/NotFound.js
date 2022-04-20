@@ -12,9 +12,13 @@ const {width, height} = Dimensions.get('window');
 const NotFound = props => {
   return (
     <View style={props.style}>
-      <Label dark bold headingtype="h1" style={styles.Heading}>
+      {/* <Label dark bold headingtype="h1" style={styles.Heading}>
         No {props.text} found!
+      </Label> */}
+      <Label dark bold headingtype="h1" style={styles.Heading}>
+        No {props.text2} Played!
       </Label>
+
       <Label dark style={styles.Info}>
         {props.desc ||
           'Sorry, we don’t have enough data to show you right now. Please check again later.'}

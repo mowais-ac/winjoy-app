@@ -52,7 +52,10 @@ const index = ({route, navigation}) => {
   const experienceDetail = useSelector(state => state.app.experienceDetail);
   const productsDetails = useSelector(state => state.app.productsDetals);
   const [loading, setLoading] = useState(true);
-
+  const [loading1, setLoading1] = useState(true);
+  const [data1, setdata1] = useState([]);
+  const [loading2, setLoading2] = useState(true);
+  const [data2, setdata2] = useState([]);
   const {id} = route.params;
   const [data, setdata] = useState([]);
   useEffect(() => {
@@ -82,7 +85,65 @@ const index = ({route, navigation}) => {
     };
     check();
   };
-
+  const _Api2 = id => {
+    const check1 = async () => {
+      //alert(id);
+      setLoading1(true);
+      const Token = await EncryptedStorage.getItem('Token');
+      const requestOptions = {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Accept: 'application/json',
+          Authorization: `Bearer ${Token}`,
+        },
+      };
+      await fetch(
+        `${Config.API_URL}/experience/product_list?experience_celebrity_id=${id}`,
+        requestOptions,
+      )
+        .then(async response => response.json())
+        .then(res => {
+          {
+            console.log({data11: res});
+          }
+          setdata1(res);
+          setLoading1(false);
+          /* {
+            console.log({data: res});
+          } */
+        });
+    };
+    check1();
+  };
+  const _Api3 = (experience_id, celebrity_id) => {
+    const check2 = async () => {
+      //alert(id);
+      setLoading2(true);
+      const Token = await EncryptedStorage.getItem('Token');
+      const requestOptions = {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Accept: 'application/json',
+          Authorization: `Bearer ${Token}`,
+        },
+      };
+      await fetch(
+        `${Config.API_URL}/experience/detail?experience_id=${experience_id}&celebrity_id=${celebrity_id}`,
+        requestOptions,
+      )
+        .then(async response => response.json())
+        .then(res => {
+          setdata2(res);
+          setLoading2(false);
+          /* {
+            console.log({data: res});
+          } */
+        });
+    };
+    check2();
+  };
   // console.log('LD: ', data);
   const onPressContinue = () => {
     ModalState.current(false);
@@ -320,7 +381,8 @@ const index = ({route, navigation}) => {
                               type: types.EXPERIENCE_ID,
                             });
                             //console.log('id_exp', item.id);
-                            dispatch4(ExperienceProductData(item?.id));
+                            _Api2(item?.id);
+                            //dispatch4(ExperienceProductData(item?.id));
                             celebrityModalState.current(true);
                           }}
                           onPress={() => {
@@ -328,8 +390,9 @@ const index = ({route, navigation}) => {
                               experienceID: item?.id,
                               type: types.EXPERIENCE_ID,
                             });
+                            _Api2(item?.id);
                             // console.log('id_exp', item.id);
-                            dispatch4(ExperienceProductData(item?.id));
+                            //dispatch4(ExperienceProductData(item?.id));
                             celebrityModalState.current(true);
                           }}
                           style={{
@@ -382,9 +445,10 @@ const index = ({route, navigation}) => {
                         onPress={() => {
                           (celebrity_id.current = data.celebrity.id),
                             (experience_id.current = item.id),
-                            dispatch2(
-                              ExperienceDetals(item.id, data.celebrity.id),
-                            );
+                            _Api3(item.id, data.celebrity.id);
+                          //dispatch2(
+                          // ExperienceDetals(item.id, data.celebrity.id),
+                          //);
                           ModalState.current(true);
                         }}
                         cover_photo={item.featured_image}
@@ -407,18 +471,20 @@ const index = ({route, navigation}) => {
             </>
           )}
           <ModalCelebrityProducts
+            loading1={loading1}
             ModalRef={celebrityModalState}
             details
-            expData={expData}
+            expData={data1}
             onPressContinue={() => {
               celebrityModalState.current(false);
             }}
           />
           <ExperienceCelebrityModal
+            loading2={loading2}
             ModalRef={ModalState}
             details
             onPressContinue={onPressContinue}
-            experienceDetail={experienceDetail}
+            experienceDetail={data2}
             celebrityData={data.celebrity}
             celebrity_id={celebrity_id.current}
             experience_id={experience_id.current}

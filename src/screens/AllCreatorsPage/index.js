@@ -16,6 +16,8 @@ import {
   FanJoyCard,
   WjBackground,
 } from '../../Components';
+import Config from 'react-native-config';
+import EncryptedStorage from 'react-native-encrypted-storage';
 import ExperienceCelebrityModal from '../../Components/ExperienceCelebrityModal';
 import styles from './styles';
 import LinearGradient from 'react-native-linear-gradient';
@@ -39,14 +41,43 @@ const index = ({route, navigation}) => {
   const dispatch2 = useDispatch();
   const dispatch3 = useDispatch();
   const dispatch4 = useDispatch();
+  const [loading, setLoading] = useState(false);
+  const [data1, setdata1] = useState([]);
   const data = useSelector(state => state.app.fanjoyData);
   const expData = useSelector(state => state.app.winExperienceProductData);
   const experienceDetail = useSelector(state => state.app.experienceDetail);
   // console.log({winEx: data?.win_experience});
   useEffect(() => {
     dispatch(getAllCreator());
+
     // console.log('data', data);
   }, []);
+
+  const _Api2 = async id => {
+    //alert(id);
+    setLoading(true);
+    const Token = await EncryptedStorage.getItem('Token');
+    const requestOptions = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        Accept: 'application/json',
+        Authorization: `Bearer ${Token}`,
+      },
+    };
+    await fetch(
+      `${Config.API_URL}/experience/product_list?experience_celebrity_id=${id}`,
+      requestOptions,
+    )
+      .then(async response => response.json())
+      .then(res => {
+        /* {
+          console.log({data11: res});
+        } */
+        setdata1(res);
+        setLoading(false);
+      });
+  };
 
   const onPressContinue = () => {
     ModalState.current(false);
@@ -210,7 +241,11 @@ const index = ({route, navigation}) => {
                         experienceID: item?.id,
                         type: types.EXPERIENCE_ID,
                       });
-                      dispatch4(ExperienceProductData(item?.id));
+
+                      console.log('id_exp', item.id);
+
+                      _Api2(item?.id);
+                      //dispatch4(ExperienceProductData(item?.id));
                       celebrityModalState.current(true);
                     }}
                     fun={() => {
@@ -218,7 +253,8 @@ const index = ({route, navigation}) => {
                         experienceID: item?.id,
                         type: types.EXPERIENCE_ID,
                       });
-                      dispatch4(ExperienceProductData(item?.id));
+                      _Api2(item?.id);
+                      //dispatch4(ExperienceProductData(item?.id));
                       celebrityModalState.current(true);
                     }}
                     short_desc={item?.title}
@@ -301,9 +337,10 @@ const index = ({route, navigation}) => {
           </View>
         </LinearGradient>
         <ModalCelebrityProducts
+          loading1={loading}
           ModalRef={celebrityModalState}
           details
-          expData={expData}
+          expData={data1}
           onPressContinue={() => {
             celebrityModalState.current(false);
           }}

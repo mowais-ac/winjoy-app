@@ -551,7 +551,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Axiforma-Regular',
     color: '#0B2142',
     fontSize: RFValue(13),
-    textTransform: 'capitalize',
+    // textTransform: 'capitalize',
   },
   rowView: {
     width: width * 0.9,

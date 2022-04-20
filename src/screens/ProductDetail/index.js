@@ -14,6 +14,7 @@ import Label from '../../Components/Label';
 const {width, height} = Dimensions.get('window');
 import LinearGradient from 'react-native-linear-gradient';
 import {Card} from '../../Components';
+import {GetCartData} from '../../redux/actions';
 import {
   widthPercentageToDP,
   heightPercentageToDP,
@@ -37,6 +38,7 @@ const ProductDetail = ({props, navigation, route}) => {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const dispatch2 = useDispatch();
+  const dispatch3 = useDispatch();
   const SucessModalState = useRef();
   const ModalErrorState = useRef();
   const counterMain = useSelector(state => state.app.counter);
@@ -46,18 +48,22 @@ const ProductDetail = ({props, navigation, route}) => {
   const [activity, setActivity] = useState(false);
   const [count, setCount] = useState(1);
   const [Loading, setLoading] = useState(true);
-
+  const LandingData = useSelector(state => state.app.LandingData);
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     _Api(productId);
-    wait(2000).then(() => setRefreshing(false));
+    wait(1000).then(() => setRefreshing(false));
+  }, []);
+  const onRefresh2 = React.useCallback(() => {
+    dispatch3(GetCartData());
+    wait(100).then(() => setRefreshing(false));
   }, []);
 
   useEffect(() => {
     _Api(productId);
   }, []);
   const _Api = async productId => {
-    // alert(productId);
+    setLoading(true);
     const Token = await EncryptedStorage.getItem('Token');
     const requestOptions = {
       method: 'GET',
@@ -74,7 +80,7 @@ const ProductDetail = ({props, navigation, route}) => {
         setLoading(false);
       });
   };
-
+  console.log('pdd', pd);
   const onChange = (number, type) => {
     setCount(number);
   };
@@ -85,10 +91,10 @@ const ProductDetail = ({props, navigation, route}) => {
       setActivity(true);
       var postData = JSON.stringify({
         is_from_experience: false,
-        product_id: pd?.product?.luckydraw?.product?.id,
+        product_id: pd?.product?.luckydraw?.product_id,
         count: count,
       });
-
+      console.log('postData', postData);
       const Token = await EncryptedStorage.getItem('Token');
 
       const requestOptions = {
@@ -100,7 +106,6 @@ const ProductDetail = ({props, navigation, route}) => {
         },
         body: postData,
       };
-
       await fetch(`${Config.API_URL}/add_to_cart`, requestOptions)
         .then(async response => response.json())
         .then(async res => {
@@ -127,219 +132,259 @@ const ProductDetail = ({props, navigation, route}) => {
         });
     }
   };
-
+  const NavigateToQuiz = fromSocket => {
+    if (
+      LandingData?.gameShow?.status === 'on_boarding' ||
+      LandingData?.gameShow?.status === 'started' ||
+      fromSocket
+    ) {
+      {
+        console.log(
+          'LandingData?.gameShow?.status',
+          LandingData?.gameShow?.status,
+        );
+      }
+      navigation.navigate('GameStack', {
+        screen: 'Quiz',
+        params: {
+          uri: LandingData?.gameShow?.live_stream?.key,
+          gameshowStatus: LandingData?.gameShow?.status,
+        },
+      });
+    }
+  };
   return (
-    <SafeAreaView style={{height: '100%', paddingBottom: 120}}>
-      <ScrollView
-        refreshControl={
-          <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
-        }>
-        <LinearGradient style={styles.mainView} colors={['#420E92', '#E7003F']}>
-          <View style={{height: 20}} />
-          <Header back={true} />
-        </LinearGradient>
-        {Loading ? (
-          <ActivityIndicator size="large" color="#000000" />
-        ) : (
-          <>
-            <View style={{paddingHorizontal: 15}}>
-              <View style={[styles.upperView]}>
-                <Card
-                  images={pd?.product?.images}
-                  updated_stocks={pd?.product?.updated_stocks}
-                  stock={pd?.product?.stock}
-                />
-              </View>
-              <View style={styles.card}>
-                <Text
-                  style={{
-                    color: '#000000',
-                    fontFamily: 'Axiforma-Regular',
-                    fontSize: 16,
-                    borderBottomWidth: 1,
-                    borderBottomColor: '#E6DFEE',
-                    width: '100%',
-                    textAlign: 'center',
-                    paddingVertical: 10,
-                  }}>
-                  {pd?.product?.title}
-                </Text>
-
-                <Label
-                  primary
-                  font={16}
-                  dark
-                  style={{color: '#E7003F', marginTop: 10, lineHeight: 20}}>
-                  Get a chance to win
-                </Label>
-
-                {pd?.product?.luckydraw?.experience ? (
-                  <Label
-                    font={16}
-                    dark
-                    style={{color: '#000000', lineHeight: 20}}>
-                    {pd?.product?.luckydraw?.experience?.title}
-                  </Label>
-                ) : (
-                  <Label font={16} dark style={{color: '#000000'}}>
-                    {pd?.product?.luckydraw?.prize_title}
-                  </Label>
-                )}
-                {pd?.product?.luckydraw?.enable_buy ? (
-                  <Label
-                    font={12}
-                    light
-                    style={{
-                      color: '#000000',
-                      paddingVertical: 10,
-                      lineHeight: 17,
-                    }}>
-                    Max draw date{' '}
-                    {dayjs(pd?.product?.luckydraw?.end_date).format(
-                      'MMMM DD, YYYY',
-                    )}
-                    {'  '}
-                    or when the campaign is sold out, which is earliest
-                  </Label>
-                ) : (
-                  <Label
-                    font={12}
-                    light
-                    style={{
-                      color: '#000000',
-                      paddingVertical: 10,
-                      lineHeight: 17,
-                    }}>
-                    Draw Date announce to be soon!
-                  </Label>
-                )}
-                <Text style={styles.closingTxt}>Closing Soon</Text>
-              </View>
-              <View style={styles.pdView}>
-                <Label
-                  notAlign
-                  primary
-                  font={16}
-                  bold
-                  style={{color: '#E7003F'}}>
-                  Products Details
-                </Label>
-                <Label
-                  notAlign
-                  font={11}
-                  dark
-                  style={{color: '#000000', lineHeight: 20}}>
-                  {pd?.product?.description}
-                </Label>
-              </View>
-            </View>
-          </>
-        )}
-      </ScrollView>
-      <View style={styles.card2Wrap}>
-        <View style={styles.card2}>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              width: '100%',
-              paddingHorizontal: 15,
-              paddingVertical: 15,
-            }}>
-            {!Loading ? (
-              <View>
-                <Text style={styles.metaText}>To enter in the lucky draw</Text>
-                <Text style={[styles.metaText, {fontWeight: 'bold'}]}>
-                  Buy a {pd?.product?.title}
-                </Text>
-              </View>
-            ) : null}
+    <>
+      {LandingData?.gameShow?.status === 'on_boarding' ||
+      LandingData?.gameShow?.status === 'started' ? (
+        NavigateToQuiz()
+      ) : (
+        <SafeAreaView style={{height: '100%', paddingBottom: 120}}>
+          <ScrollView
+            refreshControl={
+              <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
+            }>
+            <LinearGradient
+              style={styles.mainView}
+              colors={['#420E92', '#E7003F']}>
+              <View style={{height: 20}} />
+              <Header back={true} />
+            </LinearGradient>
             {Loading ? (
-              <ActivityIndicator size="small" color="#000000" />
+              <ActivityIndicator size="large" color="#000000" />
             ) : (
-              <Text
-                style={[
-                  styles.text,
-                  {fontWeight: 'bold', fontSize: RFValue(14)},
-                ]}>
-                AED{' '}
-                {+pd?.product?.price?.toLocaleString() ||
-                  +data?.product?.price?.toLocaleString()}
-              </Text>
+              <>
+                <View style={{paddingHorizontal: 15}}>
+                  <View style={[styles.upperView]}>
+                    <Card
+                      images={pd?.product?.images}
+                      updated_stocks={parseInt(
+                        pd?.product?.luckydraw?.updated_stock,
+                      )}
+                      stock={parseInt(pd?.product?.luckydraw?.stock)}
+                    />
+                  </View>
+                  <View style={styles.card}>
+                    <Text
+                      style={{
+                        color: '#000000',
+                        fontFamily: 'Axiforma-Regular',
+                        fontSize: 16,
+                        borderBottomWidth: 1,
+                        borderBottomColor: '#E6DFEE',
+                        width: '100%',
+                        textAlign: 'center',
+                        paddingVertical: 10,
+                      }}>
+                      {pd?.product?.title}
+                    </Text>
+
+                    <Label
+                      primary
+                      font={16}
+                      dark
+                      style={{color: '#E7003F', marginTop: 10, lineHeight: 20}}>
+                      Get a chance to win
+                    </Label>
+
+                    {pd?.product?.luckydraw?.experience ? (
+                      <Label
+                        font={16}
+                        dark
+                        style={{color: '#000000', lineHeight: 20}}>
+                        {pd?.product?.luckydraw?.experience?.title}
+                      </Label>
+                    ) : (
+                      <Label font={16} dark style={{color: '#000000'}}>
+                        {pd?.product?.luckydraw?.prize_title}
+                      </Label>
+                    )}
+                    {pd?.product?.luckydraw?.enable_buy ? (
+                      <Label
+                        font={12}
+                        light
+                        style={{
+                          color: '#000000',
+                          paddingVertical: 10,
+                          lineHeight: 17,
+                        }}>
+                        Max draw date{' '}
+                        {dayjs(pd?.product?.luckydraw?.end_date).format(
+                          'MMMM DD, YYYY',
+                        )}
+                        {'  '}
+                        or when the campaign is sold out, which is earliest
+                      </Label>
+                    ) : (
+                      <Label
+                        font={12}
+                        light
+                        style={{
+                          color: '#000000',
+                          paddingVertical: 10,
+                          lineHeight: 17,
+                        }}>
+                        Draw Date announce to be soon!
+                      </Label>
+                    )}
+                    <Text style={styles.closingTxt}>Closing Soon</Text>
+                  </View>
+                  <View style={styles.pdView}>
+                    <Label
+                      notAlign
+                      primary
+                      font={16}
+                      bold
+                      style={{color: '#E7003F'}}>
+                      Product Details
+                    </Label>
+                    <Label
+                      notAlign
+                      font={11}
+                      dark
+                      style={{color: '#000000', lineHeight: 20}}>
+                      {pd?.product?.description}
+                    </Label>
+                  </View>
+                </View>
+              </>
             )}
-          </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              paddingHorizontal: 10,
-            }}>
-            <View
-              style={{
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
-              <Counter
-                buttonStyle={{borderWidth: 0}}
-                start={1}
-                buttonTextStyle={{
-                  color: '#000000',
-                  fontFamily: 'Axiforma-Bold',
-                }}
-                max={parseInt(pd?.product?.stock)}
-                countTextStyle={{color: '#000000', fontFamily: 'Axiforma-Bold'}}
-                onChange={(number, type) => onChange(number, type)}
-              />
-            </View>
-            <TouchableOpacity
-              disabled={activity}
-              onPress={() => {
-                !Loading && SaveIdInfo();
-              }}>
-              <LinearGradient
-                start={{x: 0, y: 0}}
-                end={{x: 1, y: 0}}
+          </ScrollView>
+          <View style={styles.card2Wrap}>
+            <View style={styles.card2}>
+              <View
                 style={{
-                  paddingVertical: 15,
-                  width: width * 0.55,
-                  borderRadius: 10,
-                  justifyContent: 'center',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
                   alignItems: 'center',
-                }}
-                colors={['#420E92', '#E7003F']}>
-                {activity ? (
-                  <ActivityIndicator size="small" color="#ffffff" />
+                  width: '100%',
+                  paddingHorizontal: 15,
+                  paddingVertical: 15,
+                }}>
+                {!Loading ? (
+                  <View>
+                    <Text style={styles.metaText}>
+                      To enter in the lucky draw
+                    </Text>
+                    <Text style={[styles.metaText, {fontWeight: 'bold'}]}>
+                      Buy a {pd?.product?.title}
+                    </Text>
+                  </View>
+                ) : null}
+                {Loading ? (
+                  <ActivityIndicator size="small" color="#000000" />
                 ) : (
-                  <>
-                    {Loading ? (
+                  <Text
+                    style={[
+                      styles.text,
+                      {fontWeight: 'bold', fontSize: RFValue(14)},
+                    ]}>
+                    AED{' '}
+                    {+pd?.product?.price?.toLocaleString() ||
+                      +data?.product?.price?.toLocaleString()}
+                  </Text>
+                )}
+              </View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  paddingHorizontal: 10,
+                }}>
+                <View
+                  style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}>
+                  <Counter
+                    buttonStyle={{borderWidth: 0}}
+                    start={1}
+                    buttonTextStyle={{
+                      color: '#000000',
+                      fontFamily: 'Axiforma-Bold',
+                    }}
+                    max={parseInt(pd?.product?.stock)}
+                    countTextStyle={{
+                      color: '#000000',
+                      fontFamily: 'Axiforma-Bold',
+                    }}
+                    onChange={(number, type) => onChange(number, type)}
+                  />
+                </View>
+                <TouchableOpacity
+                  disabled={activity}
+                  onPress={() => {
+                    !Loading && SaveIdInfo();
+                    onRefresh2();
+                  }}>
+                  <LinearGradient
+                    start={{x: 0, y: 0}}
+                    end={{x: 1, y: 0}}
+                    style={{
+                      paddingVertical: 15,
+                      width: width * 0.55,
+                      borderRadius: 10,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                    colors={['#420E92', '#E7003F']}>
+                    {activity ? (
                       <ActivityIndicator size="small" color="#ffffff" />
                     ) : (
-                      <Text
-                        style={{color: '#ffffff', fontFamily: 'Axiforma-Bold'}}>
-                        Add to Cart
-                      </Text>
+                      <>
+                        {Loading ? (
+                          <ActivityIndicator size="small" color="#ffffff" />
+                        ) : (
+                          <Text
+                            style={{
+                              color: '#ffffff',
+                              fontFamily: 'Axiforma-Bold',
+                            }}>
+                            Add to Cart
+                          </Text>
+                        )}
+                      </>
                     )}
-                  </>
-                )}
-              </LinearGradient>
-            </TouchableOpacity>
+                  </LinearGradient>
+                </TouchableOpacity>
+              </View>
+            </View>
           </View>
-        </View>
-      </View>
-      <BuyLifeCongrats
-        ModalRef={SucessModalState}
-        heading={'Alert'}
-        description={'Successfully added to cart'}
-        requestOnPress={() => {
-          SucessModalState.current(false);
-        }}
-        closeOnPress={() => {
-          SucessModalState.current(false);
-        }}
-      />
-      <Modals ModalRef={ModalErrorState} Error />
-    </SafeAreaView>
+          <BuyLifeCongrats
+            ModalRef={SucessModalState}
+            heading={'Alert'}
+            description={'Successfully added to cart'}
+            requestOnPress={() => {
+              SucessModalState.current(false);
+            }}
+            closeOnPress={() => {
+              SucessModalState.current(false);
+            }}
+          />
+          <Modals ModalRef={ModalErrorState} Error />
+        </SafeAreaView>
+      )}
+    </>
   );
 };
 

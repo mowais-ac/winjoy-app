@@ -22,7 +22,11 @@ function TriviaCard({onPress, userInfo, userData}) {
           <ProfilePicture
             picture={userInfo?.profile_image || userData?.profile_image}
             id={userInfo?.id || userData?.id}
-            // name={(userInfo?.first_name.slice(0, 1) + userInfo?.last_name.slice(0, 1)) || (userData?.first_name.slice(0, 1) + userData?.last_name.slice(0, 1))}
+            name={
+              userInfo?.first_name.slice(0, 1) +
+                userInfo?.last_name.slice(0, 1) ||
+              userData?.first_name.slice(0, 1) + userData?.last_name.slice(0, 1)
+            }
             style={styles.avatarView}
           />
         </View>
@@ -46,7 +50,6 @@ function TriviaCard({onPress, userInfo, userData}) {
             )}
           </View>
           <Text style={styles.text2}>
-            AED{' '}
             {userData?.price
               ? parseInt(userData?.price).toLocaleString('en')
               : null || userData.country}

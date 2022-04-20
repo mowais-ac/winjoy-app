@@ -8,8 +8,8 @@ import LoaderImage from '../LoaderImage';
 const {width, height} = Dimensions.get('window');
 
 function ClosingSoonCard({item, onPress}) {
-  let progress = item.updated_stocks
-    ? (item?.updated_stocks / item?.stock) * 100
+  let progress = parseInt(item.updated_stock)
+    ? (parseInt(item.updated_stock) / parseInt(item?.stock)) * 100
     : 0;
 
   return (
@@ -66,8 +66,8 @@ function ClosingSoonCard({item, onPress}) {
             />
           </View>
           <Label primary font={10} style={{color: '#877C80', top: 4}}>
-            {item?.product?.updated_stocks ? item?.product?.updated_stocks : 0}{' '}
-            sold out of {item?.product?.stock}
+            {parseInt(item?.updated_stock) ? parseInt(item?.updated_stock) : 0}{' '}
+            sold out of {parseInt(item?.stock)}
           </Label>
         </View>
       </TouchableOpacity>

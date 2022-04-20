@@ -111,7 +111,7 @@ const EliminateQuizOptions = props => {
               </Label>
             </View>
           </TouchableOpacity>
-          <LabelButton
+          {/* <LabelButton
             primary
             headingtype="h3"
             bold
@@ -120,7 +120,7 @@ const EliminateQuizOptions = props => {
               navigation.navigate('Landing');
             }}>
             Back to home
-          </LabelButton>
+          </LabelButton> */}
         </View>
       </View>
     </Modal>

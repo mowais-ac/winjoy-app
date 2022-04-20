@@ -95,7 +95,7 @@ const Header = props => {
             />
           </TouchableOpacity>
         )}
-        <NotificationBell style={styles.N_Bell} />
+        {/* <NotificationBell style={styles.N_Bell} /> */}
         {!props.noBell && <Bell style={styles.Bell} value={props.value} />}
         <TouchableOpacity
           style={styles.Lines}
@@ -144,7 +144,8 @@ const styles = StyleSheet.create({
     marginLeft: width * 0.51,
   },
   Bell: {
-    marginLeft: 10,
+    // marginLeft: 10,
+    marginLeft: width * 0.63,
   },
   Heading: {
     marginLeft: width * 0.05,

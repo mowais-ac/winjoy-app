@@ -62,27 +62,6 @@ function HomeCard({
                   TRIVIA
                 </Text>
               </View>
-
-              <LongButton
-                style={[
-                  styles.Margin,
-                  {
-                    backgroundColor: null,
-
-                    borderWidth: 2,
-                    borderColor: '#fff',
-                  },
-                ]}
-                textstyle={{
-                  color: '#fff',
-                  fontFamily: 'Axiforma-SemiBold',
-                  fontSize: 14,
-                }}
-                text="Lets Begin"
-                font={16}
-                shadowless
-                onPress={onPress}
-              />
             </View>
           ) : gameShow?.status === 'inprocess' || gameShow === '' ? (
             <View
@@ -115,11 +94,11 @@ function HomeCard({
                     styles.commingSoonTxt,
                     {color: '#ffffff', fontSize: 13},
                   ]}>
-                  COMING SOON 
+                  COMING SOON
                 </Text>
                 {time ? (
                   <CountDown
-                    style={{marginTop: 3}}
+                    style={{marginTop: 3.5}}
                     size={12}
                     until={time}
                     onFinish={() => onCountDownFinish()}
@@ -132,8 +111,8 @@ function HomeCard({
                       fontSize: 13,
                       fontFamily: 'Axiforma-Medium',
                     }}
-                    timeLabelStyle={{color: 'red'}}
                     separatorStyle={{
+                      marginBottom: 19,
                       color: '#D9FE51',
                       paddingLeft: 5,
                       paddingRight: 5,
@@ -148,6 +127,7 @@ function HomeCard({
                     timeLabelStyle={{
                       color: '#ffffff',
                       fontFamily: 'Axiforma-Regular',
+                      fontSize: 8.6,
                     }}
                     showSeparator
                   />

@@ -27,6 +27,7 @@ const ProductDetail = ({props, navigation, route}) => {
   const dispatch = useDispatch();
   const dispatch2 = useDispatch();
   const data = useSelector(state => state?.app?.expProductDetail);
+
   useEffect(() => {
     dispatch(ExperienceProductDetal(experience_celebrity_id, product_id));
   }, []);
@@ -56,16 +57,18 @@ const ProductDetail = ({props, navigation, route}) => {
       const filtered = favs.filter(
         ({product_id}, index) => !ids.includes(product_id, index + 1),
       );
-      // dispatch2({
-      //     type: types.CART_COUNTER,
-      //     counter:uniqueArray?.length,
-      //   });
+      dispatch2({
+        type: types.CART_COUNTER,
+        counter: uniqueArray?.length,
+      });
       return AsyncStorage.setItem('expData', JSON.stringify(filtered));
     });
 
     let dat = await AsyncStorage.getItem('expData');
   };
-
+  {
+    console.log('data1', data);
+  }
   let images = [];
   images.push({
     image: data?.products?.image,
@@ -75,97 +78,116 @@ const ProductDetail = ({props, navigation, route}) => {
   }
   console.log({pic: data?.products?.image});
   return (
-    <ScrollView>
-      <View style={{height: heightPercentageToDP('100%')}}>
-        <LinearGradient style={styles.mainView} colors={['#420E92', '#E7003F']}>
-          <View style={{height: 20}} />
-          <Header back={true} />
-        </LinearGradient>
-        <View style={styles.upperView}>
-          <Card
-            images={images}
-            stock={data?.products?.stock}
-            updated_stocks={data?.products?.updated_stocks}
-          />
-        </View>
-        <View style={styles.card}>
-          <Label
-            primary
-            font={16}
-            dark
-            style={{color: '#000000', marginTop: 35}}>
-            Get a chance to
-            <Label notAlign primary font={16} bold style={{color: '#E7003F'}}>
-              {' '}
-              WIN
+    <>
+      <ScrollView>
+        <View style={{height: heightPercentageToDP('100%')}}>
+          <LinearGradient
+            style={styles.mainView}
+            colors={['#420E92', '#E7003F']}>
+            <View style={{height: 20}} />
+            <Header back={true} />
+          </LinearGradient>
+          <View style={styles.upperView}>
+            <Card
+              images={images}
+              stock={parseInt(data?.products?.stock)}
+              updated_stocks={parseInt(data?.products?.updated_stocks)}
+            />
+          </View>
+          <View style={styles.card}>
+            <Label
+              primary
+              font={16}
+              dark
+              style={{color: '#000000', marginTop: 35}}>
+              Get a chance to
+              <Label notAlign primary font={16} bold style={{color: '#E7003F'}}>
+                {' '}
+                WIN
+              </Label>
             </Label>
-          </Label>
-          <Label font={16} dark style={{color: '#000000'}}>
-            {data?.products?.title}
-          </Label>
-          <Label
-            font={12}
-            light
-            style={{
-              color: '#000000',
-              paddingVertical: 10,
-              lineHeight: 17,
-            }}>
-            {/*    Max draw date{' '}
+            <Label font={16} dark style={{color: '#000000'}}>
+              {data?.products?.title}
+            </Label>
+            <Label
+              font={12}
+              light
+              style={{
+                color: '#000000',
+                paddingVertical: 10,
+                lineHeight: 17,
+              }}>
+              {/*    Max draw date{' '}
               {dayjs(productsDetails?.product?.luckydraw?.end_date).format(
                 'MMMM DD, YYYY',
               )}{' '}
               or when the campaign is sold out, which is earliest */}
-            Draw Date announce to be soon!
-          </Label>
-          <Text style={styles.closingTxt}>Closing Soon</Text>
-        </View>
-        <View style={styles.pdView}>
-          <Label notAlign primary font={16} bold style={{color: '#E7003F'}}>
-            Products Details
-          </Label>
-          <Label
-            notAlign
-            font={11}
-            dark
-            style={{color: '#000000', lineHeight: 20}}>
-            {data?.products?.description}
-          </Label>
-        </View>
-        <View style={styles.card2}>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              width: widthPercentageToDP('83'),
-            }}>
-            <Text style={styles.metaText}>To enter in the lucky draw</Text>
-            <Text style={[styles.text, {fontWeight: 'bold'}]}>
-              {'AED '}
-              {+data?.products?.price?.toLocaleString()}
-            </Text>
+              Draw Date announce to be soon!
+            </Label>
+            <Text style={styles.closingTxt}>Closing Soon</Text>
           </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              width: widthPercentageToDP('83'),
-            }}>
-            <Text style={[styles.metaText, {fontWeight: 'bold'}]}>
-              Buy a {data?.products?.title}
-            </Text>
-            {/*  <Text style={styles.text}>Gold Coin</Text> */}
+          <View style={styles.pdView}>
+            <Label notAlign primary font={16} bold style={{color: '#E7003F'}}>
+              Product Details
+            </Label>
+            <Label
+              notAlign
+              font={11}
+              dark
+              style={{color: '#000000', lineHeight: 20}}>
+              {data?.products?.description}
+            </Label>
           </View>
-          <TouchableOpacity
-            onPress={() => {
-              // navigation.navigate("SimpeStackScreen", {
-              //     screen: "Cart",
-              //   })]
-              // SaveIdInfo();
-              alert('Thank you for your interest. This feature is coming soon');
-            }}
+        </View>
+      </ScrollView>
+
+      <View style={styles.card2}>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            width: widthPercentageToDP('83'),
+          }}>
+          <Text style={styles.metaText}>To enter in the lucky draw</Text>
+          <Text style={[styles.text, {fontWeight: 'bold'}]}>
+            {'AED '}
+            {+data?.products?.price?.toLocaleString()}
+          </Text>
+        </View>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            width: widthPercentageToDP('83'),
+          }}>
+          <Text style={[styles.metaText, {fontWeight: 'bold'}]}>
+            Buy a {data?.products?.title}
+          </Text>
+          {/*  <Text style={styles.text}>Gold Coin</Text> */}
+        </View>
+        <TouchableOpacity
+          onPress={() => {
+            // navigation.navigate("SimpeStackScreen", {
+            //     screen: "Cart",
+            //   })]
+            // SaveIdInfo();
+            alert('Thank you for your interest. This feature is coming soon');
+          }}
+          style={{
+            height: heightConverter(55),
+            width: width - 25,
+            position: 'absolute',
+            bottom: 0,
+            borderBottomLeftRadius: 10,
+            borderBottomRightRadius: 10,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <LinearGradient
+            start={{x: 0, y: 0}}
+            end={{x: 1, y: 0}}
             style={{
               height: heightConverter(55),
               width: width - 25,
@@ -175,29 +197,15 @@ const ProductDetail = ({props, navigation, route}) => {
               borderBottomRightRadius: 10,
               justifyContent: 'center',
               alignItems: 'center',
-            }}>
-            <LinearGradient
-              start={{x: 0, y: 0}}
-              end={{x: 1, y: 0}}
-              style={{
-                height: heightConverter(55),
-                width: width - 25,
-                position: 'absolute',
-                bottom: 0,
-                borderBottomLeftRadius: 10,
-                borderBottomRightRadius: 10,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-              colors={['#420E92', '#E7003F']}>
-              <Label primary font={16} bold style={{color: '#ffffff'}}>
-                Add to Cart
-              </Label>
-            </LinearGradient>
-          </TouchableOpacity>
-        </View>
+            }}
+            colors={['#420E92', '#E7003F']}>
+            <Label primary font={16} bold style={{color: '#ffffff'}}>
+              Add to Cart
+            </Label>
+          </LinearGradient>
+        </TouchableOpacity>
       </View>
-    </ScrollView>
+    </>
   );
 };
 
@@ -256,6 +264,13 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     marginTop: 2,
   },
+  card2Wrap: {
+    bottom: 10,
+    left: 0,
+    position: 'absolute',
+    paddingHorizontal: 15,
+    width: '100%',
+  },
   card2: {
     width: width - 25,
     height: height * 0.15,
@@ -268,7 +283,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     elevation: 3,
     position: 'absolute',
-    marginBottom: 80,
+    marginBottom: 30,
   },
   closingTxt: {
     color: '#ffffff',

@@ -106,6 +106,7 @@ export const getLiveShowPlans = () => {
         },
       });
       const json = await result.json();
+      
       if (json && json.status === 'success') {
         dispatch({
           type: types.GET_LIVE_PLANS,
@@ -325,6 +326,7 @@ export const LuckyDrawWinnersAPI = () => {
     };
   } catch (error) {}
 };
+
 export const LeaderBoardWinners = () => {
   try {
     return async dispatch => {
@@ -338,7 +340,7 @@ export const LeaderBoardWinners = () => {
         },
       });
       const json = await result.json();
-
+      console.log('new', json);
       if (json) {
         dispatch({
           type: types.LEADER_BOARD_WINNERS,
@@ -347,7 +349,9 @@ export const LeaderBoardWinners = () => {
       } else {
       }
     };
-  } catch (error) {}
+  } catch (error) {
+    alert(error);
+  }
 };
 export const DealsJoyAPI = () => {
   try {

@@ -36,7 +36,8 @@ function GameShowWinnersCard({onPress, date, profile_image, name, ammount}) {
           style={{
             height: height * 0.08,
             justifyContent: 'center',
-            width: width * 0.54,
+            width: width * 0.5,
+            //alignItems: 'flex-start',
           }}>
           <Text style={styles.text}>{date}</Text>
           <Text style={styles.text2}>{name}</Text>

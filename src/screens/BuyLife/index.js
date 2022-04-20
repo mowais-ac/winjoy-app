@@ -10,6 +10,7 @@ import {
   Text,
   ScrollView,
   ImageBackground,
+  RefreshControl,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import Header from '../../Components/Header';
@@ -25,6 +26,7 @@ import EncryptedStorage from 'react-native-encrypted-storage';
 import I18n from 'react-native-i18n';
 import axios from 'axios';
 import {RFValue} from 'react-native-responsive-fontsize';
+import {FormatNumber, wait} from '../../Constants/Functions';
 import BuyLifeLineModal from '../../Components/BuyLifeLineModal';
 import WatchAddModal from '../../Components/WatchAddModal';
 import RefferLifeLineModal from '../../Components/RefferLifeLineModal';
@@ -34,7 +36,9 @@ const {width, height} = Dimensions.get('window');
 const index = ({route, navigation}) => {
   const livePlans = useSelector(state => state.app.livePlans);
   const totalLives = useSelector(state => state.app.totalLives);
-
+  {
+    console.log('livePlans.plan', livePlans);
+  }
   const ModalState = useRef();
   const AddModalState = useRef();
   const RefferModalState = useRef();
@@ -44,15 +48,27 @@ const index = ({route, navigation}) => {
   const [lives, setLives] = useState();
   const [idVideoAdd, setIdVideoAdd] = useState();
   const [id, setId] = useState();
+  const [refreshing, setRefreshing] = useState(false);
   const dispatch = useDispatch();
   useEffect(() => {
     console.log('totalLives', totalLives);
     dispatch(getLiveShowPlans());
+    setvideo1(livePlans.videoEnable);
   }, []);
-
+  const [video1, setvideo1] = useState(false);
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    dispatch(getLiveShowPlans());
+    setvideo1(livePlans.videoEnable);
+    wait(800).then(() => setRefreshing(false));
+  }, []);
   return (
     <SafeAreaView style={styles.safeStyle}>
-      <ScrollView>
+      <ScrollView
+        style={{backgroundColor: '#f6f1f3'}}
+        refreshControl={
+          <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
+        }>
         <LinearGradient
           start={{x: 0, y: 0}}
           end={{x: 1, y: 0}}
@@ -187,7 +203,14 @@ const index = ({route, navigation}) => {
                       onPress={() => {
                         setIdVideoAdd(item.id);
                         setVideo(item.video_url);
-                        AddModalState.current(true);
+
+                        if (video1 == true) {
+                          AddModalState.current(true);
+                        } else {
+                          alert(
+                            'Sorry, you can watch video ad only once in a day. Please try after 24 hours.',
+                          );
+                        }
                       }}
                     />
                   ) : index === 1 ? (
@@ -219,7 +242,9 @@ const index = ({route, navigation}) => {
             details
             video={video}
             id={idVideoAdd}
-            // onPressContinue={onPressContinue}
+            refreshVideo={() => {
+              setvideo1(livePlans.videoEnable);
+            }}
           />
           <RefferLifeLineModal
             ModalRef={RefferModalState}
@@ -233,7 +258,7 @@ const index = ({route, navigation}) => {
             ModalRef={SucessModalState}
             heading={'Congratulations'}
             description={
-              'lives are ready to use. Feel free to play more games & win amazin prizes.'
+              'lives are ready to use. Feel free to play more games & win amazing prizes.'
             }
             requestOnPress={() => SucessModalState.current(false)}
             closeOnPress={() => SucessModalState.current(false)}

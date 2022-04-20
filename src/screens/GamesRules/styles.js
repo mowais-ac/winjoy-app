@@ -43,10 +43,15 @@ export default StyleSheet.create({
     color: '#000000',
     fontSize: 16,
     fontFamily: 'Axiforma-Bold',
+
+    //alignItems: 'center',
   },
   paragraph: {
     color: '#000000',
+    fontFamily: 'Axiforma',
     paddingBottom: 10,
+
+    // alignItems: 'center',
   },
   listeItem: {},
 });

@@ -122,7 +122,7 @@ const GameShow = props => {
                     styles.text2,
                     {color: '#420E92', textAlign: 'center'},
                   ]}>
-                  AED {FormatNumber(+item?.price?.toLocaleString())}
+                  AED {parseFloat(FormatNumber(+item?.price)).toFixed(2)}
                 </Text>
               </View>
             </View>
@@ -172,7 +172,7 @@ const GameShow = props => {
                 item?.user?.last_name?.slice(1)
               }
               date={dayjs(item.created_at).format('MMMM DD, YYYY')}
-              ammount={FormatNumber(+item?.price)}
+              ammount={parseFloat(FormatNumber(+item?.price)).toFixed(2)}
               profile_image={item?.user?.profile_image}
               // onPress={()=>navigation.navigate("LastGameWinnerDetail")}
             />

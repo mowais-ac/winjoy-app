@@ -69,13 +69,13 @@ const RefferLifeLineModal = props => {
 
   const [loader, setLoader] = useState(false);
   // share btn
-  const link = 'https://winjoy.ae/invite/token?${livePlans?.refer_code}';
+  const link = `https://winjoy.ae/invite/token?${livePlans?.refer_code}`;
   const onShare = async () => {
     try {
       const result = await Share.share({
         title: 'Refferal link',
         message: link,
-        url: 'https://winjoy.ae/invite/token?${livePlans?.refer_code}',
+        url: `https://winjoy.ae/invite/token?${livePlans?.refer_code}`,
       });
       if (result.action === Share.sharedAction) {
         if (result.activityType) {

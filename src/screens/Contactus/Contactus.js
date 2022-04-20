@@ -89,7 +89,7 @@ function Contactus() {
                   alignItems: 'center',
                 }}>
                 <Text style={styles.lowerText}>
-                  Please select a topic below related to your inquiry. We
+                  Please enter message a below related to your inquiry. We will
                   respond to any query within 24 hours.
                 </Text>
                 <TextInput

@@ -14,7 +14,7 @@ export default StyleSheet.create({
   },
   avatarView: {
     //position: 'absolute',
-
+    margin: 5,
     width: width * 0.32,
     height: width * 0.32,
     borderRadius: width * 0.32,
@@ -33,7 +33,7 @@ export default StyleSheet.create({
   },
   leftRightavatarView: {
     //position: 'absolute',
-
+    margin: 10,
     width: width * 0.22,
     height: width * 0.22,
     borderRadius: width * 0.22,

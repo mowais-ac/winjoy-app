@@ -68,6 +68,7 @@ const Entries = ({navigation}) => {
   const renderItem = ({item, i}) => {
     return (
       <TouchableOpacity
+        key={i}
         onPress={() => navigation.navigate('OrderDetails', {item})}
         activeOpacity={0.8}>
         <View
@@ -159,24 +160,33 @@ const Entries = ({navigation}) => {
                 }}>
                 {item?.entry_code}
               </Text>
+              <Text
+                style={{
+                  color: 'purple',
+                  fontWeight: '600',
+                  textAlign: 'center',
+                  lineHeight: 20,
+                  width: 220,
+                }}>
+                THIS COUPON GIVES YOU A CHANCE TO ENTER THE LUCKY DRAW
+              </Text>
             </View>
-            <Text
-              style={{
-                color: 'purple',
-                fontWeight: '600',
-                textAlign: 'center',
-                lineHeight: 20,
-                paddingHorizontal: 10,
-              }}>
-              THIS COUPON GIVES YOU A CHANCE TO ENTER THE LUCKY DRAW
-            </Text>
-            <View
+
+            {/* <View
               style={{
                 color: 'black',
                 borderWidth: 0.7,
                 width: '80%',
                 marginLeft: 25,
                 //marginTop: 10,
+              }}
+            /> */}
+            <View
+              style={{
+                marginLeft: 25,
+                height: 0.82,
+                width: '80%',
+                backgroundColor: 'black',
               }}
             />
             <Text
@@ -190,7 +200,7 @@ const Entries = ({navigation}) => {
                 ? dayjs(item?.lucky_draw?.created_at).format(
                     'dddd, MMMM D YYYY',
                   )
-                : NAN}
+                : 'NAN'}
             </Text>
             <Text
               style={{
@@ -224,7 +234,9 @@ const Entries = ({navigation}) => {
               style={{
                 color: 'black',
                 fontWeight: '700',
-                lineHeight: 25,
+                lineHeight: 20,
+                textAlign: 'center',
+                width: 170,
               }}>
               {item?.lucky_draw?.name}
             </Text>

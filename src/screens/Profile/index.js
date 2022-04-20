@@ -46,7 +46,9 @@ const index = ({props, navigation, route}) => {
   const [activity, setActivity] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const user = useSelector(state => state.app.userData);
-
+  {
+    console.log('uuser', userData);
+  }
   useEffect(async () => {
     if (JSON.stringify(Data) !== user) {
       setData(user);
@@ -87,6 +89,7 @@ const index = ({props, navigation, route}) => {
       .get(`${Config.API_URL}/livegameshow/user/game/history`, requestOptions)
       .then(response => {
         let res = response;
+
         if (res.data.message === 'No Data Found.') {
           setUserData([]);
         } else {
@@ -223,8 +226,8 @@ const index = ({props, navigation, route}) => {
                     <ActivityIndicator size="large" color="#fff" />
                   ) : (
                     <NotFound
-                      text="Games"
-                      desc="You don't have win any Games yet "
+                      text2="Games"
+                      desc="Looks like you haven't played any games yet."
                       style={{
                         justifyContent: 'center',
                         alignItems: 'center',
@@ -237,7 +240,7 @@ const index = ({props, navigation, route}) => {
                   return (
                     <View
                       style={{
-                        marginTop: 20,
+                        marginTop: 10,
                         height: 1,
                         width: '100%',
                         backgroundColor: '#994e7c',
@@ -267,7 +270,7 @@ const index = ({props, navigation, route}) => {
               ) : (
                 <>
                   <Section style={styles.Personal}>
-                    <View style={{marginTop: height * 0.005}}>
+                    <View style={{marginVertical: 10}}>
                       <GetField name="First name" val={user?.first_name} />
                       <GetField name="Last name" val={user?.last_name} />
                       <GetField name="Username" val={user?.user_name} />
@@ -401,9 +404,9 @@ const styles = StyleSheet.create({
   avatarView: {
     //position: 'absolute',
 
-    width: widthConverter(130),
-    height: widthConverter(130),
-    borderRadius: heightConverter(130),
+    width: widthConverter(90),
+    height: widthConverter(90),
+    borderRadius: heightConverter(90),
     borderWidth: 3,
     alignItems: 'center',
     justifyContent: 'center',

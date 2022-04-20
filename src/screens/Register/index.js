@@ -33,7 +33,8 @@ import {useDispatch} from 'react-redux';
 import types from '../../redux/types';
 const {width, height} = Dimensions.get('window');
 
-const index = ({navigation}) => {
+const index = ({navigation, route}) => {
+  const referral_code = route.params;
   const {t} = useTranslation();
   const fnameref = useRef();
   const lnameref = useRef();
@@ -45,7 +46,9 @@ const index = ({navigation}) => {
   const r = useRef();
   const ModalState = useRef();
   const dispatch = useDispatch();
-
+  {
+    console.log(referral_code);
+  }
   const HandleClick = async () => {
     let isnull = false;
     if (

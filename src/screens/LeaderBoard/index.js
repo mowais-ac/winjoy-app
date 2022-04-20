@@ -40,6 +40,7 @@ let crown = require('../../assets/imgs/crown.png');
 const {width, height} = Dimensions.get('window');
 const index = ({route, navigation}) => {
   const leaderBoardWinners = useSelector(state => state.app.leaderBoardWinners);
+  console.log('leaderBoardWinners', leaderBoardWinners);
   const loading = useSelector(state => state.app.loading);
   const ModalState = useRef();
   const AddModalState = useRef();
@@ -108,10 +109,169 @@ const index = ({route, navigation}) => {
                 {loading ? (
                   <ActivityIndicator size="large" color="#fff" />
                 ) : (
-                  <FlatList
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      marginTop: 34,
+                    }}>
+                    <View style={styles.leftRightavatarView}>
+                      <ProfilePicture
+                        name={
+                          leaderBoardWinners?.leaders[1]?.first_name
+                            ?.charAt(0)
+                            ?.toUpperCase() +
+                          leaderBoardWinners?.leaders[1]?.last_name
+                            ?.charAt(0)
+                            ?.toUpperCase()
+                        }
+                        style={styles.leftRightavatarView}
+                      />
+
+                      <View
+                        style={{
+                          position: 'absolute',
+                          width: width * 0.3,
+                          height: width * 0.3,
+                          top: -10,
+                          left: 1,
+                        }}>
+                        <Image source={redStar} style={styles.topListIcon} />
+                      </View>
+                      <View
+                        style={{
+                          width: width * 0.28,
+                          alignItems: 'center',
+                          marginTop: height * 0.009,
+                        }}>
+                        <Text
+                          style={{
+                            fontSize: RFValue(10),
+                            color: '#ffffff',
+                            fontFamily: 'Axiforma-SemiBold',
+                            lineHeight: 20,
+                          }}>
+                          @{leaderBoardWinners?.leaders[1]?.user_name}
+                        </Text>
+                        <Text
+                          style={{
+                            fontSize: RFValue(13),
+                            lineHeight: 20,
+                            color: '#FFFF00',
+                            fontFamily: 'Axiforma-Bold',
+                          }}>
+                          AED{' '}
+                          {leaderBoardWinners?.leaders[1]?.trivia_total_prize}
+                        </Text>
+                      </View>
+                    </View>
+                    <View style={styles.avatarView}>
+                      <ProfilePicture
+                        name={
+                          leaderBoardWinners?.leaders[0]?.first_name
+                            ?.charAt(0)
+                            ?.toUpperCase() +
+                          leaderBoardWinners?.leaders[0]?.last_name
+                            ?.charAt(0)
+                            ?.toUpperCase()
+                        }
+                        style={styles.avatarView}
+                      />
+
+                      <View
+                        style={{
+                          position: 'absolute',
+                          width: width * 0.3,
+                          height: width * 0.3,
+                          top: -10,
+                          left: 1,
+                        }}>
+                        <Image source={crown} style={styles.topListIcon2} />
+                      </View>
+                      <View
+                        style={{
+                          width: width * 0.28,
+                          alignItems: 'center',
+                          marginTop: height * 0.009,
+                        }}>
+                        <Text
+                          style={{
+                            fontSize: RFValue(10),
+                            color: '#ffffff',
+                            fontFamily: 'Axiforma-SemiBold',
+                            lineHeight: 20,
+                          }}>
+                          @{leaderBoardWinners.leaders[0]?.user_name}
+                        </Text>
+                        <Text
+                          style={{
+                            fontSize: RFValue(13),
+                            lineHeight: 20,
+                            color: '#FFFF00',
+                            fontFamily: 'Axiforma-Bold',
+                          }}>
+                          AED{' '}
+                          {leaderBoardWinners?.leaders[0]?.trivia_total_prize}
+                        </Text>
+                      </View>
+                    </View>
+                    <View style={styles.leftRightavatarView}>
+                      <ProfilePicture
+                        name={
+                          leaderBoardWinners?.leaders[2]?.first_name
+                            ?.charAt(0)
+                            ?.toUpperCase() +
+                          leaderBoardWinners?.leaders[2]?.last_name
+                            ?.charAt(0)
+                            ?.toUpperCase()
+                        }
+                        style={styles.leftRightavatarView}
+                      />
+
+                      <View
+                        style={{
+                          position: 'absolute',
+                          width: width * 0.3,
+                          height: width * 0.3,
+                          top: -10,
+                          left: 1,
+                        }}>
+                        <Image source={redStar} style={styles.topListIcon} />
+                      </View>
+                      <View
+                        style={{
+                          width: width * 0.28,
+                          alignItems: 'center',
+                          marginTop: height * 0.009,
+                        }}>
+                        <Text
+                          style={{
+                            fontSize: RFValue(10),
+                            color: '#ffffff',
+                            fontFamily: 'Axiforma-SemiBold',
+                            lineHeight: 20,
+                          }}>
+                          @{leaderBoardWinners?.leaders[2]?.user_name}
+                        </Text>
+                        <Text
+                          style={{
+                            fontSize: RFValue(13),
+                            lineHeight: 20,
+                            color: '#FFFF00',
+                            fontFamily: 'Axiforma-Bold',
+                          }}>
+                          AED{' '}
+                          {leaderBoardWinners?.leaders[2]?.trivia_total_prize}
+                        </Text>
+                      </View>
+                    </View>
+                  </View>
+
+                  /*  <FlatList
                     horizontal={true}
                     style={{marginLeft: 1, width: width}}
-                    data={leaderBoardWinners?.leaders?.slice(0, 3)}
+                    data={leaderBoardWinners}
                     ItemSeparatorComponent={() => <View style={{width: 16}} />}
                     scrollEnabled={false}
                     contentContainerStyle={{
@@ -122,9 +282,10 @@ const index = ({route, navigation}) => {
                     showsVerticalScrollIndicator={false}
                     showsHorizontalScrollIndicator={false}
                     renderItem={({item, index}) => (
+
                       <View
                         style={
-                          index === 1
+                          index === 0
                             ? styles.avatarView
                             : styles.leftRightavatarView
                         }>
@@ -134,7 +295,7 @@ const index = ({route, navigation}) => {
                             item?.last_name?.charAt(0)?.toUpperCase()
                           }
                           style={
-                            index === 1
+                            index === 0
                               ? styles.avatarView
                               : styles.leftRightavatarView
                           }
@@ -149,9 +310,9 @@ const index = ({route, navigation}) => {
                             left: 1,
                           }}>
                           <Image
-                            source={index === 1 ? crown : redStar}
+                            source={index === 0 ? crown : redStar}
                             style={
-                              index === 1
+                              index === 0
                                 ? styles.topListIcon2
                                 : styles.topListIcon
                             }
@@ -185,7 +346,7 @@ const index = ({route, navigation}) => {
                       </View>
                     )}
                     //   keyExtractor={(item) => item.id}
-                  />
+                  /> */
                 )}
               </View>
             </View>

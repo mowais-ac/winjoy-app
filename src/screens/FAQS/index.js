@@ -68,7 +68,7 @@ const index = ({route, navigation}) => {
             }}>
             <View
               style={{marginVertical: 10, alignItems: 'center', marginTop: 50}}>
-              <Text style={[styles.headerText]}>FAQS</Text>
+              <Text style={[styles.headerText]}>FAQ's</Text>
             </View>
           </LinearGradient>
 

@@ -1,6 +1,6 @@
-import types from "../types";
+import types from '../types';
 
-const initialState = { 
+const initialState = {
   count: 0,
 };
 

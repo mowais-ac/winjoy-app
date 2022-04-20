@@ -22,6 +22,7 @@ import {
   WjBackground,
   RefferalTextInputForScreen,
 } from '../../Components';
+import {firebase, dynamicLinks} from '@react-native-firebase/dynamic-links';
 import styles from './styles';
 import LinearGradient from 'react-native-linear-gradient';
 import EncryptedStorage from 'react-native-encrypted-storage';
@@ -40,6 +41,7 @@ import BuyLifeCongrats from '../../Components/BuyLifeCongrats';
 import Clipboard from '@react-native-clipboard/clipboard';
 import Config from 'react-native-config';
 import types from '../../redux/types';
+import {NavigationHelpersContext} from '@react-navigation/native';
 const {width, height} = Dimensions.get('window');
 
 let li = [
@@ -74,6 +76,7 @@ const index = ({route, navigation}) => {
     state: false,
     details: null,
   });
+  
   const [CountryCode, setCountryCode] = useState(+971);
   const loading = useSelector(state => state.app.loading);
   const dispatch = useDispatch();
@@ -81,6 +84,8 @@ const index = ({route, navigation}) => {
   useEffect(() => {
     dispatch(getLiveShowPlans());
   }, [dispatch]);
+
+  console.log('livePlans', livePlans);
 
   useEffect(() => {
     let li = [];
@@ -98,19 +103,81 @@ const index = ({route, navigation}) => {
     setId(idforFirst);
   }, [livePlans]);
 
-  const copyToClipboard = () => {
+  /* const copyToClipboard = () => {
     Clipboard.setString(
       `https://winjoy.ae/invite/token?${livePlans?.refer_code}`,
     );
+  }; */
+  /*  var link = dynamicLinks().buildShortLink(
+    {
+      link: `https://winjoyae.page.link/7Yoh/${livePlans?.refer_code}`,
+      domainUriPrefix: 'https://winjoyae.page.link',
+      android: {
+        packageName: 'winjoy',
+      },
+    },
+    dynamicLinks.ShortLinkType.UNGUESSABLE,
+  ); */
+
+  /*  async function buildLink() {
+    const link = await dynamicLinks().buildLink({
+      link: `https://winjoyae.page.link/7Yoh/${livePlans?.refer_code}`,
+      domainUriPrefix: 'https://winjoyae.page.link',
+      analytics: {
+        campaign: 'banner',
+      },
+    });
+
+    return link;
+  }
+  const handleDynamicLink = link => {
+    // Handle dynamic link inside your own application
+    if (link.url === `https://winjoyae.page.link/${livePlans?.refer_code}`) {
+      navigation.navigate('Landing');
+    }
   };
-  const link = 'https://winjoy.ae/invite/token?${livePlans?.refer_code}';
+
+  useEffect(() => {
+    const unsubscribe = dynamicLinks().onLink(handleDynamicLink);
+    return () => unsubscribe();
+  }, []); */
+
+  /*   const generateLink = async () => {
+    const link = await firebase.dynamicLinks().buildShortLink({
+      link: `https://winjoyae.page.link/7Yoh/?${livePlans?.refer_code}`,
+
+      android: {
+        packageName: 'winjoy',
+      },
+      domainUriPrefix: 'https://winjoyae.page.link',
+    });
+
+    return link;
+  };
+
+  const getAppLaunchLink = async () => {
+    try {
+      const {url} = await firebase.dynamicLinks().getInitialLink();
+      //handle your link here
+    } catch {
+      //handle errors
+    }
+  }; */
+
+  const link = `https://winjoyae.page.link/7Yoh`;
+
   //Share btn
   const onShare = async () => {
     try {
       const result = await Share.share({
         title: 'Refferal link',
         message: link,
-        url: 'https://winjoy.ae/invite/token?${livePlans?.refer_code}',
+        /* url: dynamicLinks()
+          .getInitialLink()
+          .then(link => {
+            link.url;
+          }), */
+        url: `https://winjoyae.page.link/7Yoh/${livePlans?.refer_code}`,
       });
       if (result.action === Share.sharedAction) {
         if (result.activityType) {
@@ -208,7 +275,6 @@ const index = ({route, navigation}) => {
   };
   const PostData = async postData => {
     setLoader(true);
-
     var Token = await EncryptedStorage.getItem('Token');
     const requestOptions = {
       method: 'POST',
@@ -251,7 +317,7 @@ const index = ({route, navigation}) => {
           start={{x: 0, y: 0}}
           end={{x: 1, y: 0}}
           colors={['#f8d7e8', '#c7dfe8']}
-          style={{paddingBottom: 30}}>
+          style={{paddingBottom: 60}}>
           <LinearGradient
             start={{x: 0, y: 0}}
             end={{x: 1, y: 0}}
@@ -317,16 +383,6 @@ const index = ({route, navigation}) => {
                 flexDirection: 'row',
                 justifyContent: 'space-between',
               }}>
-              {/* <LifeCardRefferAndVideo
-                                    imagePath={require('../../assets/imgs/letterIcon.png')}
-                                    heading={"Refer Friends"}
-                                    description={"Earn upto 10 lives"}
-                                   
-                                    onPress={() => {
-                                       
-                                        RefferModalState.current(true)
-                                    }}
-                                />  */}
               <View style={{width: width, justifyContent: 'center'}}>
                 <View style={styles.SmallBorder} />
 

@@ -111,283 +111,307 @@ const ExperienceCelebrityModal = props => {
 
           <View style={styles.ModalView}>
             <View style={styles.SmallBorder} />
-
-            <View
-              style={{
-                width: '100%',
-                justifyContent: 'center',
-                alignItems: 'center',
-                marginTop: 5,
-              }}>
+            {props.loading2 ? (
               <View
                 style={{
-                  height: height * 0.16,
-                  width: width * 0.9,
-                  flexDirection: 'row',
-                  alignItems: 'center',
+                  justifyContent: 'center',
+                  height: 350,
                 }}>
-                <Image
-                  style={{
-                    width: 100,
-                    height: 100,
-                    borderRadius: 10,
-                  }}
-                  source={{
-                    uri: props?.experienceDetail?.experience?.featured_image,
-                  }}
-                />
-                <View style={{marginHorizontal: 10}}>
-                  <Text
-                    style={{
-                      color: '#0B2142',
-                      fontFamily: 'Axiforma-SemiBold',
-                      fontSize: RFValue(14),
-                    }}>
-                    {props?.experienceDetail?.experience?.title}
-                  </Text>
-                  <Text
-                    style={{
-                      color: '#420E92',
-                      fontFamily: 'Axiforma-Bold',
-                      fontSize: RFValue(14),
-                    }}>
-                    AED {props?.experienceDetail?.experience?.price}
-                  </Text>
-                </View>
+                <ActivityIndicator size="large" color="black" />
               </View>
-            </View>
-            <View
-              style={{height: 1.3, width: '100%', backgroundColor: '#E6DFEE'}}
-            />
-            <View
-              style={{
-                width: '100%',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              <View
-                style={{
-                  height: height * 0.13,
-                  width: width * 0.9,
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                }}>
-                <Avatar
-                  rounded
-                  size={75}
-                  source={{
-                    uri: props?.celebrityData?.profile_image,
+            ) : (
+              <>
+                <View
+                  style={{
+                    width: '100%',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    marginTop: 5,
+                  }}>
+                  <View
+                    style={{
+                      height: height * 0.16,
+                      width: width * 0.9,
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                    }}>
+                    <Image
+                      style={{
+                        width: 100,
+                        height: 100,
+                        borderRadius: 10,
+                      }}
+                      source={{
+                        uri: props?.experienceDetail?.experience
+                          ?.featured_image,
+                      }}
+                    />
+                    <View style={{marginHorizontal: 10}}>
+                      <Text
+                        style={{
+                          color: '#0B2142',
+                          fontFamily: 'Axiforma-SemiBold',
+                          fontSize: RFValue(14),
+                        }}>
+                        {props?.experienceDetail?.experience?.title}
+                      </Text>
+                      <Text
+                        style={{
+                          color: '#420E92',
+                          fontFamily: 'Axiforma-Bold',
+                          fontSize: RFValue(14),
+                        }}>
+                        AED {props?.experienceDetail?.experience?.price}
+                      </Text>
+                    </View>
+                  </View>
+                </View>
+                <View
+                  style={{
+                    height: 1.3,
+                    width: '100%',
+                    backgroundColor: '#E6DFEE',
                   }}
                 />
-                <View style={{marginLeft: 20, width: width * 0.67}}>
+                <View
+                  style={{
+                    width: '100%',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                  <View
+                    style={{
+                      height: height * 0.13,
+                      width: width * 0.9,
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                    }}>
+                    <Avatar
+                      rounded
+                      size={75}
+                      source={{
+                        uri: props?.celebrityData?.profile_image,
+                      }}
+                    />
+                    <View style={{marginLeft: 20, width: width * 0.67}}>
+                      <Text
+                        style={{
+                          color: '#000000',
+                          fontFamily: 'Axiforma-Regular',
+                          fontSize: RFValue(12),
+                          textAlign: 'left',
+                        }}>
+                        {props?.celebrityData?.bio}
+                      </Text>
+                    </View>
+                  </View>
+                </View>
+                <View
+                  style={{
+                    height: 1.3,
+                    width: '100%',
+                    backgroundColor: '#E6DFEE',
+                  }}
+                />
+                <View style={{marginTop: 20, marginLeft: 20}}>
                   <Text
                     style={{
                       color: '#000000',
                       fontFamily: 'Axiforma-Regular',
                       fontSize: RFValue(12),
-                      textAlign: 'left',
                     }}>
-                    {props?.celebrityData?.bio}
+                    Portfolio
                   </Text>
-                </View>
-              </View>
-            </View>
-            <View
-              style={{height: 1.3, width: '100%', backgroundColor: '#E6DFEE'}}
-            />
-            <View style={{marginTop: 20, marginLeft: 20}}>
-              <Text
-                style={{
-                  color: '#000000',
-                  fontFamily: 'Axiforma-Regular',
-                  fontSize: RFValue(12),
-                }}>
-                Portfolio
-              </Text>
 
-              <FlatList
-                data={props?.experienceDetail?.celebrity_porttfolio}
-                horizontal={true}
-                ListEmptyComponent={() => (
-                  <Text style={{color: '#000000'}}>The list is empty</Text>
-                )}
-                ItemSeparatorComponent={() => <View style={{width: 12}} />}
-                renderItem={({item}) => (
-                  <View
-                    style={{
-                      width: width * 0.6,
-                      height: height * 0.16,
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}>
-                    <Image
+                  <FlatList
+                    data={props?.experienceDetail?.celebrity_porttfolio}
+                    horizontal={true}
+                    ListEmptyComponent={() => (
+                      <Text style={{color: '#000000'}}>The list is empty</Text>
+                    )}
+                    ItemSeparatorComponent={() => <View style={{width: 12}} />}
+                    renderItem={({item}) => (
+                      <View
+                        style={{
+                          width: width * 0.6,
+                          height: height * 0.16,
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                        }}>
+                        <Image
+                          style={{
+                            width: width * 0.6,
+                            height: height * 0.16,
+                            borderRadius: 10,
+                            position: 'absolute',
+                          }}
+                          source={{
+                            uri: item?.thumbnail,
+                          }}
+                        />
+                        <Image
+                          style={{
+                            width: 40,
+                            height: 40,
+                            borderRadius: 10,
+                          }}
+                          resizeMode="center"
+                          source={require('../assets/imgs/playbutton.png')}
+                        />
+                      </View>
+                    )}
+                    //keyExtractor={(e) => e.id.toString()}
+                    contentContainerStyle={{
+                      marginTop: 10,
+                      paddingRight: 10,
+                      // marginLeft: width * 0.03
+                    }}
+                    // refreshControl={
+                    //   <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
+                    // }
+                    keyExtractor={item => item.id}
+                  />
+                  <View>
+                    <Text
                       style={{
-                        width: width * 0.6,
-                        height: height * 0.16,
-                        borderRadius: 10,
-                        position: 'absolute',
-                      }}
-                      source={{
-                        uri: item?.thumbnail,
-                      }}
-                    />
-                    <Image
+                        color: '#000000',
+                        fontFamily: 'Axiforma-Regular',
+                        fontSize: RFValue(12),
+                        paddingVertical: 10,
+                      }}>
+                      Intstructions
+                    </Text>
+                    <TextInput
                       style={{
-                        width: 40,
-                        height: 40,
+                        borderWidth: 1,
+                        borderColor: '#E6DFEE',
+                        height: height * 0.13,
+                        width: width * 0.9,
                         borderRadius: 10,
+                        color: '#000000',
+                        textAlignVertical: 'top',
                       }}
-                      resizeMode="center"
-                      source={require('../assets/imgs/playbutton.png')}
+                      onChangeText={text => setInstructions(text)}
+                      keyboardType="default"
                     />
                   </View>
-                )}
-                //keyExtractor={(e) => e.id.toString()}
-                contentContainerStyle={{
-                  marginTop: 10,
-                  paddingRight: 10,
-                  // marginLeft: width * 0.03
-                }}
-                // refreshControl={
-                //   <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
-                // }
-                keyExtractor={item => item.id}
-              />
-              <View>
-                <Text
-                  style={{
-                    color: '#000000',
-                    fontFamily: 'Axiforma-Regular',
-                    fontSize: RFValue(12),
-                    paddingVertical: 10,
-                  }}>
-                  Intstructions
-                </Text>
-                <TextInput
-                  style={{
-                    borderWidth: 1,
-                    borderColor: '#E6DFEE',
-                    height: height * 0.13,
-                    width: width * 0.9,
-                    borderRadius: 10,
-                    color: '#000000',
-                    textAlignVertical: 'top',
-                  }}
-                  onChangeText={text => setInstructions(text)}
-                  keyboardType="default"
-                />
-              </View>
-              <View
-                style={{
-                  height: 1.3,
-                  width: '100%',
-                  backgroundColor: '#E6DFEE',
-                  marginTop: 25,
-                }}
-              />
-              <Text
-                style={{
-                  color: '#000000',
-                  fontFamily: 'Axiforma-Regular',
-                  fontSize: RFValue(12),
-                  width: '90%',
-                  textAlign: 'center',
-                  marginTop: 10,
-                  color: '#420E92',
-                }}>
-                Total:{' '}
-                <Text style={{fontSize: RFValue(16)}}>
-                  AED {props?.experienceDetail?.experience?.price}
-                </Text>
-              </Text>
-            </View>
-
-            <View style={styles.ModalBody}>
-              <TouchableOpacity
-                onPress={() => {
-                  return alert(
-                    'Thank you for your interest. Shopping experience is coming soon.',
-                  );
-                  PayModalState.current(true);
-                }}
-                disabled={activity}
-                style={{
-                  height: heightConverter(15),
-                  width: width * 0.9,
-
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  marginTop: height * 0.04,
-                  marginLeft: width * 0.04,
-                }}>
-                <View
-                  style={{
-                    height: heightConverter(55),
-                    width: width * 0.9,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    backgroundColor: '#420e92',
-                    borderRadius: 40,
-                  }}>
-                  {activity ? (
-                    <ActivityIndicator size="small" color="#fff" />
-                  ) : (
-                    <Label primary font={16} bold style={{color: '#ffffff'}}>
-                      Pay Now
-                    </Label>
-                  )}
+                  <View
+                    style={{
+                      height: 1.3,
+                      width: '100%',
+                      backgroundColor: '#E6DFEE',
+                      marginTop: 25,
+                    }}
+                  />
+                  <Text
+                    style={{
+                      color: '#000000',
+                      fontFamily: 'Axiforma-Regular',
+                      fontSize: RFValue(12),
+                      width: '90%',
+                      textAlign: 'center',
+                      marginTop: 10,
+                      color: '#420E92',
+                    }}>
+                    Total:{' '}
+                    <Text style={{fontSize: RFValue(16)}}>
+                      AED {props?.experienceDetail?.experience?.price}
+                    </Text>
+                  </Text>
                 </View>
-              </TouchableOpacity>
-              <LabelButton
-                primary
-                headingtype="h3"
-                bold
-                style={[
-                  styles.CloseBtn,
-                  {color: '#6F5F87', fontSize: RFValue(14)},
-                ]}
-                onPress={() => {
-                  setModelState({
-                    ...ModelState,
-                    state: !ModelState.state,
-                  });
-                }}>
-                Close
-              </LabelButton>
-            </View>
-            <Modals
-              ModalRef={ModalStateError}
-              Error
-              onClose={() => {
-                setModelState({
-                  ...ModelState,
-                  state: !ModelState.state,
-                });
-              }}
-            />
-            <BuyLifeCongrats
-              ModalRef={SucessModalState}
-              heading={'Congratulations'}
-              description={'successfully Bought Experience'}
-              requestOnPress={() => {
-                SucessModalState.current(false);
-              }}
-              closeOnPress={() => {
-                SucessModalState.current(false);
-                setModelState({
-                  ...ModelState,
-                  state: !ModelState.state,
-                });
-              }}
-            />
-            <PaymentModalExperience
-              ModalRef={PayModalState}
-              details
-              total={props?.experienceDetail?.experience?.price}
-              celebrity_id={props?.celebrity_id}
-              experience_id={props?.experience_id}
-              instructions={instructions}
-            />
+
+                <View style={styles.ModalBody}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      return alert(
+                        'Thank you for your interest. Shopping experience is coming soon.',
+                      );
+                      PayModalState.current(true);
+                    }}
+                    disabled={activity}
+                    style={{
+                      height: heightConverter(15),
+                      width: width * 0.9,
+
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      marginTop: height * 0.04,
+                      marginLeft: width * 0.04,
+                    }}>
+                    <View
+                      style={{
+                        height: heightConverter(55),
+                        width: width * 0.9,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        backgroundColor: '#420e92',
+                        borderRadius: 40,
+                      }}>
+                      {activity ? (
+                        <ActivityIndicator size="small" color="#fff" />
+                      ) : (
+                        <Label
+                          primary
+                          font={16}
+                          bold
+                          style={{color: '#ffffff'}}>
+                          Pay Now
+                        </Label>
+                      )}
+                    </View>
+                  </TouchableOpacity>
+                  <LabelButton
+                    primary
+                    headingtype="h3"
+                    bold
+                    style={[
+                      styles.CloseBtn,
+                      {color: '#6F5F87', fontSize: RFValue(14)},
+                    ]}
+                    onPress={() => {
+                      setModelState({
+                        ...ModelState,
+                        state: !ModelState.state,
+                      });
+                    }}>
+                    Close
+                  </LabelButton>
+                </View>
+                <Modals
+                  ModalRef={ModalStateError}
+                  Error
+                  onClose={() => {
+                    setModelState({
+                      ...ModelState,
+                      state: !ModelState.state,
+                    });
+                  }}
+                />
+                <BuyLifeCongrats
+                  ModalRef={SucessModalState}
+                  heading={'Congratulations'}
+                  description={'successfully Bought Experience'}
+                  requestOnPress={() => {
+                    SucessModalState.current(false);
+                  }}
+                  closeOnPress={() => {
+                    SucessModalState.current(false);
+                    setModelState({
+                      ...ModelState,
+                      state: !ModelState.state,
+                    });
+                  }}
+                />
+                <PaymentModalExperience
+                  ModalRef={PayModalState}
+                  details
+                  total={props?.experienceDetail?.experience?.price}
+                  celebrity_id={props?.celebrity_id}
+                  experience_id={props?.experience_id}
+                  instructions={instructions}
+                />
+              </>
+            )}
           </View>
         </KeyboardAvoidingView>
       </ScrollView>
@@ -406,7 +430,7 @@ const styles = StyleSheet.create({
   },
   ModalView: {
     height: height,
-    marginTop: height * 0.01,
+    marginTop: height * 0.02,
     borderTopLeftRadius: 37,
     borderTopRightRadius: 37,
     backgroundColor: Colors.WHITE,

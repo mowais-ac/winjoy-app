@@ -94,72 +94,70 @@ const index = ({navigation}) => {
   const Switchhandle = tab => {
     setactive(tab);
   };
-  const renderItem = ({item}) => {
+  const renderItem = ({item, i}) => {
     return (
       // <TouchableOpacity
       //   onPress={() => navigation.navigate("WishlistDetails", { item })}
       // >
-      <View>
-        <Section
-          style={styles.Section}
-          disabled={true}
-          //onPress={() => navigation.navigate("ProductDetails", { item })}
-        >
-          <View style={styles.SectionView}>
-            <View style={styles.ImageView}>
-              <Image
-                source={{
-                  uri: item?.product?.image,
-                }}
-                style={styles.Image}
-              />
-            </View>
-            <View style={[styles.TextView, {width: width * 0.53}]}>
-              <Label
-                notAlign
-                dark
-                bold2
-                headingtype="h6"
-                style={{width: width * 0.48}}>
-                {item?.product?.title} x {item?.qty}
-              </Label>
-              {/* <Label notAlign darkmuted bold font={12} style={{ width: width * 0.5,height:height*0.05 }}>
+
+      <Section
+        style={styles.Section}
+        disabled={true}
+        //onPress={() => navigation.navigate("ProductDetails", { item })}
+      >
+        <View style={styles.SectionView}>
+          <View style={styles.ImageView}>
+            <Image
+              source={{
+                uri: item?.product?.image,
+              }}
+              style={styles.Image}
+            />
+          </View>
+          <View style={[styles.TextView, {width: width * 0.53}]}>
+            <Label
+              notAlign
+              dark
+              bold2
+              headingtype="h6"
+              style={{width: width * 0.48}}>
+              {item?.product?.title} x {item?.qty}
+            </Label>
+            {/* <Label notAlign darkmuted bold font={12} style={{ width: width * 0.5,height:height*0.05 }}>
                 {item.description}
               </Label> */}
-              <Label
-                notAlign
-                primary
-                bold
-                headingtype="h6"
-                style={styles.LessMargin}>
-                Total: AED {FormatNumber(+item?.product?.price * item?.qty)}
-              </Label>
-            </View>
-            <TouchableOpacity
-              style={{
-                position: 'absolute',
-                right: 20,
-              }}
-              onPress={() => RemoveItem(item.id, item?.qty)}>
-              {loading && item.id === id ? (
-                <ActivityIndicator
-                  size="small"
-                  color="#000000"
-                  style={{left: 5}}
-                />
-              ) : (
-                <Entypo
-                  name="cross"
-                  size={25}
-                  color={Colors.DARK_MUTED}
-                  style={{left: 5, opacity: 0.5}}
-                />
-              )}
-            </TouchableOpacity>
+            <Label
+              notAlign
+              primary
+              bold
+              headingtype="h6"
+              style={styles.LessMargin}>
+              Total: AED {FormatNumber(+item?.product?.price * item?.qty)}
+            </Label>
           </View>
-        </Section>
-      </View>
-      // </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              position: 'absolute',
+              right: 20,
+            }}
+            onPress={() => RemoveItem(item.id, item?.qty)}>
+            {loading && item.id === id ? (
+              <ActivityIndicator
+                size="small"
+                color="#000000"
+                style={{left: 5}}
+              />
+            ) : (
+              <Entypo
+                name="cross"
+                size={25}
+                color={Colors.DARK_MUTED}
+                style={{left: 5, opacity: 0.5}}
+              />
+            )}
+          </TouchableOpacity>
+        </View>
+      </Section>
     );
   };
 
@@ -185,13 +183,13 @@ const index = ({navigation}) => {
           No data
         </Label>
       ) : (
-        <View style={{marginTop: 10}}>
+        <View style={{marginTop: 5}}>
           <View style={{height: '85%'}}>
             <FlatList
               data={cartData?.data}
               renderItem={renderItem}
               scrollEnabled={true}
-              keyExtractor={e => e.id.toString()}
+              keyExtractor={i => i}
               extraData={updateData}
               ListEmptyComponent={
                 listloader ? (
@@ -351,10 +349,10 @@ const styles = StyleSheet.create({
     height: height * 0.18,
   },
   card2Wrap: {
-    bottom: 10,
+    bottom: 5,
     left: 0,
     position: 'absolute',
-    paddingHorizontal: 10,
+    paddingHorizontal: 5,
     width: '100%',
   },
   header: {
@@ -402,7 +400,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     borderRadius: 10,
     padding: 10,
-    bottom: 10,
+    bottom: 5,
     left: 2,
     alignItems: 'center',
     elevation: 3,

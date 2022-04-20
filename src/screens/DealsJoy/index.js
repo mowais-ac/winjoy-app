@@ -86,6 +86,7 @@ const index = ({props, navigation}) => {
       );
     }
   }
+  console.log('dealjoy', dealsJoyData?.products);
   return (
     <ScrollView
       style={{backgroundColor: '#ffffff'}}

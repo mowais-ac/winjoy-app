@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, Linking, Alert} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import EncryptedStorage from 'react-native-encrypted-storage';
@@ -17,16 +17,71 @@ import Cart from '../screens/Cart';
 import NotificationBellList from '../screens/NotificationBellList';
 import WebView from '../screens/WebView';
 import '../i18n/index';
+import OneSignal from 'react-native-onesignal';
+import {useSelector, useDispatch} from 'react-redux';
+//import linking from '../Components/linking';
+import dynamicLinks from '@react-native-firebase/dynamic-links';
+import {getLiveShowPlans} from '../redux/actions';
+import {useNavigation} from '@react-navigation/native';
 const Stack = createNativeStackNavigator();
 
-function index() {
+function index(props) {
+  //const navigation = useNavigation();
   const [isLogedin, setIsLogedin] = useState(false);
-
+  const livePlans = useSelector(state => state.app.livePlans);
   EncryptedStorage.getItem('Token').then(data => {
     if (data != null) setIsLogedin(true);
     else setIsLogedin(false);
   });
 
+  const dispatch2 = useDispatch();
+  useEffect(() => {
+    dispatch2(getLiveShowPlans());
+  }, []);
+  /* const handleDynamicLink = link => {
+    if (`${link.url}`) {
+      navigation.navigate('Register', {
+        params: {
+          referral_code: link,
+        },
+      });
+    } else {
+      alert(`${link.url}`);
+    }
+  }; */
+  /*   useEffect(async () => {
+    const unsubscribe = dynamicLinks().onLink(handleDynamicLink);
+    dynamicLinks()
+      .getInitialLink()
+      .then(link => {
+        if ('https://winjoy.ae' === `${link.url}`) {
+          navigation.navigate('AuthStack', {
+            screen: 'Register',
+            params: {
+              referral_code: link,
+            },
+          });
+        } else {
+          alert(`${link.url}`);
+        }
+      });
+    return () => {
+      unsubscribe();
+    };
+  }, []); */
+  /* useEffect(() => {
+    const getUrl = async () => {
+      const initialUrl = await Linking.getInitialURL();
+      if (initialUrl !== null) {
+        return;
+      }
+      if (initialUrl.includes('view_profile')) {
+        Alert.alert(initialUrl);
+        RootNavigation.navigate('view_profile');
+      }
+    };
+    getUrl();
+  }); */
   const [state, dispatch] = React.useReducer(
     (prevState, action) => {
       switch (action.type) {
@@ -57,7 +112,17 @@ function index() {
     },
   );
 
-  React.useEffect(() => {
+  useEffect(() => {
+    OneSignal.init('f38f3a1b-7188-444f-9180-6db72c75dc4d', {
+      kOSSettingsKeyAutoPrompt: false,
+      kOSSettingsKeyInAppLaunchURL: false,
+      kOSSettingsKeyInFocusDisplayOption: 2,
+    });
+    OneSignal.inFocusDisplaying(2);
+    /*  OneSignal.push(function () {
+      OneSignal.sendTag('', location.pathname);
+    }); */
+    /*  OneSignal.setAppId('f38f3a1b-7188-444f-9180-6db72c75dc4d'); */
     // Fetch the token from storage then navigate to our appropriate place
     const bootstrapAsync = async () => {
       let userToken;
@@ -67,9 +132,7 @@ function index() {
       } catch (e) {
         // Restoring token failed
       }
-
       // After restoring token, we may need to validate it in production apps
-
       // This will switch to the App screen or Auth screen and this loading
       // screen will be unmounted and thrown away.
       dispatch({type: 'RESTORE_TOKEN', token: userToken});
@@ -77,6 +140,21 @@ function index() {
 
     bootstrapAsync();
   }, []);
+  /* const config = {
+    screens: {
+      Landing: {
+        path: 'Landing/:id',
+        params: {
+          id: null,
+        },
+      },
+    },
+  };
+  // Deep links
+  const linking = {
+    prefixes: ['https://winjoy.ae', 'winjoy://'],
+    config,
+  }; */
 
   const authContext = React.useMemo(
     () => ({
@@ -101,11 +179,14 @@ function index() {
         dispatch({type: 'SIGN_IN', token: 'dummy-auth-token'});
       },
     }),
+
     [],
   );
   return (
     <AuthContext.Provider value={authContext}>
-      <NavigationContainer>
+      <NavigationContainer
+      //linking={linking}
+      >
         <Stack.Navigator
           screenOptions={{
             headerShown: false,
