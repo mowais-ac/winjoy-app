@@ -37,7 +37,7 @@ const {width, height} = Dimensions.get('window');
 //import { getWalletData } from '../../redux/actions/Wallet';
 import {useDispatch, useSelector} from 'react-redux';
 import {getWalletData} from '../../redux/actions';
-
+import Cart from '../../screens/Cart/index';
 import WithDrawModal from '../../Components/WithDrawModal';
 import SuccessModal from '../../Components/SuccessModal';
 import {JSONtoForm} from '../../Constants/Functions';
@@ -77,7 +77,7 @@ const index = ({props, navigation}) => {
     setActivity(true);
     console.log('account id', accountId);
     if (!ammount) {
-      // alert('hiii');
+      // alert('plz enter ammount');
     } else {
       const Token = await EncryptedStorage.getItem('Token');
       const body = JSONtoForm({
@@ -96,7 +96,9 @@ const index = ({props, navigation}) => {
 
       await fetch(`${Config.API_URL}/withdrawal`, requestOptions)
         .then(async response => response.json())
+
         .then(async res => {
+          console.log('ress', res);
           if (res.status === 'error') {
             ModalStateError.current(true, {
               heading: 'Error',
@@ -291,6 +293,7 @@ const index = ({props, navigation}) => {
           ammount={ammount}
           activity={activity}
         />
+
         <TopupPaymentModals ModalRef={ModalStateTopup} />
 
         <WithDrawModal

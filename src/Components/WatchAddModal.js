@@ -48,7 +48,7 @@ const WatchAddModal = props => {
     setRefreshing(true);
     dispatch(getLiveShowPlans());
     props.refreshVideo();
-    wait(500).then(() => setRefreshing(false));
+    wait(10).then(() => setRefreshing(false));
   }, []);
   const getData = async () => {
     try {
@@ -78,7 +78,7 @@ const WatchAddModal = props => {
             ...ModelState,
             state: (ModelState.state = false),
           });
-          dispatch(getLiveShowPlans());
+          //dispatch(getLiveShowPlans());
           onRefresh();
         } else {
           alert(json);

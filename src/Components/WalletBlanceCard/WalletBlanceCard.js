@@ -23,23 +23,6 @@ function WalletBlanceCard({
   const {t} = useTranslation();
 
   return (
-    // <TouchableOpacity
-    //   style={{
-    //     width: width - 25,
-    //     height: height * 0.28,
-    //     backgroundColor: "#ffffff",
-    //     marginLeft: 10,
-    //     borderRadius: 10,
-    //     padding: 10,
-    //     top: 15,
-    //     left: 2,
-    //     justifyContent: "center",
-    //     alignItems: "center",
-    //     elevation: 3,
-    //     marginBottom: 15,
-    //   }}
-    //   onPress={onPress}
-    // >
     <View style={{paddingHorizontal: 15, width: '100%'}}>
       <View
         style={{
@@ -51,7 +34,6 @@ function WalletBlanceCard({
           justifyContent: 'center',
           //alignItems: 'center',
           elevation: 3,
-
           //marginBottom: 15,
           width: '100%',
         }}>
@@ -72,7 +54,7 @@ function WalletBlanceCard({
             font={14}
             dark
             style={{color: '#000000', marginLeft: 16, lineHeight: 25}}>
-            AED {yourBalance}
+            AED {parseFloat(yourBalance).toFixed(2)}
           </Label>
         </View>
         <View
@@ -81,13 +63,6 @@ function WalletBlanceCard({
             justifyContent: 'space-around',
             //marginTop: 10,
           }}>
-          {/*   <LongButton
-            style={[styles.Margin, {backgroundColor: '#e3dbef'}]}
-            textstyle={{color: '#420e92'}}
-            text={t('Withdraw')}
-            font={16}
-            onPress={onPressWithdraw}
-          /> */}
           <LongButton
             style={styles.Margin}
             textstyle={{color: '#eb2b5f'}}

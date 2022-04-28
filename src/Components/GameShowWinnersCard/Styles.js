@@ -10,8 +10,8 @@ const {width, height} = Dimensions.get('window');
 export default StyleSheet.create({
   mainView: {
     alignItems: 'center',
-    width: '100%',
-    height: height * 0.1,
+    //width: '100%',
+    //height: 200,
     marginTop: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -22,7 +22,6 @@ export default StyleSheet.create({
   },
   avatarView: {
     //position: 'absolute',
-
     width: widthConverter(60),
     height: widthConverter(60),
     borderRadius: heightConverter(70),

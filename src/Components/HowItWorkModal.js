@@ -120,7 +120,6 @@ const HowItWorkModal = props => {
           onLoad={onLoad}
           onProgress={e => {
             setTimer(e.currentTime);
-
             setTotalTime(e.seekableDuration);
           }}
         />
@@ -160,10 +159,10 @@ const HowItWorkModal = props => {
       </View>
       <Progress.Bar
         style={{bottom: 0, position: 'absolute'}}
-        //borderRadius={0}
+        borderRadius={0}
         color="#430E92"
         progress={timer / totalTime}
-        width={394}
+        width={width}
         unfilledColor={'#E61C54'}
         borderWidth={0}
       />

@@ -1,6 +1,6 @@
 {
   "name": "winjoy",
-  "version": "33",
+  "version": "34",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -29,6 +29,7 @@
     "@react-navigation/material-top-tabs": "^6.0.6",
     "@react-navigation/native": "^6.0.6",
     "@react-navigation/native-stack": "^6.2.5",
+    "@visto9259/urlsearchparams-react-native": "^1.0.2",
     "axios": "^0.24.0",
     "dayjs": "^1.10.7",
     "i18next": "^21.6.6",

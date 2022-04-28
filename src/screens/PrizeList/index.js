@@ -35,9 +35,12 @@ const index = ({props, navigation}) => {
   const loading = useSelector(state => state.event.loading);
   const dispatch = useDispatch();
   console.log('productsData', productsData?.data);
+  const [productlength, setProductlength] = useState('');
   useEffect(() => {
     dispatch(getProducts('?is_closing_soon=0'));
-
+    setProductlength(
+      productsData?.data?.length ? productsData?.data?.length : '',
+    );
     setIsClosing(false);
   }, []);
   const onRefresh = React.useCallback(() => {
@@ -109,7 +112,11 @@ const index = ({props, navigation}) => {
             textstyle={{color: isClosing ? '#fff' : '#000000'}}
             text={
               'All ' +
-              (!isClosing ? '(' + productsData?.data?.length + ')' : '')
+              (!isClosing
+                ? productsData?.data?.length
+                  ? '(' + productsData?.data?.length + ')'
+                  : ''
+                : ' ')
             }
             font={16}
             shadowless

@@ -42,6 +42,7 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import Config from 'react-native-config';
 import types from '../../redux/types';
 import {NavigationHelpersContext} from '@react-navigation/native';
+
 const {width, height} = Dimensions.get('window');
 
 let li = [
@@ -72,11 +73,12 @@ const index = ({route, navigation}) => {
   const totalLives = useRef();
   const [loader, setLoader] = useState(false);
   const [id, setId] = useState(0);
+  const [Link, setLink] = useState('');
   const [ModelState, setModelState] = useState({
     state: false,
     details: null,
   });
-  
+  const [DL, setDL] = useState('');
   const [CountryCode, setCountryCode] = useState(+971);
   const loading = useSelector(state => state.app.loading);
   const dispatch = useDispatch();
@@ -85,7 +87,7 @@ const index = ({route, navigation}) => {
     dispatch(getLiveShowPlans());
   }, [dispatch]);
 
-  console.log('livePlans', livePlans);
+  //console.log('livePlans', livePlans?.refer_code);
 
   useEffect(() => {
     let li = [];
@@ -93,91 +95,54 @@ const index = ({route, navigation}) => {
     livePlans?.plan?.forEach(element => {
       if (element.type === 'referral') {
         li.push(element);
-
         if (element.required_referrals === 1) {
           idforFirst = element.id;
         }
       }
     });
+    buildLink();
     setRefferalLivePlans(li);
     setId(idforFirst);
   }, [livePlans]);
+  //Share dynamic Link
+  const buildLink = async () => {
+    const link = await firebase.dynamicLinks().buildLink({
+      //link: `https://winjoy.ae?referral=WINJOY-534274796`,
+      link: 'https://winjoy.ae',
+      domainUriPrefix: 'https://winjoyae.page.link/7Yoh',
+      analytics: {
+        campaign: 'refferal link',
+        content: 'Click Me',
+      },
+      /*  social: {
+        title: 'Winjoy',
+        descriptionText: 'Reffer a friends and family to win prizes',
+        imageUrl:
+          'https://lh3.googleusercontent.com/geougc/AF1QipMMFxFa5U5IOkxLkFJEYtiXZPwOOkArwEHiF_4x=w573-h573-p-no',
+      }, */
+      android: {
+        packageName: 'com.winjoy',
+        minimumVersion: '35',
+      },
+    });
 
+    setLink(link);
+    console.log('buildLink', link);
+    return link;
+  };
   /* const copyToClipboard = () => {
     Clipboard.setString(
       `https://winjoy.ae/invite/token?${livePlans?.refer_code}`,
     );
   }; */
-  /*  var link = dynamicLinks().buildShortLink(
-    {
-      link: `https://winjoyae.page.link/7Yoh/${livePlans?.refer_code}`,
-      domainUriPrefix: 'https://winjoyae.page.link',
-      android: {
-        packageName: 'winjoy',
-      },
-    },
-    dynamicLinks.ShortLinkType.UNGUESSABLE,
-  ); */
-
-  /*  async function buildLink() {
-    const link = await dynamicLinks().buildLink({
-      link: `https://winjoyae.page.link/7Yoh/${livePlans?.refer_code}`,
-      domainUriPrefix: 'https://winjoyae.page.link',
-      analytics: {
-        campaign: 'banner',
-      },
-    });
-
-    return link;
-  }
-  const handleDynamicLink = link => {
-    // Handle dynamic link inside your own application
-    if (link.url === `https://winjoyae.page.link/${livePlans?.refer_code}`) {
-      navigation.navigate('Landing');
-    }
-  };
-
-  useEffect(() => {
-    const unsubscribe = dynamicLinks().onLink(handleDynamicLink);
-    return () => unsubscribe();
-  }, []); */
-
-  /*   const generateLink = async () => {
-    const link = await firebase.dynamicLinks().buildShortLink({
-      link: `https://winjoyae.page.link/7Yoh/?${livePlans?.refer_code}`,
-
-      android: {
-        packageName: 'winjoy',
-      },
-      domainUriPrefix: 'https://winjoyae.page.link',
-    });
-
-    return link;
-  };
-
-  const getAppLaunchLink = async () => {
-    try {
-      const {url} = await firebase.dynamicLinks().getInitialLink();
-      //handle your link here
-    } catch {
-      //handle errors
-    }
-  }; */
-
-  const link = `https://winjoyae.page.link/7Yoh`;
 
   //Share btn
   const onShare = async () => {
     try {
       const result = await Share.share({
         title: 'Refferal link',
-        message: link,
-        /* url: dynamicLinks()
-          .getInitialLink()
-          .then(link => {
-            link.url;
-          }), */
-        url: `https://winjoyae.page.link/7Yoh/${livePlans?.refer_code}`,
+        message: Link,
+        url: Link,
       });
       if (result.action === Share.sharedAction) {
         if (result.activityType) {

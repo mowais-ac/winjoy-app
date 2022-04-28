@@ -105,12 +105,14 @@ const ModalCelebrityProducts = props => {
               Buy one of the following and WIN an experience with
               <Text style={{fontFamily: 'Axiforma-Bold'}}>
                 {' '}
-                {props?.expData?.experience?.title}{' '}
+                {props?.expData?.experience?.title +
+                  ' ' +
+                  props?.expData?.celebrity?.last_name}{' '}
               </Text>
-              with{' '}
+              {/*   with{' '}
               {props?.expData?.celebrity?.first_name +
                 ' ' +
-                props?.expData?.celebrity?.last_name}
+                props?.expData?.celebrity?.last_name} */}
             </Text>
             {/*  {console.log({experiance: props?.expData?.experience?.products})} */}
 

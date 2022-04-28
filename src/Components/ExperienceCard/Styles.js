@@ -22,6 +22,7 @@ export default StyleSheet.create({
     height: 200,
     borderRadius: 15,
     position: 'absolute',
+    backgroundColor: '#d7dbf7',
   },
   text: {
     color: '#fff',

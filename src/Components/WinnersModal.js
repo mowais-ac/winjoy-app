@@ -142,6 +142,7 @@ const WinnersModal = props => {
             scrollEnabled={true}
             contentContainerStyle={{
               width: '100%',
+              height: height,
             }}
             ListEmptyComponent={
               <Text
@@ -151,6 +152,7 @@ const WinnersModal = props => {
                   fontSize: 14,
                   fontWeight: '500',
                   alignSelf: 'center',
+                  color: '#000000',
                 }}>
                 no winners found
               </Text>
@@ -173,6 +175,7 @@ const WinnersModal = props => {
             renderItem={({item, index}) => {
               return (
                 <GameShowWinnersCard
+                  // key={index}
                   name={
                     item?.user?.first_name?.charAt(0)?.toUpperCase() +
                     item?.user?.first_name?.slice(1) +

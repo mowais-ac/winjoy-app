@@ -60,7 +60,7 @@ const index = ({route, navigation}) => {
     setRefreshing(true);
     dispatch(getLiveShowPlans());
     setvideo1(livePlans.videoEnable);
-    wait(800).then(() => setRefreshing(false));
+    wait(100).then(() => setRefreshing(false));
   }, []);
   return (
     <SafeAreaView style={styles.safeStyle}>
@@ -84,7 +84,6 @@ const index = ({route, navigation}) => {
               borderBottomLeftRadius: 20,
             }}>
             <Header />
-
             <View style={{alignItems: 'center', marginVertical: 20}}>
               <Text style={[styles.headerText]}>Lives</Text>
               <Text style={styles.subHeaderText}>
@@ -174,18 +173,6 @@ const index = ({route, navigation}) => {
                 flexDirection: 'row',
                 justifyContent: 'space-between',
               }}>
-              {/* <LifeCardRefferAndVideo
-                                imagePath={require('../../assets/imgs/videoIcon.png')}
-                                heading={"Watch a video"}
-                                description={"Earn 1 life line"}
-                                onPress={() => { AddModalState.current(true) }}
-                            />
-                            <LifeCardRefferAndVideo
-                                imagePath={require('../../assets/imgs/letterIcon.png')}
-                                heading={"Refer Friends"}
-                                description={"Earn upto 10 lives"}
-                                onPress={() => RefferModalState.current(true)}
-                            /> */}
               <FlatList
                 horizontal={true}
                 // contentContainerStyle={{ marginLeft:1}}
@@ -204,7 +191,7 @@ const index = ({route, navigation}) => {
                         setIdVideoAdd(item.id);
                         setVideo(item.video_url);
 
-                        if (video1 == true) {
+                        if (video1 === true) {
                           AddModalState.current(true);
                         } else {
                           alert(

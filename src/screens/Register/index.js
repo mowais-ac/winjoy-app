@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   Image,
   View,
@@ -36,6 +36,7 @@ const {width, height} = Dimensions.get('window');
 const index = ({navigation, route}) => {
   const referral_code = route.params;
   const {t} = useTranslation();
+  const [referral, setReferral] = useState(null);
   const fnameref = useRef();
   const lnameref = useRef();
   const unameref = useRef();
@@ -46,9 +47,14 @@ const index = ({navigation, route}) => {
   const r = useRef();
   const ModalState = useRef();
   const dispatch = useDispatch();
-  {
-    console.log(referral_code);
-  }
+  console.log('aftab', referral);
+
+  useEffect(async () => {
+    /*  setReferral(
+      referral_code?.referral_code ? referral_code?.referral_code : null,
+    ); */
+    setReferral(await EncryptedStorage.getItem('myreferral'));
+  }, []);
   const HandleClick = async () => {
     let isnull = false;
     if (
@@ -95,6 +101,7 @@ const index = ({navigation, route}) => {
         email,
         phone_no,
         password,
+
         password_confirmation,
       ].filter(e => e == null || e == '');
 
@@ -111,12 +118,15 @@ const index = ({navigation, route}) => {
         last_name,
         user_name,
         email,
+        referral_code: referral,
         phone_no: `+${phone_no}`,
         password,
         password_confirmation,
         ...(await GetUserDeviceDetails()),
       });
-
+      {
+        console.log('bodyy', body);
+      }
       const requestOptions = {
         method: 'POST',
         headers: {

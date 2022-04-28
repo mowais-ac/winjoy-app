@@ -13,6 +13,7 @@ import {
   KeyboardAvoidingView,
 } from 'react-native';
 import Label from './Label';
+import {firebase, dynamicLinks} from '@react-native-firebase/dynamic-links';
 import LabelButton from './LabelButton';
 import {Colors, Images} from '../Constants/Index';
 import LongButton from './LongButton';
@@ -66,16 +67,57 @@ const RefferLifeLineModal = props => {
   const [updateData, setUpdateData] = useState(false);
   const [refferalLivePlans, setRefferalLivePlans] = useState([]);
   const [totalRef, setTotalRef] = useState([]);
-
   const [loader, setLoader] = useState(false);
+  const [Link, setLink] = useState('');
+  useEffect(() => {
+    dispatch(getLiveShowPlans());
+    let li = [];
+    let idforFirst;
+    livePlans?.plan?.forEach(element => {
+      if (element.type === 'referral') {
+        li.push(element);
+
+        if (element.required_referrals === 1) {
+          idforFirst = element.id;
+        }
+      }
+    });
+    setRefferalLivePlans(li);
+    setId(idforFirst);
+    buildLink();
+  }, []);
+  const buildLink = async () => {
+    const link = await firebase.dynamicLinks().buildLink({
+      link: 'https://winjoy.ae',
+      domainUriPrefix: 'https://winjoyae.page.link/7Yoh',
+      analytics: {
+        campaign: 'refferal link',
+        content: 'Click Me',
+      },
+      /*  social: {
+        title: 'Winjoy',
+        descriptionText: 'Reffer a friends and family to win prizes',
+        imageUrl:
+          'https://lh3.googleusercontent.com/geougc/AF1QipMMFxFa5U5IOkxLkFJEYtiXZPwOOkArwEHiF_4x=w573-h573-p-no',
+      }, */
+      android: {
+        packageName: 'com.winjoy',
+        minimumVersion: '35',
+      },
+    });
+
+    setLink(link);
+    console.log('buildLink', link);
+    return link;
+  };
   // share btn
-  const link = `https://winjoy.ae/invite/token?${livePlans?.refer_code}`;
+  //const link = `https://winjoy.ae/invite/token?${livePlans?.refer_code}`;
   const onShare = async () => {
     try {
       const result = await Share.share({
         title: 'Refferal link',
-        message: link,
-        url: `https://winjoy.ae/invite/token?${livePlans?.refer_code}`,
+        message: Link,
+        url: Link,
       });
       if (result.action === Share.sharedAction) {
         if (result.activityType) {
@@ -104,26 +146,10 @@ const RefferLifeLineModal = props => {
   const HandleChange = (state, details = null, ForceSuccess = false) => {
     setModelState({state, details, ForceSuccess});
   };
-  useEffect(() => {
-    dispatch(getLiveShowPlans());
 
-    let li = [];
-    let idforFirst;
-    livePlans?.plan?.forEach(element => {
-      if (element.type === 'referral') {
-        li.push(element);
-
-        if (element.required_referrals === 1) {
-          idforFirst = element.id;
-        }
-      }
-    });
-    setRefferalLivePlans(li);
-    setId(idforFirst);
-  }, []);
-  const copyToClipboard = () => {
+  /*  const copyToClipboard = () => {
     Clipboard.setString('https://winjoy.ae/invite/token?aaasd');
-  };
+  }; */
   const onPressRefTab = (index, item) => {
     li = [];
     reff = [];

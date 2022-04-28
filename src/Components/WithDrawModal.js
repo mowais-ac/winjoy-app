@@ -41,12 +41,13 @@ const WithDrawModal = props => {
     const a = props.yourBalance - props.ammount;
     //alert(a);
     if (a <= 50) {
-      alert('You wallet balance can not be below AED 50');
+      alert('Your wallet balance can not be below AED 50');
     } else {
       //alert('sccuess');
       props.onPressWithDrawal(props.accountId);
     }
   };
+  
   useEffect(() => {
     if (props.ModalRef) props.ModalRef.current = HandleChange;
   });

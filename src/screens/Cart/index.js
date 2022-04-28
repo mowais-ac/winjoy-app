@@ -46,10 +46,12 @@ const {width, height} = Dimensions.get('window');
 import {connect, useDispatch, useSelector} from 'react-redux';
 import types from '../../redux/types';
 import {WjBackground} from '../../Components';
-const index = ({navigation}) => {
+import {getWalletData} from '../../redux/actions';
+const index = ({props, navigation}) => {
   const dispatch = useDispatch();
   const dispatch2 = useDispatch();
   const dispatch3 = useDispatch();
+  const dispatch6 = useDispatch();
   const ModalState = useRef();
   const SucessModalState = useRef();
   const ModalStateError = useRef();
@@ -63,12 +65,14 @@ const index = ({navigation}) => {
     state: false,
     details: null,
   });
+  const walletData = useSelector(state => state.app.walletData);
   const cartData = useSelector(state => state.app.cartData);
   const removeCartData = useSelector(state => state.app.removeCartData);
   const loading = useSelector(state => state.event.loading);
   const counterMain = useSelector(state => state.app.counter);
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
+    dispatch6(getWalletData());
     dispatch(GetCartData());
     wait(500).then(() => setRefreshing(false));
   }, []);
@@ -76,9 +80,10 @@ const index = ({navigation}) => {
     ModalState.current(true);
   };
   useEffect(() => {
+    dispatch6(getWalletData());
     dispatch(GetCartData());
   }, []);
-
+  console.log('wallet', walletData?.wallet?.your_balance);
   const RemoveItem = (id, qty) => {
     setId(id);
     dispatch2(RemoveCartData(id));
@@ -184,7 +189,7 @@ const index = ({navigation}) => {
         </Label>
       ) : (
         <View style={{marginTop: 5}}>
-          <View style={{height: '85%'}}>
+          <View style={{height: '80%'}}>
             <FlatList
               data={cartData?.data}
               renderItem={renderItem}
@@ -306,6 +311,7 @@ const index = ({navigation}) => {
           ) : null}
         </View>
       )}
+
       <PaymentModals
         ModalRef={ModalState}
         details
@@ -313,6 +319,11 @@ const index = ({navigation}) => {
         onload={() => {
           onRefresh();
         }}
+        yourBalance={
+          walletData?.wallet?.your_balance === null
+            ? 0
+            : walletData?.wallet?.your_balance
+        }
       />
       <Modals
         ModalRef={ModalStateError}
@@ -349,7 +360,8 @@ const styles = StyleSheet.create({
     height: height * 0.18,
   },
   card2Wrap: {
-    bottom: 5,
+    top: '104%',
+    bottom: 2,
     left: 0,
     position: 'absolute',
     paddingHorizontal: 5,

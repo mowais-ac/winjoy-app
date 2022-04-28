@@ -38,28 +38,23 @@ function index(props) {
   useEffect(() => {
     dispatch2(getLiveShowPlans());
   }, []);
-  /* const handleDynamicLink = link => {
+  /*  const handleDynamicLink = link => {
     if (`${link.url}`) {
       navigation.navigate('Register', {
-        params: {
-          referral_code: link,
-        },
+        referral_code: link,
       });
     } else {
       alert(`${link.url}`);
     }
-  }; */
-  /*   useEffect(async () => {
+  };
+  useEffect(async () => {
     const unsubscribe = dynamicLinks().onLink(handleDynamicLink);
     dynamicLinks()
       .getInitialLink()
       .then(link => {
         if ('https://winjoy.ae' === `${link.url}`) {
-          navigation.navigate('AuthStack', {
-            screen: 'Register',
-            params: {
-              referral_code: link,
-            },
+          navigation.navigate('Register', {
+            referral_code: link,
           });
         } else {
           alert(`${link.url}`);

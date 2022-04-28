@@ -164,12 +164,11 @@ const BackgroundVideo = ({route, navigation}) => {
       Questions();
       setActiveQuestion(completed_questions);
     }
-
     BackHandler.addEventListener('hardwareBackPress', backAction);
     return () =>
       BackHandler.removeEventListener('hardwareBackPress', backAction);
   }, []);
-  const DeductLive = async () => {
+  const DeductLive = useCallback(async () => {
     setAvailLifeActivity(true);
     ///Check Result
     const Token = await EncryptedStorage.getItem('Token');
@@ -192,7 +191,9 @@ const BackgroundVideo = ({route, navigation}) => {
       .then(async response => response.json())
       .then(async res => {
         setAvailLifeActivity(false);
-
+        {
+          console.log('reslives', res);
+        }
         if (res.message === 'Live availed successfully') {
           dispatch({
             type: types.TOTAL_LIVES,
@@ -204,7 +205,8 @@ const BackgroundVideo = ({route, navigation}) => {
           ModalState.current(true);
         }
       });
-  };
+    [];
+  });
   const onPressOption = (sel, ans, ansId) => {
     setDisableQuizOptions(true);
     answerId.current = ansId;
@@ -241,7 +243,6 @@ const BackgroundVideo = ({route, navigation}) => {
     socket.on('sendShowCorrectAnswer', msg => {
       console.log('msg: ', msg);
       const activeQ = msg.activeQuestion;
-
       setGameShowCheck(true);
       setShowResult(true);
       if (!userEliminate.current) {

@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {
+  ScrollView,
   View,
   StyleSheet,
   Dimensions,
@@ -73,7 +74,8 @@ const Orders = ({navigation}) => {
           style={{
             backgroundColor: '#ffff',
             overflow: 'hidden',
-            borderRAdius: 10,
+            borderRadius: 10,
+            elevation: 3,
             padding: 10,
             marginVertical: 6,
           }}>
@@ -171,64 +173,71 @@ const Orders = ({navigation}) => {
   };
 
   return (
-    <SafeArea>
-      <LinearGradient
-        start={{x: 0, y: 0}}
-        end={{x: 1, y: 0}}
-        colors={['#420E92', '#E7003F']}
-        style={{
-          height: 'auto',
-          borderBottomRightRadius: 20,
-          borderBottomLeftRadius: 20,
-        }}>
-        <Header />
-        <View style={styles.MainTop}>
-          <UserInfo style={styles.header} OwnUser popup status />
-        </View>
-      </LinearGradient>
+    <ScrollView>
+      <SafeArea>
+        <LinearGradient
+          start={{x: 0, y: 0}}
+          end={{x: 1, y: 0}}
+          colors={['#420E92', '#E7003F']}
+          style={{
+            height: 'auto',
+            borderBottomRightRadius: 20,
+            borderBottomLeftRadius: 20,
+          }}>
+          <Header />
+          <View style={styles.MainTop}>
+            <UserInfo style={styles.header} OwnUser popup status />
+          </View>
+          <View>
+            <Label white bold headingtype="h3">
+              Purchases
+            </Label>
+          </View>
+        </LinearGradient>
 
-      {Data === null ? (
-        <ActivityIndicator size="large" color={Colors.BLACK} />
-      ) : (
-        <>
-          <FlatList
-            data={Data}
-            ListHeaderComponent={
-              <>
-                {Data?.length >= 1 && (
-                  <Label primary bold headingtype="h4">
-                    Purchases
-                  </Label>
-                )}
-              </>
-            }
-            renderItem={renderItem}
-            keyExtractor={i => i}
-            ListEmptyComponent={
-              <NotFoundPurchase
-                text="Cart"
-                onPress={() => navigation.navigate('DealsJoy')}
-              />
-              // <View style={{marginVertical: 5}}>
-              //   <Label dark bold headingtype="h1" style={styles.Heading}>
-              //     No Purchases found!
-              //   </Label>
-              //   <Label dark style={styles.Info}>
-              //     Sorry, we don’t have enough data to show you right now. Please
-              //     check again later.
-              //   </Label>
-              // </View>
-            }
-            refreshControl={
-              <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
-            }
-            contentContainerStyle={{
-              paddingHorizontal: 10,
-            }}
-          />
-        </>
-      )}
-    </SafeArea>
+        {Data === null ? (
+          <ActivityIndicator size="large" color={Colors.BLACK} />
+        ) : (
+          <>
+            <FlatList
+              data={Data}
+              // ListHeaderComponent={
+              //   <>
+              //     {Data?.length >= 1 && (
+              //       <Label primary bold headingtype="h4">
+              //         Purchases
+              //       </Label>
+              //     )}
+              //   </>
+              // }
+              renderItem={renderItem}
+              keyExtractor={i => i}
+              ListEmptyComponent={
+                <NotFoundPurchase
+                  text="Cart"
+                  onPress={() => navigation.navigate('DealsJoy')}
+                />
+                // <View style={{marginVertical: 5}}>
+                //   <Label dark bold headingtype="h1" style={styles.Heading}>
+                //     No Purchases found!
+                //   </Label>
+                //   <Label dark style={styles.Info}>
+                //     Sorry, we don’t have enough data to show you right now. Please
+                //     check again later.
+                //   </Label>
+                // </View>
+              }
+              refreshControl={
+                <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
+              }
+              contentContainerStyle={{
+                paddingHorizontal: 10,
+              }}
+            />
+          </>
+        )}
+      </SafeArea>
+    </ScrollView>
   );
 };
 

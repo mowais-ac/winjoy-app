@@ -205,7 +205,6 @@ const AddaccountModal = props => {
   useEffect(() => {
     loadAccountsList();
   }, []);
-
   const tabSwitchHandler = tab => {
     setActiveTab(tab);
   };
@@ -263,7 +262,7 @@ const AddaccountModal = props => {
                     Select an account
                   </Text>
                   <TouchableOpacity
-                    style={{}}
+                    
                     onPress={() => onAddAccountHandle()}>
                     <Text
                       style={{

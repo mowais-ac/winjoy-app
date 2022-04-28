@@ -93,7 +93,7 @@ const index = props => {
       dayjs(CurrentDate),
       'seconds',
     );
-    fun();
+
     console.log('show', duration);
     setTime(duration);
     Testnavigate();
@@ -117,14 +117,13 @@ const index = props => {
     }
 
     dispatch(getLandingScreen());
-    /*   dynamicLinks()
+    /*  dynamicLinks()
       .getInitialLink()
       .then(link => {
-        if (
-          `${link.url}/invite/token?${livePlans?.refer_code}` ===
-          `https://winjoy.ae/invite/token?${livePlans?.refer_code}`
-        ) {
-          navigation.navigate('DealsJoy');
+        if (`${link.url}` === 'https://winjoy.ae?referral=310') {
+          {
+            console.log('link1', link);
+          }
         } else {
           alert(`https://winjoy.ae/invite/token?${livePlans?.refer_code}`);
         }
@@ -340,7 +339,9 @@ const index = props => {
                             ]}>
                             AED{' '}
                             {userData?.balance
-                              ? FormatNumber(+userData?.balance)
+                              ? parseFloat(
+                                  FormatNumber(+userData?.balance),
+                                ).toFixed(2)
                               : 0}
                           </Text>
                         </Text>

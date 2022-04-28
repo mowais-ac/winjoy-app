@@ -76,7 +76,7 @@ const ProductDetail = ({props, navigation, route}) => {
   if (data && data.product) {
     images = [...images, data?.products?.images];
   }
-  console.log({pic: data?.products?.image});
+  //console.log({pic: data});
   return (
     <>
       <ScrollView>

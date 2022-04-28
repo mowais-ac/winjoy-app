@@ -138,19 +138,9 @@ const PaymentModals = props => {
       let dat = [];
       let postData = {};
       expData1.map(element => {});
-
       postData = {
         products: expData1,
       };
-
-      // const body = {
-      //   card_number: number,
-      //   exp_month: month,
-      //   exp_year: year,
-      //   cvc: cvc,
-      //   type: "products",
-      //   products:  JSON.stringify(dat)
-      // };
 
       var data = new FormData();
       data.append('card_number', number2);
@@ -279,72 +269,17 @@ const PaymentModals = props => {
                 Card number
               </Label>
               <View style={[styles.Main2, {flexDirection: 'row'}]}>
-                {/* <TextInput
-                  placeholder="••••"
-                  placeholderTextColor={Colors.DARK_LABEL}
-                  keyboardType={'numeric'}
-                  maxLength={4}
-                  returnKeyType={'next'}
-                  onSubmitEditing={() => ref_input2.current.focus()}
-                  // onBlur={onBlur}
-
-                  onChangeText={text => {
-                    setNumber1(text);
-                  }}
-                  style={styles.MarginLargeNumber}
-                /> */}
                 <TextInput
                   placeholder="•••• •••• •••• ••••"
                   placeholderTextColor={Colors.DARK_LABEL}
                   keyboardType={'numeric'}
                   maxLength={16}
-                  //onSubmitEditing={() => ref_input3.current.focus()}
                   ref={ref_input2}
-                  // onBlur={onBlur}
-
                   onChangeText={text => {
                     setNumber2(text);
                   }}
                   style={styles.MarginLargeNumber}
                 />
-                {/* <TextInput
-                  placeholder="••••"
-                  placeholderTextColor={Colors.DARK_LABEL}
-                  keyboardType={'numeric'}
-                  maxLength={4}
-                  onSubmitEditing={() => ref_input3.current.focus()}
-                  ref={ref_input2}
-                  // onBlur={onBlur}
-
-                  onChangeText={text => {
-                    setNumber2(text);
-                  }}
-                  style={styles.MarginLargeNumber}
-                />
-                <TextInput
-                  placeholder="••••"
-                  placeholderTextColor={Colors.DARK_LABEL}
-                  keyboardType={'numeric'}
-                  maxLength={4}
-                  // onBlur={onBlur}
-
-                  onChangeText={text => {
-                    setNumber3(text);
-                  }}
-                  style={styles.MarginLargeNumber}
-                />
-                <TextInput
-                  placeholder="••••"
-                  placeholderTextColor={Colors.DARK_LABEL}
-                  keyboardType={'numeric'}
-                  maxLength={4}
-                  // onBlur={onBlur}
-
-                  onChangeText={text => {
-                    setNumber4(text);
-                  }}
-                  style={styles.MarginLargeNumber}
-                /> */}
               </View>
             </View>
             <View
@@ -364,10 +299,6 @@ const PaymentModals = props => {
                     placeholderTextColor={Colors.DARK_LABEL}
                     keyboardType={'numeric'}
                     maxLength={5}
-                    // onBlur={onBlur}
-                    //value={formatFunction(cardExpiry)}
-                    // onChangeText={(text) => HandleExpiryDate(text)}
-                    // value={formatFunction(expiryDate)}
                     onChangeText={text => formatFunction(text)}
                     value={expiryDate}
                     style={styles.MarginLarge}
@@ -384,8 +315,6 @@ const PaymentModals = props => {
                     placeholderTextColor={Colors.DARK_LABEL}
                     keyboardType={'numeric'}
                     maxLength={3}
-                    // onBlur={onBlur}
-
                     onChangeText={text => setCvc(text)}
                     style={styles.MarginLarge}
                   />

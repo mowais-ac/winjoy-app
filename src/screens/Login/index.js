@@ -35,8 +35,9 @@ import Modals from '../../Components/Modals';
 import SelectLanguageModal from '../../Components/SelectLanguageModal';
 import RNRestart from 'react-native-restart';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import dynamicLinks from '@react-native-firebase/dynamic-links';
 const {width, height} = Dimensions.get('window');
-
+import {URLSearchParams} from '@visto9259/urlsearchparams-react-native';
 const index = ({navigation}) => {
   const {t, i18n} = useTranslation();
   const dispatch = useDispatch();
@@ -50,7 +51,51 @@ const index = ({navigation}) => {
   const [lang, setLang] = useState('');
   const tokenForLang = useRef('');
   const activityLang = useRef(false);
-  useEffect(() => {}, []);
+  //Deep Link refrral
+  useEffect(() => {
+    // Defining the URL as a constant
+    //let params = {width: 1680};
+
+    dynamicLinks()
+      .getInitialLink()
+      .then(async link => {
+        {
+          console.log('mylink2', link);
+        }
+        /* let urlParams = new URLSearchParams(`${link.url}`);
+        {
+        
+          console.log(
+            'urlparams',
+            urlParams.dict.map(i => i),
+          );
+          
+         // console.log('urlparams', urlParams.dict['referral'][0]);
+          console.log('urlparams1', urlParams.get('referral'));
+        } */
+
+        try {
+          const refer = await EncryptedStorage.setItem(
+            'myreferral',
+            link.url.slice(27),
+          );
+        } catch (error) {
+          console.log(error);
+        }
+        if (`${link.url}`) {
+          {
+            console.log('mylink', link.url);
+          }
+          navigation.navigate('Register', {
+            // referral_code: urlParams.get('referral'),
+            referral_code: link.url.slice(27),
+          });
+        } else {
+          alert(`${link.url}`);
+        }
+      });
+  }, []);
+
   const LanguageChange = () => {
     LanguagePost();
     i18n.changeLanguage(lang).then(() => {

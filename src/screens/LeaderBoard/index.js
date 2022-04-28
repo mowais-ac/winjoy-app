@@ -38,9 +38,10 @@ import {FormatNumber, wait} from '../../Constants/Functions';
 let redStar = require('../../assets/imgs/redStar.png');
 let crown = require('../../assets/imgs/crown.png');
 const {width, height} = Dimensions.get('window');
+const i = [];
 const index = ({route, navigation}) => {
   const leaderBoardWinners = useSelector(state => state.app.leaderBoardWinners);
-  console.log('leaderBoardWinners', leaderBoardWinners);
+  console.log('leaderBoardWinners', leaderBoardWinners?.leaders);
   const loading = useSelector(state => state.app.loading);
   const ModalState = useRef();
   const AddModalState = useRef();
@@ -267,86 +268,6 @@ const index = ({route, navigation}) => {
                       </View>
                     </View>
                   </View>
-
-                  /*  <FlatList
-                    horizontal={true}
-                    style={{marginLeft: 1, width: width}}
-                    data={leaderBoardWinners}
-                    ItemSeparatorComponent={() => <View style={{width: 16}} />}
-                    scrollEnabled={false}
-                    contentContainerStyle={{
-                      width: width,
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}
-                    showsVerticalScrollIndicator={false}
-                    showsHorizontalScrollIndicator={false}
-                    renderItem={({item, index}) => (
-
-                      <View
-                        style={
-                          index === 0
-                            ? styles.avatarView
-                            : styles.leftRightavatarView
-                        }>
-                        <ProfilePicture
-                          name={
-                            item?.first_name?.charAt(0)?.toUpperCase() +
-                            item?.last_name?.charAt(0)?.toUpperCase()
-                          }
-                          style={
-                            index === 0
-                              ? styles.avatarView
-                              : styles.leftRightavatarView
-                          }
-                        />
-
-                        <View
-                          style={{
-                            position: 'absolute',
-                            width: width * 0.3,
-                            height: width * 0.3,
-                            top: -10,
-                            left: 1,
-                          }}>
-                          <Image
-                            source={index === 0 ? crown : redStar}
-                            style={
-                              index === 0
-                                ? styles.topListIcon2
-                                : styles.topListIcon
-                            }
-                          />
-                        </View>
-                        <View
-                          style={{
-                            width: width * 0.28,
-                            alignItems: 'center',
-                            marginTop: height * 0.009,
-                          }}>
-                          <Text
-                            style={{
-                              fontSize: RFValue(10),
-                              color: '#ffffff',
-                              fontFamily: 'Axiforma-SemiBold',
-                              lineHeight: 20,
-                            }}>
-                            @{item?.user_name}
-                          </Text>
-                          <Text
-                            style={{
-                              fontSize: RFValue(13),
-                              lineHeight: 20,
-                              color: '#FFFF00',
-                              fontFamily: 'Axiforma-Bold',
-                            }}>
-                            AED {FormatNumber(item?.trivia_total_prize)}
-                          </Text>
-                        </View>
-                      </View>
-                    )}
-                    //   keyExtractor={(item) => item.id}
-                  /> */
                 )}
               </View>
             </View>
