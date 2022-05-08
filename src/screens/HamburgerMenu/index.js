@@ -132,6 +132,7 @@ const index = ({props, navigation}) => {
           width: '100%',
           borderBottomRightRadius: 10,
           borderBottomLeftRadius: 10,
+          top: Platform.OS === 'android' ? 0 : height * 0.028,
         }}
       />
       <ScrollView
@@ -157,7 +158,6 @@ const index = ({props, navigation}) => {
               }
               style={styles.avatarView}
             />
-
             <View
               style={{
                 width: widthConverter(250),

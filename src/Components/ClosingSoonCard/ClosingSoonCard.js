@@ -22,7 +22,19 @@ function ClosingSoonCard({item, onPress}) {
         borderRadius: 10,
       }}>
       <TouchableOpacity activeOpacity={0.7} onPress={onPress}>
-        <LoaderImage
+        {/*  <LoaderImage
+          source={{
+            uri: item?.product?.image,
+          }}
+          style={{
+            width: '100%',
+            height: 90,
+            borderTopLeftRadius: 10,
+            borderTopRightRadius: 10,
+          }}
+          resizeMode="center"
+        /> */}
+        <Image
           source={{
             uri: item?.product?.image,
           }}
@@ -34,6 +46,7 @@ function ClosingSoonCard({item, onPress}) {
           }}
           resizeMode="center"
         />
+
         <Label
           primary
           font={11}

@@ -10,6 +10,7 @@ import {
   ActivityIndicator,
   Text,
   FlatList,
+  Platform,
 } from 'react-native';
 import Label from '../../Components/Label';
 const {width, height} = Dimensions.get('window');
@@ -143,7 +144,12 @@ const index = ({props, navigation, route}) => {
           flex: 1,
         }}>
         <View style={{height: 10}} />
-        <Header back={true} />
+        <Header
+          back={true}
+          style={{
+            marginTop: Platform.OS === 'android' ? 0 : height * 0.028,
+          }}
+        />
         <View style={styles.aView}>
           <View style={styles.avatarView}>
             <ProfilePicture
@@ -432,7 +438,7 @@ const styles = StyleSheet.create({
   },
   Personal: {
     marginTop: height * 0.005,
-    height: height * 0.372,
+    height: Platform.OS === 'android' ? height * 0.372 : height * 0.31,
   },
   ItemView: {
     marginTop: height * 0.012,

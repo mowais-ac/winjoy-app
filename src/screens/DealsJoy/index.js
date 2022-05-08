@@ -94,7 +94,14 @@ const index = ({props, navigation}) => {
         <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
       }>
       <LinearGradient colors={['#5B0C86', '#E7003F']} style={styles.mainView}>
-        <Header style={{top: 5, position: 'absolute', zIndex: 1000, left: 0}} />
+        <Header
+          style={{
+            top: Platform.OS === 'android' ? 5 : height * 0.028,
+            position: 'absolute',
+            zIndex: 1000,
+            left: 0,
+          }}
+        />
         {/*  <View style={{marginTop: 65, alignItems: 'center'}}>
           <Text style={[styles.headerText]}>DEALSJOY</Text>
           <Text style={styles.subHeaderText}>

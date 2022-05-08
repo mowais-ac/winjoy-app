@@ -261,9 +261,7 @@ const AddaccountModal = props => {
                     }}>
                     Select an account
                   </Text>
-                  <TouchableOpacity
-                    
-                    onPress={() => onAddAccountHandle()}>
+                  <TouchableOpacity onPress={() => onAddAccountHandle()}>
                     <Text
                       style={{
                         color: '#420E92',
@@ -804,6 +802,7 @@ const styles = StyleSheet.create({
     fontSize: RFValue(14),
     color: Colors.DARK_LABEL,
     width: '100%',
+    height: 45,
   },
   titleTxt: {
     marginTop: height * 0.01,

@@ -15,12 +15,13 @@ export default StyleSheet.create({
     marginTop: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingLeft: 15,
-    paddingRight: 15,
+    paddingLeft: 5,
+    paddingRight: 5,
     backgroundColor: '#ffffff',
-    borderRadius: height * 0.01,
+    borderRadius: 9,
   },
   avatarView: {
+    margin: 10,
     //position: 'absolute',
     width: widthConverter(60),
     height: widthConverter(60),
@@ -29,8 +30,8 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     // borderColor: "#ffffff",
-    // elevation: 5,
-    shadowColor: '#000',
+    //elevation: 5,
+    shadowColor: '#000000',
     shadowOffset: {
       width: 0,
       height: 7,
@@ -42,10 +43,14 @@ export default StyleSheet.create({
     fontFamily: 'Axiforma-Regular',
     color: '#000000',
     fontSize: RFValue(12),
+
+    width: 100,
   },
   text2: {
     fontFamily: 'Axiforma-SemiBold',
     color: '#000000',
     fontSize: RFValue(12),
+
+    width: 100,
   },
 });

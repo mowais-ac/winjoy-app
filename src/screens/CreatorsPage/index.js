@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {
+  Platform,
   Image,
   SafeAreaView,
   View,
@@ -176,7 +177,17 @@ const index = ({route, navigation}) => {
                 resizeMode={'cover'}
               />
 
-              <Header style={{top: 0, position: 'absolute', marginTop: 10}} />
+              <Header
+                style={{
+                  position: 'absolute',
+                  zIndex: 1000,
+                  //backgroundColor: headerValue !== 0 ? 'rgba(0,0,0,0.5)' : null,
+                  width: '100%',
+                  borderBottomRightRadius: 10,
+                  borderBottomLeftRadius: 10,
+                  top: Platform.OS === 'android' ? 0 : height * 0,
+                }}
+              />
               <View
                 style={{
                   top: height * 0.12,
@@ -289,7 +300,12 @@ const index = ({route, navigation}) => {
                     data={data?.products}
                     horizontal={true}
                     ListEmptyComponent={() => (
-                      <Text style={{color: '#000000'}}>The list is empty</Text>
+                      <Text
+                        style={{
+                          color: '#000000',
+                        }}>
+                        The list is empty
+                      </Text>
                     )}
                     renderItem={({item}) => (
                       <TrendingCards
@@ -362,7 +378,10 @@ const index = ({route, navigation}) => {
                       showsHorizontalScrollIndicator={false}
                       data={data?.win_experiences}
                       ListEmptyComponent={() => (
-                        <Text style={{color: '#000000'}}>
+                        <Text
+                          style={{
+                            color: '#000000',
+                          }}>
                           The list is empty
                         </Text>
                       )}
@@ -438,7 +457,12 @@ const index = ({route, navigation}) => {
                     data={data?.experience_celebrities}
                     horizontal={true}
                     ListEmptyComponent={() => (
-                      <Text style={{color: '#000000'}}>The list is empty</Text>
+                      <Text
+                        style={{
+                          color: '#000000',
+                        }}>
+                        The list is empty
+                      </Text>
                     )}
                     renderItem={({item}) => (
                       <SecondExperienceCard

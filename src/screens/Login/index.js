@@ -28,6 +28,7 @@ import {
   IsSuspended,
   GetUserDeviceDetails,
 } from '../../Constants/Functions';
+import appsFlyer from 'react-native-appsflyer';
 import {useTranslation} from 'react-i18next';
 import Config from 'react-native-config';
 import EncryptedStorage from 'react-native-encrypted-storage';
@@ -55,7 +56,6 @@ const index = ({navigation}) => {
   useEffect(() => {
     // Defining the URL as a constant
     //let params = {width: 1680};
-
     dynamicLinks()
       .getInitialLink()
       .then(async link => {
@@ -73,7 +73,6 @@ const index = ({navigation}) => {
          // console.log('urlparams', urlParams.dict['referral'][0]);
           console.log('urlparams1', urlParams.get('referral'));
         } */
-
         try {
           const refer = await EncryptedStorage.setItem(
             'myreferral',
@@ -240,6 +239,22 @@ const index = ({navigation}) => {
         });
     }
   };
+  const eventName = 'af_login';
+  const eventValues = {
+    af_user_name: 'aftab',
+  };
+  const fun_login = () => {
+    appsFlyer.logEvent(
+      eventName,
+      //eventValues,
+      res => {
+        console.log(res);
+      },
+      err => {
+        console.error(err);
+      },
+    );
+  };
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -277,7 +292,10 @@ const index = ({navigation}) => {
             style={[styles.Margin, {backgroundColor: '#ffffff'}]}
             textstyle={{color: '#E7003F'}}
             text={t('login')}
-            onPress={HandleLogin}
+            onPress={() => {
+              fun_login();
+              HandleLogin();
+            }}
             ref={ButtonRef}
           />
           <LabelButton

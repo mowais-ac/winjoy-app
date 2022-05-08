@@ -20,7 +20,15 @@ function TrendingCards({
   return (
     <TouchableOpacity onPress={onPress} style={style}>
       <View style={[{height: height * 0.31}, mainViewStyle]}>
-        <LoaderImage
+        {/*  <LoaderImage
+          source={{
+            uri: imageUrl,
+          }}
+          style={imageStyle}
+          resizeMode="cover"
+        /> */}
+
+        <Image
           source={{
             uri: imageUrl,
           }}

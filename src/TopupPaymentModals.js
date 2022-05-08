@@ -239,7 +239,11 @@ const PaymentModals = props => {
                   font={16}
                   bold2
                   dark
-                  style={{width: 50, color: '#000000', top: 17}}>
+                  style={{
+                    width: 50,
+                    color: '#000000',
+                    top: Platform.OS === 'android' ? 17 : 25,
+                  }}>
                   AED
                 </Label>
                 <TextInput
@@ -542,6 +546,7 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
     fontSize: RFValue(14),
     color: Colors.DARK_LABEL,
+    height: 45,
   },
   MarginLargeNumber: {
     paddingLeft: 15,
@@ -549,6 +554,7 @@ const styles = StyleSheet.create({
     color: Colors.DARK_LABEL,
     letterSpacing: 5,
     width: '100%',
+    height: 45,
   },
   titleTxt: {
     marginTop: height * 0.01,

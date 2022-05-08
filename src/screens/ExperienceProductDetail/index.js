@@ -85,7 +85,12 @@ const ProductDetail = ({props, navigation, route}) => {
             style={styles.mainView}
             colors={['#420E92', '#E7003F']}>
             <View style={{height: 20}} />
-            <Header back={true} />
+            <Header
+              back={true}
+              style={{
+                top: Platform.OS === 'android' ? 0 : height * 0.028,
+              }}
+            />
           </LinearGradient>
           <View style={styles.upperView}>
             <Card
@@ -296,7 +301,7 @@ const styles = StyleSheet.create({
     paddingTop: 6,
     paddingBottom: 6,
     borderRadius: 20,
-    top: heightConverter(2),
+    top: heightConverter(15),
   },
   pdView: {
     marginTop: 5,

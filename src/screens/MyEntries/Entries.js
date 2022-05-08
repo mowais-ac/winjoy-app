@@ -10,6 +10,7 @@ import {
   RefreshControl,
   Text,
   ImageBackground,
+  Platform,
 } from 'react-native';
 
 import Background from '../../Components/Background';
@@ -73,175 +74,230 @@ const Entries = ({navigation}) => {
         activeOpacity={0.8}>
         <View
           style={{
-            marginTop: 14,
-            width: 33,
-            height: 33,
-            marginLeft: 286,
-            zIndex: 100,
-            position: 'absolute',
-            borderRadius: 100,
-            backgroundColor: '#c7dfe8',
-          }}
-        />
-        <View
-          style={{
-            width: 33,
-            height: 33,
-            marginLeft: 286,
-            zIndex: 100,
-            position: 'absolute',
-            borderRadius: 100,
-            marginTop: 193,
-            backgroundColor: '#c7dfe8',
-          }}
-        />
-        {/*     <LinearGradient
-          start={{x: 0, y: 0}}
-          end={{x: 1, y: 1}}
-          colors={['#f8d7e8', '#c7dfe8']}
-          style={{
-            height: 215,
-            alignItems: 'center',
-            flexDirection: 'row',
-            marginVertical: 10,
-          }}> */}
-
-        <LinearGradient
-          start={{x: 0, y: 0}}
-          end={{x: 1, y: 0}}
-          colors={['#f8d7e8', '#c7dfe8']}
-          style={{
-            height: 240,
-            alignItems: 'center',
-            flexDirection: 'row',
-            marginBottom: 10,
+            height: 350,
+            margin: 10,
+            position: 'relative',
           }}>
           <View
             style={{
-              backgroundColor: '#ebe9e8',
-              width: '75%',
-              height: 180,
-              borderRadius: 20,
-              margin: 10,
-              flexDirection: 'column',
-              justifyContent: 'space-evenly',
+              width: '100%',
+              height: 10,
+              backgroundColor: '#E7003F',
+              borderTopRightRadius: 20,
+              borderTopLeftRadius: 20,
+            }}
+          />
+          <View
+            style={{
+              backgroundColor: '#ffffff',
+              borderBottomRightRadius: 20,
+              borderBottomLeftRadius: 20,
             }}>
+            <View
+              style={{
+                width: 33,
+                height: 33,
+                marginLeft: 356,
+                zIndex: 100,
+                borderRadius: 100,
+                marginTop: 235,
+                position: 'absolute',
+                backgroundColor: '#C8DFE9',
+              }}
+            />
+            <View
+              style={{
+                marginLeft: -18,
+                width: 33,
+                height: 33,
+                zIndex: 100,
+                borderRadius: 100,
+                marginTop: 235,
+                position: 'absolute',
+                backgroundColor: '#FAD8E9',
+              }}
+            />
             <View
               style={{
                 flexDirection: 'row',
+                justifyContent: 'space-between',
                 alignItems: 'center',
-                justifyContent: 'center',
+                margin: 10,
               }}>
-              <Image
-                style={{width: 30, height: 30, margin: 5}}
-                source={require('../../assets/imgs/newlogo.png')}
-              />
+              <View
+                style={{
+                  flexDirection: 'row',
+                }}>
+                <Image
+                  style={{width: 50, height: 50, margin: 5}}
+                  source={require('../../assets/imgs/newlogo.png')}
+                />
+                <View
+                  style={{
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    margin: 5,
+                  }}>
+                  <Text
+                    style={{
+                      color: '#E7003F',
+                      fontWeight: 'bold',
+                      fontSize: 18,
+                      fontFamily: 'Axiforma',
+                    }}>
+                    Win
+                    <Text
+                      style={{
+                        color: '#420E92',
+                        fontWeight: 'bold',
+                        fontFamily: 'Axiforma',
+                      }}>
+                      joy
+                    </Text>
+                  </Text>
+                  <Text
+                    style={{
+                      color: '#C4C4C4',
+                      fontWeight: '500',
+                      textAlign: 'center',
+                      lineHeight: 20,
+                      fontFamily: 'Axiforma',
+                    }}>
+                    {item?.lucky_draw?.created_at
+                      ? dayjs(item?.lucky_draw?.created_at).format(
+                          'dddd, MMMM D YYYY',
+                        )
+                      : 'NAN'}
+                  </Text>
+                </View>
+              </View>
               <Text
                 style={{
-                  color: 'red',
-                  fontWeight: 'bold',
+                  color: '#000000',
+                  fontWeight: '400',
                   fontSize: 18,
+                  fontFamily: 'Axiforma',
                 }}>
-                WIN
-                <Text style={{color: 'purple', fontWeight: 'bold'}}>JOY</Text>
+                {item?.user?.name}
               </Text>
             </View>
             <View
               style={{
+                height: '1%',
+                width: '100%',
+                borderStyle: 'dashed',
+                borderBottomWidth: 1,
+                borderColor: 'rgba(161,155,183,1)',
+              }}
+            />
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
                 alignItems: 'center',
+                margin: 10,
               }}>
-              <Text
+              <View
                 style={{
-                  color: 'black',
-                  fontWeight: 'bold',
-                  letterSpacing: 18,
-                  //textAlign: 'center',
-                  fontSize: 18,
+                  flexDirection: 'row',
                 }}>
-                {item?.entry_code}
-              </Text>
+                <Image
+                  style={{width: 70, height: 50, margin: 5}}
+                  source={{uri: item?.product?.image}}
+                />
+                <View
+                  style={{
+                    flexDirection: 'column',
+                    margin: 5,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}>
+                  <Text
+                    style={{
+                      color: '#000000',
+                      fontWeight: '400',
+                      fontSize: 14,
+                      fontFamily: 'Axiforma',
+                    }}>
+                    {item?.product?.title}
+                  </Text>
+                </View>
+              </View>
               <Text
                 style={{
-                  color: 'purple',
-                  fontWeight: '600',
-                  textAlign: 'center',
-                  lineHeight: 20,
-                  width: 220,
+                  color: '#000000',
+                  fontWeight: '500',
+                  fontSize: 18,
+                  fontFamily: 'Axiforma',
+                }}>
+                <Text
+                  style={{
+                    color: '#000000',
+                    fontWeight: '700',
+                    fontSize: 18,
+                    fontFamily: 'Axiforma',
+                  }}>
+                  AED
+                </Text>{' '}
+                {item?.product?.price}
+              </Text>
+            </View>
+            <View
+              style={{
+                height: '1%',
+                width: '100%',
+                borderStyle: 'dashed',
+                borderBottomWidth: 1,
+                borderColor: 'rgba(161,155,183,1)',
+              }}
+            />
+            <View style={{alignItems: 'center', marginVertical: 16}}>
+              <Text
+                numberOfLines={1}
+                style={{
+                  color: '#000000',
+                  fontWeight: '400',
+                  fontSize: 11,
+                  fontFamily: 'Axiforma',
+                  lineHeight: 30,
                 }}>
                 THIS COUPON GIVES YOU A CHANCE TO ENTER THE LUCKY DRAW
               </Text>
+              <Text
+                style={{
+                  color: '#E7003F',
+                  fontWeight: 'bold',
+                  fontFamily: 'Axiforma',
+                  fontSize: 18,
+                  letterSpacing: 16,
+                  //lineHeight: 22,
+                }}>
+                {item?.entry_code}
+              </Text>
             </View>
-
-            {/* <View
-              style={{
-                color: 'black',
-                borderWidth: 0.7,
-                width: '80%',
-                marginLeft: 25,
-                //marginTop: 10,
-              }}
-            /> */}
             <View
               style={{
-                marginLeft: 25,
-                height: 0.82,
-                width: '80%',
-                backgroundColor: 'black',
-              }}
-            />
-            <Text
-              style={{
-                color: 'black',
-                fontWeight: '500',
-                textAlign: 'center',
-                lineHeight: 20,
+                height: 80,
+                width: '100%',
+                backgroundColor: '#E7003F',
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderBottomRightRadius: 20,
+                borderBottomLeftRadius: 20,
               }}>
-              {item?.lucky_draw?.created_at
-                ? dayjs(item?.lucky_draw?.created_at).format(
-                    'dddd, MMMM D YYYY',
-                  )
-                : 'NAN'}
-            </Text>
-            <Text
-              style={{
-                color: 'black',
-                fontWeight: '500',
-                textAlign: 'center',
-                lineHeight: 20,
-              }}>
-              Good luck!
-            </Text>
+              <Text
+                numberOfLines={3}
+                style={{
+                  color: '#ffffff',
+                  fontWeight: '700',
+                  fontFamily: 'Axiforma',
+                  fontSize: 17,
+                }}>
+                {item?.lucky_draw?.name}
+              </Text>
+            </View>
           </View>
-
-          <View
-            style={{
-              marginTop: 5,
-              backgroundColor: 'red',
-              height: 85,
-              borderRadius: 20,
-              flexDirection: 'column',
-              alignItems: 'center',
-              width: '47%',
-              transform: [{rotate: '-90deg'}],
-              marginStart: -66,
-              paddingVertical: 15,
-            }}>
-            <Text style={{color: '#ffff', fontWeight: '700', lineHeight: 25}}>
-              COUPON TOWN
-            </Text>
-            <Text
-              numberOfLines={5}
-              style={{
-                color: 'black',
-                fontWeight: '700',
-                lineHeight: 20,
-                textAlign: 'center',
-                width: 170,
-              }}>
-              {item?.lucky_draw?.name}
-            </Text>
-          </View>
-        </LinearGradient>
+        </View>
       </TouchableOpacity>
     );
   };
@@ -257,7 +313,12 @@ const Entries = ({navigation}) => {
           borderBottomRightRadius: 20,
           borderBottomLeftRadius: 20,
         }}>
-        <Header />
+        <Header
+          style={{
+            top: Platform.OS === 'android' ? 0 : height * 0.028,
+          }}
+        />
+
         <View style={styles.MainTop}>
           <UserInfo style={styles.header} OwnUser popup status />
         </View>
@@ -271,46 +332,32 @@ const Entries = ({navigation}) => {
       {Data === null ? (
         <ActivityIndicator size="large" color={Colors.BLACK} />
       ) : (
-        <FlatList
-          data={Data}
-          // ListHeaderComponent={
-          //   <View>
-          //     {Data?.length >= 1 && (
-          //       <Label primary bold headingtype="h2">
-          //         Tickets
-          //       </Label>
-          //     )}
-          //   </View>
-          // }
-          renderItem={renderItem}
-          keyExtractor={i => i}
-          ListEmptyComponent={
-            <View style={{marginVertical: 5}}>
-              <Label dark bold headingtype="h1" style={styles.Heading}>
-                No Tickets found!
-              </Label>
-              <Label dark style={styles.Info}>
-                Sorry, we don’t have enough data to show you right now. Please
-                check again later.
-              </Label>
-            </View>
-          }
-          // ItemSeparatorComponent={() => {
-          //   return (
-          //     <View
-          //       style={{
-          //         color: '#e6e3e3',
-          //         borderWidth: 1,
-          //         width: '100%',
-          //       }}
-          //     />
-          //   );
-          // }}
-          refreshControl={
-            <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
-          }
-          // contentContainerStyle={{}}
-        />
+        <LinearGradient
+          start={{x: 0, y: 0}}
+          end={{x: 1, y: 0}}
+          colors={['#f8d7e8', '#c7dfe8']}
+          style={{flex: 1}}>
+          <FlatList
+            data={Data}
+            renderItem={renderItem}
+            keyExtractor={i => i}
+            ListEmptyComponent={
+              <View style={{marginVertical: 5}}>
+                <Label dark bold headingtype="h1" style={styles.Heading}>
+                  No Tickets found!
+                </Label>
+                <Label dark style={styles.Info}>
+                  Sorry, we don’t have enough data to show you right now. Please
+                  check again later.
+                </Label>
+              </View>
+            }
+            refreshControl={
+              <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
+            }
+            // contentContainerStyle={{height: 'auto'}}
+          />
+        </LinearGradient>
       )}
     </>
   );
@@ -325,7 +372,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginHorizontal: 10,
   },
-
+  head: {
+    width: '100%',
+    height: 30,
+    borderTopRightRadius: 20,
+    borderLeftRadius: 20,
+  },
   ImageView: {
     shadowColor: Colors.SHADOW,
     shadowOffset: {

@@ -10,16 +10,18 @@ import {
   ActivityIndicator,
   RefreshControl,
 } from 'react-native';
+import {firebase} from '@react-native-firebase/analytics';
 import Label from '../../Components/Label';
 const {width, height} = Dimensions.get('window');
 import LinearGradient from 'react-native-linear-gradient';
 import {Card} from '../../Components';
-import {GetCartData} from '../../redux/actions';
+import {GetCartData, RemoveCartData} from '../../redux/actions';
 import {
   widthPercentageToDP,
   heightPercentageToDP,
   heightConverter,
 } from '../../Components/Helpers/Responsive';
+import appsFlyer from 'react-native-appsflyer';
 import {wait} from '../../Constants/Functions';
 import {connect, useDispatch, useSelector} from 'react-redux';
 import Header from '../../Components/Header';
@@ -35,7 +37,9 @@ import Modals from '../../Components/Modals';
 import {ProductDetails} from '../../redux/actions';
 import {useIsFocused, useFocusEffect} from '@react-navigation/native';
 const ProductDetail = ({props, navigation, route}) => {
+  const cartData = useSelector(state => state.app.cartData);
   const isFocused = useIsFocused();
+  const defaultAppAnalytics = firebase.analytics();
   const dispatch = useDispatch();
   const dispatch2 = useDispatch();
   const dispatch3 = useDispatch();
@@ -58,10 +62,36 @@ const ProductDetail = ({props, navigation, route}) => {
     dispatch3(GetCartData());
     wait(100).then(() => setRefreshing(false));
   }, []);
+  /* console.log(
+    'aftabcart',
+    cartData?.data.map(i => {
+      i.price;
+    }),
+  ); */
+  /*  console.log(
+    'af_price',
+    pd?.product?.price,
+    'af_content_id',
+    pd?.product?.luckydraw?.product_id,
+    'af_content_type',
+    pd?.product?.category_id?.name,
+    'af_currency',
+    'AED',
+    'af_quantity',
+    count,
+  ); */
 
   useEffect(() => {
     _Api(productId);
+    firebase.app();
+    firebase.analytics();
   }, []);
+  const addCustomEvent = async () => {
+    await defaultAppAnalytics.logAddToCart({
+      currency: pd?.product?.price,
+      value: count,
+    });
+  };
   const _Api = async productId => {
     setLoading(true);
     const Token = await EncryptedStorage.getItem('Token');
@@ -152,6 +182,27 @@ const ProductDetail = ({props, navigation, route}) => {
         },
       });
     }
+  };
+  const eventName = 'af_add_to_cart';
+  const eventValues = {
+    af_price: pd?.product?.price,
+    af_content_id: pd?.product?.luckydraw?.product_id,
+    //  af_content_type: pd?.product?.category_id?.name,
+    //  af_currency: 'AED',
+    af_quantity: count,
+    //  af_revenue: pd?.product?.price,
+  };
+  const fun_addtocart = () => {
+    appsFlyer.logEvent(
+      eventName,
+      eventValues,
+      res => {
+        console.log(res);
+      },
+      err => {
+        console.error(err);
+      },
+    );
   };
   return (
     <>
@@ -334,6 +385,8 @@ const ProductDetail = ({props, navigation, route}) => {
                 <TouchableOpacity
                   disabled={activity}
                   onPress={() => {
+                    fun_addtocart();
+                    addCustomEvent();
                     !Loading && SaveIdInfo();
                     onRefresh2();
                   }}>

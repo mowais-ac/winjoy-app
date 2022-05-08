@@ -116,7 +116,14 @@ const index = ({props, navigation}) => {
         start={{x: 0, y: 0}}
         end={{x: 1, y: 0}}
         colors={['#f8d7e8', '#c7dfe8']}>
-        <Header style={{top: 5, position: 'absolute', zIndex: 1000, left: 0}} />
+        <Header
+          style={{
+            top: Platform.OS === 'android' ? 5 : height * 0.028,
+            position: 'absolute',
+            zIndex: 1000,
+            left: 0,
+          }}
+        />
         <LinearGradient
           start={{x: 0, y: 0}}
           end={{x: 1, y: 0}}

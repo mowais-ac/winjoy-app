@@ -402,14 +402,10 @@ const index = ({route, navigation}) => {
                   </View>
                   <FlatList
                     horizontal={true}
-                    style={{}}
                     contentContainerStyle={{
                       height: height * 0.14,
                       marginLeft: 11,
                     }}
-                    // ItemSeparatorComponent={
-                    //   () => <View style={{ width: 10, }} />
-                    // }
                     showsVerticalScrollIndicator={false}
                     showsHorizontalScrollIndicator={false}
                     data={refferalLivePlans}

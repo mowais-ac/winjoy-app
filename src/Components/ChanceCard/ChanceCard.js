@@ -48,7 +48,7 @@ function ChanceCard({
           borderRadius: 10,
           marginTop: height * 0.02,
         }}>
-        <LoaderImage
+        <Image
           source={{
             uri: image,
           }}
@@ -59,6 +59,17 @@ function ChanceCard({
           }}
           resizeMode="contain"
         />
+        {/*  <LoaderImage
+          source={{
+            uri: image,
+          }}
+          style={{
+            width: '100%',
+            height: height * 0.25,
+            borderRadius: 10,
+          }}
+          resizeMode="contain"
+        /> */}
       </View>
       <View
         style={{

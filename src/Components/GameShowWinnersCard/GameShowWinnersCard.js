@@ -36,14 +36,20 @@ function GameShowWinnersCard({onPress, date, profile_image, name, ammount}) {
           style={{
             height: height * 0.08,
             justifyContent: 'center',
-            width: width * 0.5,
+            width: 190,
             //alignItems: 'flex-start',
           }}>
-          <Text style={styles.text}>{date}</Text>
-          <Text style={styles.text2}>{name}</Text>
+          <Text numberOfLines={1} style={styles.text}>
+            {date}
+          </Text>
+          <Text numberOfLines={1} style={styles.text2}>
+            {name}
+          </Text>
         </View>
 
-        <Text style={[styles.text2, {color: '#420E92'}]}>AED {ammount}</Text>
+        <Text numberOfLines={1} style={[styles.text2, {color: '#420E92'}]}>
+          AED {ammount}
+        </Text>
       </View>
     </TouchableOpacity>
   );

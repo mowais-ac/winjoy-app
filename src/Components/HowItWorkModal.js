@@ -140,7 +140,7 @@ const HowItWorkModal = props => {
             style={{
               position: 'absolute',
               right: 8,
-              top: 8,
+              top: Platform.OS === 'android' ? 8 : 32,
               height: 30,
               width: 30,
               justifyContent: 'center',

@@ -193,7 +193,9 @@ const index = ({navigation, route}) => {
       <ScrollView>
         <KeyboardAwareScrollView keyboardDismissMode="interactive">
           <View style={styles.MainTop}>
-            <GoBack />
+            <GoBack
+              
+            />
             <Image source={Images.Logo} style={styles.Logo} />
             <Label bold headingtype="h1" style={styles.Margin}>
               {t('create_account')}

@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Dimensions, TouchableOpacity, Text} from 'react-native';
+import {View, Dimensions, TouchableOpacity, Text, Image} from 'react-native';
 import styles from './Styles';
 import LinearGradient from 'react-native-linear-gradient';
 import LoaderImage from '../LoaderImage';
@@ -16,14 +16,20 @@ function WinExperienceCard({
   return (
     <TouchableOpacity activeOpacity={0.6} onPress={fun}>
       <View style={style}>
-        <LoaderImage
+        {/*  <LoaderImage
+          source={{
+            uri: thumbnail,
+          }}
+          style={imageStyle}
+          resizeMode="cover"
+        /> */}
+        <Image
           source={{
             uri: thumbnail,
           }}
           style={imageStyle}
           resizeMode="cover"
         />
-
         <View style={{paddingTop: 10}}>
           <Text
             style={{

@@ -57,8 +57,8 @@ export default StyleSheet.create({
     marginVertical: 5,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingLeft: 15,
-    paddingRight: 15,
+    paddingLeft: 5,
+    paddingRight: 5,
   },
   text: {
     fontFamily: 'Axiforma-Regular',

@@ -49,13 +49,14 @@ const index = ({route, navigation}) => {
   const [idVideoAdd, setIdVideoAdd] = useState();
   const [id, setId] = useState();
   const [refreshing, setRefreshing] = useState(false);
+  const [video1, setvideo1] = useState(false);
   const dispatch = useDispatch();
   useEffect(() => {
     console.log('totalLives', totalLives);
     dispatch(getLiveShowPlans());
     setvideo1(livePlans.videoEnable);
-  }, []);
-  const [video1, setvideo1] = useState(false);
+  }, [video1]);
+
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     dispatch(getLiveShowPlans());

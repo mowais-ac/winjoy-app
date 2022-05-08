@@ -105,8 +105,8 @@ function Card({
                 source={{uri: item?.image}}
                 resizeMode={'contain'}
                 style={{
-                  width: '100%',
-                  height: height * 0.3,
+                  width: '80%',
+                  height: height * 0.27,
                   //marginTop: height * 0.015,
                   alignSelf: 'center',
                 }}
@@ -115,7 +115,7 @@ function Card({
           }}
           style={{
             width: width,
-            height: height * 0.3,
+            height: height * 0.27,
             // marginTop: height * 0.015,
             alignSelf: 'center',
           }}

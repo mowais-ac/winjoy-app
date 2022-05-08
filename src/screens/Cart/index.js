@@ -14,11 +14,12 @@ import {
   TextInput,
 } from 'react-native';
 
+import {firebase} from '@react-native-firebase/analytics';
 import Background from '../../Components/Background';
 import SafeArea from '../../Components/SafeArea';
 import Label from '../../Components/Label';
 import Header from '../../Components/Header';
-
+import appsFlyer from 'react-native-appsflyer';
 import {Colors} from '../../Constants/Index';
 import Section from '../../Components/Section';
 import UserInfo from '../../Components/UserInfo';
@@ -48,6 +49,7 @@ import types from '../../redux/types';
 import {WjBackground} from '../../Components';
 import {getWalletData} from '../../redux/actions';
 const index = ({props, navigation}) => {
+  const defaultAppAnalytics = firebase.analytics();
   const dispatch = useDispatch();
   const dispatch2 = useDispatch();
   const dispatch3 = useDispatch();
@@ -79,10 +81,38 @@ const index = ({props, navigation}) => {
   const PostData = async () => {
     ModalState.current(true);
   };
+  const eventName = 'af_add_to_cart';
+  const eventValues = {
+    af_content_id: 'id133',
+    af_quantity: '',
+    af_currency: 'AED',
+    af_quantity: '',
+  };
+  const fun_addtocart = () => {
+    appsFlyer.logEvent(
+      eventName,
+      eventValues,
+      res => {
+        console.log(res);
+      },
+      err => {
+        console.error(err);
+      },
+    );
+  };
+
   useEffect(() => {
     dispatch6(getWalletData());
     dispatch(GetCartData());
+    firebase.app();
+    firebase.analytics();
   }, []);
+  const addCustomEvent = async () => {
+    await defaultAppAnalytics.logAddToCart({
+      currency: '007',
+      value: 2,
+    });
+  };
   console.log('wallet', walletData?.wallet?.your_balance);
   const RemoveItem = (id, qty) => {
     setId(id);
@@ -165,7 +195,9 @@ const index = ({props, navigation}) => {
       </Section>
     );
   };
-
+  {
+    console.log('cartData?.total', cartData?.data?.price);
+  }
   return (
     <SafeAreaView style={{height: height}}>
       <LinearGradient
@@ -269,6 +301,8 @@ const index = ({props, navigation}) => {
 
                 <TouchableOpacity
                   onPress={() => {
+                    fun_addtocart();
+                    addCustomEvent();
                     ModalState.current(true);
                     PostData();
                   }}

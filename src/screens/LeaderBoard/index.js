@@ -284,6 +284,17 @@ const index = ({route, navigation}) => {
               <FlatList
                 data={leaderBoardWinners?.leaders?.slice(3)}
                 // horizontal={true}
+                ListEmptyComponent={() => (
+                  <Text
+                    style={{
+                      color: '#000000',
+                      fontFamily: 'Axiforma',
+                      fontSize: 15,
+                      fontWeight: '700',
+                    }}>
+                    no winners
+                  </Text>
+                )}
                 ItemSeparatorComponent={() => (
                   <View
                     style={{
@@ -333,9 +344,13 @@ const index = ({route, navigation}) => {
                             width: width * 0.36,
                             height: height * 0.08,
                             justifyContent: 'center',
+                            // backgroundColor: 'red',
+                            marginLeft: -12,
                           }}>
-                          <Text style={styles.text}>@{item.user_name}</Text>
-                          <Text style={styles.text2}>
+                          <Text numberOfLines={1} style={styles.text}>
+                            @{item.user_name}
+                          </Text>
+                          <Text numberOfLines={1} style={styles.text2}>
                             {item?.first_name?.charAt(0)?.toUpperCase() +
                               item?.first_name?.slice(1) +
                               ' ' +
@@ -343,11 +358,15 @@ const index = ({route, navigation}) => {
                               item?.last_name?.slice(1)}
                           </Text>
                         </View>
-
                         <Text
+                          numberOfLines={1}
                           style={[
                             styles.text2,
-                            {width: width * 0.25, color: '#E7003F'},
+                            {
+                              width: width * 0.23,
+                              color: '#E7003F',
+                              // marginHorizontal: 30,
+                            },
                           ]}>
                           AED {item?.trivia_total_prize.toLocaleString()}
                         </Text>
