@@ -311,11 +311,11 @@ const index = ({route, navigation}) => {
                 alignItems: 'center',
               }}>
               <ImageBackground
-                resizeMode="center"
+                resizeMode="contain"
                 style={{
-                  width: 90,
-                  height: 90,
-                  // marginTop: 10,
+                  width: 80,
+                  height: 80,
+
                   justifyContent: 'center',
                   alignItems: 'center',
                 }}
@@ -648,7 +648,7 @@ const index = ({route, navigation}) => {
                     heading={'Congratulations'}
                     description={
                       totalLives.current +
-                      ' lives are ready to use. Feel free to play more games & win amazin prizes.'
+                      ' lives are ready to use. Feel free to play more games & win amazing prizes.'
                     }
                     requestOnPress={() => {
                       SucessModalState.current(false);

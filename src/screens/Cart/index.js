@@ -12,6 +12,8 @@ import {
   Pressable,
   TouchableOpacity,
   TextInput,
+  Platform,
+  ScrollView,
 } from 'react-native';
 
 import {firebase} from '@react-native-firebase/analytics';
@@ -81,14 +83,30 @@ const index = ({props, navigation}) => {
   const PostData = async () => {
     ModalState.current(true);
   };
-  const eventName = 'af_add_to_cart';
+  appsFlyer.initSdk(
+    {
+      isDebug: true,
+      appId: '1613371170',
+      devKey: 'WsirNxAS4HZB9sjUxGjHtD',
+    },
+    result => {
+      console.log('result', result);
+    },
+    error => {
+      console.error(error);
+    },
+  );
+  console.log('cartData', cartData);
+  const eventName = 'af_initiated_checkout';
   const eventValues = {
-    af_content_id: 'id133',
-    af_quantity: '',
+    af_price: 99,
+    af_content_id: 13,
+    af_content_type: 'General',
     af_currency: 'AED',
-    af_quantity: '',
+    af_quantity: 1,
+    //  af_revenue: pd?.product?.price,
   };
-  const fun_addtocart = () => {
+  const fun_initiatedcheckout = () => {
     appsFlyer.logEvent(
       eventName,
       eventValues,
@@ -109,8 +127,8 @@ const index = ({props, navigation}) => {
   }, []);
   const addCustomEvent = async () => {
     await defaultAppAnalytics.logAddToCart({
-      currency: '007',
-      value: 2,
+      currency: '0088',
+      value: 4,
     });
   };
   console.log('wallet', walletData?.wallet?.your_balance);
@@ -175,7 +193,10 @@ const index = ({props, navigation}) => {
               position: 'absolute',
               right: 20,
             }}
-            onPress={() => RemoveItem(item.id, item?.qty)}>
+            onPress={() => {
+              remove_from_cart();
+              RemoveItem(item.id, item?.qty);
+            }}>
             {loading && item.id === id ? (
               <ActivityIndicator
                 size="small"
@@ -198,128 +219,140 @@ const index = ({props, navigation}) => {
   {
     console.log('cartData?.total', cartData?.data?.price);
   }
+  const eventName3 = 'remove_from_cart';
+  const eventValues3 = {
+    af_content_id: 12,
+    af_content_type: 'T-shirt',
+  };
+  const remove_from_cart = () => {
+    appsFlyer.logEvent(
+      eventName3,
+      eventValues3,
+      res => {
+        console.log(res);
+      },
+      err => {
+        console.error(err);
+      },
+    );
+  };
   return (
-    <SafeAreaView style={{height: height}}>
-      <LinearGradient
-        start={{x: 0, y: 0}}
-        end={{x: 1, y: 0}}
-        colors={['#420E92', '#E7003F']}
-        style={{
-          height: 'auto',
-          borderBottomRightRadius: 20,
-          borderBottomLeftRadius: 20,
-        }}>
-        <Header />
-        <View style={{alignItems: 'center'}}>
-          <Text style={[styles.headerText, {marginVertical: 20}]}>Cart</Text>
-        </View>
-      </LinearGradient>
-
-      {cartData?.data === null ? (
-        <Label primary bold headingtype="h4" style={{marginTop: 15}}>
-          No data
-        </Label>
-      ) : (
-        <View style={{marginTop: 5}}>
-          <View style={{height: '80%'}}>
-            <FlatList
-              data={cartData?.data}
-              renderItem={renderItem}
-              scrollEnabled={true}
-              keyExtractor={i => i}
-              extraData={updateData}
-              ListEmptyComponent={
-                listloader ? (
-                  <ActivityIndicator
-                    size="large"
-                    color="#000000"
-                    style={{marginTop: height * 0.2}}
-                  />
-                ) : (
-                  <NotFoundCart
-                    text="Cart"
-                    onPress={() => navigation.navigate('PRODUCTS')}
-                  />
-                )
-              }
-              refreshControl={
-                <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
-              }
-              contentContainerStyle={{
-                paddingBottom: height * 0.06,
-              }}
-            />
+    <SafeAreaView style={{height: height, backgroundColor: '#420E92'}}>
+      <View style={{backgroundColor: '#f6f1f3'}}>
+        <LinearGradient
+          start={{x: 0, y: 0}}
+          end={{x: 1, y: 0}}
+          colors={['#420E92', '#E7003F']}
+          style={{
+            height: 'auto',
+            borderBottomRightRadius: 20,
+            borderBottomLeftRadius: 20,
+          }}>
+          <Header />
+          <View style={{alignItems: 'center'}}>
+            <Text style={[styles.headerText, {marginVertical: 20}]}>Cart</Text>
           </View>
-          {cartData?.data?.length > 0 ? (
-            <View style={styles.card2Wrap}>
-              <View style={styles.card2}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    width: widthPercentageToDP('83'),
-                  }}>
-                  <Text style={[styles.metaText, {fontSize: RFValue(17)}]}>
-                    Total
-                  </Text>
-                  <Text
-                    style={[
-                      styles.text,
-                      {fontWeight: 'bold', fontSize: RFValue(17)},
-                    ]}>
-                    {'AED '}
-                    {FormatNumber(+cartData?.sub_total)}
-                  </Text>
-                </View>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    width: widthPercentageToDP('83'),
-                  }}>
-                  <Text style={styles.metaText}>Sub Total</Text>
-                  <Text style={styles.text}>
-                    {'AED '}
-                    {FormatNumber(Math.trunc(cartData?.total))}
-                  </Text>
-                </View>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    width: widthPercentageToDP('83'),
-                  }}>
-                  <Text style={styles.metaText}>Vat 5%</Text>
-                  <Text style={styles.text}>
-                    {'AED '}
-                    {FormatNumber(Math.trunc(cartData?.vat))}
-                  </Text>
-                </View>
+        </LinearGradient>
 
-                <TouchableOpacity
-                  onPress={() => {
-                    fun_addtocart();
-                    addCustomEvent();
-                    ModalState.current(true);
-                    PostData();
-                  }}
-                  disabled={activity}
-                  style={{
-                    height: heightConverter(55),
-                    width: width - 25,
-                    position: 'absolute',
-                    bottom: 0,
-                    borderBottomLeftRadius: 10,
-                    borderBottomRightRadius: 10,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
-                  <LinearGradient
-                    start={{x: 0, y: 0}}
-                    end={{x: 1, y: 0}}
+        {cartData?.data === null ? (
+          <Label primary bold headingtype="h4" style={{marginTop: 15}}>
+            No data
+          </Label>
+        ) : (
+          <View style={{marginTop: 5}}>
+            <View style={{height: '80%'}}>
+              <FlatList
+                data={cartData?.data}
+                renderItem={renderItem}
+                scrollEnabled={true}
+                keyExtractor={i => i}
+                extraData={updateData}
+                ListEmptyComponent={
+                  listloader ? (
+                    <ActivityIndicator
+                      size="large"
+                      color="#000000"
+                      style={{marginTop: height * 0.2}}
+                    />
+                  ) : (
+                    <NotFoundCart
+                      text="Cart"
+                      onPress={() => navigation.navigate('PRODUCTS')}
+                    />
+                  )
+                }
+                refreshControl={
+                  <RefreshControl
+                    onRefresh={onRefresh}
+                    refreshing={refreshing}
+                  />
+                }
+                contentContainerStyle={{
+                  paddingBottom: height * 0.06,
+                }}
+              />
+            </View>
+            {cartData?.data?.length > 0 ? (
+              <View style={styles.card2Wrap}>
+                <View style={styles.card2}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      width: widthPercentageToDP('83'),
+                    }}>
+                    <Text style={[styles.metaText, {fontSize: RFValue(17)}]}>
+                      Total
+                    </Text>
+                    <Text
+                      style={[
+                        styles.text,
+                        {fontWeight: 'bold', fontSize: RFValue(17)},
+                      ]}>
+                      {'AED '}
+                      {FormatNumber(+cartData?.sub_total)}
+                    </Text>
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      width: widthPercentageToDP('83'),
+                    }}>
+                    <Text style={styles.metaText}>Sub Total</Text>
+                    <Text style={styles.text}>
+                      {'AED '}
+                      {FormatNumber(Math.trunc(cartData?.total))}
+                    </Text>
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      width: widthPercentageToDP('83'),
+                    }}>
+                    <Text style={styles.metaText}>Vat 5%</Text>
+                    <Text style={styles.text}>
+                      {'AED '}
+                      {FormatNumber(Math.trunc(cartData?.vat))}
+                    </Text>
+                  </View>
+
+                  <TouchableOpacity
+                    onPress={() => {
+                      {
+                        Platform.OS === 'android'
+                          ? fun_initiatedcheckout()
+                          : null;
+                      }
+                      addCustomEvent();
+                      ModalState.current(true);
+                      PostData();
+                    }}
+                    disabled={activity}
                     style={{
                       height: heightConverter(55),
                       width: width - 25,
@@ -329,62 +362,80 @@ const index = ({props, navigation}) => {
                       borderBottomRightRadius: 10,
                       justifyContent: 'center',
                       alignItems: 'center',
-                    }}
-                    colors={['#420E92', '#E7003F']}>
-                    {activity ? (
-                      <ActivityIndicator size="small" color={'#fff'} />
-                    ) : (
-                      <Label primary font={16} bold style={{color: '#ffffff'}}>
-                        Checkout
-                      </Label>
-                    )}
-                  </LinearGradient>
-                </TouchableOpacity>
+                    }}>
+                    <LinearGradient
+                      start={{x: 0, y: 0}}
+                      end={{x: 1, y: 0}}
+                      style={{
+                        height: heightConverter(55),
+                        width: width - 25,
+                        position: 'absolute',
+                        bottom: 0,
+                        borderBottomLeftRadius: 10,
+                        borderBottomRightRadius: 10,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}
+                      colors={['#420E92', '#E7003F']}>
+                      {activity ? (
+                        <ActivityIndicator size="small" color={'#fff'} />
+                      ) : (
+                        <Label
+                          primary
+                          font={16}
+                          bold
+                          style={{color: '#ffffff'}}>
+                          Checkout
+                        </Label>
+                      )}
+                    </LinearGradient>
+                  </TouchableOpacity>
+                </View>
               </View>
-            </View>
-          ) : null}
-        </View>
-      )}
+            ) : null}
+          </View>
+        )}
 
-      <PaymentModals
-        ModalRef={ModalState}
-        details
-        total={cartData?.sub_total}
-        onload={() => {
-          onRefresh();
-        }}
-        yourBalance={
-          walletData?.wallet?.your_balance === null
-            ? 0
-            : walletData?.wallet?.your_balance
-        }
-      />
-      <Modals
-        ModalRef={ModalStateError}
-        Error
-        onClose={() => {
-          setModelState({
-            ...ModelState,
-            state: !ModelState.state,
-          });
-        }}
-      />
-      <BuyLifeCongrats
-        ModalRef={SucessModalState}
-        heading={'Congratulations'}
-        description={'Products bought'}
-        requestOnPress={() => {
-          SucessModalState.current(false);
-        }}
-        closeOnPress={() => {
-          SucessModalState.current(false);
-          onRefresh();
-          setModelState({
-            ...ModelState,
-            state: !ModelState.state,
-          });
-        }}
-      />
+        <PaymentModals
+          ModalRef={ModalState}
+          details
+          total={cartData?.sub_total}
+          onload={() => {
+            onRefresh();
+          }}
+          yourBalance={
+            walletData?.wallet?.your_balance === null
+              ? 0
+              : walletData?.wallet?.your_balance
+          }
+        />
+        <Modals
+          ModalRef={ModalStateError}
+          Error
+          onClose={() => {
+            setModelState({
+              ...ModelState,
+              state: !ModelState.state,
+            });
+          }}
+        />
+        <BuyLifeCongrats
+          ModalRef={SucessModalState}
+          heading={'Congratulations'}
+          description={'Products bought'}
+          requestOnPress={() => {
+            SucessModalState.current(false);
+          }}
+          closeOnPress={() => {
+            SucessModalState.current(false);
+            onRefresh();
+            setModelState({
+              ...ModelState,
+              state: !ModelState.state,
+            });
+          }}
+        />
+      </View>
     </SafeAreaView>
   );
 };

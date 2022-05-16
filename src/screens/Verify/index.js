@@ -24,6 +24,7 @@ import {useDispatch} from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
 const {width, height} = Dimensions.get('window');
 const index = ({route, navigation}) => {
+  const {Token1} = route?.params;
   const {signIn} = React.useContext(AuthContext);
   const email = route.params && route.params.email;
   const phone = route.params && route.params.phone;
@@ -36,7 +37,6 @@ const index = ({route, navigation}) => {
   const HandleClick = async () => {
     if (evref.current.validateVerify() && !ButtonRef.current.GetActivity()) {
       // phvref.current.validateVerify();
-
       ButtonRef.current.SetActivity(true);
       const body = JSONtoForm({
         two_factor_code: evref.current.getText(),
@@ -48,14 +48,14 @@ const index = ({route, navigation}) => {
         headers: {
           'Content-Type': 'multipart/form-data',
           Accept: 'application/json',
-          Authorization: `Bearer ${Token}`,
+          Authorization: `Bearer ${Token || Token1}`,
         },
         body,
       };
-
       await fetch(`${Config.API_URL}/verify/otp`, requestOptions)
         .then(async response => response.json())
         .then(async res => {
+          console.log('otpres', res);
           if (res.message && res.message === 'Congrats!! Account verified') {
             dispatch({
               type: types.USER_DATA,
@@ -68,8 +68,8 @@ const index = ({route, navigation}) => {
             //  return navigation.replace("Splash");
             signIn(token);
           } else {
-            Alert.alert('Error', res.message);
-            ButtonRef.current.SetActivity(false);
+            /*  Alert.alert('Error', res.message);
+            ButtonRef.current.SetActivity(false); */
           }
         })
         .catch(e => {
@@ -112,17 +112,7 @@ const index = ({route, navigation}) => {
               keyboardType="numeric"
               placeholderTextColor={Colors.MUTED}
             />
-            {/* <Label style={styles.Margin3}>Phone verification</Label>
-          <InputField
-            style={styles.MarginField}
-            fieldstyle={styles.Text}
-            placeholder="******"
-            keyboardType="numeric"
-            maxLength={6}
-            ref={phvref}
-            verify
-            placeholderTextColor={Colors.MUTED}
-          /> */}
+
             <LongButton
               style={[styles.Margin3, {backgroundColor: '#ffffff'}]}
               text="Verify"

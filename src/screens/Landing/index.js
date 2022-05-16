@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect} from 'react';
+import React, {useState, useRef, useEffect, useCallback} from 'react';
 import {
   View,
   Dimensions,
@@ -15,6 +15,7 @@ import {
   StatusBar,
   BackHandler,
 } from 'react-native';
+import {getWalletData} from '../../redux/actions';
 import {useDispatch, useSelector} from 'react-redux';
 import {FormatNumber, wait} from '../../Constants/Functions';
 import {SliderBox} from 'react-native-image-slider-box';
@@ -48,12 +49,23 @@ import {LeaderBoardWinners} from '../../redux/actions';
 import dynamicLinks from '@react-native-firebase/dynamic-links';
 import appsFlyer from 'react-native-appsflyer';
 const MYServer = 'https://node-winjoyserver-deploy.herokuapp.com/';
+/* import {useTapjoy} from 'react-native-tapjoy';
 
+const tapjoyOptions = {
+  sdkKeyIos: 'Q6nee290RvKnSpxjmYOxEQEBcoe5dGB3DvoOUq65NtjVQyjKdJRKLJ3UTxAo',
+  sdkKeyAndroid: 'Hq7jIdwHQXWCgJnT1H5ZdAECcDubXKblZ1Zpc2EmqiGnr1KDPShKerrWQZuA',
+  gcmSenderIdAndroid: '389658608176',
+  debug: true,
+}; */
+/* import {Settings, AppEventsLogger} from 'react-native-fbsdk-next';
+
+// Setting the facebook app id using setAppID
+// Remember to set CFBundleURLSchemes in Info.plist on iOS if needed
+Settings.setAppID('1149665975867657'); */
 const index = props => {
   const {t, i18n} = useTranslation();
   const ModelVersioncheck = useRef();
   const [headerValue, setHeaderValue] = useState(0);
-
   const [loader, setLoader] = useState(false);
   const [refreshing, setRefreshing] = React.useState(false);
   const [time, setTime] = useState('');
@@ -67,6 +79,7 @@ const index = props => {
   const [videoAction, setVideoAction] = useState(true);
   const [imgSlider, setImageSlider] = useState([]);
   const navigation = useNavigation();
+  const walletData = useSelector(state => state.app.walletData);
   const livePlans = useSelector(state => state.app.livePlans);
   const dispatch = useDispatch();
   const dispatch2 = useDispatch();
@@ -76,18 +89,49 @@ const index = props => {
   const dispatch6 = useDispatch();
   const dispatch7 = useDispatch();
   const dispatch8 = useDispatch();
-
-  console.log('deep', LandingData?.products);
+  //console.log('deep', LandingData?.products);
   const socket = socketIO(MYServer);
   const AddModalState = useRef();
+  //tapjoy
 
+  /*  const [
+    {tapjoyEvents},
+    {
+      initialiseTapjoy,
+      listenToEvent,
+      addTapjoyPlacement,
+      showTapjoyPlacement,
+      requestTapjoyPlacementContent,
+      isTapjoyConnected,
+      tapjoyListenForEarnedCurrency,
+      getTapjoyCurrencyBalance,
+      setTapjoyUserId,
+      spendTapjoyCurrency,
+    },
+  ] = useTapjoy(tapjoyOptions);
+  useEffect(() => {
+    const listeners = {};
+    tapjoyEvents.forEach(tapjoyEvent => {
+      listeners[tapjoyEvent] = listenToEvent(tapjoyEvent, evt => {
+        console.warn(evt);
+      });
+    });
+    return () => {
+      for (const key in listeners) {
+        if (listeners[key] && listeners[key].remove) {
+          listeners[key].remove();
+        }
+      }
+    };
+  }, [listenToEvent, tapjoyEvents]);
+ */
   const countDownFinishHandler = () => {
     console.log('hello');
     onRefresh();
   };
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-
+    dispatch6(getWalletData());
     dispatch(getLandingScreen());
     var CurrentDate = new Date().toLocaleString();
     var duration = dayjs(LandingData?.gameShow?.start_date).diff(
@@ -102,7 +146,21 @@ const index = props => {
     wait(500).then(() => setRefreshing(false));
   }, []);
 
+  appsFlyer.initSdk(
+    {
+      isDebug: true,
+      appId: '1613371170',
+      devKey: 'WsirNxAS4HZB9sjUxGjHtD',
+    },
+    result => {
+      console.log('result', result);
+    },
+    error => {
+      console.error(error);
+    },
+  );
   useEffect(() => {
+    dispatch6(getWalletData());
     dispatch8(getLiveShowPlans());
     dispatch5(AllCreatorsList());
     dispatch7(LeaderBoardWinners());
@@ -120,9 +178,9 @@ const index = props => {
     dispatch(getLandingScreen());
     appsFlyer.initSdk(
       {
+        isDebug: true,
+        appId: '1613371170',
         devKey: 'WsirNxAS4HZB9sjUxGjHtD',
-        isDebug: false, // set to true if you want to see data in the logs
-        appId: '7091989607339900929',
       },
       result => {
         console.log('result', result);
@@ -301,7 +359,46 @@ const index = props => {
       );
     }
   }
+  const eventName1 = 'af_list_view';
+  const eventValues1 = {
+    af_content_list: 1,
+    af_content_type: 'Home_products',
+  };
+  const fun_listview = () => {
+    appsFlyer.logEvent(
+      eventName1,
+      eventValues1,
+      res => {
+        console.log(res);
+      },
+      err => {
+        console.error(err);
+      },
+    );
+  };
 
+  const eventName = 'af_content_view';
+  const eventValues = {
+    af_price: 99,
+    af_content_id: 12,
+    af_content_type: 'General',
+    af_currency: 'AED',
+    af_content: 'Homeproducts',
+  };
+
+  const fun_contentview = () => {
+    appsFlyer.logEvent(
+      eventName,
+      eventValues,
+      res => {
+        console.log(res);
+      },
+      err => {
+        console.error(err);
+      },
+    );
+  };
+  //console.log('LandingData?.products', LandingData?.products);
   return (
     <>
       {LandingData?.gameShow?.status === 'on_boarding' ||
@@ -319,17 +416,15 @@ const index = props => {
               width: '100%',
               borderBottomRightRadius: 10,
               borderBottomLeftRadius: 10,
-              top: Platform.OS === 'android' ? 0 : height * 0.039,
+              top: Platform.OS === 'android' ? 0 : height * 0.05,
             }}
           />
-          {Platform.OS === 'android' ? (
-            LandingData && LandingData.updated_version ? (
-              <NewVersionmodal
-                updatedVersion={LandingData?.updated_version}
-                currentV={packageJson.version}
-                ModalRef={ModelVersioncheck}
-              />
-            ) : null
+          {LandingData && LandingData.updated_version ? (
+            <NewVersionmodal
+              updatedVersion={LandingData?.updated_version}
+              currentV={packageJson.version}
+              ModalRef={ModelVersioncheck}
+            />
           ) : null}
           <ScrollView
             onScroll={e => {
@@ -390,9 +485,9 @@ const index = props => {
                             },
                           ]}>
                           AED{' '}
-                          {userData?.balance
+                          {walletData?.wallet?.your_balance
                             ? parseFloat(
-                                FormatNumber(+userData?.balance),
+                                walletData?.wallet?.your_balance,
                               ).toFixed(2)
                             : 0}
                         </Text>
@@ -404,7 +499,7 @@ const index = props => {
                       navigation.navigate('MenuStack', {screen: 'BuyLife'})
                     }>
                     <ImageBackground
-                      resizeMode="center"
+                      resizeMode="cover"
                       style={{
                         width: 50,
                         height: 40,
@@ -558,6 +653,7 @@ const index = props => {
                       color: '#0B2142',
                       fontSize: 16,
                       fontFamily: 'Axiforma-Regular',
+                      lineHeight: Platform.OS === 'android' ? 10 : 28,
                     }}>
                     Shop More Win More
                   </Text>
@@ -572,11 +668,16 @@ const index = props => {
                   text="View all"
                   font={16}
                   shadowless
-                  onPress={() =>
+                  onPress={() => {
+                    // {
+                    //   Platform.OS === 'android' ? fun_contentview() : null;
+                    // }
+                    fun_contentview();
+                    fun_listview();
                     navigation.navigate('PRODUCTS', {
                       screen: 'PrizeList',
-                    })
-                  }
+                    });
+                  }}
                 />
               </View>
 
@@ -708,6 +809,7 @@ const index = props => {
                         color: '#0B2142',
                         fontSize: 16,
                         fontFamily: 'Axiforma',
+                        lineHeight: Platform.OS === 'android' ? 10 : 30,
                       }}>
                       Products by creators
                     </Text>

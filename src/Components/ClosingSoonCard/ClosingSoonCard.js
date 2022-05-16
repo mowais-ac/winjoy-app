@@ -51,7 +51,11 @@ function ClosingSoonCard({item, onPress}) {
           primary
           font={11}
           dark
-          style={{color: '#000000', marginVerstical: 5}}>
+          style={{
+            color: '#000000',
+            marginVerstical: 5,
+            lineHeight: Platform.OS === 'android' ? 0 : 20,
+          }}>
           Get a chance to
           <Label notAlign bold primary font={10} style={{color: '#E7003F'}}>
             {' '}

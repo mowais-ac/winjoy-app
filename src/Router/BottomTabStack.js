@@ -7,10 +7,13 @@ import {Colors} from '../Constants/Index';
 import TabButton from '../Components/TabButton';
 import Winners from '../screens/Winners/index';
 import Profile from '../screens/Profile';
+import ProfileStack from './ProfileStack';
 import Wallet from '../screens/Wallet';
+import WinnerStack from './WinnerStack';
 import I18n from 'react-native-i18n';
 // I18n.locale = "ar";
 import {strings} from '../i18n';
+import Cart from '../screens/Cart';
 const {width, height} = Dimensions.get('window');
 const Tab = createBottomTabNavigator();
 
@@ -48,7 +51,7 @@ export default function index() {
       />
       <Tab.Screen
         name={strings('bottom_tabs.winners')}
-        component={Winners}
+        component={WinnerStack}
         options={{
           tabBarLabel: 'WINNERS',
           tabBarIcon: ({color, size}) => <TabButton name={'WINNERS'} />,
@@ -64,7 +67,7 @@ export default function index() {
       />
       <Tab.Screen
         name={'PROFILE'}
-        component={Profile}
+        component={ProfileStack}
         options={{
           tabBarLabel: 'PROFILE',
           tabBarIcon: ({color, size}) => <TabButton name={'PROFILE'} />,

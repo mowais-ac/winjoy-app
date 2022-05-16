@@ -8,9 +8,10 @@ import {
   SafeAreaView,
   TouchableOpacity,
   Text,
+  Platform,
   ActivityIndicator,
 } from 'react-native';
-
+import appsFlyer from 'react-native-appsflyer';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import Config from 'react-native-config';
@@ -48,13 +49,50 @@ const index = ({navigation, route}) => {
   const ModalState = useRef();
   const dispatch = useDispatch();
   console.log('aftab', referral);
-
+  appsFlyer.initSdk(
+    {
+      isDebug: true,
+      appId: '1613371170',
+      devKey: 'WsirNxAS4HZB9sjUxGjHtD',
+    },
+    result => {
+      console.log('result', result);
+    },
+    error => {
+      console.error(error);
+    },
+  );
+  const eventName = 'af_complete_registration';
+  const eventValues = {
+    af_registration_method: 'Email',
+  };
+  const fun_completeregistration = () => {
+    appsFlyer.logEvent(
+      eventName,
+      eventValues,
+      res => {
+        console.log(res);
+      },
+      err => {
+        console.error(err);
+      },
+    );
+  };
   useEffect(async () => {
     /*  setReferral(
       referral_code?.referral_code ? referral_code?.referral_code : null,
     ); */
     setReferral(await EncryptedStorage.getItem('myreferral'));
   }, []);
+  /*  const removeValue = async () => {
+    try {
+      await AsyncStorage.removeItem('myreferral');
+    } catch (e) {
+      // remove error
+    }
+
+    console.log('referral remove Done.');
+  }; */
   const HandleClick = async () => {
     let isnull = false;
     if (
@@ -135,12 +173,13 @@ const index = ({navigation, route}) => {
         },
         body,
       };
-
+      console.log('bodyreg', body);
       await fetch(`${Config.API_URL}/auth/new_register`, requestOptions)
         .then(response => response.json())
         .then(async res => {
-          // console.log('res', res);
+          console.log('registerres', res);
           if (res.status && res.status.toLowerCase() === 'success') {
+            fun_completeregistration();
             await EncryptedStorage.setItem('Token', res.data.token);
             //console.log('res.data.token', res.data.token);
             r.current.SetActivity(false);
@@ -181,6 +220,7 @@ const index = ({navigation, route}) => {
       />
     );
   };
+
   return (
     <LinearGradient
       start={{x: 0, y: 0}}
@@ -193,9 +233,7 @@ const index = ({navigation, route}) => {
       <ScrollView>
         <KeyboardAwareScrollView keyboardDismissMode="interactive">
           <View style={styles.MainTop}>
-            <GoBack
-              
-            />
+            <GoBack />
             <Image source={Images.Logo} style={styles.Logo} />
             <Label bold headingtype="h1" style={styles.Margin}>
               {t('create_account')}
@@ -261,7 +299,9 @@ const index = ({navigation, route}) => {
               style={[styles.Margin, {backgroundColor: '#ffffff'}]}
               text={t('create_account')}
               font={17}
-              onPress={HandleClick}
+              onPress={() => {
+                HandleClick();
+              }}
               ref={r}
               textstyle={{color: '#E7003F'}}
             />
@@ -302,7 +342,7 @@ const index = ({navigation, route}) => {
 
 const styles = StyleSheet.create({
   MainTop: {
-    height: height * 1.04,
+    height: 'auto',
     alignItems: 'center',
   },
   Logo: {

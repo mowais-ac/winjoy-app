@@ -8,6 +8,7 @@ import {
   Alert,
   TouchableWithoutFeedback,
   Keyboard,
+  Platform,
   I18nManager,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
@@ -59,24 +60,18 @@ const index = ({navigation}) => {
     dynamicLinks()
       .getInitialLink()
       .then(async link => {
-        {
-          console.log('mylink2', link);
-        }
-        /* let urlParams = new URLSearchParams(`${link.url}`);
-        {
-        
-          console.log(
-            'urlparams',
-            urlParams.dict.map(i => i),
-          );
-          
-         // console.log('urlparams', urlParams.dict['referral'][0]);
-          console.log('urlparams1', urlParams.get('referral'));
-        } */
+        const myreferral = link.url.replace('https://winjoy.ae?referral=', '');
+        // let urlParams = new URLSearchParams(`${link.url}`);
+        // {
+        //   console.log('urlparams', urlParams);
+        //   const refr = urlParams.get('referral');
+        //   console.log('urlparams1', Object.entries(refr));
+        // }
         try {
           const refer = await EncryptedStorage.setItem(
             'myreferral',
-            link.url.slice(27),
+            myreferral,
+            //link.url.slice(27),
           );
         } catch (error) {
           console.log(error);
@@ -87,14 +82,14 @@ const index = ({navigation}) => {
           }
           navigation.navigate('Register', {
             // referral_code: urlParams.get('referral'),
-            referral_code: link.url.slice(27),
+            referral_code: myreferral,
+            //link.url.slice(27),
           });
         } else {
           alert(`${link.url}`);
         }
       });
   }, []);
-
   const LanguageChange = () => {
     LanguagePost();
     i18n.changeLanguage(lang).then(() => {
@@ -140,6 +135,35 @@ const index = ({navigation}) => {
         activityLang.current = false;
       });
   };
+  appsFlyer.initSdk(
+    {
+      isDebug: true,
+      appId: '1613371170',
+      devKey: 'WsirNxAS4HZB9sjUxGjHtD',
+    },
+    result => {
+      console.log('result', result);
+    },
+    error => {
+      console.error(error);
+    },
+  );
+  const eventName = 'af_login';
+  const eventValues = {
+    af_user_name: 'aftab',
+  };
+  const fun_login = () => {
+    appsFlyer.logEvent(
+      eventName,
+      eventValues,
+      res => {
+        console.log(res);
+      },
+      err => {
+        console.error(err);
+      },
+    );
+  };
   const HandleLogin = async () => {
     if (
       emailref.current.validatePhone() &&
@@ -148,7 +172,6 @@ const index = ({navigation}) => {
     ) {
       const phone_no = emailref.current.getText();
       const password = passref.current.getText();
-
       if ([phone_no, password].filter(e => e == null || e == '')?.length >= 1)
         return;
       ButtonRef.current.SetActivity(true);
@@ -169,46 +192,55 @@ const index = ({navigation}) => {
       await fetch(`${Config.API_URL}/auth/login`, requestOptions)
         .then(async response => response.json())
         .then(async res => {
-          // console.log('res', res);
+          if (res.message === 'Verification required') {
+            navigation.navigate('Verify', {
+              Token1: res.token,
+            });
+          }
+
+          console.log('loginres', res);
+
           tokenForLang.current = res?.data?.token;
           ButtonRef.current.SetActivity(false);
+
           if (res?.data?.token) {
-            if (res?.data?.user?.preferred_language === null) {
+            fun_login();
+            /* if (res?.data?.user?.preferred_language === null) {
               ModalStateLanguage.current(true);
+            } else  */
+
+            dispatch({
+              type: types.USER_DATA,
+              userData: res?.data?.user,
+              //  user: res.data.data,
+            });
+            dispatch2({
+              type: types.TOTAL_LIVES,
+              totalLives: res?.data?.user?.lives_count,
+            });
+            await EncryptedStorage.setItem('Token', res.data.token);
+            signIn(res.data.token);
+            // navigation.replace("HomeStack");
+            if (await IsSuspended(res.data.token))
+              return ModalState.current(true, {
+                heading: 'Account suspended',
+                Error:
+                  'Your account has been inactive/suspended. Please contact support for further details.',
+              });
+            if (await IsVerified(res.data.token)) {
+              await EncryptedStorage.setItem('Token', res.data.token);
+              signIn(res.data.token);
+              //  navigation.replace("HomeStack");
             } else {
               dispatch({
                 type: types.USER_DATA,
                 userData: res?.data?.user,
                 //  user: res.data.data,
               });
-              dispatch2({
-                type: types.TOTAL_LIVES,
-                totalLives: res?.data?.user?.lives_count,
+              navigation.replace('Verify', {
+                phone: phone_no,
+                token: res.data.token,
               });
-              await EncryptedStorage.setItem('Token', res.data.token);
-              signIn(res.data.token);
-              // navigation.replace("HomeStack");
-              if (await IsSuspended(res.data.token))
-                return ModalState.current(true, {
-                  heading: 'Account suspended',
-                  Error:
-                    'Your account has been inactive/suspended. Please contact support for further details.',
-                });
-              if (await IsVerified(res.data.token)) {
-                await EncryptedStorage.setItem('Token', res.data.token);
-                signIn(res.data.token);
-                //  navigation.replace("HomeStack");
-              } else {
-                dispatch({
-                  type: types.USER_DATA,
-                  userData: res?.data?.user,
-                  //  user: res.data.data,
-                });
-                navigation.replace('Verify', {
-                  phone: phone_no,
-                  token: res.data.token,
-                });
-              }
             }
           } else if (
             res?.message === 'Enter 6 Digit Code which sent on your mobile'
@@ -238,22 +270,6 @@ const index = ({navigation}) => {
           ButtonRef.current.SetActivity(false);
         });
     }
-  };
-  const eventName = 'af_login';
-  const eventValues = {
-    af_user_name: 'aftab',
-  };
-  const fun_login = () => {
-    appsFlyer.logEvent(
-      eventName,
-      //eventValues,
-      res => {
-        console.log(res);
-      },
-      err => {
-        console.error(err);
-      },
-    );
   };
 
   return (
@@ -293,7 +309,6 @@ const index = ({navigation}) => {
             textstyle={{color: '#E7003F'}}
             text={t('login')}
             onPress={() => {
-              fun_login();
               HandleLogin();
             }}
             ref={ButtonRef}

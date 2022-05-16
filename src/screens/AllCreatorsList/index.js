@@ -58,7 +58,7 @@ const index = ({route, navigation}) => {
   };
   return (
     <SafeAreaView style={styles.safeStyle}>
-      <ScrollView>
+      <ScrollView style={{backgroundColor: '#f6f1f3'}}>
         <LinearGradient
           start={{x: 0, y: 0}}
           end={{x: 1, y: 0}}

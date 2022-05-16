@@ -27,8 +27,8 @@ function LuckyDrawCard({style, onPress, finish, time, image}) {
             backgroundColor: '#ffffff',
             position: 'absolute',
 
-            bottom: Platform.OS === 'android' ? 10 : 2,
-            left: Platform.OS === 'android' ? 15 : 19,
+            bottom: 10,
+            left: 15,
           },
         ]}
         textstyle={{

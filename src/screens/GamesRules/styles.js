@@ -5,7 +5,7 @@ const {width, height} = Dimensions.get('window');
 export default StyleSheet.create({
   safeStyle: {
     flex: 1,
-    // backgroundColor:colors.background,
+    backgroundColor: '#420E92',
   },
   headerText: {
     color: '#ffffff',
@@ -50,6 +50,7 @@ export default StyleSheet.create({
     color: '#000000',
     fontFamily: 'Axiforma',
     paddingBottom: 10,
+    lineHeight: 17,
 
     // alignItems: 'center',
   },

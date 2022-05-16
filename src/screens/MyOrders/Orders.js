@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {
+  SafeAreaView,
   ScrollView,
   View,
   StyleSheet,
@@ -13,7 +14,6 @@ import {
 } from 'react-native';
 import NotFoundPurchase from '../../Components/NotFoundPurchase';
 import Background from '../../Components/Background';
-import SafeArea from '../../Components/SafeArea';
 import Label from '../../Components/Label';
 import Header from '../../Components/Header';
 import LinearGradient from 'react-native-linear-gradient';
@@ -173,8 +173,8 @@ const Orders = ({navigation}) => {
   };
 
   return (
-    <ScrollView>
-      <SafeArea>
+    <SafeAreaView style={{backgroundColor: '#420E92', marginBottom: 40}}>
+      <ScrollView style={{backgroundColor: '#f6f1f3'}}>
         <LinearGradient
           start={{x: 0, y: 0}}
           end={{x: 1, y: 0}}
@@ -236,8 +236,8 @@ const Orders = ({navigation}) => {
             />
           </>
         )}
-      </SafeArea>
-    </ScrollView>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 

@@ -23,6 +23,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import dynamicLinks from '@react-native-firebase/dynamic-links';
 import {getLiveShowPlans} from '../redux/actions';
 import {useNavigation} from '@react-navigation/native';
+import LeaderBoard from '../screens/LeaderBoard';
 const Stack = createNativeStackNavigator();
 
 function index(props) {
@@ -198,6 +199,7 @@ function index(props) {
               <Stack.Screen name="BottomTabStack" component={BottomTabStack} />
               <Stack.Screen name="MenuStack" component={MenuStack} />
               <Stack.Screen name="Cart" component={Cart} />
+
               <Stack.Screen
                 name="NotificationBellList"
                 component={NotificationBellList}

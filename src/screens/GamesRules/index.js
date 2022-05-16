@@ -71,6 +71,7 @@ const index = ({route, navigation}) => {
           }}
         />
         <ScrollView
+        
           onScroll={e => {
             setHeaderValue(e.nativeEvent.contentOffset.y);
           }}>
@@ -106,7 +107,7 @@ const index = ({route, navigation}) => {
               {data.map((item, index) => {
                 return (
                   <Text key={index} style={styles.paragraph}>
-                    <Text style={styles.heading}>*</Text> {item}
+                    {item}
                   </Text>
                 );
               })}

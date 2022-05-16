@@ -24,7 +24,7 @@ export default StyleSheet.create({
     height: '100%',
     borderRadius: 15,
     position: 'absolute',
-    borderWidth: 2,
+
     backgroundColor: '#d7dbf7',
   },
   text: {

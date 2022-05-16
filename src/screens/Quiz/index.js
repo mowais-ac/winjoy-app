@@ -389,57 +389,59 @@ const BackgroundVideo = ({route, navigation}) => {
             <ActivityIndicator size="large" color={'black'} top={300} />
           ) : (
             <>
-              <View style={{margin: 15, flexDirection: 'row'}}>
-                <View style={{flexDirection: 'row', minWidth: 50}}>
-                  <Icon name="person" size={25} color="#ffffff" />
-                  <Text style={{fontSize: 16, marginLeft: 2, color: '#ffffff'}}>
-                    {joinedUsers}
-                  </Text>
+              <View style={{marginTop: 30}}>
+                <View style={{margin: 15, flexDirection: 'row'}}>
+                  <View style={{flexDirection: 'row', minWidth: 50}}>
+                    <Icon name="person" size={25} color="#ffffff" />
+                    <Text
+                      style={{fontSize: 16, marginLeft: 2, color: '#ffffff'}}>
+                      {joinedUsers}
+                    </Text>
+                  </View>
+                  <View
+                    style={{
+                      opacity: 1.2,
+                      borderRadius: 10,
+                      backgroundColor: 'red',
+                      paddingHorizontal: 8,
+                      paddingVertical: 4,
+                      //height: 28,
+                      marginLeft: 20,
+                      marginTop: 5,
+                    }}>
+                    <Text
+                      style={{
+                        color: '#ffff',
+                        textAlign: 'center',
+                        fontSize: 16,
+                        fontFamily: 'Axiforma',
+                      }}>
+                      LIVE
+                    </Text>
+                  </View>
                 </View>
-                <View
+                <ImageBackground
+                  resizeMode={Platform.OS === 'android' ? 'center' : 'cover'}
                   style={{
-                    opacity: 1.2,
-                    borderRadius: 10,
-                    backgroundColor: 'red',
-                    paddingHorizontal: 8,
-                    paddingVertical: 3,
-                    //height: 28,
-                    marginLeft: 20,
-                    marginTop: 5,
-                  }}>
+                    width: 60,
+                    height: 50,
+                    top: height * 0.018,
+                    right: 10,
+                    position: 'absolute',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                  source={require('../../assets/imgs/pinkHeart.png')}>
                   <Text
                     style={{
-                      color: '#ffff',
-                      textAlign: 'center',
-                      fontSize: 16,
-                      fontFamily: 'Axiforma',
+                      color: '#E7003F',
+                      fontFamily: 'Axiforma-SemiBold',
+                      fontSize: RFValue(15),
                     }}>
-                    LIVE
+                    {totalLives ? totalLives : 0}
                   </Text>
-                </View>
+                </ImageBackground>
               </View>
-              <ImageBackground
-                resizeMode="center"
-                style={{
-                  width: 60,
-                  height: 50,
-                  top: height * 0.018,
-                  right: 10,
-                  position: 'absolute',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-                source={require('../../assets/imgs/pinkHeart.png')}>
-                <Text
-                  style={{
-                    color: '#E7003F',
-                    fontFamily: 'Axiforma-SemiBold',
-                    fontSize: RFValue(15),
-                  }}>
-                  {totalLives ? totalLives : 0}
-                </Text>
-              </ImageBackground>
-
               {gameShowCheck ? (
                 userEliminate.current ? (
                   <LinearGradient
@@ -669,6 +671,7 @@ const styles = StyleSheet.create({
   gradientView: {
     height: height,
     width: '100%',
+    //  marginVertical: Platform.OS === 'android' ? 0 : 10,
   },
   scrollViewStyle: {
     position: 'absolute',

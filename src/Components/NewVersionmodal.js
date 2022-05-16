@@ -14,6 +14,7 @@ import {Colors, Images} from '../Constants/Index';
 import {useNavigation} from '@react-navigation/native';
 import {RFValue} from 'react-native-responsive-fontsize';
 import LongButton from './LongButton';
+import {DeviceInfo} from 'react-native-device-info';
 const {width, height} = Dimensions.get('window');
 
 const Info_btn = props => {
@@ -23,7 +24,8 @@ const Info_btn = props => {
     state: false,
     details: null,
   });
-
+  const versionios = DeviceInfo.getVersion();
+  console.log('versionios', versionios);
   const HandleChange = (state, details = null, ForceSuccess = false) => {
     setModelState({state, details, ForceSuccess});
   };
@@ -73,50 +75,100 @@ const Info_btn = props => {
             }}>
             New Update is available
           </Text>
-          <Text
-            style={{
-              lineHeight: 22,
-              fontSize: 14,
-              textAlign: 'center',
-              marginTop: 10,
-              fontWeight: '400',
-              color: 'black',
-              fontFamily: 'Axiforma-Regular',
-              marginHorizontal: 10,
-            }}>
-            Seems like, your app is not up to date, please visit Google
-            playstore to our app.
-          </Text>
-          <View style={{marginTop: 15}}>
-            <TouchableOpacity
-              onPress={() =>
-                Linking.openURL(
-                  'https://play.google.com/store/apps/details?id=com.winjoy',
-                )
-              }
+          {Platform.OS === 'android' ? (
+            <Text
               style={{
-                alignSelf: 'center',
+                lineHeight: 22,
+                fontSize: 14,
+                textAlign: 'center',
+                marginTop: 10,
+                fontWeight: '400',
+                color: 'black',
+                fontFamily: 'Axiforma-Regular',
+                marginHorizontal: 10,
               }}>
-              <View
-                style={{
-                  height: 55,
-                  width: width * 0.9,
-                  justifyContent: 'center',
-                  backgroundColor: '#420e92',
-                  borderRadius: 40,
-                }}>
-                <Text
-                  style={{
-                    fontSize: 17,
+              Seems like, your app is not up to date, please visit Google
+              playstore to our app.
+            </Text>
+          ) : (
+            <Text
+              style={{
+                lineHeight: 22,
+                fontSize: 14,
+                textAlign: 'center',
+                marginTop: 10,
+                fontWeight: '400',
+                color: 'black',
+                fontFamily: 'Axiforma-Regular',
+                marginHorizontal: 10,
+              }}>
+              Seems like, your app is not up to date, please visit App store to
+              our app.
+            </Text>
+          )}
 
-                    color: '#ffff',
-                    textAlign: 'center',
-                    fontFamily: 'Axiforma-Bold',
+          <View style={{marginTop: 15}}>
+            {Platform.OS === 'android' ? (
+              <TouchableOpacity
+                onPress={() =>
+                  Linking.openURL(
+                    'https://play.google.com/store/apps/details?id=com.winjoy',
+                  )
+                }
+                style={{
+                  alignSelf: 'center',
+                }}>
+                <View
+                  style={{
+                    height: 55,
+                    width: width * 0.9,
+                    justifyContent: 'center',
+                    backgroundColor: '#420e92',
+                    borderRadius: 40,
                   }}>
-                  Go to Goolge Play Store
-                </Text>
-              </View>
-            </TouchableOpacity>
+                  <Text
+                    style={{
+                      fontSize: 17,
+
+                      color: '#ffff',
+                      textAlign: 'center',
+                      fontFamily: 'Axiforma-Bold',
+                    }}>
+                    Go to Goolge Play Store
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+                // onPress={() =>
+                //   Linking.openURL(
+                //     'https://play.google.com/store/apps/details?id=com.winjoy',
+                //   )
+                // }
+                style={{
+                  alignSelf: 'center',
+                }}>
+                <View
+                  style={{
+                    height: 55,
+                    width: width * 0.9,
+                    justifyContent: 'center',
+                    backgroundColor: '#420e92',
+                    borderRadius: 40,
+                  }}>
+                  <Text
+                    style={{
+                      fontSize: 17,
+
+                      color: '#ffff',
+                      textAlign: 'center',
+                      fontFamily: 'Axiforma-Bold',
+                    }}>
+                    Go to App Store
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            )}
 
             <TouchableOpacity
               onPress={() => setShowModal(false)}

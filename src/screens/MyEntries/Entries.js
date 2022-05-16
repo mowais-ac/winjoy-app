@@ -315,7 +315,7 @@ const Entries = ({navigation}) => {
         }}>
         <Header
           style={{
-            top: Platform.OS === 'android' ? 0 : height * 0.028,
+            top: Platform.OS === 'android' ? 0 : height * 0.03,
           }}
         />
 
@@ -366,7 +366,7 @@ const Entries = ({navigation}) => {
 const styles = StyleSheet.create({
   MainTop: {
     // height: height * 0.17,
-    marginVertical: 10,
+    marginTop: Platform.OS === 'android' ? 10 : 25,
   },
   header: {
     flexDirection: 'row',

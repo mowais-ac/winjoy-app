@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {
+  Platform,
   Text,
   View,
   StyleSheet,
@@ -13,6 +14,7 @@ import {
   KeyboardAvoidingView,
   ActivityIndicator,
 } from 'react-native';
+import appsFlyer from 'react-native-appsflyer';
 import CheckBox from '@react-native-community/checkbox';
 import Label from './Label';
 import LabelButton from './LabelButton';
@@ -184,7 +186,10 @@ const PaymentModals = props => {
           setActivity(false);
           try {
             console.log('res', res);
-            if (res.status === 'success') {
+            if (res) {
+              fun_purchase();
+              fun_purchaselog();
+              SucessModalState.current(true);
               {
                 console.log('res', res);
               }
@@ -195,7 +200,7 @@ const PaymentModals = props => {
                 counter: '',
               });
               //setSuccess(false);
-              SucessModalState.current(true);
+              // SucessModalState.current(true);
             } else if (res.status === 'action_required') {
               navigation.navigate('WebView', {
                 uri: res?.next_action?.use_stripe_sdk?.stripe_js,
@@ -269,10 +274,12 @@ const PaymentModals = props => {
             setActivity(false);
             try {
               console.log('res', res);
-              if (res.status === 'success') {
+              if (res) {
                 {
                   console.log('res', res);
                 }
+                fun_purchase();
+                fun_purchaselog();
                 await AsyncStorage.removeItem('ids');
                 await AsyncStorage.removeItem('expData');
                 dispatch({
@@ -302,6 +309,46 @@ const PaymentModals = props => {
       }
     }
   };
+  const eventName = 'af_purchase';
+  const eventValues = {
+    af_price: 99,
+    af_content_id: 13,
+    af_content_type: 'General',
+    af_currency: 'AED',
+    af_quantity: 1,
+    af_revenue: 3,
+  };
+  const fun_purchase = () => {
+    appsFlyer.logEvent(
+      eventName,
+      eventValues,
+      res => {
+        console.log(res);
+      },
+      err => {
+        console.error(err);
+      },
+    );
+  };
+  let info = {
+    publicKey: 'key',
+    currency: 'biz',
+    signature: 'sig',
+    purchaseData: 'data',
+    price: '123',
+    productIdentifier: 'identifier',
+    currency: 'AED',
+    transactionId: '1000000614252747',
+    additionalParameters: {foo: 'bar'},
+  };
+  const fun_purchaselog = () => {
+    appsFlyer.validateAndLogInAppPurchase(
+      info,
+      res => console.log(res),
+      err => console.log(err),
+    );
+  };
+
   return (
     <Modal
       animationType="slide"
@@ -527,8 +574,8 @@ const PaymentModals = props => {
                     }}
                     style={{
                       borderRadius: 100,
-                      width: '75%',
-                      height: 40,
+                      width: '85%',
+                      height: 50,
                       backgroundColor: '#420E92',
                       justifyContent: 'center',
                     }}>
@@ -856,7 +903,7 @@ const PaymentModals = props => {
                           lineHeight: 29,
                           fontWeight: 'bold',
                         }}>
-                        AED {props?.yourBalance}
+                        AED {parseFloat(props?.yourBalance).toFixed(2)}
                       </Text>
                     </View>
                     <View
@@ -929,6 +976,7 @@ const PaymentModals = props => {
                         }}
                         style={{
                           width: width * 0.9,
+
                           borderRadius: 10,
                           justifyContent: 'center',
                           alignItems: 'center',
@@ -1159,6 +1207,7 @@ const styles = StyleSheet.create({
     paddingLeft: width * 0.04,
     fontSize: RFValue(12),
     color: Colors.DARK_LABEL,
+    height: 45,
   },
   MarginLargeNumber: {
     //paddingLeft: width * 0.01,
@@ -1167,6 +1216,7 @@ const styles = StyleSheet.create({
     color: Colors.DARK_LABEL,
     letterSpacing: 10,
     width: '100%',
+    height: 45,
   },
   titleTxt: {
     marginTop: height * 0.01,

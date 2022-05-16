@@ -54,6 +54,7 @@ function FanJoyCard({style, id, name, fans, imageUrl, fluid}) {
             color: '#ffffff',
             fontFamily: 'Axiforma-Regular',
             fontSize: RFValue(11),
+            lineHeight: 20,
           }}>
           {nFormatter(fans)} Fans
         </Text>

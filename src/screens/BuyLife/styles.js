@@ -5,6 +5,8 @@ const {width, height} = Dimensions.get('window');
 export default StyleSheet.create({
   safeStyle: {
     flex: 1,
+    backgroundColor: '#420E92',
+    marginBottom: 40,
   },
   headerText: {
     color: '#D9FE51',

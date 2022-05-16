@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">winjoy</string>
+    <string name="facebook_app_id">1149665975867657</string>
+<string name="fb_login_protocol_scheme">fb1234</string>
+<string name="facebook_client_token">276234becf019f065b1572ce87cfcb3b</string>
+
 </resources>

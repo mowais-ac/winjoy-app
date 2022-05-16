@@ -132,7 +132,7 @@ const index = ({props, navigation}) => {
           width: '100%',
           borderBottomRightRadius: 10,
           borderBottomLeftRadius: 10,
-          top: Platform.OS === 'android' ? 0 : height * 0.028,
+          top: Platform.OS === 'android' ? 0 : height * 0.03,
         }}
       />
       <ScrollView
@@ -162,6 +162,7 @@ const index = ({props, navigation}) => {
               style={{
                 width: widthConverter(250),
                 marginLeft: 20,
+                marginTop: Platform.OS === 'android' ? 0 : 16,
                 justifyContent: 'center',
               }}>
               <Label font={14} notAlign bold style={{color: '#FFFFFF'}}>
@@ -222,6 +223,7 @@ const index = ({props, navigation}) => {
                       }
                       if (item.name === 'My purchases') {
                         navigation.navigate('Orders');
+                        //navigation.navigate('Tapjoy1');
                       }
                       if (item.name === 'My Tickets') {
                         navigation.navigate('Entries');
@@ -530,8 +532,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   avatarView: {
-    width: height * 0.105,
-    height: height * 0.105,
+    marginTop: Platform.OS === 'android' ? 0 : 15,
+    width: height * 0.1,
+    height: height * 0.1,
     borderRadius: heightConverter(65),
     borderWidth: 3,
     alignItems: 'center',

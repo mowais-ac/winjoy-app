@@ -5,7 +5,7 @@ import {Dimensions} from 'react-native';
 export default StyleSheet.create({
   safeStyle: {
     flex: 1,
-    // backgroundColor:colors.background,
+    backgroundColor: '#420E92',
   },
   headerText: {
     color: '#D9FE51',

@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {
+  Platform,
   View,
   StyleSheet,
   Dimensions,
@@ -47,7 +48,7 @@ const WithDrawModal = props => {
       props.onPressWithDrawal(props.accountId);
     }
   };
-  
+
   useEffect(() => {
     if (props.ModalRef) props.ModalRef.current = HandleChange;
   });
@@ -92,7 +93,11 @@ const WithDrawModal = props => {
               font={16}
               bold2
               dark
-              style={{width: 50, color: '#000000', top: 17}}>
+              style={{
+                width: 50,
+                color: '#000000',
+                top: Platform.OS === 'android' ? 17 : 25,
+              }}>
               AED
             </Label>
             <TextInput

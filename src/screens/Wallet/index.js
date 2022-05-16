@@ -124,209 +124,159 @@ const index = ({props, navigation}) => {
   };
 
   return (
-    <ScrollView
-      refreshControl={
-        <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
-      }>
-      <LinearGradient
-        start={{x: 0, y: 0}}
-        end={{x: 1, y: 0}}
-        colors={['#420E92', '#E7003F']}
-        style={{
-          height: 'auto',
-          borderBottomRightRadius: 20,
-          borderBottomLeftRadius: 20,
-        }}>
-        <Header
-          style={{
-            top: Platform.OS === 'android' ? 0 : height * 0.026,
-          }}
+    <SafeAreaView style={{backgroundColor: '#420E92'}}>
+      <ScrollView
+        style={{backgroundColor: '#f6f1f3'}}
+        refreshControl={
+          <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
+        }>
+        <LinearGradient
+          start={{x: 0, y: 0}}
+          end={{x: 1, y: 0}}
+          colors={['#420E92', '#E7003F']}
+          style={styles.lineargradient}>
+          <Header />
+          <View style={styles.info_mainView}>
+            <View style={styles.avatarView}>
+              <ProfilePicture
+                picture={userData?.profile_image}
+                id={userData?.id}
+                name={
+                  userData?.first_name.slice(0, 1) +
+                  userData?.last_name.slice(0, 1)
+                }
+                style={styles.avatarView}
+                font={28}
+              />
+            </View>
+
+            <View
+              style={{
+                width: widthConverter(250),
+                marginLeft: widthConverter(8),
+              }}>
+              <Text style={styles.userName}>
+                {userData?.first_name?.charAt(0)?.toUpperCase() +
+                  userData?.first_name?.slice(1)}{' '}
+                {userData?.last_name?.charAt(0)?.toUpperCase() +
+                  userData?.last_name?.slice(1)}
+              </Text>
+            </View>
+          </View>
+        </LinearGradient>
+
+        <WalletBlanceCard
+          yourBalance={
+            walletData?.wallet?.your_balance?.replace(
+              /\B(?=(\d{3})+(?!\d))/g,
+              ',',
+            ) === null
+              ? 0
+              : walletData?.wallet?.your_balance?.replace(
+                  /\B(?=(\d{3})+(?!\d))/g,
+                  ',',
+                )
+          }
+          onPressaccountdetails={() => accountmodal.current(true)}
+          //onPressWithdraw={() => ModalState.current(true)}
+          onPressTopup={() => ModalStateTopup.current(true)}
         />
-        <View
-          style={{
-            flexDirection: 'row',
-            width: widthConverter(420),
-            marginLeft: 25,
-            marginVertical: 10,
-            alignItems: 'center',
-          }}>
-          <View style={styles.avatarView}>
-            <ProfilePicture
-              picture={userData?.profile_image}
-              id={userData?.id}
-              name={
-                userData?.first_name.slice(0, 1) +
-                userData?.last_name.slice(0, 1)
-              }
-              style={styles.avatarView}
-              font={28}
+        <WalletLastPlayedCard
+          onPress={() => navigation.navigate('WINNERS')}
+          noOfQuestions={10}
+          wonPrize={
+            walletData?.wallet?.won_prize === null
+              ? 0
+              : walletData?.wallet?.won_prize
+          }
+        />
+        <View style={styles.mainView}>
+          <View style={{marginLeft: 30}}>
+            <Label notAlign primary font={14} bold style={{color: '#E7003F'}}>
+              {t('last_five_transcation')}
+            </Label>
+            <FlatList
+              showsVerticalScrollIndicator={false}
+              showsHorizontalScrollIndicator={false}
+              data={walletData?.transaction}
+              ListEmptyComponent={() => (
+                <View>
+                  <Text style={styles.text_trasactions}>No Transactions</Text>
+                </View>
+              )}
+              ItemSeparatorComponent={() => {
+                return <View style={styles.text_separator} />;
+              }}
+              renderItem={({item, i}) => {
+                return (
+                  <View key={i} style={styles.listView}>
+                    <View style={{marginTop: 10}}>
+                      <Image
+                        style={styles.tinyLogo}
+                        source={require('../../assets/imgs/lpgame.png')}
+                      />
+                    </View>
+                    <View
+                      style={{
+                        width: widthConverter(200),
+                        marginLeft: 15,
+                      }}>
+                      <Text style={styles.text}>AED {item?.amount}</Text>
+                      <Text style={styles.text2}>
+                        {dayjs(item.transaction_date).format('DD MMM, YYYY')}
+                      </Text>
+                    </View>
+                  </View>
+                );
+              }}
             />
           </View>
-
-          <View
-            style={{
-              width: widthConverter(250),
-              marginLeft: widthConverter(8),
-            }}>
-            <Text
-              style={{
-                color: '#FFFFFF',
-
-                fontFamily: 'Axiforma-Bold',
-                fontSize: 15,
-              }}>
-              {userData?.first_name?.charAt(0)?.toUpperCase() +
-                userData?.first_name?.slice(1)}{' '}
-              {userData?.last_name?.charAt(0)?.toUpperCase() +
-                userData?.last_name?.slice(1)}
-            </Text>
-          </View>
         </View>
-      </LinearGradient>
 
-      <WalletBlanceCard
-        yourBalance={
-          walletData?.wallet?.your_balance?.replace(
-            /\B(?=(\d{3})+(?!\d))/g,
-            ',',
-          ) === null
-            ? 0
-            : walletData?.wallet?.your_balance?.replace(
-                /\B(?=(\d{3})+(?!\d))/g,
-                ',',
-              )
-        }
-        onPressaccountdetails={() => accountmodal.current(true)}
-        //onPressWithdraw={() => ModalState.current(true)}
-        onPressTopup={() => ModalStateTopup.current(true)}
-      />
-      <WalletLastPlayedCard
-        onPress={() => navigation.navigate('WINNERS')}
-        noOfQuestions={10}
-        wonPrize={
-          walletData?.wallet?.won_prize === null
-            ? 0
-            : walletData?.wallet?.won_prize
-        }
-      />
+        <AddaccountModal
+          ModalRef={accountmodal}
+          details
+          onPressWithDrawal={accountId => onPressRequestWithdrawal(accountId)}
+          yourBalance={
+            walletData?.wallet?.your_balance === null
+              ? 0
+              : walletData?.wallet?.your_balance
+          }
+          AmmountHandleChange={text => setAmmount(text)}
+          ammount={ammount}
+          activity={activity}
+        />
 
-      <View
-        style={{
-          flex: 1,
-          width: width - 25,
-          marginTop: 5,
-          backgroundColor: '#ffffff',
-          margin: 10,
-          borderRadius: 10,
-          padding: 5,
-          alignItems: 'center',
-          elevation: 3,
-        }}>
-        <View style={{marginLeft: 30}}>
-          <Label notAlign primary font={14} bold style={{color: '#E7003F'}}>
-            {t('last_five_transcation')}
-          </Label>
-          <FlatList
-            data={walletData?.transaction}
-            ListEmptyComponent={() => (
-              <View>
-                <Text
-                  style={{
-                    marginTop: 15,
-                    color: '#000000',
-                    fontFamily: 'Axiforma-Regular',
-                    fontSize: 13,
-                  }}>
-                  No Transactions
-                </Text>
-              </View>
-            )}
-            ItemSeparatorComponent={() => {
-              return (
-                <View
-                  style={{
-                    marginTop: 5,
-                    height: 1,
-                    width: '92%',
-                    backgroundColor: '#dedae9',
-                  }}
-                />
-              );
-            }}
-            renderItem={({item}) => {
-              return (
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    width: widthConverter(300),
-                    marginTop: 7,
-                  }}>
-                  <View style={{marginTop: 10}}>
-                    <Image
-                      style={styles.tinyLogo}
-                      source={require('../../assets/imgs/lpgame.png')}
-                    />
-                  </View>
-                  <View
-                    style={{
-                      width: widthConverter(200),
-                      marginLeft: 15,
-                    }}>
-                    <Text style={styles.text}>AED {item?.amount}</Text>
-                    <Text style={styles.text2}>
-                      {dayjs(item.transaction_date).format('DD MMM, YYYY')}
-                    </Text>
-                  </View>
-                </View>
-              );
-            }}
-          />
-        </View>
-      </View>
+        <TopupPaymentModals ModalRef={ModalStateTopup} />
 
-      <AddaccountModal
-        ModalRef={accountmodal}
-        details
-        onPressWithDrawal={accountId => onPressRequestWithdrawal(accountId)}
-        yourBalance={
-          walletData?.wallet?.your_balance === null
-            ? 0
-            : walletData?.wallet?.your_balance
-        }
-        AmmountHandleChange={text => setAmmount(text)}
-        ammount={ammount}
-        activity={activity}
-      />
-
-      <TopupPaymentModals ModalRef={ModalStateTopup} />
-
-      <WithDrawModal
-        ModalRef={ModalState}
-        details
-        onPressWithDrawal={() => onPress()}
-        yourBalance={
-          walletData?.wallet?.your_balance === null
-            ? 0
-            : walletData?.wallet?.your_balance
-        }
-        AmmountHandleChange={text => setAmmount(text)}
-        ammount={ammount}
-        activity={activity}
-      />
-      <SuccessModal
-        ModalRef={ModalState2}
-        details
-        requestOnPress={() => ModalState2.current(false)}
-        closeOnPress={() => Combined_closed()}
-        ammount={ammount}
-        yourBalance={
-          walletData?.wallet?.your_balance === null
-            ? 0
-            : walletData?.wallet?.your_balance
-        }
-      />
-      <Modals ModalRef={ModalStateError} Error />
-    </ScrollView>
+        <WithDrawModal
+          ModalRef={ModalState}
+          details
+          onPressWithDrawal={() => onPress()}
+          yourBalance={
+            walletData?.wallet?.your_balance === null
+              ? 0
+              : walletData?.wallet?.your_balance
+          }
+          AmmountHandleChange={text => setAmmount(text)}
+          ammount={ammount}
+          activity={activity}
+        />
+        <SuccessModal
+          ModalRef={ModalState2}
+          details
+          requestOnPress={() => ModalState2.current(false)}
+          closeOnPress={() => Combined_closed()}
+          ammount={ammount}
+          yourBalance={
+            walletData?.wallet?.your_balance === null
+              ? 0
+              : walletData?.wallet?.your_balance
+          }
+        />
+        <Modals ModalRef={ModalStateError} Error />
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
@@ -336,9 +286,52 @@ const styles = StyleSheet.create({
     width: width * 0.4,
     backgroundColor: '#ffffff',
   },
+  listView: {
+    flexDirection: 'row',
+    width: widthConverter(300),
+    marginTop: 7,
+  },
+  info_mainView: {
+    flexDirection: 'row',
+    width: widthConverter(420),
+    marginLeft: 25,
+    marginVertical: 10,
+    alignItems: 'center',
+  },
+  mainView: {
+    flex: 1,
+    width: width - 25,
+    marginTop: 5,
+    backgroundColor: '#ffffff',
+    margin: 10,
+    borderRadius: 10,
+    padding: 5,
+    alignItems: 'center',
+    elevation: 3,
+  },
+  text_separator: {
+    marginTop: 5,
+    height: 1,
+    width: '92%',
+    backgroundColor: '#dedae9',
+  },
+  text_trasactions: {
+    marginTop: 15,
+    color: '#000000',
+    fontFamily: 'Axiforma-Regular',
+    fontSize: 13,
+  },
+  userName: {
+    color: '#FFFFFF',
+    fontFamily: 'Axiforma-Bold',
+    fontSize: 15,
+  },
+  lineargradient: {
+    height: 'auto',
+    borderBottomRightRadius: 20,
+    borderBottomLeftRadius: 20,
+  },
   avatarView: {
-    //position: 'absolute',
-
     width: widthConverter(70),
     height: widthConverter(70),
     borderRadius: heightConverter(130),

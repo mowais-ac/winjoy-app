@@ -22,6 +22,7 @@ import {getProducts} from '../../redux/actions';
 import {useDispatch, useSelector} from 'react-redux';
 import {useTranslation} from 'react-i18next';
 import {RFValue} from 'react-native-responsive-fontsize';
+import appsFlyer from 'react-native-appsflyer';
 const {width, height} = Dimensions.get('window');
 const index = ({props, navigation}) => {
   const {t} = useTranslation();
@@ -55,7 +56,25 @@ const index = ({props, navigation}) => {
     dispatch(getProducts(link));
     setUpdateData(!updateData);
   };
-  //console.log(productsData);
+  const eventName = 'af_add_to_cart';
+  const eventValues = {
+    af_price: 99,
+    af_content_id: 5,
+    af_currency: 'AED',
+    af_quantity: 1,
+  };
+  const fun_addtocart = () => {
+    appsFlyer.logEvent(
+      eventName,
+      eventValues,
+      res => {
+        console.log(res);
+      },
+      err => {
+        console.error(err);
+      },
+    );
+  };
   return (
     <SafeAreaView>
       <BackgroundRound height={0.3} />
@@ -201,6 +220,7 @@ const index = ({props, navigation}) => {
                   draw_description={item?.end_date}
                   data={item}
                   onPress={() => {
+                    fun_addtocart();
                     navigation.navigate('ProductDetail', {
                       productId: item?.product?.id,
                     });
