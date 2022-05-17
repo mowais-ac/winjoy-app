@@ -29,6 +29,7 @@ function SecondExperienceCard({
           fontFamily: 'Axiforma-SemiBold',
           width: width * 0.44,
           textAlign: 'center',
+          lineHeight: 25,
         }}>
         {short_desc}
       </Text>

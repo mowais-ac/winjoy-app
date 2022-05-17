@@ -34,6 +34,7 @@ import Modals from '../Components/Modals';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import types from '../redux/types';
 import {useDispatch} from 'react-redux';
+import {AppEventsLogger, Settings} from 'react-native-fbsdk-next';
 const {width, height} = Dimensions.get('window');
 
 const PaymentModals = props => {
@@ -119,6 +120,7 @@ const PaymentModals = props => {
     setActiveTab(tab);
   };
   console.log('is_wallet', is_wallet);
+
   const PostCreditCardInfo = async () => {
     let expData = await AsyncStorage.getItem('expData');
     let ids = await AsyncStorage.getItem('ids');
@@ -167,7 +169,9 @@ const PaymentModals = props => {
         type: 'products',
         is_wallet: is_wallet,
       };
-
+      {
+        console.log('paymentdata', data);
+      }
       const requestOptions = {
         method: 'POST',
         headers: {
@@ -177,18 +181,18 @@ const PaymentModals = props => {
         },
         body: JSONtoForm(data),
       };
-      {
-        console.log('paymentbody', requestOptions);
-      }
+      console.log('paymentbodyy', requestOptions.body);
       await fetch(`${Config.API_URL}/paynow`, requestOptions)
         .then(async response => response.json())
         .then(async res => {
           setActivity(false);
           try {
-            console.log('res', res);
-            if (res) {
+            console.log('respayment', res);
+            if (res.status === 200) {
               fun_purchase();
               fun_purchaselog();
+              fb_purchase();
+              fb_checkout();
               SucessModalState.current(true);
               {
                 console.log('res', res);
@@ -201,6 +205,10 @@ const PaymentModals = props => {
               });
               //setSuccess(false);
               // SucessModalState.current(true);
+            } else if (res.status === 'invalid') {
+              ModalErrorState.current(true, {
+                heading: 'Error',
+              });
             } else if (res.status === 'action_required') {
               navigation.navigate('WebView', {
                 uri: res?.next_action?.use_stripe_sdk?.stripe_js,
@@ -280,6 +288,8 @@ const PaymentModals = props => {
                 }
                 fun_purchase();
                 fun_purchaselog();
+                fb_purchase();
+                fb_checkout();
                 await AsyncStorage.removeItem('ids');
                 await AsyncStorage.removeItem('expData');
                 dispatch({
@@ -329,6 +339,14 @@ const PaymentModals = props => {
         console.error(err);
       },
     );
+  };
+  const fb_purchase = () => {
+    AppEventsLogger.logPurchase(45, 'AED', {parameters: '123'});
+  };
+  const fb_checkout = () => {
+    AppEventsLogger.logEvent('checkout', {
+      parameters: 'success',
+    });
   };
   let info = {
     publicKey: 'key',

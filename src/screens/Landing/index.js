@@ -49,20 +49,10 @@ import {LeaderBoardWinners} from '../../redux/actions';
 import dynamicLinks from '@react-native-firebase/dynamic-links';
 import appsFlyer from 'react-native-appsflyer';
 const MYServer = 'https://node-winjoyserver-deploy.herokuapp.com/';
-/* import {useTapjoy} from 'react-native-tapjoy';
-
-const tapjoyOptions = {
-  sdkKeyIos: 'Q6nee290RvKnSpxjmYOxEQEBcoe5dGB3DvoOUq65NtjVQyjKdJRKLJ3UTxAo',
-  sdkKeyAndroid: 'Hq7jIdwHQXWCgJnT1H5ZdAECcDubXKblZ1Zpc2EmqiGnr1KDPShKerrWQZuA',
-  gcmSenderIdAndroid: '389658608176',
-  debug: true,
-}; */
-/* import {Settings, AppEventsLogger} from 'react-native-fbsdk-next';
-
-// Setting the facebook app id using setAppID
-// Remember to set CFBundleURLSchemes in Info.plist on iOS if needed
-Settings.setAppID('1149665975867657'); */
+import {Settings, AppEventsLogger} from 'react-native-fbsdk-next';
+import DeviceInfo from 'react-native-device-info';
 const index = props => {
+  Settings.setAppID('1149665975867657');
   const {t, i18n} = useTranslation();
   const ModelVersioncheck = useRef();
   const [headerValue, setHeaderValue] = useState(0);
@@ -419,11 +409,13 @@ const index = props => {
               top: Platform.OS === 'android' ? 0 : height * 0.05,
             }}
           />
+          {console.log('iosv', LandingData?.updated_version_ios)}
           {LandingData && LandingData.updated_version ? (
             <NewVersionmodal
               updatedVersion={LandingData?.updated_version}
               currentV={packageJson.version}
               ModalRef={ModelVersioncheck}
+              updatedVersionios={LandingData?.updated_version_ios}
             />
           ) : null}
           <ScrollView
@@ -653,7 +645,7 @@ const index = props => {
                       color: '#0B2142',
                       fontSize: 16,
                       fontFamily: 'Axiforma-Regular',
-                      lineHeight: Platform.OS === 'android' ? 10 : 28,
+                      lineHeight: Platform.OS === 'android' ? 20 : 28,
                     }}>
                     Shop More Win More
                   </Text>
@@ -809,7 +801,7 @@ const index = props => {
                         color: '#0B2142',
                         fontSize: 16,
                         fontFamily: 'Axiforma',
-                        lineHeight: Platform.OS === 'android' ? 10 : 30,
+                        lineHeight: Platform.OS === 'android' ? 22 : 30,
                       }}>
                       Products by creators
                     </Text>

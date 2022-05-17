@@ -29,6 +29,7 @@ import {
   IsSuspended,
   GetUserDeviceDetails,
 } from '../../Constants/Functions';
+import {Settings, AppEventsLogger} from 'react-native-fbsdk-next';
 import appsFlyer from 'react-native-appsflyer';
 import {useTranslation} from 'react-i18next';
 import Config from 'react-native-config';
@@ -38,9 +39,11 @@ import SelectLanguageModal from '../../Components/SelectLanguageModal';
 import RNRestart from 'react-native-restart';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import dynamicLinks from '@react-native-firebase/dynamic-links';
+
 const {width, height} = Dimensions.get('window');
 import {URLSearchParams} from '@visto9259/urlsearchparams-react-native';
 const index = ({navigation}) => {
+  Settings.setAppID('1149665975867657');
   const {t, i18n} = useTranslation();
   const dispatch = useDispatch();
   const dispatch2 = useDispatch();
@@ -90,6 +93,10 @@ const index = ({navigation}) => {
         }
       });
   }, []);
+
+  const fb_Login = () => {
+    AppEventsLogger.logEvent('Login', {parameters: 'Winjoy_user'});
+  };
   const LanguageChange = () => {
     LanguagePost();
     i18n.changeLanguage(lang).then(() => {
@@ -135,6 +142,7 @@ const index = ({navigation}) => {
         activityLang.current = false;
       });
   };
+
   appsFlyer.initSdk(
     {
       isDebug: true,
@@ -150,7 +158,7 @@ const index = ({navigation}) => {
   );
   const eventName = 'af_login';
   const eventValues = {
-    af_user_name: 'aftab',
+    af_user_name: 'Winjoy_user',
   };
   const fun_login = () => {
     appsFlyer.logEvent(
@@ -205,6 +213,7 @@ const index = ({navigation}) => {
 
           if (res?.data?.token) {
             fun_login();
+            fb_Login();
             /* if (res?.data?.user?.preferred_language === null) {
               ModalStateLanguage.current(true);
             } else  */

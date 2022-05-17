@@ -29,6 +29,7 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview';
 import {useTranslation} from 'react-i18next';
 import AddaccountModal from '../Components/AddaccountModal';
 import Modal from 'react-native-modal';
+import Modals from './Modals';
 const {width, height} = Dimensions.get('window');
 
 const WithDrawModal = props => {
@@ -37,6 +38,7 @@ const WithDrawModal = props => {
     state: false,
     details: null,
   });
+  const ModalErrorState = useRef();
   const accountmodal = useRef();
   const withdrawprocessHandle = () => {
     const a = props.yourBalance - props.ammount;
@@ -153,6 +155,7 @@ const WithDrawModal = props => {
           </View>
         </KeyboardAwareScrollView>
       </View>
+      <Modals ModalRef={ModalErrorState} Error />
     </Modal>
   );
 };

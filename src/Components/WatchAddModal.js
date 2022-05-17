@@ -29,6 +29,7 @@ import * as Progress from 'react-native-progress';
 import {getLiveShowPlans} from '../redux/actions';
 import {FormatNumber, wait} from '../Constants/Functions';
 import types from '../redux/types';
+import {Settings, AppEventsLogger} from 'react-native-fbsdk-next';
 const {width, height} = Dimensions.get('window');
 //let timer = () => { };
 const WatchAddModal = props => {
@@ -44,12 +45,18 @@ const WatchAddModal = props => {
   const DeclineRef = useRef();
   const [refreshing, setRefreshing] = useState(false);
   const navigation = useNavigation();
+
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     dispatch(getLiveShowPlans());
     props.refreshVideo();
     wait(10).then(() => setRefreshing(false));
   }, []);
+  const fb_watchvideo = () => {
+    AppEventsLogger.logEvent('watch_video_Ad', {
+      parameters: 'success',
+    });
+  };
   const getData = async () => {
     try {
       const Token = await EncryptedStorage.getItem('Token');
@@ -79,6 +86,7 @@ const WatchAddModal = props => {
             state: (ModelState.state = false),
           });
           //dispatch(getLiveShowPlans());
+          fb_watchvideo();
           onRefresh();
         } else {
           alert(json);

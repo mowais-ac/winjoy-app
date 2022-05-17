@@ -37,6 +37,8 @@ import BuyLifeCongrats from '../../Components/BuyLifeCongrats';
 import Modals from '../../Components/Modals';
 import {ProductDetails} from '../../redux/actions';
 import {useIsFocused, useFocusEffect} from '@react-navigation/native';
+import {AppEventsLogger, Settings} from 'react-native-fbsdk-next';
+
 const ProductDetail = ({props, navigation, route}) => {
   const cartData = useSelector(state => state.app.cartData);
   const isFocused = useIsFocused();
@@ -74,11 +76,13 @@ const ProductDetail = ({props, navigation, route}) => {
   }, []);
   const onRefresh2 = React.useCallback(() => {
     dispatch3(GetCartData());
-    wait(100).then(() => setRefreshing(false));
+    wait(80).then(() => setRefreshing(false));
   }, []);
 
   useEffect(() => {
+    Settings.setAppID('1149665975867657');
     _Api(productId);
+
     firebase.app();
     firebase.analytics();
   }, []);
@@ -199,6 +203,11 @@ const ProductDetail = ({props, navigation, route}) => {
       },
     );
   };
+  const fb_addtocart = () => {
+    AppEventsLogger.logEvent('addtocart', {
+      parameters: pd?.product?.luckydraw?.prize_title,
+    });
+  };
   return (
     <>
       {LandingData?.gameShow?.status === 'on_boarding' ||
@@ -207,9 +216,9 @@ const ProductDetail = ({props, navigation, route}) => {
       ) : (
         <SafeAreaView
           style={{
-            height: '100%',
+            height: '76%',
             // paddingBottom: 120,
-            backgroundColor: '#420E92',
+            backgroundColor: Platform.OS === 'android' ? null : '#420E92',
           }}>
           <ScrollView
             style={{backgroundColor: '#f6f1f3'}}
@@ -226,7 +235,7 @@ const ProductDetail = ({props, navigation, route}) => {
               <ActivityIndicator size="large" color="#000000" />
             ) : (
               <View style={{paddingHorizontal: 15}}>
-                <View style={[styles.upperView]}>
+                <View style={styles.upperView}>
                   <Card
                     images={pd?.product?.images}
                     updated_stocks={parseInt(
@@ -317,7 +326,7 @@ const ProductDetail = ({props, navigation, route}) => {
                     primary
                     font={16}
                     bold
-                    style={{color: '#E7003F'}}>
+                    style={{marginTop: 4, color: '#E7003F', lineHeight: 28}}>
                     Product Details
                   </Label>
                   <Label
@@ -395,13 +404,11 @@ const ProductDetail = ({props, navigation, route}) => {
                 <TouchableOpacity
                   disabled={activity}
                   onPress={() => {
-                    // {
-                    //   Platform.OS === 'android' ? fun_addtocart() : null;
-                    // }
+                    dispatch3(GetCartData());
+                    fb_addtocart();
                     fun_addtocart();
                     addCustomEvent();
                     !Loading && SaveIdInfo();
-                    onRefresh2();
                   }}>
                   <LinearGradient
                     start={{x: 0, y: 0}}
@@ -489,7 +496,8 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   upperView: {
-    marginTop: -135,
+    // marginTop: Platform.OS === 'android' ? -height * 0.13 : -135,
+    marginTop: -height * 0.142,
     //position: 'absolute',
     width: '100%',
   },
@@ -505,7 +513,7 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   card2Wrap: {
-    bottom: 10,
+    top: Platform.OS === 'android' ? 540 : 600,
     left: 0,
     position: 'absolute',
     paddingHorizontal: 15,
@@ -539,6 +547,7 @@ const styles = StyleSheet.create({
     minHeight: 100,
   },
   metaText: {
+    lineHeight: 20,
     color: '#000000',
     fontFamily: 'Axiforma-Regular',
   },

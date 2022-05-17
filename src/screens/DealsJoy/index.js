@@ -11,6 +11,7 @@ import {
   Image,
   Text,
 } from 'react-native';
+import {AppEventsLogger, Settings} from 'react-native-fbsdk-next';
 import {wait} from '../../Constants/Functions';
 import Label from '../../Components/Label';
 const {width, height} = Dimensions.get('window');
@@ -86,7 +87,12 @@ const index = ({props, navigation}) => {
       );
     }
   }
-  console.log('dealjoy', dealsJoyData?.products);
+  const fb_addtocart = () => {
+    AppEventsLogger.logEvent('addtocart_dealzjoy', {
+      parameters: 'success',
+    });
+  };
+  // console.log('dealjoy', dealsJoyData?.products);
   return (
     <ScrollView
       style={{backgroundColor: '#ffffff'}}
@@ -197,6 +203,7 @@ const index = ({props, navigation}) => {
             renderItem={({item}) => (
               <ClosingSoonCard
                 onPress={() => {
+                  fb_addtocart();
                   navigation.navigate('ProductDetail', {
                     productId: item?.product?.id,
                   });

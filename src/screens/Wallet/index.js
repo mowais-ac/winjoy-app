@@ -55,7 +55,7 @@ const index = ({props, navigation}) => {
   const ModalStateTopup = useRef();
   const ModalState = useRef();
   const ModalState2 = useRef();
-  const ModalStateError = useRef();
+  const ModalErrorState = useRef();
   const [headerValue, setHeaderValue] = useState(0);
   const [activity, setActivity] = useState(false);
   const accountmodal = useRef();
@@ -97,23 +97,17 @@ const index = ({props, navigation}) => {
 
       await fetch(`${Config.API_URL}/withdrawal`, requestOptions)
         .then(async response => response.json())
-
         .then(async res => {
-          console.log('ress', res);
+          setActivity(false);
+          console.log('resswith', res);
           if (res.status === 'error') {
-            ModalStateError.current(true, {
-              heading: 'Error',
-              Error: res.message,
-              array: res.errors ? Object.values(res.errors) : [],
-            });
+            ModalErrorState.current(true);
           } else {
             dispatch(getWalletData());
             ModalState.current(false);
             ModalStateTopup.current(false);
             ModalState2.current(true);
           }
-
-          setActivity(false);
         })
         .catch(e => {});
     }
@@ -262,6 +256,8 @@ const index = ({props, navigation}) => {
           ammount={ammount}
           activity={activity}
         />
+
+        <Modals ModalRef={ModalErrorState} Alert />
         <SuccessModal
           ModalRef={ModalState2}
           details
@@ -274,7 +270,6 @@ const index = ({props, navigation}) => {
               : walletData?.wallet?.your_balance
           }
         />
-        <Modals ModalRef={ModalStateError} Error />
       </ScrollView>
     </SafeAreaView>
   );

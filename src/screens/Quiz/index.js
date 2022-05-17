@@ -8,6 +8,7 @@ import React, {
   useCallback,
 } from 'react';
 import {
+  Platform,
   Text,
   View,
   Dimensions,
@@ -389,7 +390,7 @@ const BackgroundVideo = ({route, navigation}) => {
             <ActivityIndicator size="large" color={'black'} top={300} />
           ) : (
             <>
-              <View style={{marginTop: 30}}>
+              <View style={{marginTop: Platform.OS === 'android' ? 2.5 : 30}}>
                 <View style={{margin: 15, flexDirection: 'row'}}>
                   <View style={{flexDirection: 'row', minWidth: 50}}>
                     <Icon name="person" size={25} color="#ffffff" />

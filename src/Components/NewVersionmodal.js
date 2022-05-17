@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {
+  Platform,
   Image,
   Text,
   View,
@@ -14,7 +15,7 @@ import {Colors, Images} from '../Constants/Index';
 import {useNavigation} from '@react-navigation/native';
 import {RFValue} from 'react-native-responsive-fontsize';
 import LongButton from './LongButton';
-import {DeviceInfo} from 'react-native-device-info';
+import DeviceInfo from 'react-native-device-info';
 const {width, height} = Dimensions.get('window');
 
 const Info_btn = props => {
@@ -26,12 +27,20 @@ const Info_btn = props => {
   });
   const versionios = DeviceInfo.getVersion();
   console.log('versionios', versionios);
+  let buildNumber = DeviceInfo.getBuildNumber();
+  console.log('buildNumber', buildNumber);
   const HandleChange = (state, details = null, ForceSuccess = false) => {
     setModelState({state, details, ForceSuccess});
   };
   useEffect(() => {
-    if (parseInt(props.updatedVersion) !== parseInt(props.currentV)) {
-      setShowModal(true);
+    if (Platform.OS === 'ios') {
+      if (buildNumber !== parseInt(props.updatedVersionios)) {
+        setShowModal(true);
+      }
+    } else {
+      if (parseInt(props.updatedVersion) !== parseInt(props.currentV)) {
+        setShowModal(true);
+      }
     }
     if (props.ModalRef) props.ModalRef.current = HandleChange;
   }, []);

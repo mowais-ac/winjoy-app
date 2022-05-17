@@ -15,7 +15,7 @@ import {
   Platform,
   ScrollView,
 } from 'react-native';
-
+import {Settings, AppEventsLogger} from 'react-native-fbsdk-next';
 import {firebase} from '@react-native-firebase/analytics';
 import Background from '../../Components/Background';
 import SafeArea from '../../Components/SafeArea';
@@ -83,6 +83,7 @@ const index = ({props, navigation}) => {
   const PostData = async () => {
     ModalState.current(true);
   };
+
   appsFlyer.initSdk(
     {
       isDebug: true,
@@ -122,6 +123,7 @@ const index = ({props, navigation}) => {
   useEffect(() => {
     dispatch6(getWalletData());
     dispatch(GetCartData());
+
     firebase.app();
     firebase.analytics();
   }, []);
@@ -142,6 +144,7 @@ const index = ({props, navigation}) => {
       counter: counterMain - qty,
     });
   };
+
   const [active, setactive] = useState(false);
 
   const Switchhandle = tab => {
@@ -194,8 +197,8 @@ const index = ({props, navigation}) => {
               right: 20,
             }}
             onPress={() => {
-              remove_from_cart();
               RemoveItem(item.id, item?.qty);
+              remove_from_cart();
             }}>
             {loading && item.id === id ? (
               <ActivityIndicator
@@ -445,7 +448,7 @@ const styles = StyleSheet.create({
     height: height * 0.18,
   },
   card2Wrap: {
-    top: '104%',
+    top: '100%',
     bottom: 2,
     left: 0,
     position: 'absolute',

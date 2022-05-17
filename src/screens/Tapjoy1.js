@@ -17,7 +17,7 @@ const tapjoyOptions = {
   gcmSenderIdAndroid: '389658608176',
   debug: true,
 };
-
+// Hq7jIdwHQXWCgJnT1H5ZdAECcDubXKblZ1Zpc2EmqiGnr1KDPShKerrWQZuA;
 const styles = StyleSheet.create({
   scrollView: {
     backgroundColor: '#fff',
@@ -30,6 +30,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
   },
   sectionTitle: {
+    marginTop: 15,
     fontSize: 24,
     fontWeight: '600',
     color: 'red',
@@ -50,7 +51,6 @@ const Tapjoy1 = () => {
     {tapjoyEvents},
     {
       initialiseTapjoy,
-      listenToEvent,
       addTapjoyPlacement,
       showTapjoyPlacement,
       requestTapjoyPlacementContent,
@@ -59,66 +59,46 @@ const Tapjoy1 = () => {
 
   const [connected, setConnected] = useState(false);
 
-  const listenForEarnedCurrencyCallback = useCallback(
-    ({amount, currencyName}) => {
-      alert(`Earned ${amount} ${currencyName}`);
-    },
-    [],
-  );
-
-  useEffect(() => {
-    const tapjoyEvent = 'onPlacementContentReady';
-    const listeners = {tapjoyEvent};
-
-    tapjoyEvents.forEach(tapjoyEvent => {
-      listeners[tapjoyEvent] = listenToEvent(tapjoyEvent, evt => {
-        console.log(evt);
-      });
-    });
-
-    return () => {
-      for (const key in listeners) {
-        if (listeners[key] && listeners[key].remove) {
-          listeners[key].remove();
-        }
-      }
-    };
-  }, [listenToEvent, tapjoyEvents]);
-
   useEffect(() => {
     const foo = async () => {
       try {
         const initialized = await initialiseTapjoy();
-
+        console.log('001', initialized);
         setConnected(true);
-
         if (initialized) {
-          const placementAdded = await addTapjoyPlacement('InterstitialVideo');
-          console.log(placementAdded);
-          {
-            console.log('placementAdded', placementAdded);
-          }
-          if (placementAdded) {
-            const contentRequested = await requestTapjoyPlacementContent(
-              'InterstitialVideo',
-            );
-            console.log(contentRequested);
+          console.log('002 initialized', initialized);
+          const placementAdded = await addTapjoyPlacement('AppLaunch');
+          console.log('placementAdded: ', placementAdded);
 
-            // if (contentRequested) {
-            //   setTimeout(async () => {
-            //     const placementShowed = await showTapjoyPlacement('InterstitialVideo');
-            //     console.log(placementShowed);
-            //   }, 5000)
-            // }
+          const contentRequested = await requestTapjoyPlacementContent(
+            'AppLaunch',
+          );
+          console.warn('003', contentRequested);
+
+          if (contentRequested) {
+            setTimeout(async () => {
+              const placementShowed = await showTapjoyPlacement('AppLaunch');
+              console.warn('004', placementShowed);
+            }, 5000);
           }
         }
       } catch (e) {
         setConnected(false);
-        alert(e.message);
+        console.log('error 001:', e.message);
       }
     };
-    console.log('tapjoyEvents', tapjoyEvents);
+
     foo();
+  }, []);
+
+  useEffect(async () => {
+    try {
+      await showTapjoyPlacement('AppLaunch');
+      // tapjoy placement content is showing
+    } catch (e) {
+      console.log('002 err:', e.message);
+      // placement not added, or content not ready
+    }
   }, []);
 
   return (
@@ -138,23 +118,32 @@ const Tapjoy1 = () => {
             </View>
             <View style={styles.sectionContainer}>
               {connected && (
-                <Button
-                  title="Show Placement"
-                  style={styles.sectionTitle}
-                  onPress={async () => {
-                    try {
-                      await requestTapjoyPlacementContent('InterstitialVideo');
-                    } catch (e) {
-                      console.log(e);
-                    }
-
-                    try {
-                      await showTapjoyPlacement('InterstitialVideo');
-                    } catch (e) {
-                      console.log(e);
-                    }
-                  }}
-                />
+                <>
+                  <Button
+                    title="request Placement"
+                    style={styles.sectionTitle}
+                    onPress={async () => {
+                      try {
+                        const reqPlacement =
+                          await requestTapjoyPlacementContent('AppLaunch');
+                        console.log('reqPlacement:: ', reqPlacement);
+                      } catch (e) {
+                        console.log(e);
+                      }
+                    }}
+                  />
+                  <Button
+                    title="Show Placement"
+                    style={styles.sectionTitle}
+                    onPress={async () => {
+                      try {
+                        await showTapjoyPlacement('AppLaunch');
+                      } catch (e) {
+                        console.log('err show placement: ', e.message);
+                      }
+                    }}
+                  />
+                </>
               )}
             </View>
           </View>

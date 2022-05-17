@@ -22,6 +22,7 @@ import Label from '../../Components/Label';
 import LabelButton from '../../Components/LabelButton';
 import LongButton from '../../Components/LongButton';
 import LinearGradient from 'react-native-linear-gradient';
+import {Settings, AppEventsLogger} from 'react-native-fbsdk-next';
 import {
   JSONtoForm,
   IsVerified,
@@ -77,6 +78,9 @@ const index = ({navigation, route}) => {
         console.error(err);
       },
     );
+  };
+  const fb_Register = () => {
+    AppEventsLogger.logEvent('register', {parameters: 'Winjoy_user'});
   };
   useEffect(async () => {
     /*  setReferral(
@@ -180,6 +184,7 @@ const index = ({navigation, route}) => {
           console.log('registerres', res);
           if (res.status && res.status.toLowerCase() === 'success') {
             fun_completeregistration();
+            fb_Register();
             await EncryptedStorage.setItem('Token', res.data.token);
             //console.log('res.data.token', res.data.token);
             r.current.SetActivity(false);
