@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "389658608176-bu6lgf18qsu3ov6s1r7cik3pmlsnms3i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.winjoy",
+            "certificate_hash": "9536c6008915ce583988722d33acb24013bb4f55"
+          }
+        },
+        {
           "client_id": "389658608176-lv2ddmmfpnv2uoaf5nf333e5jj4oku7o.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,6 +37,14 @@
             {
               "client_id": "389658608176-lv2ddmmfpnv2uoaf5nf333e5jj4oku7o.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "389658608176-jvgaqjpde89uvibs7h3veu5ogvk68tjv.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.winjoyae.app",
+                "app_store_id": "1613371170"
+              }
             }
           ]
         }

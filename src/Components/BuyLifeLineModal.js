@@ -22,7 +22,6 @@ import ProfilePicture from './ProfilePicture';
 import {RFValue} from 'react-native-responsive-fontsize';
 import LinearGradient from 'react-native-linear-gradient';
 import {heightConverter} from './Helpers/Responsive';
-
 import {useSelector, useDispatch} from 'react-redux';
 import types from '../redux/types';
 const {width, height} = Dimensions.get('window');
@@ -32,9 +31,7 @@ const BuyLifeLineModal = props => {
     details: null,
   });
   const dispatch = useDispatch();
-
   const navigation = useNavigation();
-
   useEffect(() => {
     if (props.ModalRef) props.ModalRef.current = HandleChange;
   });
@@ -57,11 +54,9 @@ const BuyLifeLineModal = props => {
         type: types.TOTAL_LIVES,
         totalLives: json?.lives,
       });
-
       alert(json.message);
     } catch (error) {}
   };
-
   const HandleChange = (state, details = null, ForceSuccess = false) => {
     setModelState({state, details, ForceSuccess});
   };

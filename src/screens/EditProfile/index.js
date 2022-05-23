@@ -355,18 +355,14 @@ const index = ({route, navigation}) => {
         </>
       );
     };
-
     const GetCountrySection = () => {
       const CountryModalRef = useRef();
-
       const [CountryValue, setCountryValue] = useState(
         OldUser.country === 'null' ? 'N/A' : OldUser.country,
       );
-
       useEffect(() => {
         countryref.current = CountryValue;
       });
-
       return (
         <>
           <CountryModal

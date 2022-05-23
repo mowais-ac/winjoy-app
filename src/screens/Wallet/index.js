@@ -42,9 +42,11 @@ import WithDrawModal from '../../Components/WithDrawModal';
 import SuccessModal from '../../Components/SuccessModal';
 import {JSONtoForm} from '../../Constants/Functions';
 import Modals from '../../Components/Modals';
-
+import {Picker} from '@react-native-picker/picker';
 import AddaccountModal from '../../Components/AddaccountModal';
+
 const index = ({props, navigation}) => {
+  const [activeno, setActiveno] = useState('25');
   const {t} = useTranslation();
   const [refreshing, setRefreshing] = React.useState(false);
   const [productData, setProductData] = useState([]);
@@ -58,6 +60,7 @@ const index = ({props, navigation}) => {
   const ModalErrorState = useRef();
   const [headerValue, setHeaderValue] = useState(0);
   const [activity, setActivity] = useState(false);
+
   const accountmodal = useRef();
   const Combined_closed = () => {
     ModalState2.current(false);
@@ -70,19 +73,18 @@ const index = ({props, navigation}) => {
     wait(500).then(() => setRefreshing(false));
   }, []);
 
-  //console.log({walletData: walletData?.transaction});
   useEffect(() => {
     dispatch(getWalletData());
   }, []);
   const HandleWithdraw = async accountId => {
     setActivity(true);
     console.log('account id', accountId);
-    if (!ammount) {
-      // alert('plz enter ammount');
+    if (!activeno) {
+      // alert('plz enter activeno');
     } else {
       const Token = await EncryptedStorage.getItem('Token');
       const body = JSONtoForm({
-        w_amount: ammount,
+        w_amount: activeno,
         account_id: accountId,
       });
       const requestOptions = {
@@ -94,7 +96,6 @@ const index = ({props, navigation}) => {
         },
         body,
       };
-
       await fetch(`${Config.API_URL}/withdrawal`, requestOptions)
         .then(async response => response.json())
         .then(async res => {
@@ -161,15 +162,9 @@ const index = ({props, navigation}) => {
 
         <WalletBlanceCard
           yourBalance={
-            walletData?.wallet?.your_balance?.replace(
-              /\B(?=(\d{3})+(?!\d))/g,
-              ',',
-            ) === null
+            walletData?.wallet?.your_balance === null
               ? 0
-              : walletData?.wallet?.your_balance?.replace(
-                  /\B(?=(\d{3})+(?!\d))/g,
-                  ',',
-                )
+              : walletData?.wallet?.your_balance
           }
           onPressaccountdetails={() => accountmodal.current(true)}
           //onPressWithdraw={() => ModalState.current(true)}
@@ -239,6 +234,8 @@ const index = ({props, navigation}) => {
           AmmountHandleChange={text => setAmmount(text)}
           ammount={ammount}
           activity={activity}
+          activeno={activeno}
+          setActiveno={setActiveno}
         />
 
         <TopupPaymentModals ModalRef={ModalStateTopup} />
@@ -252,8 +249,8 @@ const index = ({props, navigation}) => {
               ? 0
               : walletData?.wallet?.your_balance
           }
-          AmmountHandleChange={text => setAmmount(text)}
-          ammount={ammount}
+          // AmmountHandleChange={text => setAmmount(text)}
+          // ammount={ammount}
           activity={activity}
         />
 
@@ -263,7 +260,7 @@ const index = ({props, navigation}) => {
           details
           requestOnPress={() => ModalState2.current(false)}
           closeOnPress={() => Combined_closed()}
-          ammount={ammount}
+          ammount={activeno}
           yourBalance={
             walletData?.wallet?.your_balance === null
               ? 0

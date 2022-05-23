@@ -216,8 +216,7 @@ const ProductDetail = ({props, navigation, route}) => {
       ) : (
         <SafeAreaView
           style={{
-            height: '76%',
-            // paddingBottom: 120,
+            height: '79%',
             backgroundColor: Platform.OS === 'android' ? null : '#420E92',
           }}>
           <ScrollView
@@ -340,7 +339,7 @@ const ProductDetail = ({props, navigation, route}) => {
               </View>
             )}
           </ScrollView>
-          <View style={styles.card2Wrap}>
+          <View style={{marginHorizontal: 15}}>
             <View style={styles.card2}>
               <View
                 style={{
@@ -513,19 +512,21 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   card2Wrap: {
-    top: Platform.OS === 'android' ? 540 : 600,
-    left: 0,
-    position: 'absolute',
+    /* top: Platform.OS === 'android' ? '100%' : 600,
+    left: 0, */
+    // position: 'absolute',
+
     paddingHorizontal: 15,
-    width: '100%',
   },
   card2: {
+    top: Platform.OS === 'android' ? '92%' : 600,
     width: '100%',
     backgroundColor: '#ffffff',
-    marginTop: 10,
+    marginTop: 5,
+    position: 'absolute',
     borderRadius: 10,
     paddingBottom: 10,
-    elevation: 3,
+    elevation: 4,
   },
 
   closingTxt: {

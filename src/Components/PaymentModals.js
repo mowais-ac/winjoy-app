@@ -170,7 +170,7 @@ const PaymentModals = props => {
         is_wallet: is_wallet,
       };
       {
-        console.log('paymentdata', data);
+        console.log('paymentdata', JSONtoForm(data));
       }
       const requestOptions = {
         method: 'POST',

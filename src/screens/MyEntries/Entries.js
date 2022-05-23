@@ -97,7 +97,7 @@ const Entries = ({navigation}) => {
               style={{
                 width: 33,
                 height: 33,
-                marginLeft: 356,
+                marginLeft: 375,
                 zIndex: 100,
                 borderRadius: 100,
                 marginTop: 235,

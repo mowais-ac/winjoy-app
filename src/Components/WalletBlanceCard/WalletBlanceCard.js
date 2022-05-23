@@ -9,6 +9,7 @@ import Config from 'react-native-config';
 import LongButton from '../LongButton';
 const {width, height} = Dimensions.get('window');
 import {useTranslation} from 'react-i18next';
+import {FormatNumber} from '../../Constants/Functions';
 //I18n.locale="ar";
 function WalletBlanceCard({
   yourBalance,
@@ -54,7 +55,7 @@ function WalletBlanceCard({
             font={14}
             dark
             style={{color: '#000000', marginLeft: 16, lineHeight: 25}}>
-            AED {parseFloat(yourBalance).toFixed(2)}
+            AED {FormatNumber(parseFloat(yourBalance).toFixed(2))}
           </Label>
         </View>
         <View

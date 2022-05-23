@@ -30,6 +30,7 @@ import {getLiveShowPlans} from '../redux/actions';
 import {FormatNumber, wait} from '../Constants/Functions';
 import types from '../redux/types';
 import {Settings, AppEventsLogger} from 'react-native-fbsdk-next';
+
 const {width, height} = Dimensions.get('window');
 //let timer = () => { };
 const WatchAddModal = props => {
@@ -81,10 +82,11 @@ const WatchAddModal = props => {
             type: types.TOTAL_LIVES,
             totalLives: json?.lives,
           });
-          setModelState({
+          props.ad();
+          /* setModelState({
             ...ModelState,
             state: (ModelState.state = false),
-          });
+          }); */
           //dispatch(getLiveShowPlans());
           fb_watchvideo();
           onRefresh();
@@ -117,15 +119,6 @@ const WatchAddModal = props => {
         });
         if (props.onClose) props.onClose();
       }}>
-      {/* <TouchableWithoutFeedback
-        onPress={() => {
-          setModelState({
-            ...ModelState,
-            state: !ModelState.state,
-          });
-          if (props.onClose) props.onClose();
-        }}
-      > */}
       <View style={styles.MainView}>
         {props.cross ? (
           <TouchableOpacity
@@ -155,14 +148,12 @@ const WatchAddModal = props => {
           </TouchableOpacity>
         ) : null}
       </View>
-      {/* </TouchableWithoutFeedback> */}
+
       <View style={styles.ModalView}>
         <Video
-          // key={keyS}
           source={{
             uri: props.video,
           }}
-          // onReadyForDisplay={readyToDisplay}
           style={styles.backgroundVideo}
           resizeMode={'cover'}
           minLoadRetryCount={2}

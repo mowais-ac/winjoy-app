@@ -25,6 +25,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import I18n from 'react-native-i18n';
 import axios from 'axios';
+import Config from 'react-native-config';
 import {RFValue} from 'react-native-responsive-fontsize';
 import {FormatNumber, wait} from '../../Constants/Functions';
 import BuyLifeLineModal from '../../Components/BuyLifeLineModal';
@@ -32,6 +33,14 @@ import WatchAddModal from '../../Components/WatchAddModal';
 import RefferLifeLineModal from '../../Components/RefferLifeLineModal';
 import BuyLifeCongrats from '../../Components/BuyLifeCongrats';
 import {getLiveShowPlans} from '../../redux/actions';
+import types from '../../redux/types';
+import {
+  TestIds,
+  RewardedAd,
+  RewardedAdEventType,
+  MaxAdContentRating,
+} from '@react-native-firebase/admob';
+import {firebase} from '@react-native-firebase/admob';
 const {width, height} = Dimensions.get('window');
 const index = ({route, navigation}) => {
   const livePlans = useSelector(state => state.app.livePlans);
@@ -39,6 +48,7 @@ const index = ({route, navigation}) => {
   {
     console.log('livePlans.plan', livePlans);
   }
+  const defaultAppAdmob = firebase.admob();
   const ModalState = useRef();
   const AddModalState = useRef();
   const RefferModalState = useRef();
@@ -51,18 +61,88 @@ const index = ({route, navigation}) => {
   const [refreshing, setRefreshing] = useState(false);
   const [video1, setvideo1] = useState(false);
   const dispatch = useDispatch();
-  useEffect(() => {
-    console.log('totalLives', totalLives);
+  const dispatch2 = useDispatch();
+  const videofunction = () => {
     dispatch(getLiveShowPlans());
     setvideo1(livePlans.videoEnable);
-  }, [video1]);
+  };
+  useEffect(() => {
+    dispatch(getLiveShowPlans());
+    setvideo1(livePlans.videoEnable);
+    defaultAppAdmob
+      .setRequestConfiguration({
+        maxAdContentRating: MaxAdContentRating.PG,
+        tagForChildDirectedTreatment: true,
+        tagForUnderAgeOfConsent: true,
+      })
+      .then(() => {});
+  }, []);
+  const showRewardAd = () => {
+    // Create a new instance
+    const rewardAd = RewardedAd.createForAdRequest(TestIds.REWARDED);
 
+    // Add event handlers
+    rewardAd.onAdEvent((type, error) => {
+      if (type === RewardedAdEventType.LOADED) {
+        rewardAd.show();
+      }
+
+      if (type === RewardedAdEventType.EARNED_REWARD) {
+        Alert.alert(
+          'Reward Ad',
+          'You just earned one live',
+          [{text: 'OK', onPress: () => console.log('OK Pressed')}],
+          {cancelable: true},
+        );
+      }
+    });
+
+    // Load a new advert
+    rewardAd.load();
+  };
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     dispatch(getLiveShowPlans());
     setvideo1(livePlans.videoEnable);
     wait(100).then(() => setRefreshing(false));
-  }, []);
+  }, [video1]);
+
+  const getData = async () => {
+    try {
+      const Token = await EncryptedStorage.getItem('Token');
+      const result = await fetch(
+        `${Config.API_URL}/buy_lives_plan/${idVideoAdd}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Accept: 'application/json',
+            Authorization: `Bearer ${Token}`,
+          },
+        },
+      );
+      const json = await result.json();
+      {
+        console.log('buyliveplan', json);
+      }
+      if (json.status === 'success') {
+        if (json.message === 'Lives buy successfully') {
+          setTimeout(() => {
+            dispatch2({
+              type: types.TOTAL_LIVES,
+              totalLives: json?.lives,
+            });
+          }, 1200);
+          showRewardAd();
+          // dispatch(getLiveShowPlans());
+        } else {
+          alert(json);
+        }
+      }
+    } catch (error) {
+      alert(error);
+    }
+  };
   return (
     <SafeAreaView style={styles.safeStyle}>
       <ScrollView
@@ -189,11 +269,11 @@ const index = ({route, navigation}) => {
                       heading={'Watch a video'}
                       description={`Earn ${item.lives} life line`}
                       onPress={() => {
+                        videofunction();
                         setIdVideoAdd(item.id);
                         setVideo(item.video_url);
-
                         if (video1 === true) {
-                          AddModalState.current(true);
+                          getData();
                         } else {
                           alert(
                             'Sorry, you can watch video ad only once in a day. Please try after 24 hours.',
@@ -228,6 +308,9 @@ const index = ({route, navigation}) => {
           <WatchAddModal
             ModalRef={AddModalState}
             details
+            ad={() => {
+              showRewardAd();
+            }}
             video={video}
             id={idVideoAdd}
             refreshVideo={() => {

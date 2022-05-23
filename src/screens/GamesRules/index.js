@@ -34,6 +34,8 @@ const index = ({route, navigation}) => {
     'At WinJoy, if we suspect you of cheating or fraud, we reserve the right to disqualify you and you will not receive a prize.',
     'The decisions made by the WinJoy technical team are final and can not be appealed.',
     'Prizes are reserved for contestants from the GCC countries, India, and Pakistan.',
+    'The withdrawal requests will be approved 2 times a month, 15th and 30th of the month.',
+    'Contestants can only withdraw a maximum amount of 250 DHS.',
     'If there are 2 or more winners in the same live game show, the prize will be distributed equally among the winners.',
     'There is an age restriction on the game show whereby only individuals who are 18+ are allowed to join and play.',
     'Winjoy reserves the right to verify an entrant’s eligibility before, during, or after the contest.',
@@ -71,7 +73,6 @@ const index = ({route, navigation}) => {
           }}
         />
         <ScrollView
-        
           onScroll={e => {
             setHeaderValue(e.nativeEvent.contentOffset.y);
           }}>

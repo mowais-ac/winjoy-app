@@ -1,5 +1,6 @@
 import React, {useState, useRef, useEffect, useCallback} from 'react';
 import {
+  Alert,
   View,
   Dimensions,
   ScrollView,
@@ -51,6 +52,13 @@ import appsFlyer from 'react-native-appsflyer';
 const MYServer = 'https://node-winjoyserver-deploy.herokuapp.com/';
 import {Settings, AppEventsLogger} from 'react-native-fbsdk-next';
 import DeviceInfo from 'react-native-device-info';
+import {
+  TestIds,
+  RewardedAd,
+  RewardedAdEventType,
+  MaxAdContentRating,
+} from '@react-native-firebase/admob';
+import {firebase} from '@react-native-firebase/admob';
 const index = props => {
   Settings.setAppID('1149665975867657');
   const {t, i18n} = useTranslation();
@@ -79,42 +87,11 @@ const index = props => {
   const dispatch6 = useDispatch();
   const dispatch7 = useDispatch();
   const dispatch8 = useDispatch();
-  //console.log('deep', LandingData?.products);
+  console.log('deep', LandingData);
   const socket = socketIO(MYServer);
   const AddModalState = useRef();
-  //tapjoy
-
-  /*  const [
-    {tapjoyEvents},
-    {
-      initialiseTapjoy,
-      listenToEvent,
-      addTapjoyPlacement,
-      showTapjoyPlacement,
-      requestTapjoyPlacementContent,
-      isTapjoyConnected,
-      tapjoyListenForEarnedCurrency,
-      getTapjoyCurrencyBalance,
-      setTapjoyUserId,
-      spendTapjoyCurrency,
-    },
-  ] = useTapjoy(tapjoyOptions);
-  useEffect(() => {
-    const listeners = {};
-    tapjoyEvents.forEach(tapjoyEvent => {
-      listeners[tapjoyEvent] = listenToEvent(tapjoyEvent, evt => {
-        console.warn(evt);
-      });
-    });
-    return () => {
-      for (const key in listeners) {
-        if (listeners[key] && listeners[key].remove) {
-          listeners[key].remove();
-        }
-      }
-    };
-  }, [listenToEvent, tapjoyEvents]);
- */
+  const defaultAppAdmob = firebase.admob();
+  const [enable_ad, setEnable_ad] = useState(false);
   const countDownFinishHandler = () => {
     console.log('hello');
     onRefresh();
@@ -149,11 +126,31 @@ const index = props => {
       console.error(error);
     },
   );
+  const showRewardAd = () => {
+    // Create a new instance
+    const rewardAd = RewardedAd.createForAdRequest(
+      'ca-app-pub-6197023613008935/9639539887',
+    );
+
+    // Add event handlers
+    rewardAd.onAdEvent((type, error) => {
+      if (type === RewardedAdEventType.LOADED) {
+        rewardAd.show();
+      }
+      if (type === RewardedAdEventType.EARNED_REWARD) {
+        console.log('User earned reward of 5 lives');
+      }
+    });
+
+    // Load a new advert
+    rewardAd.load();
+  };
   useEffect(() => {
     dispatch6(getWalletData());
     dispatch8(getLiveShowPlans());
     dispatch5(AllCreatorsList());
     dispatch7(LeaderBoardWinners());
+    setEnable_ad(LandingData?.enable_onboarding_ad);
     socket.on('sendStartlivegameshow', msg => {
       dispatch(getLandingScreen());
     });
@@ -164,7 +161,6 @@ const index = props => {
     {
       console.log('First time render');
     }
-
     dispatch(getLandingScreen());
     appsFlyer.initSdk(
       {
@@ -179,17 +175,7 @@ const index = props => {
         console.error(error);
       },
     );
-    /*  dynamicLinks()
-      .getInitialLink()
-      .then(link => {
-        if (`${link.url}` === 'https://winjoy.ae?referral=310') {
-          {
-            console.log('link1', link);
-          }
-        } else {
-          alert(`https://winjoy.ae/invite/token?${livePlans?.refer_code}`);
-        }
-      }); */
+
     var CurrentDate = new Date().toLocaleString();
     var duration = dayjs(LandingData?.upcoming_gameshow?.start_date).diff(
       dayjs(CurrentDate),
@@ -206,6 +192,13 @@ const index = props => {
     setImageSlider(arr);
     NavigateToQuiz();
     CreateChannal();
+    defaultAppAdmob
+      .setRequestConfiguration({
+        maxAdContentRating: MaxAdContentRating.PG,
+        tagForChildDirectedTreatment: true,
+        tagForUnderAgeOfConsent: true,
+      })
+      .then(() => {});
   }, [getLandingScreen]);
   var onInstallConversionDataCanceller = appsFlyer.onInstallConversionData(
     res => {
@@ -256,39 +249,43 @@ const index = props => {
   /*  console.log('LandingData', LandingData); */
   const NavigateToQuiz = fromSocket => {
     console.log('NQ: ', LandingData?.gameShow);
-    if (
-      parseInt(LandingData.updatedVersion) === parseInt(packageJson.version)
-    ) {
+    if (!LandingData?.is_testing) {
       if (
-        LandingData?.gameShow?.status === 'on_boarding' ||
-        LandingData?.gameShow?.status === 'started' ||
-        fromSocket
+        parseInt(LandingData.updatedVersion) === parseInt(packageJson.version)
       ) {
-        /* const backHandler = BackHandler.addEventListener(
-          'hardwareBackPress',
-          () => true,
-        );
-        return () => backHandler.exitApp(); */
-        {
-          console.log(
-            'LandingData?.gameShow?.status',
-            LandingData?.gameShow?.status,
-          );
+        if (
+          LandingData?.gameShow?.status === 'on_boarding' ||
+          LandingData?.gameShow?.status === 'started' ||
+          fromSocket
+        ) {
+          if (enable_ad) {
+            showRewardAd();
+          }
+          {
+            console.log(
+              'LandingData?.gameShow?.status',
+              LandingData?.gameShow?.status,
+            );
+          }
+          navigation.navigate('GameStack', {
+            screen: 'Quiz',
+            params: {
+              uri: LandingData?.gameShow?.live_stream?.key,
+              gameshowStatus: LandingData?.gameShow?.status,
+              completed_questions: LandingData?.gameShow?.completed_questions,
+            },
+          });
         }
-        navigation.navigate('GameStack', {
-          screen: 'Quiz',
-          params: {
-            uri: LandingData?.gameShow?.live_stream?.key,
-            gameshowStatus: LandingData?.gameShow?.status,
-            completed_questions: LandingData?.gameShow?.completed_questions,
-          },
-        });
       }
     }
   };
 
   const Testnavigate = () => {
-    if (LandingData?.internalEmails && LandingData?.is_testing === true) {
+    if (
+      LandingData?.internalEmails &&
+      LandingData?.is_testing === true &&
+      LandingData?.gameShow?.status === 'on_boarding'
+    ) {
       navigation.navigate('GameStack', {
         screen: 'Quiz',
         params: {
@@ -397,7 +394,6 @@ const index = props => {
       ) : (
         <SafeAreaView style={{backgroundColor: '#420E92'}}>
           {/* <StatusBar barStyle="#420E92" /> */}
-
           <Header
             style={{
               position: 'absolute',
@@ -455,7 +451,9 @@ const index = props => {
                 </View>
                 <View style={styles.yellowBtn}>
                   <TouchableOpacity
-                    onPress={() => navigation.navigate('WALLET')}>
+                    onPress={() => showRewardAd()}
+                    //</View> onPress={() => navigation.navigate('WALLET')}
+                  >
                     <View style={styles.secondHeaderMiddleView}>
                       <Text
                         style={[
@@ -478,9 +476,11 @@ const index = props => {
                           ]}>
                           AED{' '}
                           {walletData?.wallet?.your_balance
-                            ? parseFloat(
-                                walletData?.wallet?.your_balance,
-                              ).toFixed(2)
+                            ? FormatNumber(
+                                parseFloat(
+                                  walletData?.wallet?.your_balance,
+                                ).toFixed(2),
+                              )
                             : 0}
                         </Text>
                       </Text>

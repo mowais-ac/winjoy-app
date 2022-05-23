@@ -144,7 +144,6 @@ const index = ({props, navigation}) => {
       counter: counterMain - qty,
     });
   };
-
   const [active, setactive] = useState(false);
 
   const Switchhandle = tab => {
@@ -240,7 +239,11 @@ const index = ({props, navigation}) => {
     );
   };
   return (
-    <SafeAreaView style={{height: height, backgroundColor: '#420E92'}}>
+    <SafeAreaView
+      style={{
+        height: height,
+        backgroundColor: Platform.OS === 'android' ? null : '#420E92',
+      }}>
       <View style={{backgroundColor: '#f6f1f3'}}>
         <LinearGradient
           start={{x: 0, y: 0}}

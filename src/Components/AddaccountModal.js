@@ -133,8 +133,9 @@ const AddaccountModal = props => {
           if (res.data.status === 'success') {
             setSelectedAccount(res.data.id);
             // onRefresh();
-            ModalState.current(true);
+            //ModalState.current(true);
             loadAccountsList();
+            setAccountAddFormVisibility(false);
           } else {
             ModalErrorState.current(true, {
               heading: 'Error',
@@ -369,7 +370,7 @@ const AddaccountModal = props => {
                     <TouchableOpacity
                       style={[
                         styles.tabBtn,
-                        styles.tabBtn1,
+
                         activeTab === 'bank' ? styles.tabBtnActive : null,
                       ]}
                       onPress={() => tabSwitchHandler('bank')}>
@@ -522,6 +523,8 @@ const AddaccountModal = props => {
               ammount={props.ammount}
               activity={props.activity}
               accountId={selectedAccount}
+              activeno={props.activeno}
+              setActiveno={props.setActiveno}
             />
 
             {/*  <LabelButton

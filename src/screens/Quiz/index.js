@@ -50,10 +50,34 @@ import {CheckGameEnterStatus, GameShowWinners} from '../../redux/actions';
 import WinnersModal from '../../Components/WinnersModal';
 const MYServer = 'https://node-winjoyserver-deploy.herokuapp.com/';
 import {getLandingScreen} from '../../redux/actions';
+import {
+  TestIds,
+  RewardedAd,
+  RewardedAdEventType,
+  MaxAdContentRating,
+} from '@react-native-firebase/admob';
+import {firebase} from '@react-native-firebase/admob';
 const {width, height} = Dimensions.get('window');
 let timer = () => {};
 const BackgroundVideo = ({route, navigation}) => {
-  //lives dispatch
+  const showRewardAd = () => {
+    // Create a new instance
+    const rewardAd = RewardedAd.createForAdRequest(TestIds.REWARDED);
+
+    // Add event handlers
+    rewardAd.onAdEvent((type, error) => {
+      if (type === RewardedAdEventType.LOADED) {
+        rewardAd.show();
+      }
+
+      if (type === RewardedAdEventType.EARNED_REWARD) {
+        console.log('User earned reward of 5 lives');
+      }
+    });
+
+    // Load a new advert
+    rewardAd.load();
+  };
   const dispatch = useDispatch();
   //gameshow Winners dispatch
   const dispatch1 = useDispatch();
@@ -89,7 +113,8 @@ const BackgroundVideo = ({route, navigation}) => {
   const [activeQuestion, setActiveQuestion] = useState(1);
   const dispatchGameEnter = useDispatch();
   const [refreshing, setRefreshing] = useState(false);
-
+  const [enable_ad, setEnable_ad] = useState(false);
+  console.log('enable_ad', enable_ad);
   const backAction = () => {
     Alert.alert(
       'We are live!',
@@ -124,7 +149,7 @@ const BackgroundVideo = ({route, navigation}) => {
     startTimer();
     return () => clearTimeout(timer);
   });
-
+  const defaultAppAdmob = firebase.admob();
   const Questions = async () => {
     setActivityScreen(true);
     const Token = await EncryptedStorage.getItem('Token');
@@ -143,11 +168,11 @@ const BackgroundVideo = ({route, navigation}) => {
       )
       .then(response => {
         let res = response.data;
-
         {
-          console.log('res', res);
+          console.log('resquestionsapi', res);
         }
-        questionRef.current = res;
+        questionRef.current = res.questions;
+        setEnable_ad(res.enable_5question_ad);
         setActivityScreen(false);
         setGameShowCheck(true);
         setTimeLeft(10);
@@ -158,6 +183,13 @@ const BackgroundVideo = ({route, navigation}) => {
   };
 
   useEffect(() => {
+    defaultAppAdmob
+      .setRequestConfiguration({
+        maxAdContentRating: MaxAdContentRating.PG,
+        tagForChildDirectedTreatment: true,
+        tagForUnderAgeOfConsent: true,
+      })
+      .then(() => {});
     dispatchGameEnter(CheckGameEnterStatus());
     if (gameshowStatus === 'started') {
       userEliminate.current = true;
@@ -240,9 +272,8 @@ const BackgroundVideo = ({route, navigation}) => {
     setUpdatedAnswer(ans);
   };
   useEffect(() => {
-    /* let cancel = false; */
     socket.on('sendShowCorrectAnswer', msg => {
-      console.log('msg: ', msg);
+      console.log('msgg: ', msg.activeQuestion);
       const activeQ = msg.activeQuestion;
       setGameShowCheck(true);
       setShowResult(true);
@@ -252,9 +283,6 @@ const BackgroundVideo = ({route, navigation}) => {
         updateAnswer(activeQ - 1);
       }
     });
-    /*  return () => {
-      cancel = true;
-    }; */
   }, []);
 
   useEffect(async () => {
@@ -276,23 +304,34 @@ const BackgroundVideo = ({route, navigation}) => {
       } */
       let inc = msg.completed_question;
       {
-        console.log('inc', inc);
+        console.log('increment', inc);
       }
-      setActiveQuestion(inc);
-      answerId.current = null;
-      setGameShowCheck(true);
-      setDisableQuizOptions(false);
-      setShowResult(false);
-      setTimeLeft(10);
-      clearTimeout(timer);
-      startTimer();
+      if (inc === 6 && enable_ad === true) {
+        showRewardAd();
+        setActiveQuestion(inc);
+        answerId.current = null;
+        setGameShowCheck(true);
+        setDisableQuizOptions(false);
+        setShowResult(false);
+        setTimeLeft(10);
+        clearTimeout(timer);
+        startTimer();
+      } else {
+        setActiveQuestion(inc);
+        answerId.current = null;
+        setGameShowCheck(true);
+        setDisableQuizOptions(false);
+        setShowResult(false);
+        setTimeLeft(10);
+        clearTimeout(timer);
+        startTimer();
+      }
     });
     socket.on('sendStartlivegameshow', msg => {
       Questions();
       //setActiveQuestion(completed_questions);
       console.log('sendStart');
     });
-
     socket.on('sendShowWinners', msg => {
       dispatch3(GameShowWinners());
       winnerModal.current(true);

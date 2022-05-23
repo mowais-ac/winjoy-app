@@ -223,7 +223,7 @@ const index = ({props, navigation}) => {
                       }
                       if (item.name === 'My purchases') {
                         navigation.navigate('Orders');
-                        // navigation.navigate('Tapjoy1');
+                        //navigation.navigate('Gsignin');
                       }
                       if (item.name === 'My Tickets') {
                         navigation.navigate('Entries');

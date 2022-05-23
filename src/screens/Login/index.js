@@ -9,6 +9,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Platform,
+  Text,
   I18nManager,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
@@ -39,7 +40,8 @@ import SelectLanguageModal from '../../Components/SelectLanguageModal';
 import RNRestart from 'react-native-restart';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import dynamicLinks from '@react-native-firebase/dynamic-links';
-
+import auth from '@react-native-firebase/auth';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
 const {width, height} = Dimensions.get('window');
 import {URLSearchParams} from '@visto9259/urlsearchparams-react-native';
 const index = ({navigation}) => {
@@ -57,9 +59,16 @@ const index = ({navigation}) => {
   const tokenForLang = useRef('');
   const activityLang = useRef(false);
   //Deep Link refrral
+
+  GoogleSignin.configure({
+    webClientId:
+      '389658608176-lv2ddmmfpnv2uoaf5nf333e5jj4oku7o.apps.googleusercontent.com',
+  });
+
   useEffect(() => {
     // Defining the URL as a constant
     //let params = {width: 1680};
+
     dynamicLinks()
       .getInitialLink()
       .then(async link => {
@@ -142,7 +151,7 @@ const index = ({navigation}) => {
         activityLang.current = false;
       });
   };
-
+  singin();
   appsFlyer.initSdk(
     {
       isDebug: true,
@@ -281,6 +290,17 @@ const index = ({navigation}) => {
     }
   };
 
+  const onGoogleButtonPress = async () => {
+    // Get the users ID token
+    const {idToken} = await GoogleSignin.signIn();
+
+    // Create a Google credential with the token
+    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+
+    // Sign-in the user with the credential
+    return auth().signInWithCredential(googleCredential);
+  };
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <LinearGradient
@@ -337,13 +357,22 @@ const index = ({navigation}) => {
           font={15}>
           {t('or')}
         </Label>
-        <View style={{marginTop: height * 0.052}}>
+        <View style={{marginTop: 15}}>
           <LongButton
             text={t('create_account')}
             onPress={() => navigation.navigate('Register')}
             style={[styles.Margin, {backgroundColor: '#ffffff'}]}
             textstyle={{color: '#E7003F'}}
           />
+          {/*  <LongButton
+            style={{backgroundColor: '#ffffff', marginTop: 15}}
+            text="Sign in with Google"
+            black
+            Icon="google"
+            onPress={() => {
+              onGoogleButtonPress();
+            }}
+          /> */}
         </View>
         <SelectLanguageModal
           ModalRef={ModalStateLanguage}
@@ -374,9 +403,40 @@ const styles = StyleSheet.create({
   MarginLarge: {
     marginTop: height * 0.037,
   },
-  Margin: {marginTop: height * 0.027},
+  Margin: {marginTop: height * 0.02},
   MarginMed: {marginTop: height * 0.022},
   MarginSmall: {marginTop: height * 0.015},
 });
+export const singin = () => {
+  // Set an initializing state whilst Firebase connects
+  const [initializing, setInitializing] = useState(true);
+  const [user, setUser] = useState();
 
+  // Handle user state changes
+  function onAuthStateChanged(user) {
+    setUser(user);
+    if (initializing) setInitializing(false);
+  }
+
+  useEffect(() => {
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber; // unsubscribe on unmount
+  }, []);
+
+  if (initializing) return null;
+  console.log(user);
+  if (!user) {
+    return (
+      <View>
+        <Text>Login</Text>
+      </View>
+    );
+  }
+
+  return (
+    <View>
+      <Text>Welcome {user.email}</Text>
+    </View>
+  );
+};
 export default index;

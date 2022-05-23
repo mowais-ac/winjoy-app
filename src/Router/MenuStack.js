@@ -17,7 +17,7 @@ import FAQS from '../screens/FAQS';
 import ProductDetail from '../screens/ProductDetail';
 import GamesRules from '../screens/GamesRules';
 import Landing from '../screens/Landing';
-import Tapjoy1 from '../screens/Tapjoy1';
+import Gsignin from '../screens/Gsignin';
 import Cart from '../screens/Cart';
 const Stack = createNativeStackNavigator();
 export default index = () => (
@@ -43,6 +43,6 @@ export default index = () => (
     <Stack.Screen name="TermsAndConditions" component={TermsAndConditions} />
     <Stack.Screen name="FAQS" component={FAQS} />
     <Stack.Screen name="GamesRules" component={GamesRules} />
-    <Stack.Screen name="Tapjoy1" component={Tapjoy1} />
+    <Stack.Screen name="Gsignin" component={Gsignin} />
   </Stack.Navigator>
 );
