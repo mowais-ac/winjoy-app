@@ -1,11 +1,11 @@
-import {StyleSheet, Dimensions} from 'react-native';
+import {StyleSheet, Dimensions, Platform} from 'react-native';
 import {RFValue} from 'react-native-responsive-fontsize';
 
 const {width, height} = Dimensions.get('window');
 export default StyleSheet.create({
   safeStyle: {
     flex: 1,
-    backgroundColor: '#420E92',
+    backgroundColor: Platform.OS === 'ios' ? '#420E92' : null,
   },
   headerText: {
     color: '#fff',

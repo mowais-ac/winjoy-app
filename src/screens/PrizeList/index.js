@@ -17,6 +17,7 @@ import Header from '../../Components/Header';
 import Label from '../../Components/Label';
 import LongButton from '../../Components/LongButton';
 import {ChanceCard} from '../../Components';
+import socketIO from 'socket.io-client';
 import {wait} from '../../Constants/Functions';
 import {getProducts} from '../../redux/actions';
 import {useDispatch, useSelector} from 'react-redux';
@@ -24,8 +25,11 @@ import {useTranslation} from 'react-i18next';
 import {RFValue} from 'react-native-responsive-fontsize';
 import appsFlyer from 'react-native-appsflyer';
 const {width, height} = Dimensions.get('window');
+const MYServer = 'https://node-winjoyserver-deploy.herokuapp.com/';
 const index = ({props, navigation}) => {
+  const LandingData = useSelector(state => state.app.LandingData);
   const {t} = useTranslation();
+  const socket = socketIO(MYServer);
   const [refreshing, setRefreshing] = useState(false);
   const [isClosing, setIsClosing] = useState(true);
   const productsData = useSelector(state => state?.app?.productsData);
@@ -38,6 +42,10 @@ const index = ({props, navigation}) => {
   console.log('productsData', productsData?.data);
   const [productlength, setProductlength] = useState('');
   useEffect(() => {
+    socket.on('sendOnboarding', msg => {
+      console.log('Should navigate from product details');
+      NavigateToQuiz(true);
+    });
     dispatch(getProducts('?is_closing_soon=0'));
     setProductlength(
       productsData?.data?.length ? productsData?.data?.length : '',
@@ -55,6 +63,27 @@ const index = ({props, navigation}) => {
 
     dispatch(getProducts(link));
     setUpdateData(!updateData);
+  };
+  const NavigateToQuiz = fromSocket => {
+    if (
+      LandingData?.gameShow?.status === 'on_boarding' ||
+      LandingData?.gameShow?.status === 'started' ||
+      fromSocket
+    ) {
+      {
+        console.log(
+          'LandingData?.gameShow?.status pd',
+          LandingData?.gameShow?.status,
+        );
+      }
+      navigation.navigate('GameStack', {
+        screen: 'Quiz',
+        params: {
+          uri: LandingData?.gameShow?.live_stream?.key,
+          gameshowStatus: LandingData?.gameShow?.status,
+        },
+      });
+    }
   };
   const eventName = 'af_add_to_cart';
   const eventValues = {
@@ -90,6 +119,8 @@ const index = ({props, navigation}) => {
         }}
       />
       <ScrollView
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
         refreshControl={
           <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
         }

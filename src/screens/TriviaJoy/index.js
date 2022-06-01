@@ -275,6 +275,10 @@ const index = ({props, navigation}) => {
             <ImageBackground
               resizeMode="cover"
               style={{
+                shadowOffset: {width: 0, height: 1},
+                shadowOpacity: 0.5,
+                shadowRadius: 4,
+                elevation: 3,
                 width: 100,
                 height: 80,
                 justifyContent: 'center',

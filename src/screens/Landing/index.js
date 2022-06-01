@@ -16,6 +16,12 @@ import {
   StatusBar,
   BackHandler,
 } from 'react-native';
+import {NativeModules} from 'react-native';
+import SpInAppUpdates, {
+  NeedsUpdateResponse,
+  IAUUpdateKind,
+  StartUpdateOptions,
+} from 'sp-react-native-in-app-updates';
 import {getWalletData} from '../../redux/actions';
 import {useDispatch, useSelector} from 'react-redux';
 import {FormatNumber, wait} from '../../Constants/Functions';
@@ -52,15 +58,23 @@ import appsFlyer from 'react-native-appsflyer';
 const MYServer = 'https://node-winjoyserver-deploy.herokuapp.com/';
 import {Settings, AppEventsLogger} from 'react-native-fbsdk-next';
 import DeviceInfo from 'react-native-device-info';
+import messaging from '@react-native-firebase/messaging';
 import {
+  InterstitialAd,
   TestIds,
   RewardedAd,
   RewardedAdEventType,
   MaxAdContentRating,
+  AdEventType,
 } from '@react-native-firebase/admob';
 import {firebase} from '@react-native-firebase/admob';
+Settings.setAppID('1149665975867657');
+const adUnitId = 'ca-app-pub-6197023613008935/5905492203';
+const versionandroid = DeviceInfo.getVersion();
+const interstitial = InterstitialAd.createForAdRequest(adUnitId, {
+  requestNonPersonalizedAdsOnly: true,
+});
 const index = props => {
-  Settings.setAppID('1149665975867657');
   const {t, i18n} = useTranslation();
   const ModelVersioncheck = useRef();
   const [headerValue, setHeaderValue] = useState(0);
@@ -87,15 +101,16 @@ const index = props => {
   const dispatch6 = useDispatch();
   const dispatch7 = useDispatch();
   const dispatch8 = useDispatch();
-  console.log('deep', LandingData);
+  //console.log('deep1', LandingData.streamUrl);
   const socket = socketIO(MYServer);
   const AddModalState = useRef();
   const defaultAppAdmob = firebase.admob();
-  const [enable_ad, setEnable_ad] = useState(false);
+  // const [enable_ad, setEnable_ad] = useState(false);
   const countDownFinishHandler = () => {
     console.log('hello');
     onRefresh();
   };
+
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     dispatch6(getWalletData());
@@ -105,7 +120,6 @@ const index = props => {
       dayjs(CurrentDate),
       'seconds',
     );
-
     console.log('show', duration);
     setTime(duration);
     Testnavigate();
@@ -126,31 +140,37 @@ const index = props => {
       console.error(error);
     },
   );
-  const showRewardAd = () => {
-    // Create a new instance
-    const rewardAd = RewardedAd.createForAdRequest(
-      'ca-app-pub-6197023613008935/9639539887',
-    );
-
-    // Add event handlers
-    rewardAd.onAdEvent((type, error) => {
-      if (type === RewardedAdEventType.LOADED) {
-        rewardAd.show();
-      }
-      if (type === RewardedAdEventType.EARNED_REWARD) {
-        console.log('User earned reward of 5 lives');
+  const inAppUpdates = new SpInAppUpdates(
+    false, // isDebug
+  );
+  const InAppiupdate = () => {
+    inAppUpdates.checkNeedsUpdate({curVersion: versionandroid}).then(result => {
+      if (result.shouldUpdate) {
+        const updateOptions: StartUpdateOptions = Platform.select({
+          ios: {
+            title: 'Update available',
+            message:
+              'There is a new version of the app available on the App Store, do you want to update it?',
+            buttonUpgradeText: 'Update',
+            buttonCancelText: 'Cancel',
+            //country: 'it', // 👈🏻 the country code for the specific version to lookup for (optional)
+          },
+          android: {
+            updateType: IAUUpdateKind.IMMEDIATE,
+          },
+        });
+        inAppUpdates.startUpdate(updateOptions);
       }
     });
-
-    // Load a new advert
-    rewardAd.load();
   };
+
   useEffect(() => {
     dispatch6(getWalletData());
     dispatch8(getLiveShowPlans());
     dispatch5(AllCreatorsList());
     dispatch7(LeaderBoardWinners());
-    setEnable_ad(LandingData?.enable_onboarding_ad);
+    InAppiupdate();
+    // setEnable_ad(LandingData?.enable_onboarding_ad);
     socket.on('sendStartlivegameshow', msg => {
       dispatch(getLandingScreen());
     });
@@ -175,16 +195,13 @@ const index = props => {
         console.error(error);
       },
     );
-
     var CurrentDate = new Date().toLocaleString();
     var duration = dayjs(LandingData?.upcoming_gameshow?.start_date).diff(
       dayjs(CurrentDate),
       'seconds',
     );
-
-    console.log('duration', duration);
+    // console.log('duration1', LandingData?.enable_onboarding_ad);
     setTime(duration);
-
     let arr = [];
     LandingData?.host_sliders_data?.map(ele => {
       arr.push(ele.url);
@@ -246,20 +263,25 @@ const index = props => {
       channelName: 'Winjoy',
     });
   };
-  /*  console.log('LandingData', LandingData); */
+  //console.log('NQ1: ', LandingData?.is_testing);
+  /*  LandingData?.updatedVersion*/
   const NavigateToQuiz = fromSocket => {
-    console.log('NQ: ', LandingData?.gameShow);
-    if (!LandingData?.is_testing) {
-      if (
-        parseInt(LandingData.updatedVersion) === parseInt(packageJson.version)
-      ) {
+    if (
+      parseInt(LandingData?.updatedVersion) === parseInt(packageJson?.version)
+    ) {
+      if (!LandingData?.is_testing) {
         if (
           LandingData?.gameShow?.status === 'on_boarding' ||
           LandingData?.gameShow?.status === 'started' ||
           fromSocket
         ) {
-          if (enable_ad) {
-            showRewardAd();
+          /*   if (enable_ad) {
+            interstitial?.show();
+          } */
+          if (interstitial.loaded) {
+            interstitial
+              .show()
+              .catch(error => console.warn('admob_error', error));
           }
           {
             console.log(
@@ -270,6 +292,7 @@ const index = props => {
           navigation.navigate('GameStack', {
             screen: 'Quiz',
             params: {
+              streamUrl: LandingData.streamUrl,
               uri: LandingData?.gameShow?.live_stream?.key,
               gameshowStatus: LandingData?.gameShow?.status,
               completed_questions: LandingData?.gameShow?.completed_questions,
@@ -279,22 +302,25 @@ const index = props => {
       }
     }
   };
-
+  //LandingData?.internalEmails &&
   const Testnavigate = () => {
     if (
-      LandingData?.internalEmails &&
-      LandingData?.is_testing === true &&
-      LandingData?.gameShow?.status === 'on_boarding'
+      parseInt(LandingData?.updatedVersion) === parseInt(packageJson?.version)
     ) {
-      navigation.navigate('GameStack', {
-        screen: 'Quiz',
-        params: {
-          uri: LandingData?.gameShow?.live_stream?.key,
-          gameshowStatus: LandingData?.gameShow?.status,
-        },
-      });
-    } else {
-      return null;
+      if (
+        !LandingData?.is_testing &&
+        LandingData?.gameShow?.status === 'on_boarding'
+      ) {
+        navigation.navigate('GameStack', {
+          screen: 'Quiz',
+          params: {
+            uri: LandingData?.gameShow?.live_stream?.key,
+            gameshowStatus: LandingData?.gameShow?.status,
+          },
+        });
+      } else {
+        return null;
+      }
     }
   };
 
@@ -385,495 +411,573 @@ const index = props => {
       },
     );
   };
-  //console.log('LandingData?.products', LandingData?.products);
+  const showRewardAd = () => {
+    // Create a new instance
+    const rewardAd = RewardedAd.createForAdRequest(
+      'ca-app-pub-6197023613008935/9639539887',
+    );
+
+    // Add event handlers
+    rewardAd.onAdEvent((type, error) => {
+      if (type === RewardedAdEventType.LOADED) {
+        rewardAd.show();
+      }
+      if (type === RewardedAdEventType.EARNED_REWARD) {
+        console.log('User earned reward of 5 lives');
+      }
+    });
+
+    // Load a new advert
+    rewardAd.load();
+  };
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    const eventListener = interstitial.onAdEvent(type => {
+      if (type === AdEventType.LOADED) {
+        console.log('InterstitialAd adLoaded');
+      } else if (type === AdEventType.ERROR) {
+        console.warn('InterstitialAd => Error');
+      } else if (type === AdEventType.OPENED) {
+        console.log('InterstitialAd => adOpened');
+      }
+    });
+    // Start loading the interstitial straight away
+    interstitial.load();
+    //Unsubscribe from events on unmount
+    return () => {
+      eventListener();
+    };
+  }, []);
+  useEffect(() => {
+    // Assume a message-notification contains a "type" property in the data payload of the screen to open
+    messaging().onNotificationOpenedApp(remoteMessage => {
+      console.log(
+        'Notification caused app to open from background state:',
+        remoteMessage.notification,
+      );
+      console.log('remoteMessage.data:', remoteMessage.data);
+
+      navigation.navigate('TriviaJoy');
+    });
+    // Check whether an initial notification is available
+    messaging()
+      .getInitialNotification()
+      .then(remoteMessage => {
+        if (remoteMessage) {
+          console.log(
+            'Notification caused app to open from quit state:',
+            remoteMessage.notification,
+          );
+          navigation.navigate('DealzJoy'); // e.g. "Settings"
+        }
+      });
+  }, []);
   return (
-    <>
-      {LandingData?.gameShow?.status === 'on_boarding' ||
-      LandingData?.gameShow?.status === 'started' ? (
-        NavigateToQuiz()
-      ) : (
-        <SafeAreaView style={{backgroundColor: '#420E92'}}>
-          {/* <StatusBar barStyle="#420E92" /> */}
-          <Header
-            style={{
-              position: 'absolute',
-              zIndex: 1000,
-              backgroundColor: headerValue !== 0 ? 'rgba(0,0,0,0.5)' : null,
-              width: '100%',
-              borderBottomRightRadius: 10,
-              borderBottomLeftRadius: 10,
-              top: Platform.OS === 'android' ? 0 : height * 0.05,
-            }}
-          />
-          {console.log('iosv', LandingData?.updated_version_ios)}
-          {LandingData && LandingData.updated_version ? (
-            <NewVersionmodal
-              updatedVersion={LandingData?.updated_version}
-              currentV={packageJson.version}
-              ModalRef={ModelVersioncheck}
-              updatedVersionios={LandingData?.updated_version_ios}
-            />
-          ) : null}
-          <ScrollView
-            onScroll={e => {
-              setHeaderValue(e.nativeEvent.contentOffset.y);
-            }}
-            style={{backgroundColor: '#f6f1f3'}}
-            refreshControl={
-              <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
-            }>
-            <View style={{width: '100%', alignItems: 'center'}}>
-              <LinearGradient
-                colors={['#5B0C86', '#E7003F']}
-                style={styles.mainView}>
-                <View style={styles.wrap}>
-                  {loader ? (
-                    <ActivityIndicator size="large" color="#fff" />
-                  ) : (
-                    <>
-                      {LandingData?.banners ? (
-                        <Video
-                          source={{uri: LandingData?.banners[0]?.url}} // Can be a URL or a local file.
-                          resizeMode={'cover'}
-                          repeat={true}
-                          minLoadRetryCount={2}
-                          fullScreen={true}
-                          ignoreSilentSwitch={'obey'}
-                          onLoad={() => setBuffer(false)}
-                          onLoadStart={() => setVideoAction(false)}
-                          controls={false}
-                          onEnd={() => setVideoAction(true)}
-                          style={styles.ShoppingBanner}
-                        />
-                      ) : null}
-                    </>
-                  )}
-                </View>
-                <View style={styles.yellowBtn}>
-                  <TouchableOpacity
-                    onPress={() => showRewardAd()}
-                    //</View> onPress={() => navigation.navigate('WALLET')}
-                  >
-                    <View style={styles.secondHeaderMiddleView}>
-                      <Text
-                        style={[
-                          styles.text,
-                          {
-                            color: '#fff',
-                            fontSize: RFValue(15),
-                            fontFamily: 'Axiforma-SemiBold',
-                          },
-                        ]}>
-                        Your Balance:{' '}
-                        <Text
-                          style={[
-                            styles.text,
-                            {
-                              color: '#ffff00',
-                              fontSize: RFValue(15),
-                              fontFamily: 'Axiforma-SemiBold',
-                            },
-                          ]}>
-                          AED{' '}
-                          {walletData?.wallet?.your_balance
-                            ? FormatNumber(
-                                parseFloat(
-                                  walletData?.wallet?.your_balance,
-                                ).toFixed(2),
-                              )
-                            : 0}
-                        </Text>
-                      </Text>
-                    </View>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    onPress={() =>
-                      navigation.navigate('MenuStack', {screen: 'BuyLife'})
-                    }>
-                    <ImageBackground
-                      resizeMode="cover"
-                      style={{
-                        width: 50,
-                        height: 40,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                      }}
-                      source={require('../../assets/imgs/pinkHeart.png')}>
-                      <Text
-                        style={{
-                          color: '#E7003F',
-                          fontFamily: 'Axiforma-SemiBold',
-                          fontSize: RFValue(12),
-                        }}>
-                        {totalLives ? totalLives : 0}
-                      </Text>
-                    </ImageBackground>
-                  </TouchableOpacity>
-                </View>
-              </LinearGradient>
+    <SafeAreaView style={{backgroundColor: '#420E92'}}>
+      <Header
+        style={{
+          position: 'absolute',
+          zIndex: 1000,
+          backgroundColor: headerValue !== 0 ? 'rgba(0,0,0,0.5)' : null,
+          width: '100%',
+          borderBottomRightRadius: 10,
+          borderBottomLeftRadius: 10,
+          top: Platform.OS === 'android' ? 0 : height * 0.05,
+        }}
+      />
 
-              <View>
-                <TouchableOpacity
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    borderRadius: 100,
-                    height: 40,
-                    marginTop: -20,
-                    paddingHorizontal: 15,
-                    backgroundColor: '#fff',
-                    marginBottom: 10,
-                    justifyContent: 'space-between',
-                  }}
-                  onPress={() => {
-                    AddModalState.current(true);
-                  }}>
-                  <Image
-                    style={{width: 22, height: 22, marginRight: 10}}
-                    source={require('../../assets/imgs/iconPlay.png')}
-                  />
+      {LandingData && LandingData.updated_version ? (
+        <NewVersionmodal
+          updatedVersion={LandingData?.updated_version}
+          currentV={packageJson.version}
+          ModalRef={ModelVersioncheck}
+          updatedVersionios={LandingData?.updated_version_ios}
+        />
+      ) : null}
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
+        onScroll={e => {
+          setHeaderValue(e.nativeEvent.contentOffset.y);
+        }}
+        style={{backgroundColor: '#f6f1f3'}}
+        refreshControl={
+          <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
+        }>
+        <View style={{width: '100%', alignItems: 'center'}}>
+          <LinearGradient
+            colors={['#5B0C86', '#E7003F']}
+            style={styles.mainView}>
+            <View style={styles.wrap}>
+              {loader ? (
+                <ActivityIndicator size="large" color="#ffffff" />
+              ) : (
+                <>
+                  {LandingData?.banners ? (
+                    <Video
+                      source={{uri: LandingData?.banners[0]?.url}} // Can be a URL or a local file.
+                      resizeMode={'cover'}
+                      repeat={true}
+                      minLoadRetryCount={2}
+                      fullScreen={true}
+                      ignoreSilentSwitch={'obey'}
+                      onLoad={() => setBuffer(false)}
+                      onLoadStart={() => setVideoAction(false)}
+                      controls={false}
+                      onEnd={() => setVideoAction(true)}
+                      style={styles.ShoppingBanner}
+                    />
+                  ) : null}
+                </>
+              )}
+            </View>
+            <View style={styles.yellowBtn}>
+              <TouchableOpacity onPress={() => navigation.navigate('WALLET')}>
+                <View style={styles.secondHeaderMiddleView}>
                   <Text
-                    style={{
-                      color: '#420E92',
-                      fontSize: RFValue(14),
-                      fontFamily: 'Axiforma-SemiBold',
-                    }}>
-                    How it works
+                    style={[
+                      styles.text,
+                      {
+                        color: '#fff',
+                        fontSize: RFValue(15),
+                        fontFamily: 'Axiforma-SemiBold',
+                      },
+                    ]}>
+                    Your Balance:{' '}
+                    <Text
+                      style={[
+                        styles.text,
+                        {
+                          color: '#ffff00',
+                          fontSize: RFValue(15),
+                          fontFamily: 'Axiforma-SemiBold',
+                        },
+                      ]}>
+                      AED{' '}
+                      {walletData?.wallet?.your_balance
+                        ? FormatNumber(
+                            parseFloat(
+                              walletData?.wallet?.your_balance,
+                            ).toFixed(2),
+                          )
+                        : 0}
+                    </Text>
                   </Text>
-                </TouchableOpacity>
-              </View>
-
-              <FlatList
-                horizontal={true}
-                style={{marginLeft: 1, width: '100%'}}
-                contentContainerStyle={{
-                  marginLeft: 10,
-                  alignSelf: 'flex-start',
-                  paddingVertical: 5,
-                }}
-                showsVerticalScrollIndicator={false}
-                showsHorizontalScrollIndicator={false}
-                data={LandingData?.lowerBanner}
-                renderItem={({item, index}) => (
-                  <TriviaNightCard
-                    uri={item.url}
-                    index={item.index}
-                    item={item}
-                    onPress={() => {
-                      index === 0
-                        ? (navigation.navigate('TriviaJoy'),
-                          dispatch4(TriviaJoyAPI()))
-                        : index === 1
-                        ? navigation.navigate('DealsJoy')
-                        : //  navigation.navigate("FanJoy")
-                          navigation.navigate('AllCreatorsPage');
-                    }}
-                  />
-                )}
-                keyExtractor={item => item.id}
-              />
-
-              <View
-                style={{
-                  flex: 1,
-                  marginTop: 8,
-                  flexDirection: 'row',
-                }}>
-                {loading ? (
-                  <ActivityIndicator size="small" color="#fffff" />
-                ) : (
-                  <SliderBox
-                    images={imgSlider}
-                    sliderBoxHeight={150}
-                    resizeMode={'cover'}
-                    ImageComponentStyle={{
-                      borderRadius: 15,
-                      width: '95%',
-                      marginTop: 5,
-                    }}
-                    imageLoadingColor="black"
-                    dotColor="#FFEE58"
-                    inactiveDotColor="#90A4AE"
-                    dotStyle={{top: 5}}
-                    autoplay={true}
-                    circleLoop={true}
-                    onCurrentImagePressed={index =>
-                      console.warn(`image ${index} pressed`)
-                    }
-                    currentImageEmitter={index =>
-                      console.warn(`current pos is: ${index}`)
-                    }
-                  />
-                )}
-              </View>
-              <View
-                style={{
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-              />
-              {LandingData?.home_middle_banners_data ? (
-                <HomeCard
-                  onPress={() => LetBegin()}
-                  images={LandingData?.home_middle_banners_data}
-                  time={time}
-                  gameShow={LandingData?.gameShow}
-                  upcoming_gameshow={LandingData?.upcoming_gameshow}
-                  countDownFinish={() => {
-                    countDownFinishHandler();
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate('MenuStack', {screen: 'BuyLife'})
+                }>
+                <ImageBackground
+                  resizeMode="cover"
+                  style={{
+                    shadowOffset: {width: 0, height: 1},
+                    shadowOpacity: 0.5,
+                    shadowRadius: 4,
+                    elevation: 4,
+                    width: 50,
+                    height: 40,
+                    justifyContent: 'center',
+                    alignItems: 'center',
                   }}
-                />
-              ) : null}
-              <View
-                style={{
-                  width: '95%',
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  marginTop: 10,
-                }}>
-                <View style={{marginBottom: 8}}>
+                  source={require('../../assets/imgs/pinkHeart.png')}>
                   <Text
                     style={{
                       color: '#E7003F',
-                      fontSize: 20,
-                      fontFamily: 'Axiforma-Bold',
+                      fontFamily: 'Axiforma-SemiBold',
+                      fontSize: RFValue(12),
                     }}>
-                    Shop to Win
+                    {totalLives ? totalLives : 0}
                   </Text>
+                </ImageBackground>
+              </TouchableOpacity>
+            </View>
+          </LinearGradient>
+
+          <View>
+            <TouchableOpacity
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                borderRadius: 100,
+                height: 40,
+                marginTop: -20,
+                paddingHorizontal: 15,
+                backgroundColor: '#ffffff',
+                marginBottom: 10,
+                justifyContent: 'space-between',
+              }}
+              onPress={() => {
+                AddModalState.current(true);
+              }}>
+              <Image
+                style={{width: 22, height: 22, marginRight: 10}}
+                source={require('../../assets/imgs/iconPlay.png')}
+              />
+              <Text
+                style={{
+                  color: '#420E92',
+                  fontSize: RFValue(14),
+                  fontFamily: 'Axiforma-SemiBold',
+                }}>
+                How it works
+              </Text>
+            </TouchableOpacity>
+          </View>
+
+          <FlatList
+            horizontal={true}
+            style={{marginLeft: 1, width: '100%'}}
+            contentContainerStyle={{
+              marginLeft: 10,
+              alignSelf: 'flex-start',
+              //paddingVertical: 5,
+            }}
+            showsVerticalScrollIndicator={false}
+            showsHorizontalScrollIndicator={false}
+            data={LandingData?.lowerBanner}
+            renderItem={({item, index}) => (
+              <TriviaNightCard
+                uri={item.url}
+                index={item.index}
+                item={item}
+                onPress={() => {
+                  index === 0
+                    ? (navigation.navigate('TriviaJoy'),
+                      dispatch4(TriviaJoyAPI()))
+                    : index === 1
+                    ? navigation.navigate('DealsJoy')
+                    : //  navigation.navigate("FanJoy")
+                      navigation.navigate('AllCreatorsPage');
+                }}
+              />
+            )}
+            keyExtractor={item => item.id}
+          />
+
+          <View
+            style={{
+              flex: 1,
+              marginTop: 8,
+              flexDirection: 'row',
+            }}>
+            {loading ? (
+              <ActivityIndicator size="small" color="#fffff" />
+            ) : (
+              <SliderBox
+                images={imgSlider}
+                sliderBoxHeight={150}
+                resizeMode={'cover'}
+                ImageComponentStyle={{
+                  borderRadius: 15,
+                  width: '95%',
+                  shadowColor: '#d9dbda',
+                  shadowOffset: {width: 0, height: 1},
+                  shadowOpacity: 5,
+                  shadowRadius: 7,
+                  elevation: 4,
+                  //  marginTop: 5,
+                }}
+                imageLoadingColor="black"
+                dotColor="#FFEE58"
+                inactiveDotColor="#90A4AE"
+                dotStyle={{top: 5}}
+                autoplay={true}
+                circleLoop={true}
+                onCurrentImagePressed={index =>
+                  console.warn(`image ${index} pressed`)
+                }
+                currentImageEmitter={index =>
+                  console.warn(`current pos is: ${index}`)
+                }
+              />
+            )}
+          </View>
+          <View
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          />
+          {LandingData?.home_middle_banners_data ? (
+            <HomeCard
+              onPress={() => LetBegin()}
+              images={LandingData?.home_middle_banners_data}
+              time={time}
+              gameShow={LandingData?.gameShow}
+              upcoming_gameshow={LandingData?.upcoming_gameshow}
+              countDownFinish={() => {
+                countDownFinishHandler();
+              }}
+            />
+          ) : null}
+          <View
+            style={{
+              width: '95%',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              marginTop: 10,
+            }}>
+            <View
+              style={{
+                marginVertical: 10,
+                marginHorizontal: 5,
+              }}>
+              <Text
+                style={{
+                  color: '#E7003F',
+                  fontSize: 20,
+                  fontFamily: 'Axiforma-Bold',
+                }}>
+                Shop to Win
+              </Text>
+              <Text
+                style={{
+                  color: '#0B2142',
+                  fontSize: 16,
+                  fontFamily: 'Axiforma-Regular',
+                  lineHeight: Platform.OS === 'android' ? 20 : 28,
+                }}>
+                Shop More Win More
+              </Text>
+            </View>
+            <LongButton
+              style={[styles.Margin, {backgroundColor: '#ffffff'}]}
+              textstyle={{
+                color: '#000000',
+                fontFamily: 'Axiforma-SemiBold',
+                fontSize: 14,
+              }}
+              text="View all"
+              font={16}
+              shadowless
+              onPress={() => {
+                // {
+                //   Platform.OS === 'android' ? fun_contentview() : null;
+                // }
+                fun_contentview();
+                fun_listview();
+                navigation.navigate('PRODUCTS', {
+                  screen: 'PrizeList',
+                });
+              }}
+            />
+          </View>
+
+          <FlatList
+            horizontal={true}
+            style={{}}
+            contentContainerStyle={{
+              alignSelf: 'flex-start',
+              paddingRight: width * 0.04,
+            }}
+            showsVerticalScrollIndicator={false}
+            showsHorizontalScrollIndicator={false}
+            data={LandingData?.products}
+            renderItem={({item}) => (
+              <ClosingSoonCard
+                onPress={() => {
+                  navigation.navigate('ProductDetail', {
+                    productId: item?.product?.id,
+                  });
+                }}
+                props={props}
+                index={item.index}
+                item={item}
+              />
+            )}
+            keyExtractor={item => item.id}
+            ListEmptyComponent={() => (
+              <>
+                {loading ? (
+                  <ActivityIndicator size="large" color="yellow" />
+                ) : (
                   <Text
                     style={{
-                      color: '#0B2142',
-                      fontSize: 16,
-                      fontFamily: 'Axiforma-Regular',
-                      lineHeight: Platform.OS === 'android' ? 20 : 28,
+                      color: '#000000',
+                      textAlign: 'center',
                     }}>
-                    Shop More Win More
+                    The list is empty
                   </Text>
-                </View>
-                <LongButton
-                  style={[styles.Margin, {backgroundColor: '#ffffff'}]}
-                  textstyle={{
-                    color: '#000000',
-                    fontFamily: 'Axiforma-SemiBold',
-                    fontSize: 14,
-                  }}
-                  text="View all"
-                  font={16}
-                  shadowless
-                  onPress={() => {
-                    // {
-                    //   Platform.OS === 'android' ? fun_contentview() : null;
-                    // }
-                    fun_contentview();
-                    fun_listview();
-                    navigation.navigate('PRODUCTS', {
-                      screen: 'PrizeList',
-                    });
-                  }}
-                />
-              </View>
-
-              <FlatList
-                horizontal={true}
-                style={{}}
-                contentContainerStyle={{
-                  alignSelf: 'flex-start',
-                  paddingRight: width * 0.04,
-                }}
-                showsVerticalScrollIndicator={false}
-                showsHorizontalScrollIndicator={false}
-                data={LandingData?.products}
-                renderItem={({item}) => (
-                  <ClosingSoonCard
-                    onPress={() => {
-                      navigation.navigate('ProductDetail', {
-                        productId: item?.product?.id,
-                      });
-                    }}
-                    props={props}
-                    index={item.index}
-                    item={item}
-                  />
                 )}
-                keyExtractor={item => item.id}
-                ListEmptyComponent={() => (
-                  <>
-                    {loading ? (
-                      <ActivityIndicator size="large" color="yellow" />
-                    ) : (
-                      <Text
-                        style={{
-                          color: '#000000',
-                          textAlign: 'center',
-                        }}>
-                        The list is empty
-                      </Text>
-                    )}
-                  </>
-                )}
-              />
-              <View style={{paddingVertical: 12}}>
-                <View style={styles.avatarBannerView}>
-                  {LandingData?.leaderboard_home_data ? (
-                    <Image
-                      style={[
-                        styles.avatarBannerView,
-                        {position: 'absolute', overlayColor: '#f6f1f3'},
-                      ]}
-                      source={{
-                        uri: LandingData?.leaderboard_home_data[0]?.url,
-                      }}
-                    />
-                  ) : null}
-
-                  <LongButton
-                    style={[
-                      styles.Margin,
-                      {
-                        backgroundColor: '#ffffff',
-                        position: 'absolute',
-                        bottom: 10,
-                        right: 25,
-                      },
-                    ]}
-                    textstyle={{
-                      color: '#000000',
-                      fontFamily: 'Axiforma-SemiBold',
-                      fontSize: 10,
-                    }}
-                    text="View Leaderboard"
-                    font={10}
-                    shadowless
-                    onPress={() =>
-                      navigation.navigate('MenuStack', {
-                        screen: 'LeaderBoard',
-                      })
-                    }
-                  />
-                  <View style={{width: '95%'}}>
-                    <Text
-                      style={{
-                        color: '#000000',
-                        fontFamily: 'Axiforma-SemiBold',
-                        fontSize: RFValue(20),
-                      }}>
-                      50+
-                    </Text>
-                    <Text
-                      style={{
-                        color: '#000000',
-                        fontFamily: 'Axiforma-SemiBold',
-                        fontSize: RFValue(20),
-                      }}>
-                      Winners
-                    </Text>
-                  </View>
-                </View>
-              </View>
-              <LinearGradient
-                start={{x: 0, y: 0}}
-                end={{x: 1, y: 0}}
-                colors={['#f8d7e8', '#c7dfe8']}
-                style={{
-                  width: '100%',
-                  justifyContent: 'center',
-                  paddingLeft: 15,
-                  paddingTop: 20,
-                  paddingBottom: 20,
-                }}>
-                <View
-                  style={{
-                    width: '95%',
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                  }}>
-                  <View>
-                    <Text
-                      style={{
-                        color: '#E7003F',
-                        fontSize: 20,
-                        fontFamily: 'Axiforma-Bold',
-                      }}>
-                      Fanjoy
-                    </Text>
-                    <Text
-                      style={{
-                        color: '#0B2142',
-                        fontSize: 16,
-                        fontFamily: 'Axiforma',
-                        lineHeight: Platform.OS === 'android' ? 22 : 30,
-                      }}>
-                      Products by creators
-                    </Text>
-                  </View>
-                  <LongButton
-                    style={[
-                      styles.Margin,
-                      {backgroundColor: '#ffffff', width: width * 0.35},
-                    ]}
-                    textstyle={{
-                      color: '#000000',
-                      fontFamily: 'Axiforma-SemiBold',
-                      fontSize: 14,
-                    }}
-                    text="View all stars"
-                    font={16}
-                    shadowless
-                    onPress={() => {
-                      navigation.navigate('AllCreatorsList');
-                    }}
-                  />
-                </View>
-
-                <FlatList
-                  showsVerticalScrollIndicator={false}
-                  showsHorizontalScrollIndicator={false}
-                  data={LandingData?.funJoy}
-                  horizontal={true}
-                  renderItem={({item}) => (
-                    <FanJoyCard
-                      style={{width: width / 3.45, height: height * 0.2}}
-                      name={item?.first_name + ' ' + item.last_name}
-                      imageUrl={item?.image}
-                      fans={item.fans}
-                      id={item.id}
-                    />
-                  )}
-                  ItemSeparatorComponent={() => {
-                    return <View style={{width: width * 0.03}} />;
-                  }}
-                  contentContainerStyle={{
-                    marginTop: 10,
-                  }}
-                  keyExtractor={item => item.id}
-                />
-              </LinearGradient>
-              {LandingData?.luckydraw_results_data ? (
-                <LuckyDrawCard
-                  image={LandingData?.luckydraw_results_data[0]?.url}
-                  style={{marginTop: 15}}
-                  onPress={() => {
-                    navigation.navigate('MenuStack', {
-                      screen: 'RefferAndEarn',
-                    });
+              </>
+            )}
+          />
+          <View style={{paddingVertical: 12}}>
+            <View style={styles.avatarBannerView}>
+              {LandingData?.leaderboard_home_data ? (
+                <Image
+                  style={[
+                    styles.avatarBannerView,
+                    {position: 'absolute', overlayColor: '#f6f1f3'},
+                  ]}
+                  source={{
+                    uri: LandingData?.leaderboard_home_data[0]?.url,
                   }}
                 />
               ) : null}
 
-              <View style={{height: 10}} />
+              <LongButton
+                style={[
+                  styles.Margin,
+                  {
+                    backgroundColor: '#ffffff',
+                    position: 'absolute',
+                    bottom: 10,
+                    right: 25,
+                  },
+                ]}
+                textstyle={{
+                  color: '#000000',
+                  fontFamily: 'Axiforma-SemiBold',
+                  fontSize: 10,
+                }}
+                text="View Leaderboard"
+                font={10}
+                shadowless
+                onPress={() =>
+                  navigation.navigate('MenuStack', {
+                    screen: 'LeaderBoard',
+                  })
+                }
+              />
+              <View style={{width: '95%'}}>
+                <Text
+                  style={{
+                    color: '#000000',
+                    fontFamily: 'Axiforma-SemiBold',
+                    fontSize: RFValue(20),
+                  }}>
+                  50+
+                </Text>
+                <Text
+                  style={{
+                    color: '#000000',
+                    fontFamily: 'Axiforma-SemiBold',
+                    fontSize: RFValue(20),
+                  }}>
+                  Winners
+                </Text>
+              </View>
             </View>
-            <HowItWorkModal
-              ModalRef={AddModalState}
-              details
-              video={
-                'https://winjoy-assets.s3.amazonaws.com/how_it_work/Mostafa_wj-intro+(1).mp4'
-              }
-              cross={true}
+          </View>
+          <LinearGradient
+            start={{x: 0, y: 0}}
+            end={{x: 1, y: 0}}
+            colors={['#f8d7e8', '#c7dfe8']}
+            style={{
+              width: '100%',
+              justifyContent: 'center',
+              paddingLeft: 15,
+              paddingTop: 20,
+              paddingBottom: 20,
+            }}>
+            <View
+              style={{
+                width: '95%',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+              }}>
+              <View>
+                <Text
+                  style={{
+                    color: '#E7003F',
+                    fontSize: 20,
+                    fontFamily: 'Axiforma-Bold',
+                  }}>
+                  Fanjoy
+                </Text>
+                <Text
+                  style={{
+                    color: '#0B2142',
+                    fontSize: 16,
+                    fontFamily: 'Axiforma',
+                    lineHeight: Platform.OS === 'android' ? 22 : 30,
+                  }}>
+                  Products by creators
+                </Text>
+              </View>
+              <LongButton
+                style={[
+                  styles.Margin,
+                  {backgroundColor: '#ffffff', width: width * 0.35},
+                ]}
+                textstyle={{
+                  color: '#000000',
+                  fontFamily: 'Axiforma-SemiBold',
+                  fontSize: 14,
+                }}
+                text="View all stars"
+                font={16}
+                shadowless
+                onPress={() => {
+                  navigation.navigate('AllCreatorsList');
+                }}
+              />
+            </View>
+
+            <FlatList
+              showsVerticalScrollIndicator={false}
+              showsHorizontalScrollIndicator={false}
+              data={LandingData?.funJoy}
+              horizontal={true}
+              renderItem={({item}) => (
+                <FanJoyCard
+                  style={{
+                    width: width / 3.45,
+                    height: height * 0.2,
+                    shadowOffset: {width: 0, height: 1},
+                    shadowOpacity: 0.3,
+                    shadowRadius: 4,
+                    elevation: 4,
+                  }}
+                  name={item?.first_name + ' ' + item.last_name}
+                  imageUrl={item?.image}
+                  fans={item.fans}
+                  id={item.id}
+                />
+              )}
+              ItemSeparatorComponent={() => {
+                return <View style={{width: width * 0.03}} />;
+              }}
+              contentContainerStyle={{
+                marginTop: 10,
+              }}
+              keyExtractor={item => item.id}
             />
-          </ScrollView>
-        </SafeAreaView>
-      )}
-    </>
+          </LinearGradient>
+          {LandingData?.luckydraw_results_data ? (
+            <LuckyDrawCard
+              image={LandingData?.luckydraw_results_data[0]?.url}
+              style={{
+                marginTop: 15,
+                shadowOffset: {width: 0, height: 1},
+                shadowOpacity: 0.5,
+                shadowRadius: 5,
+                elevation: 4,
+              }}
+              onPress={() => {
+                navigation.navigate('MenuStack', {
+                  screen: 'RefferAndEarn',
+                });
+              }}
+            />
+          ) : null}
+
+          <View style={{height: 10}} />
+        </View>
+        <HowItWorkModal
+          ModalRef={AddModalState}
+          details
+          video={
+            'https://winjoy-assets.s3.amazonaws.com/how_it_work/Mostafa_wj-intro+(1).mp4'
+          }
+          cross={true}
+        />
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 

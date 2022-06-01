@@ -50,7 +50,7 @@ export default StyleSheet.create({
     fontFamily: 'Axiforma-SemiBold',
     color: '#000000',
     fontSize: RFValue(12),
-
+    lineHeight: 23,
     width: 100,
   },
 });

@@ -26,7 +26,6 @@ const Modals = props => {
   });
   const ApproveRef = useRef();
   const DeclineRef = useRef();
-
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -334,10 +333,10 @@ const Modals = props => {
                 bold2
                 style={
                   ([styles.TextHeading],
-                  {marginTop: 5, color: 'blue', lineHeight: 20})
+                  {marginTop: 7, color: 'blue', lineHeight: 20})
                 }
                 notAlign>
-                Sorry you are not allowed to request more than one withdrawal.
+                {props.message_error}
               </Label>
             </View>
             <LongButton

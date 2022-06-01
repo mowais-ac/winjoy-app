@@ -42,6 +42,7 @@ import {
 } from '@react-native-firebase/admob';
 import {firebase} from '@react-native-firebase/admob';
 const {width, height} = Dimensions.get('window');
+const rewardAd = RewardedAd.createForAdRequest(TestIds.REWARDED);
 const index = ({route, navigation}) => {
   const livePlans = useSelector(state => state.app.livePlans);
   const totalLives = useSelector(state => state.app.totalLives);
@@ -77,29 +78,28 @@ const index = ({route, navigation}) => {
       })
       .then(() => {});
   }, []);
-  const showRewardAd = () => {
-    // Create a new instance
-    const rewardAd = RewardedAd.createForAdRequest(TestIds.REWARDED);
 
-    // Add event handlers
-    rewardAd.onAdEvent((type, error) => {
-      if (type === RewardedAdEventType.LOADED) {
-        rewardAd.show();
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    const eventListener = rewardAd.onAdEvent(type => {
+      if (type === RewardedAdEventType?.LOADED) {
+        setLoaded(true);
       }
-
-      if (type === RewardedAdEventType.EARNED_REWARD) {
-        Alert.alert(
-          'Reward Ad',
-          'You just earned one live',
-          [{text: 'OK', onPress: () => console.log('OK Pressed')}],
-          {cancelable: true},
-        );
+      if (type === RewardedAdEventType?.CLOSED) {
+        console.log('ad closed');
+        setLoaded(false);
+        //reload ad
+        rewardAd.load();
       }
     });
-
-    // Load a new advert
+    // Start loading the interstitial straight away
     rewardAd.load();
-  };
+    // Unsubscribe from events on unmount
+    return () => {
+      eventListener();
+    };
+  }, []);
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     dispatch(getLiveShowPlans());
@@ -127,13 +127,14 @@ const index = ({route, navigation}) => {
       }
       if (json.status === 'success') {
         if (json.message === 'Lives buy successfully') {
+          rewardAd.show();
           setTimeout(() => {
             dispatch2({
               type: types.TOTAL_LIVES,
               totalLives: json?.lives,
             });
-          }, 1200);
-          showRewardAd();
+          }, 500);
+
           // dispatch(getLiveShowPlans());
         } else {
           alert(json);
@@ -154,7 +155,7 @@ const index = ({route, navigation}) => {
           start={{x: 0, y: 0}}
           end={{x: 1, y: 0}}
           colors={['#f8d7e8', '#c7dfe8']}
-          style={{paddingBottom: 10}}>
+          style={{paddingBottom: 15, flex: 1}}>
           <LinearGradient
             start={{x: 0, y: 0}}
             end={{x: 1, y: 0}}
@@ -272,8 +273,14 @@ const index = ({route, navigation}) => {
                         videofunction();
                         setIdVideoAdd(item.id);
                         setVideo(item.video_url);
+
                         if (video1 === true) {
-                          getData();
+                          if (rewardAd.loaded) {
+                            getData().catch(error =>
+                              console.warn('admob_error', error),
+                            );
+                          } else {
+                          }
                         } else {
                           alert(
                             'Sorry, you can watch video ad only once in a day. Please try after 24 hours.',
@@ -302,14 +309,13 @@ const index = ({route, navigation}) => {
             amount={amount}
             lives={lives}
             id={id}
-
             // onPressContinue={()=>alert("hii")}
           />
           <WatchAddModal
             ModalRef={AddModalState}
             details
             ad={() => {
-              showRewardAd();
+              //   showRewardAd();
             }}
             video={video}
             id={idVideoAdd}

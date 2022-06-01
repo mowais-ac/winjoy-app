@@ -587,6 +587,7 @@ const PaymentModals = props => {
                 </View>
                 <View style={{alignItems: 'center', marginTop: 10}}>
                   <TouchableOpacity
+                    disabled={!selectedcheck}
                     onPress={() => {
                       setSuccess(true);
                     }}
@@ -594,7 +595,7 @@ const PaymentModals = props => {
                       borderRadius: 100,
                       width: '85%',
                       height: 50,
-                      backgroundColor: '#420E92',
+                      backgroundColor: !selectedcheck ? '#E6DFEE' : '#420E92',
                       justifyContent: 'center',
                     }}>
                     <Text
@@ -673,9 +674,10 @@ const PaymentModals = props => {
                       </Label>
                       <View style={styles.Main2}>
                         <TextInput
+                          editable={false}
                           placeholder="Name on Card"
                           placeholderTextColor={Colors.DARK_LABEL}
-                          keyboardType={'default'}
+                          //keyboardType={'default'}
                           style={styles.MarginLarge}
                         />
                       </View>
@@ -892,7 +894,7 @@ const PaymentModals = props => {
                             fontSize: 16,
                             lineHeight: 27,
                           }}>
-                          Your balance summery
+                          Your balance summary
                         </Text>
                       </View>
                     </View>
@@ -1050,7 +1052,7 @@ const PaymentModals = props => {
             });
           }}
         />
-        <Modals ModalRef={ModalErrorState} Error />
+        <Modals ModalRef={ModalErrorState} Alert />
       </KeyboardAvoidingView>
     </Modal>
   );

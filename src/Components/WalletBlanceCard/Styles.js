@@ -37,6 +37,6 @@ export default StyleSheet.create({
     width: '45%',
     backgroundColor: '#fcd9e2',
     borderRadius: 10,
-    margin: 10,
+    //margin: 10,
   },
 });

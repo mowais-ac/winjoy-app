@@ -2,43 +2,41 @@ import {
   widthPercentageToDP,
   heightPercentageToDP,
   heightConverter,
-  widthConverter
+  widthConverter,
 } from '../Helpers/Responsive';
-import { RFValue } from 'react-native-responsive-fontsize';
-const { width, height } = Dimensions.get("window");
-import {
-  StyleSheet,
-  Dimensions,
-} from "react-native";
+import {RFValue} from 'react-native-responsive-fontsize';
+const {width, height} = Dimensions.get('window');
+import {StyleSheet, Dimensions} from 'react-native';
 
 export default StyleSheet.create({
   mainView: {
     alignItems: 'center',
-  //  backgroundColor: '#f05b31',
-    borderRadius: widthConverter(10),
-    height: heightPercentageToDP("16%"),
-    width: width/3.36,
+    //  backgroundColor: '#f05b31',
+    borderRadius: 13,
+    height: heightPercentageToDP('16%'),
+    width: width / 3.36,
     flexDirection: 'row',
     justifyContent: 'flex-end',
-    marginRight:10
- //   paddingRight: widthConverter(20),
+    marginRight: 10,
+    shadowColor: '#ccf6ff',
+    shadowOffset: {width: 0, height: 1},
+    shadowOpacity: 5,
+    shadowRadius: 3,
+
+    //   paddingRight: widthConverter(20),
   },
   textView: {
     alignItems: 'center',
-    marginLeft:15,
-    marginRight:15,
+    marginLeft: 15,
+    marginRight: 15,
   },
   commingSoonTxt: {
-    fontFamily: "Axiforma-SemiBold",
+    fontFamily: 'Axiforma-SemiBold',
     fontSize: 26,
-    color: "#fff",
+    color: '#fff',
     lineHeight: heightConverter(30),
-    width: widthPercentageToDP("40%"),
-    textAlign:'left',
- 
-
-
-
+    width: widthPercentageToDP('40%'),
+    textAlign: 'left',
   },
 
   circularView: {
@@ -48,13 +46,13 @@ export default StyleSheet.create({
     height: 40,
     borderRadius: 30,
     backgroundColor: '#ffffff',
-    elevation: 4,
+    elevation: 3,
     position: 'absolute',
     bottom: heightConverter(55),
     right: 10,
-    bottom: 36
+    bottom: 36,
   },
   imageView: {
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
 });

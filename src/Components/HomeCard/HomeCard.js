@@ -42,10 +42,7 @@ function HomeCard({
     <View style={styles.mainViewWrap}>
       <View style={[styles.mainView, style]}>
         <Image
-          style={[
-            styles.mainView,
-            {position: 'absolute', overlayColor: '#f6f1f3'},
-          ]}
+          style={[styles.mainView, {position: 'absolute'}]}
           source={{uri: images[0]?.url}}
         />
         <View style={styles.textView}>
@@ -76,7 +73,7 @@ function HomeCard({
                 <Text
                   style={[
                     styles.commingSoonTxt,
-                    {fontFamily: 'Axifroma-Regular', marginBottom: 15},
+                    {fontFamily: 'Axiforma-Regular', marginBottom: 15},
                   ]}>
                   Prize
                 </Text>

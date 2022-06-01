@@ -33,7 +33,7 @@ const index = ({route, navigation}) => {
     'Lives can only be used up until question.',
     'At WinJoy, if we suspect you of cheating or fraud, we reserve the right to disqualify you and you will not receive a prize.',
     'The decisions made by the WinJoy technical team are final and can not be appealed.',
-    'Prizes are reserved for contestants from the GCC countries, India, and Pakistan.',
+    'Prizes are reserved for contestants from the GCC countries only.',
     'The withdrawal requests will be approved 2 times a month, 15th and 30th of the month.',
     'Contestants can only withdraw a maximum amount of 250 DHS.',
     'If there are 2 or more winners in the same live game show, the prize will be distributed equally among the winners.',

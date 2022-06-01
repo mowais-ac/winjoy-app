@@ -63,7 +63,13 @@ const TriviaJoyBottomList = props => {
   return (
     <FlatList
       horizontal={true}
-      style={{minHeight: 50}}
+      style={{
+        minHeight: 50,
+        shadowOffset: {width: 0, height: 1},
+        shadowOpacity: 0.2,
+        shadowRadius: 5.5,
+        elevation: 3,
+      }}
       contentContainerStyle={{
         paddingRight: 10,
       }}

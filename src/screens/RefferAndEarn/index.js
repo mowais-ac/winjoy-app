@@ -107,34 +107,21 @@ const index = ({route, navigation}) => {
   //Share dynamic Link
   const buildLink = async () => {
     const link = await firebase.dynamicLinks().buildLink({
-      //link: `https://winjoy.ae?referral=WINJOY-534274796`,
       link: 'https://winjoy.ae',
       domainUriPrefix: 'https://winjoyae.page.link/7Yoh',
       analytics: {
         campaign: 'refferal link',
         content: 'Click Me',
       },
-      /*  social: {
-        title: 'Winjoy',
-        descriptionText: 'Reffer a friends and family to win prizes',
-        imageUrl:
-          'https://lh3.googleusercontent.com/geougc/AF1QipMMFxFa5U5IOkxLkFJEYtiXZPwOOkArwEHiF_4x=w573-h573-p-no',
-      }, */
       android: {
         packageName: 'com.winjoy',
-        minimumVersion: '35',
+        minimumVersion: '41',
       },
     });
-
     setLink(link);
     console.log('buildLink', link);
     return link;
   };
-  /* const copyToClipboard = () => {
-    Clipboard.setString(
-      `https://winjoy.ae/invite/token?${livePlans?.refer_code}`,
-    );
-  }; */
 
   //Share btn
   const onShare = async () => {

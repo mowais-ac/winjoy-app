@@ -36,7 +36,8 @@ function GameShowWinnersCard({onPress, date, profile_image, name, ammount}) {
           style={{
             height: height * 0.08,
             justifyContent: 'center',
-            width: 190,
+            width: 180,
+
             //alignItems: 'flex-start',
           }}>
           <Text numberOfLines={1} style={styles.text}>
@@ -47,7 +48,14 @@ function GameShowWinnersCard({onPress, date, profile_image, name, ammount}) {
           </Text>
         </View>
 
-        <Text numberOfLines={1} style={[styles.text2, {color: '#420E92'}]}>
+        <Text
+          numberOfLines={1}
+          style={{
+            color: '#420E92',
+            fontFamily: 'Axiforma-SemiBold',
+            width: 78,
+            fontSize: 13,
+          }}>
           AED {ammount}
         </Text>
       </View>

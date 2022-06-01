@@ -43,9 +43,12 @@ import SuccessModal from '../../Components/SuccessModal';
 import {JSONtoForm} from '../../Constants/Functions';
 import Modals from '../../Components/Modals';
 import {Picker} from '@react-native-picker/picker';
+import socketIO from 'socket.io-client';
 import AddaccountModal from '../../Components/AddaccountModal';
-
+const MYServer = 'https://node-winjoyserver-deploy.herokuapp.com/';
 const index = ({props, navigation}) => {
+  const LandingData = useSelector(state => state.app.LandingData);
+  const socket = socketIO(MYServer);
   const [activeno, setActiveno] = useState('25');
   const {t} = useTranslation();
   const [refreshing, setRefreshing] = React.useState(false);
@@ -60,7 +63,6 @@ const index = ({props, navigation}) => {
   const ModalErrorState = useRef();
   const [headerValue, setHeaderValue] = useState(0);
   const [activity, setActivity] = useState(false);
-
   const accountmodal = useRef();
   const Combined_closed = () => {
     ModalState2.current(false);
@@ -75,7 +77,33 @@ const index = ({props, navigation}) => {
 
   useEffect(() => {
     dispatch(getWalletData());
+    socket.on('sendOnboarding', msg => {
+      console.log('Should navigate from product details');
+      NavigateToQuiz(true);
+    });
   }, []);
+  const [messageError, setmessageError] = useState('error occurs');
+  const NavigateToQuiz = fromSocket => {
+    if (
+      LandingData?.gameShow?.status === 'on_boarding' ||
+      LandingData?.gameShow?.status === 'started' ||
+      fromSocket
+    ) {
+      {
+        console.log(
+          'LandingData?.gameShow?.status pd',
+          LandingData?.gameShow?.status,
+        );
+      }
+      navigation.navigate('GameStack', {
+        screen: 'Quiz',
+        params: {
+          uri: LandingData?.gameShow?.live_stream?.key,
+          gameshowStatus: LandingData?.gameShow?.status,
+        },
+      });
+    }
+  };
   const HandleWithdraw = async accountId => {
     setActivity(true);
     console.log('account id', accountId);
@@ -100,7 +128,8 @@ const index = ({props, navigation}) => {
         .then(async response => response.json())
         .then(async res => {
           setActivity(false);
-          console.log('resswith', res);
+          console.log('resswith1', res);
+          setmessageError(res.message);
           if (res.status === 'error') {
             ModalErrorState.current(true);
           } else {
@@ -121,6 +150,8 @@ const index = ({props, navigation}) => {
   return (
     <SafeAreaView style={{backgroundColor: '#420E92'}}>
       <ScrollView
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
         style={{backgroundColor: '#f6f1f3'}}
         refreshControl={
           <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
@@ -144,7 +175,6 @@ const index = ({props, navigation}) => {
                 font={28}
               />
             </View>
-
             <View
               style={{
                 width: widthConverter(250),
@@ -180,10 +210,17 @@ const index = ({props, navigation}) => {
           }
         />
         <View style={styles.mainView}>
-          <View style={{marginLeft: 30}}>
-            <Label notAlign primary font={14} bold style={{color: '#E7003F'}}>
+          <View>
+            <Text
+              style={{
+                fontWeight: 'bold',
+                color: '#E7003F',
+                lineHeight: 30,
+                fontFamily: 'Axiforma-Regular',
+                fontSize: 15.5,
+              }}>
               {t('last_five_transcation')}
-            </Label>
+            </Text>
             <FlatList
               showsVerticalScrollIndicator={false}
               showsHorizontalScrollIndicator={false}
@@ -199,16 +236,16 @@ const index = ({props, navigation}) => {
               renderItem={({item, i}) => {
                 return (
                   <View key={i} style={styles.listView}>
-                    <View style={{marginTop: 10}}>
+                    <View style={{alignSelf: 'center'}}>
                       <Image
                         style={styles.tinyLogo}
                         source={require('../../assets/imgs/lpgame.png')}
                       />
                     </View>
+
                     <View
                       style={{
-                        width: widthConverter(200),
-                        marginLeft: 15,
+                        marginLeft: 18,
                       }}>
                       <Text style={styles.text}>AED {item?.amount}</Text>
                       <Text style={styles.text2}>
@@ -254,7 +291,7 @@ const index = ({props, navigation}) => {
           activity={activity}
         />
 
-        <Modals ModalRef={ModalErrorState} Alert />
+        <Modals ModalRef={ModalErrorState} message_error={messageError} Alert />
         <SuccessModal
           ModalRef={ModalState2}
           details
@@ -280,8 +317,11 @@ const styles = StyleSheet.create({
   },
   listView: {
     flexDirection: 'row',
-    width: widthConverter(300),
-    marginTop: 7,
+    height: 40,
+
+    //width: widthConverter(100),
+    marginTop: 5,
+    alignItems: 'center',
   },
   info_mainView: {
     flexDirection: 'row',
@@ -292,26 +332,27 @@ const styles = StyleSheet.create({
   },
   mainView: {
     flex: 1,
-    width: width - 25,
-    marginTop: 5,
+    width: 'auto',
+    paddingVertical: 10,
+    marginVertical: 5.5,
     backgroundColor: '#ffffff',
-    margin: 10,
+    marginHorizontal: 14,
     borderRadius: 10,
-    padding: 5,
-    alignItems: 'center',
+    paddingHorizontal: 20,
     elevation: 3,
   },
   text_separator: {
     marginTop: 5,
     height: 1,
-    width: '92%',
+    width: '100%',
     backgroundColor: '#dedae9',
   },
   text_trasactions: {
     marginTop: 15,
     color: '#000000',
     fontFamily: 'Axiforma-Regular',
-    fontSize: 13,
+    fontSize: 14,
+    fontWeight: 'bold',
   },
   userName: {
     color: '#FFFFFF',
@@ -331,7 +372,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderColor: '#ffffff',
-    elevation: 5,
+    elevation: 3,
     shadowColor: '#0000',
     shadowOffset: {
       width: 0,
@@ -346,18 +387,21 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   tinyLogo: {
-    width: 30,
-    height: 20,
+    width: 40,
+    height: 30,
+    resizeMode: 'cover',
   },
   text: {
     fontFamily: 'Axiforma-SemiBold',
     color: '#000000',
     fontSize: 14,
+    lineHeight: 25,
   },
   text2: {
     fontFamily: 'Axiforma-Light',
     color: '#627482',
     fontSize: 14,
+    //lineHeight: 25,
   },
 });
 

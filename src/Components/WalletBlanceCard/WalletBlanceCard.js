@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Image, Dimensions, TouchableOpacity} from 'react-native';
+import {View, Image, Dimensions, TouchableOpacity, Text} from 'react-native';
 import styles from './Styles';
 import Label from '../Label';
 import LinearGradient from 'react-native-linear-gradient';
@@ -24,22 +24,42 @@ function WalletBlanceCard({
   const {t} = useTranslation();
 
   return (
-    <View style={{paddingHorizontal: 15, width: '100%'}}>
+    <View
+      style={{
+        paddingHorizontal: 15,
+        width: '100%',
+        shadowColor: '#d9dbda',
+        shadowOffset: {width: 0, height: 1},
+        shadowOpacity: 6,
+        shadowRadius: 2,
+        elevation: 3,
+      }}>
       <View
         style={{
           backgroundColor: '#ffffff',
           borderRadius: 10,
           padding: 6,
-          marginVertical: 10,
-          // top: height * 0.06,
+          marginVertical: 15,
           justifyContent: 'center',
-          //alignItems: 'center',
-          elevation: 3,
-          //marginBottom: 15,
+          elevation: 3.5,
           width: '100%',
         }}>
-        <View>
-          <Label
+        <View
+          style={{
+            marginVertical: 10,
+          }}>
+          <Text
+            style={{
+              fontWeight: 'bold',
+              color: '#E7003F',
+              marginLeft: 16,
+              lineHeight: 25,
+              fontSize: 17,
+              fontFamily: 'Axiforma-Regular',
+            }}>
+            Your wallet
+          </Text>
+          {/*  <Label
             notAlign
             primary
             font={14}
@@ -56,13 +76,25 @@ function WalletBlanceCard({
             dark
             style={{color: '#000000', marginLeft: 16, lineHeight: 25}}>
             AED {FormatNumber(parseFloat(yourBalance).toFixed(2))}
-          </Label>
+          </Label> */}
+          <Text
+            style={{
+              fontWeight: 'bold',
+              color: '#000000',
+              marginLeft: 16,
+              lineHeight: 25,
+              fontFamily: 'Axiforma-Regular',
+
+              fontSize: 15.5,
+            }}>
+            AED {FormatNumber(parseFloat(yourBalance).toFixed(2))}
+          </Text>
         </View>
         <View
           style={{
             flexDirection: 'row',
             justifyContent: 'space-around',
-            //marginTop: 10,
+            marginBottom: 13,
           }}>
           <LongButton
             style={styles.Margin}

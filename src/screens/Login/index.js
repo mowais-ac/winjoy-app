@@ -40,8 +40,8 @@ import SelectLanguageModal from '../../Components/SelectLanguageModal';
 import RNRestart from 'react-native-restart';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import dynamicLinks from '@react-native-firebase/dynamic-links';
-import auth from '@react-native-firebase/auth';
-import {GoogleSignin} from '@react-native-google-signin/google-signin';
+/* import auth from '@react-native-firebase/auth';
+import {GoogleSignin} from '@react-native-google-signin/google-signin'; */
 const {width, height} = Dimensions.get('window');
 import {URLSearchParams} from '@visto9259/urlsearchparams-react-native';
 const index = ({navigation}) => {
@@ -60,10 +60,10 @@ const index = ({navigation}) => {
   const activityLang = useRef(false);
   //Deep Link refrral
 
-  GoogleSignin.configure({
+  /*   GoogleSignin.configure({
     webClientId:
       '389658608176-lv2ddmmfpnv2uoaf5nf333e5jj4oku7o.apps.googleusercontent.com',
-  });
+  }); */
 
   useEffect(() => {
     // Defining the URL as a constant
@@ -73,12 +73,7 @@ const index = ({navigation}) => {
       .getInitialLink()
       .then(async link => {
         const myreferral = link.url.replace('https://winjoy.ae?referral=', '');
-        // let urlParams = new URLSearchParams(`${link.url}`);
-        // {
-        //   console.log('urlparams', urlParams);
-        //   const refr = urlParams.get('referral');
-        //   console.log('urlparams1', Object.entries(refr));
-        // }
+
         try {
           const refer = await EncryptedStorage.setItem(
             'myreferral',
@@ -151,7 +146,7 @@ const index = ({navigation}) => {
         activityLang.current = false;
       });
   };
-  singin();
+  // singin();
   appsFlyer.initSdk(
     {
       isDebug: true,
@@ -290,7 +285,7 @@ const index = ({navigation}) => {
     }
   };
 
-  const onGoogleButtonPress = async () => {
+  /*   const onGoogleButtonPress = async () => {
     // Get the users ID token
     const {idToken} = await GoogleSignin.signIn();
 
@@ -299,7 +294,7 @@ const index = ({navigation}) => {
 
     // Sign-in the user with the credential
     return auth().signInWithCredential(googleCredential);
-  };
+  }; */
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -407,7 +402,7 @@ const styles = StyleSheet.create({
   MarginMed: {marginTop: height * 0.022},
   MarginSmall: {marginTop: height * 0.015},
 });
-export const singin = () => {
+/* export const singin = () => {
   // Set an initializing state whilst Firebase connects
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState();
@@ -438,5 +433,5 @@ export const singin = () => {
       <Text>Welcome {user.email}</Text>
     </View>
   );
-};
+}; */
 export default index;

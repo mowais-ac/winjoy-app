@@ -72,12 +72,15 @@ const Orders = ({navigation}) => {
         onPress={() => navigation.navigate('OrderDetails', {item})}>
         <View
           style={{
-            backgroundColor: '#ffff',
+            backgroundColor: '#ffffff',
             overflow: 'hidden',
             borderRadius: 10,
-            elevation: 3,
             padding: 10,
             marginVertical: 6,
+            shadowOffset: {width: 0, height: 1},
+            shadowOpacity: 0.5,
+            shadowRadius: 3,
+            elevation: 4,
           }}>
           <View
             style={{
@@ -173,7 +176,7 @@ const Orders = ({navigation}) => {
   };
 
   return (
-    <SafeAreaView style={{backgroundColor: '#420E92', marginBottom: 40}}>
+    <SafeAreaView style={{backgroundColor: '#420E92'}}>
       <ScrollView style={{backgroundColor: '#f6f1f3'}}>
         <LinearGradient
           start={{x: 0, y: 0}}
@@ -201,15 +204,6 @@ const Orders = ({navigation}) => {
           <>
             <FlatList
               data={Data}
-              // ListHeaderComponent={
-              //   <>
-              //     {Data?.length >= 1 && (
-              //       <Label primary bold headingtype="h4">
-              //         Purchases
-              //       </Label>
-              //     )}
-              //   </>
-              // }
               renderItem={renderItem}
               keyExtractor={i => i}
               ListEmptyComponent={
@@ -217,15 +211,6 @@ const Orders = ({navigation}) => {
                   text="Cart"
                   onPress={() => navigation.navigate('DealsJoy')}
                 />
-                // <View style={{marginVertical: 5}}>
-                //   <Label dark bold headingtype="h1" style={styles.Heading}>
-                //     No Purchases found!
-                //   </Label>
-                //   <Label dark style={styles.Info}>
-                //     Sorry, we don’t have enough data to show you right now. Please
-                //     check again later.
-                //   </Label>
-                // </View>
               }
               refreshControl={
                 <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />

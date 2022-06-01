@@ -40,7 +40,7 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderColor: '#ffffff',
-    elevation: 5,
+    elevation: 3,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -106,7 +106,7 @@ export default StyleSheet.create({
     borderTopRightRadius: 0,
     overflow: 'hidden',
   },
-  wrapper: {},
+
   slide1: {
     flex: 1,
     justifyContent: 'center',
@@ -142,11 +142,15 @@ export default StyleSheet.create({
   avatarBannerView: {
     alignItems: 'center',
     backgroundColor: '#f05b31',
-    borderRadius: widthConverter(10),
+    borderRadius: 14,
     height: height * 0.15,
     width: widthPercentageToDP('95%'),
     flexDirection: 'row',
     justifyContent: 'flex-end',
+    shadowOffset: {width: 0, height: 1},
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 3,
   },
   avatarBanner: {
     // width: "95%",

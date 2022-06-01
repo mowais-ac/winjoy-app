@@ -51,6 +51,8 @@ import WinnersModal from '../../Components/WinnersModal';
 const MYServer = 'https://node-winjoyserver-deploy.herokuapp.com/';
 import {getLandingScreen} from '../../redux/actions';
 import {
+  AdEventType,
+  InterstitialAd,
   TestIds,
   RewardedAd,
   RewardedAdEventType,
@@ -59,8 +61,12 @@ import {
 import {firebase} from '@react-native-firebase/admob';
 const {width, height} = Dimensions.get('window');
 let timer = () => {};
+const adUnitId = 'ca-app-pub-6197023613008935/5905492203';
+const interstitial = InterstitialAd.createForAdRequest(adUnitId, {
+  requestNonPersonalizedAdsOnly: true,
+});
 const BackgroundVideo = ({route, navigation}) => {
-  const showRewardAd = () => {
+  /*  const showRewardAd = () => {
     // Create a new instance
     const rewardAd = RewardedAd.createForAdRequest(TestIds.REWARDED);
 
@@ -77,7 +83,7 @@ const BackgroundVideo = ({route, navigation}) => {
 
     // Load a new advert
     rewardAd.load();
-  };
+  }; */
   const dispatch = useDispatch();
   //gameshow Winners dispatch
   const dispatch1 = useDispatch();
@@ -87,7 +93,7 @@ const BackgroundVideo = ({route, navigation}) => {
   const totalLives = useSelector(state => state.app.totalLives);
   const [availLifeActivity, setAvailLifeActivity] = useState(false);
   const socket = socketIO(MYServer);
-  const {uri, gameshowStatus, completed_questions} = route.params;
+  const {uri, gameshowStatus, completed_questions, streamUrl} = route.params;
   const [selected, setSelected] = useState(null);
   const [buffer, setBuffer] = useState(false);
   const [timeLeft, setTimeLeft] = useState(10);
@@ -113,8 +119,8 @@ const BackgroundVideo = ({route, navigation}) => {
   const [activeQuestion, setActiveQuestion] = useState(1);
   const dispatchGameEnter = useDispatch();
   const [refreshing, setRefreshing] = useState(false);
-  const [enable_ad, setEnable_ad] = useState(false);
-  console.log('enable_ad', enable_ad);
+  // const [enable_ad, setEnable_ad] = useState(false);
+  // console.log('enable_ad1', enable_ad);
   const backAction = () => {
     Alert.alert(
       'We are live!',
@@ -149,7 +155,30 @@ const BackgroundVideo = ({route, navigation}) => {
     startTimer();
     return () => clearTimeout(timer);
   });
-  const defaultAppAdmob = firebase.admob();
+  /*  const defaultAppAdmob = firebase.admob(); */
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    const eventListener = interstitial.onAdEvent(type => {
+      if (type === AdEventType.LOADED) {
+        setLoaded(true);
+      }
+      if (type === AdEventType?.CLOSED) {
+        console.log('ad closed');
+        setLoaded(false);
+
+        //reload ad
+        interstitial.load();
+      }
+    });
+    // Start loading the interstitial straight away
+    interstitial.load();
+    // Unsubscribe from events on unmount
+    return () => {
+      eventListener();
+    };
+  }, []);
+
   const Questions = async () => {
     setActivityScreen(true);
     const Token = await EncryptedStorage.getItem('Token');
@@ -169,10 +198,11 @@ const BackgroundVideo = ({route, navigation}) => {
       .then(response => {
         let res = response.data;
         {
-          console.log('resquestionsapi', res);
+          console.log('resquestionsapi', res.questions);
         }
-        questionRef.current = res.questions;
-        setEnable_ad(res.enable_5question_ad);
+        //questionRef.current = res.questions;
+        questionRef.current = res;
+        //setEnable_ad(res.enable_5question_ad);
         setActivityScreen(false);
         setGameShowCheck(true);
         setTimeLeft(10);
@@ -183,13 +213,13 @@ const BackgroundVideo = ({route, navigation}) => {
   };
 
   useEffect(() => {
-    defaultAppAdmob
+    /*  defaultAppAdmob
       .setRequestConfiguration({
         maxAdContentRating: MaxAdContentRating.PG,
         tagForChildDirectedTreatment: true,
         tagForUnderAgeOfConsent: true,
       })
-      .then(() => {});
+      .then(() => {}); */
     dispatchGameEnter(CheckGameEnterStatus());
     if (gameshowStatus === 'started') {
       userEliminate.current = true;
@@ -306,8 +336,16 @@ const BackgroundVideo = ({route, navigation}) => {
       {
         console.log('increment', inc);
       }
-      if (inc === 6 && enable_ad === true) {
-        showRewardAd();
+      setActiveQuestion(inc);
+      answerId.current = null;
+      setGameShowCheck(true);
+      setDisableQuizOptions(false);
+      setShowResult(false);
+      setTimeLeft(10);
+      clearTimeout(timer);
+      startTimer();
+      /*   if (inc === 6 && enable_ad === true) {
+        interstitial?.show();
         setActiveQuestion(inc);
         answerId.current = null;
         setGameShowCheck(true);
@@ -325,7 +363,7 @@ const BackgroundVideo = ({route, navigation}) => {
         setTimeLeft(10);
         clearTimeout(timer);
         startTimer();
-      }
+      } */
     });
     socket.on('sendStartlivegameshow', msg => {
       Questions();
@@ -414,7 +452,7 @@ const BackgroundVideo = ({route, navigation}) => {
           {liveStream ? (
             <Video
               source={{
-                uri: 'https://c75a7e79204e539d.mediapackage.us-east-1.amazonaws.com/out/v1/c09d0b5beca54ffcb2e4d920b465d589/index.m3u8',
+                uri: streamUrl,
               }}
               hls={true}
               paused={false}
@@ -463,6 +501,10 @@ const BackgroundVideo = ({route, navigation}) => {
                 <ImageBackground
                   resizeMode={Platform.OS === 'android' ? 'center' : 'cover'}
                   style={{
+                    shadowOffset: {width: 0, height: 1},
+                    shadowOpacity: 0.5,
+                    shadowRadius: 4,
+                    elevation: 3,
                     width: 60,
                     height: 50,
                     top: height * 0.018,

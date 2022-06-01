@@ -214,6 +214,7 @@ const styles = StyleSheet.create({
     fontSize: RFValue(12),
   },
   text2: {
+    lineHeight: 19,
     fontFamily: 'Axiforma-SemiBold',
     color: '#000000',
     fontSize: RFValue(12),

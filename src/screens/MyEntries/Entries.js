@@ -11,6 +11,7 @@ import {
   Text,
   ImageBackground,
   Platform,
+  TouchableNativeFeedback,
 } from 'react-native';
 
 import Background from '../../Components/Background';
@@ -68,19 +69,22 @@ const Entries = ({navigation}) => {
   }, []);
   const renderItem = ({item, i}) => {
     return (
-      <TouchableOpacity
+      <TouchableNativeFeedback
         key={i}
         onPress={() => navigation.navigate('OrderDetails', {item})}
         activeOpacity={0.8}>
         <View
           style={{
-            height: 350,
-            margin: 10,
+            marginTop: 30,
+            height: 340,
             position: 'relative',
+            width: 365,
+            alignSelf: 'center',
           }}>
           <View
             style={{
-              width: '100%',
+              marginHorizontal: 10,
+              width: '95%',
               height: 10,
               backgroundColor: '#E7003F',
               borderTopRightRadius: 20,
@@ -92,12 +96,15 @@ const Entries = ({navigation}) => {
               backgroundColor: '#ffffff',
               borderBottomRightRadius: 20,
               borderBottomLeftRadius: 20,
+              position: 'relative',
+              marginHorizontal: 10,
             }}>
             <View
               style={{
                 width: 33,
                 height: 33,
-                marginLeft: 375,
+                //marginLeft: 375,
+                marginHorizontal: 330,
                 zIndex: 100,
                 borderRadius: 100,
                 marginTop: 235,
@@ -107,7 +114,8 @@ const Entries = ({navigation}) => {
             />
             <View
               style={{
-                marginLeft: -18,
+                //marginLeft: -18,
+                marginHorizontal: -17.5,
                 width: 33,
                 height: 33,
                 zIndex: 100,
@@ -298,7 +306,7 @@ const Entries = ({navigation}) => {
             </View>
           </View>
         </View>
-      </TouchableOpacity>
+      </TouchableNativeFeedback>
     );
   };
 
@@ -338,6 +346,8 @@ const Entries = ({navigation}) => {
           colors={['#f8d7e8', '#c7dfe8']}
           style={{flex: 1}}>
           <FlatList
+            showsVerticalScrollIndicator={false}
+            showsHorizontalScrollIndicator={false}
             data={Data}
             renderItem={renderItem}
             keyExtractor={i => i}
@@ -386,9 +396,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.2,
     shadowRadius: 1.41,
-
     elevation: 2,
-
     width: width * 0.22,
     height: height * 0.11,
     alignItems: 'center',
@@ -410,7 +418,7 @@ const styles = StyleSheet.create({
     lineHeight: height * 0.025,
     color: 'black',
   },
-  TextView: {},
+
   LessMargin: {
     marginTop: height * 0.003,
   },

@@ -149,8 +149,8 @@ android {
         applicationId "com.winjoy"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 40
-        versionName "1.40"
+        versionCode 41
+        versionName "1.41"
         multiDexEnabled true
     }
     splits {
@@ -224,7 +224,8 @@ dependencies {
     implementation project(path: ":@react-native-firebase_analytics")
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
     implementation 'com.facebook.android:facebook-android-sdk:latest.release'
-    
+    implementation "com.google.android.material:material:1.1.0"
+    implementation 'com.google.android.play:core:1.7.3'
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
         exclude group:'com.facebook.fbjni'
     }

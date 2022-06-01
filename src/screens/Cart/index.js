@@ -78,7 +78,7 @@ const index = ({props, navigation}) => {
     setRefreshing(true);
     dispatch6(getWalletData());
     dispatch(GetCartData());
-    wait(500).then(() => setRefreshing(false));
+    wait(1000).then(() => setRefreshing(false));
   }, []);
   const PostData = async () => {
     ModalState.current(true);
@@ -137,7 +137,7 @@ const index = ({props, navigation}) => {
   const RemoveItem = (id, qty) => {
     setId(id);
     dispatch2(RemoveCartData(id));
-    dispatch(GetCartData());
+    onRefresh();
     setUpdateData(!updateData);
     dispatch3({
       type: types.CART_COUNTER,
@@ -287,12 +287,12 @@ const index = ({props, navigation}) => {
                     />
                   )
                 }
-                refreshControl={
-                  <RefreshControl
-                    onRefresh={onRefresh}
-                    refreshing={refreshing}
-                  />
-                }
+                // refreshControl={
+                //   <RefreshControl
+                //     onRefresh={onRefresh}
+                //     refreshing={refreshing}
+                //   />
+                // }
                 contentContainerStyle={{
                   paddingBottom: height * 0.06,
                 }}
@@ -457,6 +457,10 @@ const styles = StyleSheet.create({
     position: 'absolute',
     paddingHorizontal: 5,
     width: '100%',
+    shadowOffset: {width: 0, height: 1},
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 3.5,
   },
   header: {
     flexDirection: 'row',

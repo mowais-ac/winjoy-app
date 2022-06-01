@@ -34,7 +34,7 @@ const Info_btn = props => {
   };
   useEffect(() => {
     if (Platform.OS === 'ios') {
-      if (buildNumber !== parseInt(props.updatedVersionios)) {
+      if (buildNumber != parseInt(props.updatedVersionios)) {
         setShowModal(true);
       }
     } else {
@@ -149,11 +149,11 @@ const Info_btn = props => {
               </TouchableOpacity>
             ) : (
               <TouchableOpacity
-                // onPress={() =>
-                //   Linking.openURL(
-                //     'https://play.google.com/store/apps/details?id=com.winjoy',
-                //   )
-                // }
+                onPress={() =>
+                  Linking.openURL(
+                    'https://apps.apple.com/pk/app/winjoy-spreading-joy/id1613371170',
+                  )
+                }
                 style={{
                   alignSelf: 'center',
                 }}>

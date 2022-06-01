@@ -18,10 +18,16 @@ export default StyleSheet.create({
 
   mainView: {
     alignItems: 'center',
-    borderRadius: widthConverter(10),
+    borderRadius: 11,
     height: height * 0.1,
     width: '100%',
+    backgroundColor: '#f05b31',
     flexDirection: 'row',
+    //shadowColor: '#d9dbda',
+    shadowOffset: {width: 0, height: 1},
+    shadowOpacity: 0.4,
+    shadowRadius: 4,
+    elevation: 3,
 
     //   paddingRight: widthConverter(20),
   },
@@ -47,7 +53,7 @@ export default StyleSheet.create({
     height: 40,
     borderRadius: 30,
     backgroundColor: '#ffffff',
-    elevation: 4,
+    elevation: 3,
     position: 'absolute',
     bottom: heightConverter(55),
     right: 10,

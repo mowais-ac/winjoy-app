@@ -28,6 +28,10 @@ function Card({
         borderRadius: 10,
         justifyContent: 'center',
         alignItems: 'center',
+        shadowColor: '#d9dbda',
+        shadowOffset: {width: 0, height: 1},
+        shadowOpacity: 5,
+        shadowRadius: 5,
         elevation: 3,
       }}>
       <View style={{position: 'absolute', top: 10, zIndex: 1000, left: 10}}>

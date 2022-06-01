@@ -17,7 +17,9 @@ import Cart from '../screens/Cart';
 const {width, height} = Dimensions.get('window');
 const Tab = createBottomTabNavigator();
 
+
 export default function index() {
+
   return (
     <Tab.Navigator
       screenOptions={{

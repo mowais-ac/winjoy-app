@@ -42,7 +42,7 @@ export default StyleSheet.create({
     height: 40,
     borderRadius: 30,
     backgroundColor: '#ffffff',
-    elevation: 4,
+    elevation: 3,
     position: 'absolute',
     bottom: heightConverter(55),
     right: 10,

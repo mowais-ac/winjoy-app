@@ -7,6 +7,7 @@ export default StyleSheet.create({
   safeStyle: {
     flex: 1,
     backgroundColor: Platform.OS === 'android' ? null : '#420E92',
+    marginBottom: Platform.OS === 'android' ? 0 : 35,
   },
   headerText: {
     color: '#ffffff',
@@ -62,6 +63,7 @@ export default StyleSheet.create({
     paddingRight: 5,
   },
   text: {
+    lineHeight: 20,
     fontFamily: 'Axiforma-Regular',
     color: '#000000',
     fontSize: RFValue(12),

@@ -34,10 +34,14 @@ import {
 import Config from 'react-native-config';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import types from '../../redux/types';
+import socketIO from 'socket.io-client';
 import ModalCelebrityProducts from '../../Components/ModalCelebrityProducts';
+const MYServer = 'https://node-winjoyserver-deploy.herokuapp.com/';
 const {width, height} = Dimensions.get('window');
 
 const index = ({route, navigation}) => {
+  const LandingData = useSelector(state => state.app.LandingData);
+  const socket = socketIO(MYServer);
   const dispatch = useDispatch();
   const dispatch2 = useDispatch();
   const dispatch3 = useDispatch();
@@ -61,6 +65,10 @@ const index = ({route, navigation}) => {
   const [data, setdata] = useState([]);
   useEffect(() => {
     _Api(id);
+    socket.on('sendOnboarding', msg => {
+      console.log('Should navigate from product details');
+      NavigateToQuiz(true);
+    });
   }, []);
   const _Api = id => {
     const check = async () => {
@@ -144,6 +152,27 @@ const index = ({route, navigation}) => {
         });
     };
     check2();
+  };
+  const NavigateToQuiz = fromSocket => {
+    if (
+      LandingData?.gameShow?.status === 'on_boarding' ||
+      LandingData?.gameShow?.status === 'started' ||
+      fromSocket
+    ) {
+      {
+        console.log(
+          'LandingData?.gameShow?.status pd',
+          LandingData?.gameShow?.status,
+        );
+      }
+      navigation.navigate('GameStack', {
+        screen: 'Quiz',
+        params: {
+          uri: LandingData?.gameShow?.live_stream?.key,
+          gameshowStatus: LandingData?.gameShow?.status,
+        },
+      });
+    }
   };
   // console.log('LD: ', data);
   const onPressContinue = () => {

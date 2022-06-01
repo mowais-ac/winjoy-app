@@ -136,6 +136,8 @@ const index = ({props, navigation}) => {
         }}
       />
       <ScrollView
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
         onScroll={e => {
           setHeaderValue(e.nativeEvent.contentOffset.y);
         }}>
@@ -340,7 +342,8 @@ const index = ({props, navigation}) => {
               }}>
               <TouchableOpacity
                 onPress={() => {
-                  navigation.navigate('Contactus');
+                  // navigation.navigate('Contactus');
+                  navigation.navigate('Gsignin');
                 }}>
                 <View
                   style={[
@@ -465,8 +468,8 @@ const index = ({props, navigation}) => {
           style={{
             fontSize: 11,
             color: '#cccccc',
-            paddingHorizontal: 8,
-            paddingBottom: 8,
+            paddingHorizontal: 14,
+            paddingBottom: 10,
           }}>
           Version: 0.0.{packageJson.version}
         </Text>
@@ -540,7 +543,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderColor: '#ffffff',
-    elevation: 5,
+    elevation: 3,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,

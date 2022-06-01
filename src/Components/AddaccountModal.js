@@ -370,7 +370,6 @@ const AddaccountModal = props => {
                     <TouchableOpacity
                       style={[
                         styles.tabBtn,
-
                         activeTab === 'bank' ? styles.tabBtnActive : null,
                       ]}
                       onPress={() => tabSwitchHandler('bank')}>
@@ -381,7 +380,6 @@ const AddaccountModal = props => {
                     <TouchableOpacity
                       style={[
                         styles.tabBtn,
-                        styles.tabBtn2,
                         activeTab === 'paypal' ? styles.tabBtnActive : null,
                       ]}
                       onPress={() => tabSwitchHandler('paypal')}>

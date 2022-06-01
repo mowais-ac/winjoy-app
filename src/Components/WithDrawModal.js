@@ -42,8 +42,8 @@ const WithDrawModal = props => {
     details: null,
   });
   const ModalErrorState = useRef();
+  const a = props.yourBalance - props.ammount;
   const withdrawprocessHandle = () => {
-    const a = props.yourBalance - props.ammount;
     //alert(a);
     if (a <= 50) {
       alert('Your wallet balance can not be below AED 50');
@@ -66,181 +66,193 @@ const WithDrawModal = props => {
   };
   console.log('props.activeno', props.activeno);
   return (
-    <Modal
-      animationType="slide"
-      style={{margin: 0}}
-      transparent={true}
-      avoidKeyboard={true}
-      isVisible={ModelState.state}
-      statusBarTranslucent={false}
-      onRequestClose={() => {
-        setModelState({
-          ...ModelState,
-          state: !ModelState.state,
-        });
-        if (props.onClose) props.onClose();
-      }}>
-      <TouchableWithoutFeedback
-        onPress={() => {
+    <>
+      <Modal
+        animationType="slide"
+        style={{margin: 0}}
+        transparent={true}
+        avoidKeyboard={true}
+        isVisible={ModelState.state}
+        statusBarTranslucent={false}
+        onRequestClose={() => {
           setModelState({
             ...ModelState,
             state: !ModelState.state,
           });
           if (props.onClose) props.onClose();
         }}>
-        <View style={styles.MainView} />
-      </TouchableWithoutFeedback>
+        <TouchableWithoutFeedback
+          onPress={() => {
+            setModelState({
+              ...ModelState,
+              state: !ModelState.state,
+            });
+            if (props.onClose) props.onClose();
+          }}>
+          <View style={styles.MainView} />
+        </TouchableWithoutFeedback>
 
-      <View style={styles.ModalView}>
-        <View style={styles.SmallBorder} />
-        <KeyboardAwareScrollView keyboardDismissMode="interactive">
-          <View
-            style={{
-              alignItems: 'center',
-              height: 40,
-              justifyContent: 'center',
-            }}>
-            <Text
-              style={{
-                color: '#420E92',
-                fontSize: 16.5,
-                fontFamily: 'Axiforma-Bold',
-              }}>
-              Select your withdrawal amount
-            </Text>
-          </View>
-          <View style={styles.ModalBody}>
-            <View style={[styles.tabBtnRow]}>
-              <TouchableOpacity
-                style={[
-                  styles.tabBtn,
-                  props.activeno === '25' ? styles.tabBtnActive : null,
-                ]}
-                onPress={() => tabSwitchHandler('25')}>
-                <Text style={[styles.tabBtnTxt]}>AED 25</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[
-                  styles.tabBtn,
-                  props.activeno === '50' ? styles.tabBtnActive : null,
-                ]}
-                onPress={() => tabSwitchHandler('50')}>
-                <Text style={[styles.tabBtnTxt]}>AED 50</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[
-                  styles.tabBtn,
-                  props.activeno === '100' ? styles.tabBtnActive : null,
-                ]}
-                onPress={() => tabSwitchHandler('100')}>
-                <Text style={[styles.tabBtnTxt]}>AED 100</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={[styles.tabBtnRow, {marginTop: -10}]}>
-              <TouchableOpacity
-                style={[
-                  styles.tabBtn,
-                  props.activeno === '150' ? styles.tabBtnActive : null,
-                ]}
-                onPress={() => tabSwitchHandler('150')}>
-                <Text style={[styles.tabBtnTxt]}>AED 150</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[
-                  styles.tabBtn,
-                  props.activeno === '200' ? styles.tabBtnActive : null,
-                ]}
-                onPress={() => tabSwitchHandler('200')}>
-                <Text style={[styles.tabBtnTxt]}>AED 200</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[
-                  styles.tabBtn,
-                  props.activeno === '250' ? styles.tabBtnActive : null,
-                ]}
-                onPress={() => tabSwitchHandler('250')}>
-                <Text style={[styles.tabBtnTxt]}>AED 250</Text>
-              </TouchableOpacity>
-            </View>
+        <View style={styles.ModalView}>
+          <View style={styles.SmallBorder} />
+          <KeyboardAwareScrollView keyboardDismissMode="interactive">
             <View
               style={{
-                flexDirection: 'column',
-                justifyContent: 'center',
                 alignItems: 'center',
+                height: 40,
+                justifyContent: 'center',
               }}>
-              <TouchableOpacity
-                disabled={props?.activity}
-                onPress={() => {
-                  withdrawprocessHandle();
-                }}
+              <Text
                 style={{
-                  height: 55,
-                  width: width * 0.9,
-                  borderRadius: 100,
+                  color: '#420E92',
+                  fontSize: 16.5,
+                  fontFamily: 'Axiforma-Bold',
+                }}>
+                Select your withdrawal amount
+              </Text>
+            </View>
+            <View style={styles.ModalBody}>
+              <View style={[styles.tabBtnRow]}>
+                <TouchableOpacity
+                  disabled={a <= 76 ? true : false}
+                  style={[
+                    styles.tabBtn,
+                    props.activeno === '25' ? styles.tabBtnActive : null,
+                  ]}
+                  onPress={() => tabSwitchHandler('25')}>
+                  <Text style={[styles.tabBtnTxt]}>AED 25</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  disabled={a <= 101 ? true : false}
+                  style={[
+                    styles.tabBtn,
+                    props.activeno === '50' ? styles.tabBtnActive : null,
+                  ]}
+                  onPress={() => tabSwitchHandler('50')}>
+                  <Text style={[styles.tabBtnTxt]}>AED 50</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  disabled={a <= 152 ? true : false}
+                  style={[
+                    styles.tabBtn,
+                    props.activeno === '100' ? styles.tabBtnActive : null,
+                  ]}
+                  onPress={() => tabSwitchHandler('100')}>
+                  <Text style={[styles.tabBtnTxt]}>AED 100</Text>
+                </TouchableOpacity>
+              </View>
+              <View style={[styles.tabBtnRow, {marginTop: -10}]}>
+                <TouchableOpacity
+                  disabled={a <= 202 ? true : false}
+                  style={[
+                    styles.tabBtn,
+                    props.activeno === '150' ? styles.tabBtnActive : null,
+                  ]}
+                  onPress={() => tabSwitchHandler('150')}>
+                  <Text style={[styles.tabBtnTxt]}>AED 150</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  disabled={a <= 252 ? true : false}
+                  style={[
+                    styles.tabBtn,
+                    props.activeno === '200' ? styles.tabBtnActive : null,
+                  ]}
+                  onPress={() => tabSwitchHandler('200')}>
+                  <Text style={[styles.tabBtnTxt]}>AED 200</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  disabled={a <= 301 ? true : false}
+                  style={[
+                    styles.tabBtn,
+                    props.activeno === '250' ? styles.tabBtnActive : null,
+                  ]}
+                  onPress={() => tabSwitchHandler('250')}>
+                  <Text style={[styles.tabBtnTxt]}>AED 250</Text>
+                </TouchableOpacity>
+              </View>
+              <View
+                style={{
+                  flexDirection: 'column',
                   justifyContent: 'center',
                   alignItems: 'center',
-                  // marginLeft: width * 0.04,
                 }}>
-                <LinearGradient
-                  start={{x: 0, y: 0}}
-                  end={{x: 1, y: 0}}
+                <TouchableOpacity
+                  disabled={props?.activity}
+                  onPress={() => {
+                    withdrawprocessHandle();
+                  }}
                   style={{
                     height: 55,
-                    width: '100%',
+                    width: width * 0.9,
                     borderRadius: 100,
                     justifyContent: 'center',
                     alignItems: 'center',
-                  }}
-                  colors={['#420E92', '#E7003F']}>
-                  {props.activity ? (
-                    <ActivityIndicator size="small" color="#ffffff" />
-                  ) : (
-                    <Label primary font={16} bold style={{color: '#ffffff'}}>
-                      Request Withdrawal
-                    </Label>
-                  )}
-                </LinearGradient>
-              </TouchableOpacity>
-            </View>
-            <View
-              style={{
-                margin: 10,
-                backgroundColor: '#E6DFEE',
-                height: 140,
-                padding: 10,
-                borderRadius: 10,
-              }}>
-              <Text
-                style={{color: '#000000', fontSize: 16.5, fontWeight: '700'}}>
-                Note:
-              </Text>
-              <Text
+                    // marginLeft: width * 0.04,
+                  }}>
+                  <LinearGradient
+                    start={{x: 0, y: 0}}
+                    end={{x: 1, y: 0}}
+                    style={{
+                      height: 55,
+                      width: '100%',
+                      borderRadius: 100,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                    colors={['#420E92', '#E7003F']}>
+                    {props.activity ? (
+                      <ActivityIndicator size="small" color="#ffffff" />
+                    ) : (
+                      <Label primary font={16} bold style={{color: '#ffffff'}}>
+                        Request Withdrawal
+                      </Label>
+                    )}
+                  </LinearGradient>
+                </TouchableOpacity>
+              </View>
+              <View
                 style={{
-                  color: '#000000',
-                  fontSize: 15,
-                  fontFamily: 'Axiforma',
-                  marginTop: 5,
-                  lineHeight: 20,
+                  margin: 15,
+                  backgroundColor: '#ebe6f0',
+                  height: 130,
+                  padding: 10,
+                  borderRadius: 8,
                 }}>
-                The Withdrawal requests will be approved 2 times a month, 15th
-                and 30th of the month.
-              </Text>
-              <Text
-                style={{
-                  color: '#000000',
-                  fontSize: 15,
-                  fontFamily: 'Axiforma',
-                  marginTop: 5,
-                  lineHeight: 20,
-                }}>
-                Contestants can only withdraw a maximum amount of 250 DHS.
-              </Text>
+                <Text
+                  style={{
+                    color: '#000000',
+                    fontSize: 16.5,
+                    fontWeight: '700',
+                    fontFamily: 'Axiforma-Regular',
+                  }}>
+                  Note:
+                </Text>
+                <Text
+                  style={{
+                    color: '#000000',
+                    fontSize: 15,
+                    fontFamily: 'Axiforma-Regular',
+                    marginTop: 5,
+                    lineHeight: 20,
+                  }}>
+                  The withdrawal requests will be approved on the 15th and 30th
+                  of every month.
+                </Text>
+                <Text
+                  style={{
+                    color: '#000000',
+                    fontSize: 15,
+                    fontFamily: 'Axiforma-Regular',
+                    marginTop: 5,
+                    lineHeight: 20,
+                  }}>
+                  Contestants can only withdraw a maximum amount of 250 DHS.
+                </Text>
+              </View>
             </View>
-          </View>
-        </KeyboardAwareScrollView>
-      </View>
-      <Modals ModalRef={ModalErrorState} Error />
-    </Modal>
+          </KeyboardAwareScrollView>
+        </View>
+      </Modal>
+    </>
   );
 };
 

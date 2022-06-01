@@ -113,9 +113,6 @@ const Gsignin = () => {
     return (
       <SafeAreaView style={{flex: 1}}>
         <View style={styles.container}>
-          <Text style={styles.titleText}>
-            Example of Google Sign In in React Native
-          </Text>
           <View style={styles.container}>
             {userInfo !== null ? (
               <>
@@ -138,10 +135,6 @@ const Gsignin = () => {
               />
             )}
           </View>
-          <Text style={styles.footerHeading}>
-            Google SignIn in React Native
-          </Text>
-          <Text style={styles.footerText}>www.aboutreact.com</Text>
         </View>
       </SafeAreaView>
     );

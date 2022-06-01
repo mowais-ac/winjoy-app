@@ -417,7 +417,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderColor: '#ffffff',
-    elevation: 5,
+    elevation: 3,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,

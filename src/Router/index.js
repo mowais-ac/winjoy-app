@@ -115,14 +115,9 @@ function index(props) {
       kOSSettingsKeyInFocusDisplayOption: 2,
     });
     OneSignal.inFocusDisplaying(2);
-    /*  OneSignal.push(function () {
-      OneSignal.sendTag('', location.pathname);
-    }); */
-    /*  OneSignal.setAppId('f38f3a1b-7188-444f-9180-6db72c75dc4d'); */
-    // Fetch the token from storage then navigate to our appropriate place
+  
     const bootstrapAsync = async () => {
       let userToken;
-
       try {
         userToken = await EncryptedStorage.getItem('Token');
       } catch (e) {
@@ -133,7 +128,6 @@ function index(props) {
       // screen will be unmounted and thrown away.
       dispatch({type: 'RESTORE_TOKEN', token: userToken});
     };
-
     bootstrapAsync();
   }, []);
   /* const config = {

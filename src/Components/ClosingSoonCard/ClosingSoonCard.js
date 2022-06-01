@@ -20,6 +20,12 @@ function ClosingSoonCard({item, onPress}) {
         backgroundColor: '#ffffff',
         marginLeft: 10,
         borderRadius: 10,
+        shadowColor: '#d9dbda',
+        shadowOffset: {width: 0, height: 1},
+        shadowOpacity: 2,
+        shadowRadius: 4,
+        elevation: 3,
+        marginVertical: 5,
       }}>
       <TouchableOpacity activeOpacity={0.7} onPress={onPress}>
         {/*  <LoaderImage
