@@ -17,6 +17,7 @@ import {
   GoogleSigninButton,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
+import {NavigationContainer} from '@react-navigation/native';
 
 const Gsignin = () => {
   const [userInfo, setUserInfo] = useState(null);
@@ -25,14 +26,10 @@ const Gsignin = () => {
   useEffect(() => {
     // Initial configuration
     GoogleSignin.configure({
-      // Mandatory method to call before calling signIn()
-      // scopes: ['https://www.googleapis.com/auth/drive.readonly'],
-      // Repleace with your webClientId
-      // Generated from Firebase console
       webClientId:
         '389658608176-lv2ddmmfpnv2uoaf5nf333e5jj4oku7o.apps.googleusercontent.com',
     });
-    // Check if user is already signed in
+
     _isSignedIn();
   }, []);
 
@@ -40,7 +37,6 @@ const Gsignin = () => {
     const isSignedIn = await GoogleSignin.isSignedIn();
     if (isSignedIn) {
       alert('User is already signed in');
-      // Set User Info if user is already signed in
       _getCurrentUserInfo();
     } else {
       console.log('Please Login');
@@ -51,7 +47,7 @@ const Gsignin = () => {
   const _getCurrentUserInfo = async () => {
     try {
       let info = await GoogleSignin.signInSilently();
-      console.log('User Info --> ', info);
+      console.log('User Info', info);
       setUserInfo(info);
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_REQUIRED) {
@@ -68,8 +64,6 @@ const Gsignin = () => {
     // It will prompt google Signin Widget
     try {
       await GoogleSignin.hasPlayServices({
-        // Check if device has Google Play Services installed
-        // Always resolves to true on iOS
         showPlayServicesUpdateDialog: true,
       });
       const userInfo = await GoogleSignin.signIn();

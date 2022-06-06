@@ -12,7 +12,6 @@ export default StyleSheet.create({
   mainViewWrap: {
     width: '100%',
     paddingHorizontal: 10,
-
     marginTop: 16,
   },
 
@@ -23,17 +22,8 @@ export default StyleSheet.create({
     width: '100%',
     backgroundColor: '#f05b31',
     flexDirection: 'row',
-    //shadowColor: '#d9dbda',
-    shadowOffset: {width: 0, height: 1},
-    shadowOpacity: 0.4,
-    shadowRadius: 4,
-    elevation: 3,
-
-    //   paddingRight: widthConverter(20),
   },
   textView: {
-    //  alignItems: 'center',
-
     width: '100%',
     paddingHorizontal: 10,
     justifyContent: 'space-between',
@@ -41,7 +31,7 @@ export default StyleSheet.create({
   commingSoonTxt: {
     fontFamily: 'Axiforma-SemiBold',
     fontSize: 16,
-    color: '#fff',
+    color: '#ffffff',
     lineHeight: 15,
     textAlign: 'left',
   },

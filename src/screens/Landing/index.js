@@ -69,7 +69,10 @@ import {
 } from '@react-native-firebase/admob';
 import {firebase} from '@react-native-firebase/admob';
 Settings.setAppID('1149665975867657');
-const adUnitId = 'ca-app-pub-6197023613008935/5905492203';
+const adUnitId =
+  Platform.OS === 'android'
+    ? 'ca-app-pub-6197023613008935/5905492203'
+    : 'ca-app-pub-6197023613008935/5461072406';
 const versionandroid = DeviceInfo.getVersion();
 const interstitial = InterstitialAd.createForAdRequest(adUnitId, {
   requestNonPersonalizedAdsOnly: true,
@@ -80,7 +83,7 @@ const index = props => {
   const [headerValue, setHeaderValue] = useState(0);
   const [loader, setLoader] = useState(false);
   const [refreshing, setRefreshing] = React.useState(false);
-  const [time, setTime] = useState('');
+
   const [activeSlide, setActiveSlide] = useState();
   const userData = useSelector(state => state.app.userData);
   const LandingData = useSelector(state => state.app.LandingData);
@@ -101,13 +104,22 @@ const index = props => {
   const dispatch6 = useDispatch();
   const dispatch7 = useDispatch();
   const dispatch8 = useDispatch();
-  //console.log('deep1', LandingData.streamUrl);
+  console.log('deep2', LandingData?.is_testing);
   const socket = socketIO(MYServer);
   const AddModalState = useRef();
   const defaultAppAdmob = firebase.admob();
+  const [time, setTime] = useState(() => {
+    dispatch(getLandingScreen());
+    var CurrentDate = new Date().toString();
+    var duration = dayjs(LandingData?.gameShow?.start_date).diff(
+      dayjs(CurrentDate),
+      'seconds',
+    );
+    return duration;
+  });
   // const [enable_ad, setEnable_ad] = useState(false);
   const countDownFinishHandler = () => {
-    console.log('hello');
+    console.log('counter_finish');
     onRefresh();
   };
 
@@ -115,7 +127,7 @@ const index = props => {
     setRefreshing(true);
     dispatch6(getWalletData());
     dispatch(getLandingScreen());
-    var CurrentDate = new Date().toLocaleString();
+    var CurrentDate = new Date().toString();
     var duration = dayjs(LandingData?.gameShow?.start_date).diff(
       dayjs(CurrentDate),
       'seconds',
@@ -156,7 +168,7 @@ const index = props => {
             //country: 'it', // 👈🏻 the country code for the specific version to lookup for (optional)
           },
           android: {
-            updateType: IAUUpdateKind.IMMEDIATE,
+            updateType: IAUUpdateKind.FLEXIBLE,
           },
         });
         inAppUpdates.startUpdate(updateOptions);
@@ -195,7 +207,7 @@ const index = props => {
         console.error(error);
       },
     );
-    var CurrentDate = new Date().toLocaleString();
+    var CurrentDate = new Date().toString();
     var duration = dayjs(LandingData?.upcoming_gameshow?.start_date).diff(
       dayjs(CurrentDate),
       'seconds',
@@ -216,7 +228,7 @@ const index = props => {
         tagForUnderAgeOfConsent: true,
       })
       .then(() => {});
-  }, [getLandingScreen]);
+  }, []);
   var onInstallConversionDataCanceller = appsFlyer.onInstallConversionData(
     res => {
       if (JSON.parse(res.data.is_first_launch) == true) {
@@ -263,64 +275,55 @@ const index = props => {
       channelName: 'Winjoy',
     });
   };
-  //console.log('NQ1: ', LandingData?.is_testing);
-  /*  LandingData?.updatedVersion*/
+
   const NavigateToQuiz = fromSocket => {
-    if (
-      parseInt(LandingData?.updatedVersion) === parseInt(packageJson?.version)
-    ) {
-      if (!LandingData?.is_testing) {
-        if (
-          LandingData?.gameShow?.status === 'on_boarding' ||
-          LandingData?.gameShow?.status === 'started' ||
-          fromSocket
-        ) {
-          /*   if (enable_ad) {
+    if (!LandingData?.is_testing) {
+      if (
+        LandingData?.gameShow?.status === 'on_boarding' ||
+        LandingData?.gameShow?.status === 'started' ||
+        fromSocket
+      ) {
+        /*   if (enable_ad) {
             interstitial?.show();
           } */
-          if (interstitial.loaded) {
-            interstitial
-              .show()
-              .catch(error => console.warn('admob_error', error));
-          }
-          {
-            console.log(
-              'LandingData?.gameShow?.status',
-              LandingData?.gameShow?.status,
-            );
-          }
-          navigation.navigate('GameStack', {
-            screen: 'Quiz',
-            params: {
-              streamUrl: LandingData.streamUrl,
-              uri: LandingData?.gameShow?.live_stream?.key,
-              gameshowStatus: LandingData?.gameShow?.status,
-              completed_questions: LandingData?.gameShow?.completed_questions,
-            },
-          });
+        if (interstitial.loaded) {
+          interstitial
+            .show()
+            .catch(error => console.warn('admob_error', error));
         }
+        {
+          console.log(
+            'LandingData?.gameShow?.status',
+            LandingData?.gameShow?.status,
+          );
+        }
+        navigation.navigate('GameStack', {
+          screen: 'Quiz',
+          params: {
+            streamUrl: LandingData.streamUrl,
+            uri: LandingData?.gameShow?.live_stream?.key,
+            gameshowStatus: LandingData?.gameShow?.status,
+            completed_questions: LandingData?.gameShow?.completed_questions,
+          },
+        });
       }
     }
   };
   //LandingData?.internalEmails &&
   const Testnavigate = () => {
     if (
-      parseInt(LandingData?.updatedVersion) === parseInt(packageJson?.version)
+      !LandingData?.is_testing &&
+      LandingData?.gameShow?.status === 'on_boarding'
     ) {
-      if (
-        !LandingData?.is_testing &&
-        LandingData?.gameShow?.status === 'on_boarding'
-      ) {
-        navigation.navigate('GameStack', {
-          screen: 'Quiz',
-          params: {
-            uri: LandingData?.gameShow?.live_stream?.key,
-            gameshowStatus: LandingData?.gameShow?.status,
-          },
-        });
-      } else {
-        return null;
-      }
+      navigation.navigate('GameStack', {
+        screen: 'Quiz',
+        params: {
+          uri: LandingData?.gameShow?.live_stream?.key,
+          gameshowStatus: LandingData?.gameShow?.status,
+        },
+      });
+    } else {
+      return null;
     }
   };
 
@@ -469,6 +472,7 @@ const index = props => {
             'Notification caused app to open from quit state:',
             remoteMessage.notification,
           );
+          console.log('remoteMessage.data1:', remoteMessage.data);
           navigation.navigate('DealzJoy'); // e.g. "Settings"
         }
       });
@@ -633,7 +637,6 @@ const index = props => {
             contentContainerStyle={{
               marginLeft: 10,
               alignSelf: 'flex-start',
-              //paddingVertical: 5,
             }}
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}
@@ -649,8 +652,7 @@ const index = props => {
                       dispatch4(TriviaJoyAPI()))
                     : index === 1
                     ? navigation.navigate('DealsJoy')
-                    : //  navigation.navigate("FanJoy")
-                      navigation.navigate('AllCreatorsPage');
+                    : navigation.navigate('AllCreatorsPage');
                 }}
               />
             )}
@@ -703,7 +705,6 @@ const index = props => {
           />
           {LandingData?.home_middle_banners_data ? (
             <HomeCard
-              onPress={() => LetBegin()}
               images={LandingData?.home_middle_banners_data}
               time={time}
               gameShow={LandingData?.gameShow}
@@ -965,7 +966,6 @@ const index = props => {
               }}
             />
           ) : null}
-
           <View style={{height: 10}} />
         </View>
         <HowItWorkModal

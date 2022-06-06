@@ -33,9 +33,16 @@ import Modals from '../../Components/Modals';
 import GoBack from '../../Components/GoBack';
 import {useDispatch} from 'react-redux';
 import types from '../../redux/types';
+import auth from '@react-native-firebase/auth';
+import {
+  GoogleSignin,
+  GoogleSigninButton,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
 const {width, height} = Dimensions.get('window');
-
-const index = ({navigation, route}) => {
+import {useNavigation} from '@react-navigation/native';
+const index = route => {
+  const navigation = useNavigation();
   const referral_code = route.params;
   const {t} = useTranslation();
   const [referral, setReferral] = useState(null);
@@ -49,7 +56,9 @@ const index = ({navigation, route}) => {
   const r = useRef();
   const ModalState = useRef();
   const dispatch = useDispatch();
-  console.log('aftab', referral);
+  const [userInfo, setUserInfo] = useState(null);
+  const [gettingLoginStatus, setGettingLoginStatus] = useState(true);
+  console.log('___referral', referral);
   appsFlyer.initSdk(
     {
       isDebug: true,
@@ -83,20 +92,9 @@ const index = ({navigation, route}) => {
     AppEventsLogger.logEvent('register', {parameters: 'Winjoy_user'});
   };
   useEffect(async () => {
-    /*  setReferral(
-      referral_code?.referral_code ? referral_code?.referral_code : null,
-    ); */
     setReferral(await EncryptedStorage.getItem('myreferral'));
   }, []);
-  /*  const removeValue = async () => {
-    try {
-      await AsyncStorage.removeItem('myreferral');
-    } catch (e) {
-      // remove error
-    }
 
-    console.log('referral remove Done.');
-  }; */
   const HandleClick = async () => {
     let isnull = false;
     if (
@@ -155,6 +153,7 @@ const index = ({navigation, route}) => {
         return;
       }
       r.current.SetActivity(true);
+
       const body = JSONtoForm({
         first_name,
         last_name,
@@ -164,6 +163,7 @@ const index = ({navigation, route}) => {
         phone_no: `+${phone_no}`,
         password,
         password_confirmation,
+        // google_register: false,
         ...(await GetUserDeviceDetails()),
       });
       {
@@ -213,6 +213,79 @@ const index = ({navigation, route}) => {
     }
   };
 
+  useEffect(() => {
+    // Initial configuration
+    GoogleSignin.configure({
+      webClientId:
+        '389658608176-lv2ddmmfpnv2uoaf5nf333e5jj4oku7o.apps.googleusercontent.com',
+    });
+    _isSignedIn();
+  }, []);
+  const _isSignedIn = async () => {
+    const isSignedIn = await GoogleSignin.isSignedIn();
+    if (isSignedIn) {
+      console.log('User is already signed in');
+      _getCurrentUserInfo();
+      _signOut();
+    } else {
+      console.log('Please Login');
+    }
+    setGettingLoginStatus(false);
+  };
+  const _getCurrentUserInfo = async () => {
+    try {
+      let info = await GoogleSignin.signInSilently();
+      console.log('User Info', info);
+      setUserInfo(info);
+    } catch (error) {
+      if (error.code === statusCodes.SIGN_IN_REQUIRED) {
+        console.log('User has not signed in yet');
+        console.log('User has not signed in yet');
+      } else {
+        console.log("Unable to get user's info");
+        console.log("Unable to get user's info");
+      }
+    }
+  };
+  const _signIn = async () => {
+    // It will prompt google Signin Widget
+    try {
+      await GoogleSignin.hasPlayServices({
+        showPlayServicesUpdateDialog: true,
+      });
+      const userInfo = await GoogleSignin.signIn();
+      navigation.navigate('Googleregister', {
+        data: userInfo,
+      });
+      console.log('User Info', userInfo);
+
+      setUserInfo(userInfo);
+    } catch (error) {
+      console.log('Message', JSON.stringify(error));
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        console.log('User Cancelled the Login Flow');
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        console.log('Signing In');
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        alert('Play Services Not Available or Outdated');
+      } else {
+        alert(error.message);
+      }
+    }
+  };
+  const _signOut = async () => {
+    setGettingLoginStatus(true);
+    // Remove user session from the device.
+    try {
+      await GoogleSignin.revokeAccess();
+      await GoogleSignin.signOut();
+      // Removing user Info
+      setUserInfo(null);
+    } catch (error) {
+      console.error(error);
+    }
+    setGettingLoginStatus(false);
+  };
   const GetUserName = () => {
     return (
       <InputField
@@ -277,6 +350,7 @@ const index = ({navigation, route}) => {
                 phone
               />
             </View>
+
             <InputField
               style={styles.Margin}
               placeholder={t('password')}
@@ -284,6 +358,7 @@ const index = ({navigation, route}) => {
               ref={passref}
               Icon="lock"
             />
+
             <Label
               light
               muted
@@ -299,7 +374,6 @@ const index = ({navigation, route}) => {
               ref={cpassref}
               Icon="lock"
             />
-
             <LongButton
               style={[styles.Margin, {backgroundColor: '#ffffff'}]}
               text={t('create_account')}
@@ -309,6 +383,13 @@ const index = ({navigation, route}) => {
               }}
               ref={r}
               textstyle={{color: '#E7003F'}}
+            />
+            <LongButton
+              style={{backgroundColor: '#ffffff', marginTop: 15}}
+              text="Register with Google"
+              black
+              Icon="google"
+              onPress={_signIn}
             />
             <Label
               light
@@ -337,7 +418,6 @@ const index = ({navigation, route}) => {
               />
             </Label>
           </View>
-
           <View style={{marginTop: height * 0.05}} />
         </KeyboardAwareScrollView>
       </ScrollView>

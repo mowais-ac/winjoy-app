@@ -33,6 +33,7 @@ const INITIAL_STATE = {
   removeCartData: [],
   productsDetals: [],
   creatorExpList: [],
+  isloading: true,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -97,7 +98,8 @@ export default (state = INITIAL_STATE, action) => {
       return {...state, productsDetals: action.payload};
     case types.CREATORS_EXPERIENCE_LIST:
       return {...state, creatorExpList: action.payload};
-
+    case types.IS_LOADING:
+      return {...state, isloading: action.payload};
     default:
       return state;
   }

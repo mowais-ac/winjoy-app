@@ -61,29 +61,8 @@ import {
 import {firebase} from '@react-native-firebase/admob';
 const {width, height} = Dimensions.get('window');
 let timer = () => {};
-const adUnitId = 'ca-app-pub-6197023613008935/5905492203';
-const interstitial = InterstitialAd.createForAdRequest(adUnitId, {
-  requestNonPersonalizedAdsOnly: true,
-});
+
 const BackgroundVideo = ({route, navigation}) => {
-  /*  const showRewardAd = () => {
-    // Create a new instance
-    const rewardAd = RewardedAd.createForAdRequest(TestIds.REWARDED);
-
-    // Add event handlers
-    rewardAd.onAdEvent((type, error) => {
-      if (type === RewardedAdEventType.LOADED) {
-        rewardAd.show();
-      }
-
-      if (type === RewardedAdEventType.EARNED_REWARD) {
-        console.log('User earned reward of 5 lives');
-      }
-    });
-
-    // Load a new advert
-    rewardAd.load();
-  }; */
   const dispatch = useDispatch();
   //gameshow Winners dispatch
   const dispatch1 = useDispatch();
@@ -119,8 +98,7 @@ const BackgroundVideo = ({route, navigation}) => {
   const [activeQuestion, setActiveQuestion] = useState(1);
   const dispatchGameEnter = useDispatch();
   const [refreshing, setRefreshing] = useState(false);
-  // const [enable_ad, setEnable_ad] = useState(false);
-  // console.log('enable_ad1', enable_ad);
+
   const backAction = () => {
     Alert.alert(
       'We are live!',
@@ -136,6 +114,7 @@ const BackgroundVideo = ({route, navigation}) => {
     );
     return true;
   };
+  const Is_platform = Platform.OS === 'android' ? 'android' : 'ios';
   const startTimer = () => {
     timer = setTimeout(() => {
       if (timeLeft <= 0) {
@@ -145,7 +124,30 @@ const BackgroundVideo = ({route, navigation}) => {
       setTimeLeft(timeLeft - 1);
     }, 1000);
   };
+  /*  const enter_gameshow = async () => {
+    const Token = await EncryptedStorage.getItem('Token');
+    const body = JSONtoForm({
+      device_using: Is_platform,
+    });
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        Accept: 'application/json',
+        Authorization: `Bearer ${Token}`,
+      },
+    };
+    await fetch(`${Config.API_URL}/joinGameshow`, requestOptions, body)
+      .then(async response => response.json())
+      .then(res => {
+        console.log({joingameshow_res: res});
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  }; */
   const onRefresh = React.useCallback(() => {
+    //enter_gameshow();
     setRefreshing(true);
     dispatch1(getLandingScreen());
     wait(100).then(() => setRefreshing(false));
@@ -155,29 +157,8 @@ const BackgroundVideo = ({route, navigation}) => {
     startTimer();
     return () => clearTimeout(timer);
   });
-  /*  const defaultAppAdmob = firebase.admob(); */
+
   const [loaded, setLoaded] = useState(false);
-
-  useEffect(() => {
-    const eventListener = interstitial.onAdEvent(type => {
-      if (type === AdEventType.LOADED) {
-        setLoaded(true);
-      }
-      if (type === AdEventType?.CLOSED) {
-        console.log('ad closed');
-        setLoaded(false);
-
-        //reload ad
-        interstitial.load();
-      }
-    });
-    // Start loading the interstitial straight away
-    interstitial.load();
-    // Unsubscribe from events on unmount
-    return () => {
-      eventListener();
-    };
-  }, []);
 
   const Questions = async () => {
     setActivityScreen(true);
@@ -189,7 +170,6 @@ const BackgroundVideo = ({route, navigation}) => {
         Authorization: `Bearer ${Token}`,
       },
     };
-    //alert(13123);
     await axios
       .get(
         `${Config.API_URL}/begin/game/questions/answers/list`,
@@ -197,12 +177,10 @@ const BackgroundVideo = ({route, navigation}) => {
       )
       .then(response => {
         let res = response.data;
-        {
+        /*  {
           console.log('resquestionsapi', res.questions);
-        }
-        //questionRef.current = res.questions;
+        } */
         questionRef.current = res;
-        //setEnable_ad(res.enable_5question_ad);
         setActivityScreen(false);
         setGameShowCheck(true);
         setTimeLeft(10);
@@ -213,13 +191,7 @@ const BackgroundVideo = ({route, navigation}) => {
   };
 
   useEffect(() => {
-    /*  defaultAppAdmob
-      .setRequestConfiguration({
-        maxAdContentRating: MaxAdContentRating.PG,
-        tagForChildDirectedTreatment: true,
-        tagForUnderAgeOfConsent: true,
-      })
-      .then(() => {}); */
+    // enter_gameshow();
     dispatchGameEnter(CheckGameEnterStatus());
     if (gameshowStatus === 'started') {
       userEliminate.current = true;
@@ -254,9 +226,9 @@ const BackgroundVideo = ({route, navigation}) => {
       .then(async response => response.json())
       .then(async res => {
         setAvailLifeActivity(false);
-        {
+        /*    {
           console.log('reslives', res);
-        }
+        } */
         if (res.message === 'Live availed successfully') {
           dispatch({
             type: types.TOTAL_LIVES,
@@ -303,7 +275,7 @@ const BackgroundVideo = ({route, navigation}) => {
   };
   useEffect(() => {
     socket.on('sendShowCorrectAnswer', msg => {
-      console.log('msgg: ', msg.activeQuestion);
+      //console.log('msgg: ', msg.activeQuestion);
       const activeQ = msg.activeQuestion;
       setGameShowCheck(true);
       setShowResult(true);
@@ -344,26 +316,6 @@ const BackgroundVideo = ({route, navigation}) => {
       setTimeLeft(10);
       clearTimeout(timer);
       startTimer();
-      /*   if (inc === 6 && enable_ad === true) {
-        interstitial?.show();
-        setActiveQuestion(inc);
-        answerId.current = null;
-        setGameShowCheck(true);
-        setDisableQuizOptions(false);
-        setShowResult(false);
-        setTimeLeft(10);
-        clearTimeout(timer);
-        startTimer();
-      } else {
-        setActiveQuestion(inc);
-        answerId.current = null;
-        setGameShowCheck(true);
-        setDisableQuizOptions(false);
-        setShowResult(false);
-        setTimeLeft(10);
-        clearTimeout(timer);
-        startTimer();
-      } */
     });
     socket.on('sendStartlivegameshow', msg => {
       Questions();
@@ -394,8 +346,8 @@ const BackgroundVideo = ({route, navigation}) => {
       if ((userEliminate.current = true)) ModalState.current(false);
       else ModalState.current(true);
     } else {
-      console.log('activeQ', activeQ);
-      console.log('activeQ qq', questionRef.current[activeQ]);
+      // console.log('activeQ', activeQ);
+      //console.log('activeQ qq', questionRef.current[activeQ]);
       const Token = await EncryptedStorage.getItem('Token');
       const body = JSONtoForm({
         question: questionRef.current[activeQ]?.id,
@@ -413,15 +365,15 @@ const BackgroundVideo = ({route, navigation}) => {
         },
         body,
       };
-      //console.log('body', body);
+
       await fetch(`${Config.API_URL}/save/user/response`, requestOptions)
         .then(async response => response.json())
         .then(async res => {
-          {
+          /*  {
             console.log({quizres: res});
-          }
+          } */
           setActivity(false);
-          console.log('res:', res);
+          // console.log('res:', res);
           if (res.status === 'success') {
             if (res.message === 'Congrats!! move to next question') {
               setActivity(false);

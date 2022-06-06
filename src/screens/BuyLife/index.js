@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {
+  Platform,
   Image,
   SafeAreaView,
   View,
@@ -35,14 +36,20 @@ import BuyLifeCongrats from '../../Components/BuyLifeCongrats';
 import {getLiveShowPlans} from '../../redux/actions';
 import types from '../../redux/types';
 import {
-  TestIds,
   RewardedAd,
   RewardedAdEventType,
   MaxAdContentRating,
 } from '@react-native-firebase/admob';
 import {firebase} from '@react-native-firebase/admob';
 const {width, height} = Dimensions.get('window');
-const rewardAd = RewardedAd.createForAdRequest(TestIds.REWARDED);
+
+const adUnitId =
+  Platform.OS === 'android'
+    ? 'ca-app-pub-6197023613008935/9639539887'
+    : 'ca-app-pub-6197023613008935/2284244724';
+const rewardAd = RewardedAd.createForAdRequest(adUnitId, {
+  requestNonPersonalizedAdsOnly: true,
+});
 const index = ({route, navigation}) => {
   const livePlans = useSelector(state => state.app.livePlans);
   const totalLives = useSelector(state => state.app.totalLives);
@@ -84,13 +91,11 @@ const index = ({route, navigation}) => {
   useEffect(() => {
     const eventListener = rewardAd.onAdEvent(type => {
       if (type === RewardedAdEventType?.LOADED) {
-        setLoaded(true);
-      }
-      if (type === RewardedAdEventType?.CLOSED) {
-        console.log('ad closed');
-        setLoaded(false);
-        //reload ad
-        rewardAd.load();
+        console.log('RewardedAd adLoaded');
+      } else if (type === RewardedAdEventType?.ERROR) {
+        console.warn('RewardedAd => Error');
+      } else if (type === RewardedAdEventType?.OPENED) {
+        console.log('RewardedAd => adOpened');
       }
     });
     // Start loading the interstitial straight away
@@ -182,7 +187,7 @@ const index = ({route, navigation}) => {
             }}>
             <Text style={styles.text}>Lives Are Available to Use</Text>
             <ImageBackground
-              resizeMode="cover"
+              resizeMode="contain"
               style={{
                 width: 120,
                 height: 100,
@@ -274,12 +279,13 @@ const index = ({route, navigation}) => {
                         setIdVideoAdd(item.id);
                         setVideo(item.video_url);
 
-                        if (video1 === true) {
+                        if (video1) {
                           if (rewardAd.loaded) {
                             getData().catch(error =>
-                              console.warn('admob_error', error),
+                              console.log('admob_error', error),
                             );
                           } else {
+                            alert('ad not ready yet, please wait');
                           }
                         } else {
                           alert(

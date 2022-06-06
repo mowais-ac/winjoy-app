@@ -59,7 +59,7 @@ function ClosingSoonCard({item, onPress}) {
           dark
           style={{
             color: '#000000',
-            marginVerstical: 5,
+            marginVertical: 5,
             lineHeight: Platform.OS === 'android' ? 16 : 20,
           }}>
           Get a chance to

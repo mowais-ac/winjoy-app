@@ -38,6 +38,14 @@
 				<string>com.winjoyae.app</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.389658608176-jvgaqjpde89uvibs7h3veu5ogvk68tjv</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
@@ -45,8 +53,14 @@
 	<array>
 		<string>https://winjoyae.page.link/7Yoh</string>
 	</array>
+	<key>GADApplicationIdentifier</key>
+	<string>ca-app-pub-6197023613008935~1954128151</string>
 	<key>LSApplicationCategoryType</key>
 	<string></string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>itms-apps</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>

@@ -241,6 +241,7 @@ const index = ({route, navigation}) => {
       .then(response => response.json())
       .then(async res => {
         setLoader(false);
+        console.log('referearn', res);
         if (res.status === 'success') {
           dispatch(getLiveShowPlans());
           totalLives.current = res?.lives;
@@ -252,8 +253,10 @@ const index = ({route, navigation}) => {
         } else {
           ModalStateError.current(true, {
             heading: 'Error',
-            Error: res.message,
-            // array: res.errors ? Object.values(res.errors) : [],
+            Error:
+              res.message.substring(0, 16) === 'SQLSTATE[23000]:'
+                ? "We're sorry, one or more referrals are already exist in our system. Please try the different."
+                : res.message,
           });
         }
       })

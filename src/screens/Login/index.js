@@ -209,11 +209,8 @@ const index = ({navigation}) => {
               Token1: res.token,
             });
           }
-
           console.log('loginres', res);
-
           tokenForLang.current = res?.data?.token;
-          ButtonRef.current.SetActivity(false);
 
           if (res?.data?.token) {
             fun_login();
@@ -221,19 +218,18 @@ const index = ({navigation}) => {
             /* if (res?.data?.user?.preferred_language === null) {
               ModalStateLanguage.current(true);
             } else  */
-
             dispatch({
               type: types.USER_DATA,
               userData: res?.data?.user,
-              //  user: res.data.data,
             });
             dispatch2({
               type: types.TOTAL_LIVES,
               totalLives: res?.data?.user?.lives_count,
             });
+            ButtonRef.current.SetActivity(false);
             await EncryptedStorage.setItem('Token', res.data.token);
             signIn(res.data.token);
-            // navigation.replace("HomeStack");
+
             if (await IsSuspended(res.data.token))
               return ModalState.current(true, {
                 heading: 'Account suspended',
@@ -243,12 +239,10 @@ const index = ({navigation}) => {
             if (await IsVerified(res.data.token)) {
               await EncryptedStorage.setItem('Token', res.data.token);
               signIn(res.data.token);
-              //  navigation.replace("HomeStack");
             } else {
               dispatch({
                 type: types.USER_DATA,
                 userData: res?.data?.user,
-                //  user: res.data.data,
               });
               navigation.replace('Verify', {
                 phone: phone_no,
@@ -273,7 +267,6 @@ const index = ({navigation}) => {
             ModalState.current(true, {
               heading: 'Error',
               Error: res?.message,
-              // array: res.errors ? Object.values(res.errors) : [],
             });
             ButtonRef.current.SetActivity(false);
           }
@@ -284,17 +277,6 @@ const index = ({navigation}) => {
         });
     }
   };
-
-  /*   const onGoogleButtonPress = async () => {
-    // Get the users ID token
-    const {idToken} = await GoogleSignin.signIn();
-
-    // Create a Google credential with the token
-    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-
-    // Sign-in the user with the credential
-    return auth().signInWithCredential(googleCredential);
-  }; */
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -402,36 +384,5 @@ const styles = StyleSheet.create({
   MarginMed: {marginTop: height * 0.022},
   MarginSmall: {marginTop: height * 0.015},
 });
-/* export const singin = () => {
-  // Set an initializing state whilst Firebase connects
-  const [initializing, setInitializing] = useState(true);
-  const [user, setUser] = useState();
 
-  // Handle user state changes
-  function onAuthStateChanged(user) {
-    setUser(user);
-    if (initializing) setInitializing(false);
-  }
-
-  useEffect(() => {
-    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber; // unsubscribe on unmount
-  }, []);
-
-  if (initializing) return null;
-  console.log(user);
-  if (!user) {
-    return (
-      <View>
-        <Text>Login</Text>
-      </View>
-    );
-  }
-
-  return (
-    <View>
-      <Text>Welcome {user.email}</Text>
-    </View>
-  );
-}; */
 export default index;

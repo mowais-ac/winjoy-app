@@ -66,6 +66,7 @@ export const getLandingScreen = () => {
     alert(error);
   }
 };
+
 export const getProducts = link => {
   try {
     return async dispatch => {
@@ -106,7 +107,7 @@ export const getLiveShowPlans = () => {
         },
       });
       const json = await result.json();
-      
+
       if (json && json.status === 'success') {
         dispatch({
           type: types.GET_LIVE_PLANS,
@@ -432,6 +433,7 @@ export const AllCreatorsList = () => {
         method: 'GET',
         headers: {
           'Content-Type': 'multipart/form-data',
+
           Accept: 'application/json',
           Authorization: `Bearer ${Token}`,
         },
@@ -450,6 +452,7 @@ export const AllCreatorsList = () => {
 export const GetCartData = () => {
   try {
     return async dispatch => {
+      
       dispatch({type: types.SHOW_LOADER});
       const Token = await EncryptedStorage.getItem('Token');
       const result = await fetch(`${Config.API_URL}/cart`, {

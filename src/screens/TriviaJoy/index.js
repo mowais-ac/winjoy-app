@@ -50,7 +50,7 @@ const index = ({props, navigation}) => {
   };
   const [time, setTime] = useState(() => {
     dispatch(TriviaJoyAPI());
-    var CurrentDate = new Date().toLocaleString();
+    var CurrentDate = new Date().toString();
     var duration = dayjs(triviaJoyData?.upcoming_gameshow?.start_date).diff(
       dayjs(CurrentDate),
       'seconds',
@@ -59,33 +59,27 @@ const index = ({props, navigation}) => {
   });
   const [renderBtn, setRenderBtn] = useState(false);
   const onRefresh = useCallback(() => {
-    // setBanners(null);
     setRefreshing(true);
     dispatch(TriviaJoyAPI());
-    var CurrentDate = new Date().toLocaleString();
+    var CurrentDate = new Date().toString();
     var duration = dayjs(triviaJoyData?.upcoming_gameshow?.start_date).diff(
       dayjs(CurrentDate),
       'seconds',
     );
-
     console.log('duration', duration);
     setTime(duration);
     wait(1000).then(() => setRefreshing(false));
   }, []);
-  useEffect(() => {
-    socket.on('sendStartlivegameshow', msg => {
-      dispatch(TriviaJoyAPI());
-    });
 
+  useEffect(() => {
     dispatch(TriviaJoyAPI());
-    var CurrentDate = new Date().toLocaleString();
+    var CurrentDate = new Date().toString();
     var duration = dayjs(triviaJoyData?.upcoming_gameshow?.start_date).diff(
       dayjs(CurrentDate),
       'seconds',
     );
-
     setTime(duration);
-  }, [TriviaJoyAPI]);
+  }, []);
 
   const LetBegin = () => {
     dispatch2(CheckGameEnterStatus());
@@ -218,11 +212,8 @@ const index = ({props, navigation}) => {
                   color: '#000000',
                   fontFamily: 'Axiforma-Regular',
                 }}
-                //separatorStyle={{paddingLeft: 5, paddingRight: 5, }}
-
                 timeToShow={['D', 'H', 'M', 'S']}
                 timeLabels={{d: 'days', h: 'hours', m: 'minutes', s: 'seconds'}}
-                //showSeparator
               />
             </LinearGradient>
           )}
@@ -273,14 +264,14 @@ const index = ({props, navigation}) => {
               </Text>
             </View>
             <ImageBackground
-              resizeMode="cover"
+              resizeMode="contain"
               style={{
                 shadowOffset: {width: 0, height: 1},
                 shadowOpacity: 0.5,
                 shadowRadius: 4,
                 elevation: 3,
                 width: 100,
-                height: 80,
+                height: 60,
                 justifyContent: 'center',
                 alignItems: 'center',
               }}
@@ -331,8 +322,6 @@ const index = ({props, navigation}) => {
         video={
           'https://winjoy-assets.s3.amazonaws.com/how_it_work/m-triviajoy(1).mp4'
         }
-        // id={idVideoAdd}
-        // onPressContinue={onPressContinue}
       />
     </ScrollView>
   );

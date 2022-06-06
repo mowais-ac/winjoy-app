@@ -342,8 +342,8 @@ const index = ({props, navigation}) => {
               }}>
               <TouchableOpacity
                 onPress={() => {
-                  // navigation.navigate('Contactus');
-                  navigation.navigate('Gsignin');
+                  navigation.navigate('Contactus');
+                  //navigation.navigate('Gsignin');
                 }}>
                 <View
                   style={[

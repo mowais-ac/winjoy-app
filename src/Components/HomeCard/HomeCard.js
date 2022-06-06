@@ -38,6 +38,7 @@ function HomeCard({
       </View>
     );
   }
+  console.log({'gameShow?.status': gameShow?.status});
   return (
     <View style={styles.mainViewWrap}>
       <View style={[styles.mainView, style]}>
@@ -60,7 +61,7 @@ function HomeCard({
                 </Text>
               </View>
             </View>
-          ) : gameShow?.status === 'inprocess' || gameShow === '' ? (
+          ) : gameShow?.status === 'inprocess' || gameShow?.status === '' ? (
             <View
               style={{
                 flex: 1,

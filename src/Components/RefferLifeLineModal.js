@@ -147,9 +147,6 @@ const RefferLifeLineModal = props => {
     setModelState({state, details, ForceSuccess});
   };
 
-  /*  const copyToClipboard = () => {
-    Clipboard.setString('https://winjoy.ae/invite/token?aaasd');
-  }; */
   const onPressRefTab = (index, item) => {
     li = [];
     reff = [];
@@ -255,8 +252,10 @@ const RefferLifeLineModal = props => {
         } else {
           ModalStateError.current(true, {
             heading: 'Error',
-            Error: res.message,
-            // array: res.errors ? Object.values(res.errors) : [],
+            Error:
+              res.message.substring(0, 16) === 'SQLSTATE[23000]:'
+                ? "We're sorry, one or more referrals are already exist in our system. Please try the different."
+                : res.message,
           });
         }
       })

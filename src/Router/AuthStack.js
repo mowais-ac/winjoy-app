@@ -10,6 +10,7 @@ import Cart from '../screens/Cart';
 import MenuStack from '../Router/MenuStack';
 import GameStack from './GameStack';
 import WebView from '../screens/WebView';
+import Googleregister from '../screens/Googleregister';
 const Stack = createNativeStackNavigator();
 export default AuthStack = () => (
   <Stack.Navigator
@@ -24,6 +25,7 @@ export default AuthStack = () => (
     <Stack.Screen name="BottomTabStack" component={BottomTabStack} />
     <Stack.Screen name="MenuStack" component={MenuStack} />
     <Stack.Screen name="Cart" component={Cart} />
+    <Stack.Screen name="Googleregister" component={Googleregister} />
     <Stack.Screen
       name="NotificationBellList"
       component={NotificationBellList}

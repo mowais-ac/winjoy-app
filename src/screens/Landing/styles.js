@@ -142,15 +142,11 @@ export default StyleSheet.create({
   avatarBannerView: {
     alignItems: 'center',
     backgroundColor: '#f05b31',
-    borderRadius: 14,
+    borderRadius: 12,
     height: height * 0.15,
     width: widthPercentageToDP('95%'),
     flexDirection: 'row',
     justifyContent: 'flex-end',
-    shadowOffset: {width: 0, height: 1},
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-    elevation: 3,
   },
   avatarBanner: {
     // width: "95%",

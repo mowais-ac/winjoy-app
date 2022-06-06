@@ -138,12 +138,12 @@ const WinnersModal = props => {
         <View style={styles.ModalBody}>
           <FlatList
             data={gameShowWinners?.winners}
-            style={{width: '100%', paddingHorizontal: 15}}
-            scrollEnabled={true}
-            contentContainerStyle={{
+            style={{
+              paddingHorizontal: 15,
               width: '100%',
               height: height,
             }}
+            scrollEnabled={true}
             ListEmptyComponent={
               <Text
                 style={{
@@ -157,7 +157,6 @@ const WinnersModal = props => {
                 no winners found
               </Text>
             }
-            // horizontal={true}
             ListHeaderComponent={() => (
               <Text
                 style={[
@@ -175,7 +174,6 @@ const WinnersModal = props => {
             renderItem={({item, index}) => {
               return (
                 <GameShowWinnersCard
-                  // key={index}
                   name={
                     item?.user?.first_name?.charAt(0)?.toUpperCase() +
                     item?.user?.first_name?.slice(1) +
@@ -225,7 +223,7 @@ const styles = StyleSheet.create({
 
   ModalBody: {
     marginTop: height * 0.02,
-    height: height * 0.6,
+    height: height * 0.5,
   },
   CheckImage: {
     alignSelf: 'center',

@@ -28,10 +28,9 @@ function LiveHostCard({item}) {
             uri: item.url,
           }}
           style={{
-            width: width * 0.7,
-            height: height * 0.3,
-            borderRadius: 15,
-            borderBottomLeftRadius: 0,
+            width: width * 0.57,
+            height: height * 0.25,
+            borderRadius: 10,
             justifyContent: 'center',
             marginLeft: 10,
           }}
@@ -45,8 +44,7 @@ function LiveHostCard({item}) {
           style={{
             width: width * 0.65,
             height: height * 0.25,
-            borderRadius: 16,
-            // borderBottomLeftRadius: 0,
+            borderRadius: 10,
             justifyContent: 'center',
             marginLeft: 10,
           }}

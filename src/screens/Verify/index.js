@@ -29,6 +29,7 @@ const index = ({route, navigation}) => {
   const email = route.params && route.params.email;
   const phone = route.params && route.params.phone;
   const token = route.params && route.params.token;
+  console.log('mytoken', token);
   const evref = useRef();
   const phvref = useRef();
   const ButtonRef = useRef();
@@ -65,7 +66,7 @@ const index = ({route, navigation}) => {
               type: types.TOTAL_LIVES,
               totalLives: 0,
             });
-            //  return navigation.replace("Splash");
+            ButtonRef.current.SetActivity(false);
             signIn(token);
           } else {
             /*  Alert.alert('Error', res.message);

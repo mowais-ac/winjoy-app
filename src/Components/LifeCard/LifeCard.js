@@ -17,8 +17,7 @@ function LifeCard({onPress, amount, lives}) {
       <LinearGradient
         style={{
           width: width * 0.3,
-          height: height * 0.18,
-          //   backgroundColor: "black",
+          height: height * 0.16,
           borderRadius: 10,
           justifyContent: 'center',
           alignItems: 'center',
@@ -33,10 +32,11 @@ function LifeCard({onPress, amount, lives}) {
           Buy
         </Text>
         <ImageBackground
-          resizeMode="center"
+          resizeMode="contain"
           style={{
+            marginTop: 10,
             width: 100,
-            height: 80,
+            height: 60,
             justifyContent: 'center',
             alignItems: 'center',
           }}
@@ -50,7 +50,7 @@ function LifeCard({onPress, amount, lives}) {
             {lives}
           </Text>
         </ImageBackground>
-        <Text style={styles.text}>{amount} AED</Text>
+        <Text style={[styles.text, {marginTop: 10}]}>{amount} AED</Text>
       </LinearGradient>
     </TouchableOpacity>
   );
