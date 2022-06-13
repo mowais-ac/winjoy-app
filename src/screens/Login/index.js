@@ -12,6 +12,7 @@ import {
   Text,
   I18nManager,
 } from 'react-native';
+import {getLandingScreen} from '../../redux/actions';
 import LinearGradient from 'react-native-linear-gradient';
 import {AuthContext} from '../../Components/context';
 import Background from '../../Components/Background';
@@ -21,7 +22,6 @@ import Label from '../../Components/Label';
 import LabelButton from '../../Components/LabelButton';
 import LongButton from '../../Components/LongButton';
 import SmallButton from '../../Components/SmallButton';
-import {useDispatch} from 'react-redux';
 import {Images} from '../../Constants/Index';
 import types from '../../redux/types';
 import {
@@ -44,6 +44,7 @@ import dynamicLinks from '@react-native-firebase/dynamic-links';
 import {GoogleSignin} from '@react-native-google-signin/google-signin'; */
 const {width, height} = Dimensions.get('window');
 import {URLSearchParams} from '@visto9259/urlsearchparams-react-native';
+import {useDispatch, useSelector} from 'react-redux';
 const index = ({navigation}) => {
   Settings.setAppID('1149665975867657');
   const {t, i18n} = useTranslation();
@@ -58,12 +59,6 @@ const index = ({navigation}) => {
   const [lang, setLang] = useState('');
   const tokenForLang = useRef('');
   const activityLang = useRef(false);
-  //Deep Link refrral
-
-  /*   GoogleSignin.configure({
-    webClientId:
-      '389658608176-lv2ddmmfpnv2uoaf5nf333e5jj4oku7o.apps.googleusercontent.com',
-  }); */
 
   useEffect(() => {
     // Defining the URL as a constant
@@ -238,6 +233,7 @@ const index = ({navigation}) => {
               });
             if (await IsVerified(res.data.token)) {
               await EncryptedStorage.setItem('Token', res.data.token);
+
               signIn(res.data.token);
             } else {
               dispatch({

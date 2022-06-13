@@ -37,48 +37,55 @@ const MYServer = 'https://node-winjoyserver-deploy.herokuapp.com/';
 const index = ({props, navigation}) => {
   const userData = useSelector(state => state.app.userData);
   const dispatch = useDispatch();
-  const dispatch2 = useDispatch();
   const AddModalState = useRef();
   const triviaJoyData = useSelector(state => state.app.triviaJoyData);
   const gameEnterStatus = useSelector(state => state.app.gameEnterStatus);
   const totalLives = useSelector(state => state.app.totalLives);
   const socket = socketIO(MYServer);
+  const [renderBtn, setRenderBtn] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const onCountDownFinish = () => {
     setRenderBtn(true);
     onRefresh();
   };
+
   const [time, setTime] = useState(() => {
     dispatch(TriviaJoyAPI());
-    var CurrentDate = new Date().toString();
+    var CurrentDate = new Date();
     var duration = dayjs(triviaJoyData?.upcoming_gameshow?.start_date).diff(
-      dayjs(CurrentDate),
+      dayjs(CurrentDate.toLocaleString()),
       'seconds',
     );
-    return duration;
+    return parseInt(duration);
   });
-  const [renderBtn, setRenderBtn] = useState(false);
+
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     dispatch(TriviaJoyAPI());
-    var CurrentDate = new Date().toString();
+    var CurrentDate = new Date();
     var duration = dayjs(triviaJoyData?.upcoming_gameshow?.start_date).diff(
-      dayjs(CurrentDate),
+      dayjs(CurrentDate.toLocaleString()),
       'seconds',
     );
-    console.log('duration', duration);
-    setTime(duration);
+    console.log('duration', triviaJoyData?.upcoming_gameshow?.start_date);
+    setTime(parseInt(duration));
     wait(1000).then(() => setRefreshing(false));
   }, []);
 
   useEffect(() => {
-    dispatch(TriviaJoyAPI());
-    var CurrentDate = new Date().toString();
-    var duration = dayjs(triviaJoyData?.upcoming_gameshow?.start_date).diff(
-      dayjs(CurrentDate),
-      'seconds',
-    );
-    setTime(duration);
+    let isMounted = true;
+    if (isMounted) {
+      dispatch(TriviaJoyAPI());
+      var CurrentDate = new Date();
+      var duration = dayjs(triviaJoyData?.upcoming_gameshow?.start_date).diff(
+        dayjs(CurrentDate.toLocaleString()),
+        'seconds',
+      );
+      setTime(parseInt(duration));
+    }
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const LetBegin = () => {

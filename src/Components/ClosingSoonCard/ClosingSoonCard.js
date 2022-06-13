@@ -46,11 +46,11 @@ function ClosingSoonCard({item, onPress}) {
           }}
           style={{
             width: '100%',
-            height: 90,
+            height: 100,
             borderTopLeftRadius: 10,
             borderTopRightRadius: 10,
           }}
-          resizeMode="center"
+          resizeMode="contain"
         />
 
         <Label

@@ -216,316 +216,324 @@ const AddaccountModal = props => {
     setAccountAddFormVisibility(true);
   };
   return (
-    <Modal
-      animationType="slide"
-      style={{margin: 0}}
-      avoidKeyboard={true}
-      isVisible={ModelState.state}
-      statusBarTranslucent={false}
-      onRequestClose={() => {
-        modalCloseHandle();
-      }}>
-      <TouchableWithoutFeedback
-        onPress={() => {
-          setModelState({
-            ...ModelState,
-            state: !ModelState.state,
-          });
-          setAccountAddFormVisibility(false);
-          if (props.onClose) props.onClose();
+    <>
+      <Modals ModalRef={ModalErrorState} Error />
+      <Modal
+        animationType="slide"
+        style={{margin: 0}}
+        avoidKeyboard={true}
+        isVisible={ModelState.state}
+        statusBarTranslucent={false}
+        onRequestClose={() => {
+          modalCloseHandle();
         }}>
-        <View style={styles.MainView} />
-      </TouchableWithoutFeedback>
+        <TouchableWithoutFeedback
+          onPress={() => {
+            setModelState({
+              ...ModelState,
+              state: !ModelState.state,
+            });
+            setAccountAddFormVisibility(false);
+            if (props.onClose) props.onClose();
+          }}>
+          <View style={styles.MainView} />
+        </TouchableWithoutFeedback>
 
-      <View style={styles.ModalView}>
-        <View style={styles.SmallBorder} />
-        <Label primary headingtype="h3" bold2 style={styles.ModalHead}>
-          Choose / add cccount details
-        </Label>
-        <View style={styles.ModalBody}>
-          <ScrollView>
-            {!accountAddFormVisibility ? (
-              <>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    paddingHorizontal: 10,
-                    marginVertical: 10,
-                  }}>
-                  <Text
-                    style={{
-                      color: Colors.DARK_LABEL,
-                      fontWeight: '600',
-                      fontSize: 18,
-                    }}>
-                    Select an account
-                  </Text>
-                  <TouchableOpacity onPress={() => onAddAccountHandle()}>
-                    <Text
-                      style={{
-                        color: '#420E92',
-                        fontSize: 14,
-                        fontWeight: '600',
-                      }}>
-                      Add Account
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-
-                {accountsList && accountsList.length ? (
-                  <>
-                    {accountsList.map(account => {
-                      return (
-                        <View style={[styles.accountRow]}>
-                          <TouchableOpacity
-                            onPress={() => {
-                              accountSelectHandle(account.id);
-                              ModalState.current(true);
-                            }}
-                            style={[
-                              styles.accountBox,
-                              selectedAccount === account.id
-                                ? styles.selectedAccountBox
-                                : null,
-                            ]}>
-                            <Text style={[styles.bankName]}>
-                              {account.type === 'paypal'
-                                ? 'Paypal'
-                                : 'Bank: ' + account.bank_name}
-                            </Text>
-                            <Text style={[styles.accountNo]}>
-                              {account.type === 'paypal'
-                                ? account.paypal_id
-                                : 'Account no.:' + account.account_no}
-                            </Text>
-                          </TouchableOpacity>
-
-                          <TouchableOpacity
-                            style={[styles.deleteBtn]}
-                            onPress={() => deleteAccouhtHandle(account.id)}>
-                            {!deleteProcess ? (
-                              <Text style={[styles.deleteBtnTxt]}>Delete</Text>
-                            ) : (
-                              <ActivityIndicator size="small" color="red" />
-                            )}
-                          </TouchableOpacity>
-                        </View>
-                      );
-                    })}
-                  </>
-                ) : (
+        <View style={styles.ModalView}>
+          <View style={styles.SmallBorder} />
+          <Label primary headingtype="h3" bold2 style={styles.ModalHead}>
+            Choose / add cccount details
+          </Label>
+          <View style={styles.ModalBody}>
+            <ScrollView>
+              {!accountAddFormVisibility ? (
+                <>
                   <View
                     style={{
-                      flexDirection: 'column',
-                      textAlign: 'center',
-                      justifyContent: 'center',
-                      paddingTop: 30,
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      paddingHorizontal: 10,
+                      marginVertical: 10,
                     }}>
                     <Text
                       style={{
-                        textAlign: 'center',
-                        fontSize: 18,
-                        fontWeight: '600',
                         color: Colors.DARK_LABEL,
-                        marginBottom: 10,
+                        fontWeight: '600',
+                        fontSize: 18,
                       }}>
-                      No account found
+                      Select an account
                     </Text>
+                    <TouchableOpacity onPress={() => onAddAccountHandle()}>
+                      <Text
+                        style={{
+                          color: '#420E92',
+                          fontSize: 14,
+                          fontWeight: '600',
+                        }}>
+                        Add Account
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+
+                  {accountsList && accountsList.length ? (
+                    <>
+                      {accountsList.map(account => {
+                        return (
+                          <View style={[styles.accountRow]}>
+                            <TouchableOpacity
+                              onPress={() => {
+                                accountSelectHandle(account.id);
+                                ModalState.current(true);
+                              }}
+                              style={[
+                                styles.accountBox,
+                                selectedAccount === account.id
+                                  ? styles.selectedAccountBox
+                                  : null,
+                              ]}>
+                              <Text style={[styles.bankName]}>
+                                {account.type === 'paypal'
+                                  ? 'Paypal'
+                                  : 'Bank: ' + account.bank_name}
+                              </Text>
+                              <Text style={[styles.accountNo]}>
+                                {account.type === 'paypal'
+                                  ? account.paypal_id
+                                  : 'Account no.:' + account.account_no}
+                              </Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity
+                              style={[styles.deleteBtn]}
+                              onPress={() => deleteAccouhtHandle(account.id)}>
+                              {!deleteProcess ? (
+                                <Text style={[styles.deleteBtnTxt]}>
+                                  Delete
+                                </Text>
+                              ) : (
+                                <ActivityIndicator size="small" color="red" />
+                              )}
+                            </TouchableOpacity>
+                          </View>
+                        );
+                      })}
+                    </>
+                  ) : (
                     <View
                       style={{
-                        flexDirection: 'row',
+                        flexDirection: 'column',
+                        textAlign: 'center',
                         justifyContent: 'center',
-                        width: '100%',
+                        paddingTop: 30,
                       }}>
-                      <TouchableOpacity
+                      <Text
                         style={{
-                          borderWidth: 1,
-                          borderColor: Colors.DARK_LABEL,
-                          borderRadius: 100,
-                          width: 120,
-                          alignItems: 'center',
+                          textAlign: 'center',
+                          fontSize: 18,
+                          fontWeight: '600',
+                          color: Colors.DARK_LABEL,
+                          marginBottom: 10,
+                        }}>
+                        No account found
+                      </Text>
+                      <View
+                        style={{
+                          flexDirection: 'row',
                           justifyContent: 'center',
-                          paddingHorizontal: 10,
-                          paddingVertical: 7,
-                        }}
-                        onPress={() => onAddAccountHandle()}>
-                        <Text
+                          width: '100%',
+                        }}>
+                        <TouchableOpacity
                           style={{
-                            color: Colors.DARK_LABEL,
-                            fontWeight: '600',
-                          }}>
-                          Add Account
-                        </Text>
+                            borderWidth: 1,
+                            borderColor: Colors.DARK_LABEL,
+                            borderRadius: 100,
+                            width: 120,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            paddingHorizontal: 10,
+                            paddingVertical: 7,
+                          }}
+                          onPress={() => onAddAccountHandle()}>
+                          <Text
+                            style={{
+                              color: Colors.DARK_LABEL,
+                              fontWeight: '600',
+                            }}>
+                            Add Account
+                          </Text>
+                        </TouchableOpacity>
+                      </View>
+                    </View>
+                  )}
+                </>
+              ) : (
+                <>
+                  <View style={[styles.tabBtnRow]}>
+                    <View style={[styles.tabBtnCol]}>
+                      <TouchableOpacity
+                        style={[
+                          styles.tabBtn,
+                          activeTab === 'bank' ? styles.tabBtnActive : null,
+                        ]}
+                        onPress={() => tabSwitchHandler('bank')}>
+                        <Text style={[styles.tabBtnTxt]}>Bank Account</Text>
+                      </TouchableOpacity>
+                    </View>
+                    <View style={[styles.tabBtnCol]}>
+                      <TouchableOpacity
+                        style={[
+                          styles.tabBtn,
+                          activeTab === 'paypal' ? styles.tabBtnActive : null,
+                        ]}
+                        onPress={() => tabSwitchHandler('paypal')}>
+                        <Text style={[styles.tabBtnTxt]}>Paypal</Text>
                       </TouchableOpacity>
                     </View>
                   </View>
-                )}
-              </>
-            ) : (
-              <>
-                <View style={[styles.tabBtnRow]}>
-                  <View style={[styles.tabBtnCol]}>
-                    <TouchableOpacity
-                      style={[
-                        styles.tabBtn,
-                        activeTab === 'bank' ? styles.tabBtnActive : null,
-                      ]}
-                      onPress={() => tabSwitchHandler('bank')}>
-                      <Text style={[styles.tabBtnTxt]}>Bank Account</Text>
-                    </TouchableOpacity>
-                  </View>
-                  <View style={[styles.tabBtnCol]}>
-                    <TouchableOpacity
-                      style={[
-                        styles.tabBtn,
-                        activeTab === 'paypal' ? styles.tabBtnActive : null,
-                      ]}
-                      onPress={() => tabSwitchHandler('paypal')}>
-                      <Text style={[styles.tabBtnTxt]}>Paypal</Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
 
-                {activeTab === 'bank' ? (
-                  <>
+                  {activeTab === 'bank' ? (
+                    <>
+                      <View style={styles.mView}>
+                        <Label notAlign dark style={styles.titleTxt}>
+                          Bank name
+                        </Label>
+                        <View style={styles.Main2}>
+                          <TextInput
+                            keyboardType={'default'}
+                            placeholder=""
+                            placeholderTextColor={Colors.DARK_LABEL}
+                            onChangeText={text => setBankName(text)}
+                            style={styles.MarginLarge}
+                          />
+                        </View>
+                      </View>
+                      <View style={styles.mView}>
+                        <Label notAlign dark style={styles.titleTxt}>
+                          Account title:
+                        </Label>
+                        <View style={styles.Main2}>
+                          <TextInput
+                            keyboardType={'default'}
+                            placeholder="John Doe"
+                            placeholderTextColor={Colors.DARK_LABEL}
+                            onChangeText={text => settitle(text)}
+                            style={styles.MarginLarge}
+                          />
+                        </View>
+                      </View>
+
+                      <View style={styles.mView}>
+                        <Label notAlign dark style={styles.titleTxt}>
+                          Account number / IBAN
+                        </Label>
+                        <View style={[styles.Main2, {flexDirection: 'row'}]}>
+                          <TextInput
+                            placeholder="0123456789"
+                            placeholderTextColor={Colors.DARK_LABEL}
+                            keyboardType={'numeric'}
+                            maxLength={20}
+                            //onSubmitEditing={() => ref_input3.current.focus()}
+                            ref={ref_input2}
+                            // onBlur={onBlur}
+                            onChangeText={text => {
+                              setaccount_no(text);
+                            }}
+                            style={styles.MarginLargeNumber}
+                          />
+                        </View>
+                      </View>
+                    </>
+                  ) : (
                     <View style={styles.mView}>
                       <Label notAlign dark style={styles.titleTxt}>
-                        Bank name
+                        Paypal Id
                       </Label>
                       <View style={styles.Main2}>
                         <TextInput
                           keyboardType={'default'}
                           placeholder=""
                           placeholderTextColor={Colors.DARK_LABEL}
-                          onChangeText={text => setBankName(text)}
+                          onChangeText={text => setPaypalId(text)}
                           style={styles.MarginLarge}
                         />
                       </View>
                     </View>
-                    <View style={styles.mView}>
-                      <Label notAlign dark style={styles.titleTxt}>
-                        Account title:
-                      </Label>
-                      <View style={styles.Main2}>
-                        <TextInput
-                          keyboardType={'default'}
-                          placeholder="John Doe"
-                          placeholderTextColor={Colors.DARK_LABEL}
-                          onChangeText={text => settitle(text)}
-                          style={styles.MarginLarge}
-                        />
-                      </View>
-                    </View>
+                  )}
 
-                    <View style={styles.mView}>
-                      <Label notAlign dark style={styles.titleTxt}>
-                        Account number / IBAN
-                      </Label>
-                      <View style={[styles.Main2, {flexDirection: 'row'}]}>
-                        <TextInput
-                          placeholder="0123456789"
-                          placeholderTextColor={Colors.DARK_LABEL}
-                          keyboardType={'numeric'}
-                          maxLength={20}
-                          //onSubmitEditing={() => ref_input3.current.focus()}
-                          ref={ref_input2}
-                          // onBlur={onBlur}
-                          onChangeText={text => {
-                            setaccount_no(text);
-                          }}
-                          style={styles.MarginLargeNumber}
-                        />
-                      </View>
-                    </View>
-                  </>
-                ) : (
-                  <View style={styles.mView}>
-                    <Label notAlign dark style={styles.titleTxt}>
-                      Paypal Id
-                    </Label>
-                    <View style={styles.Main2}>
-                      <TextInput
-                        keyboardType={'default'}
-                        placeholder=""
-                        placeholderTextColor={Colors.DARK_LABEL}
-                        onChangeText={text => setPaypalId(text)}
-                        style={styles.MarginLarge}
-                      />
-                    </View>
-                  </View>
-                )}
-
-                <TouchableOpacity
-                  disabled={activity}
-                  onPress={() => {
-                    Postaddaccount();
-                  }}
-                  style={{
-                    width: width * 0.9,
-                    borderRadius: 10,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    marginTop: 15,
-                    marginLeft: width * 0.04,
-                  }}>
-                  <LinearGradient
-                    start={{x: 0, y: 0}}
-                    end={{x: 1, y: 0}}
+                  <TouchableOpacity
+                    disabled={activity}
+                    onPress={() => {
+                      Postaddaccount();
+                    }}
                     style={{
-                      width: '100%',
-                      borderRadius: 100,
+                      width: width * 0.9,
+                      borderRadius: 10,
                       justifyContent: 'center',
                       alignItems: 'center',
-                      padding: 13,
-                    }}
-                    colors={['#420E92', '#E7003F']}>
-                    {activity ? (
-                      <ActivityIndicator size="small" color="#ffffff" />
-                    ) : (
-                      <Label primary font={16} bold style={{color: '#ffffff'}}>
-                        Save
-                      </Label>
-                    )}
-                  </LinearGradient>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                    width: '100%',
-                    marginTop: 4,
-                    padding: 8,
-                  }}
-                  onPress={() => setAccountAddFormVisibility(false)}>
-                  <Text
-                    style={{
-                      fontWeight: '600',
-                      color: Colors.DARK_LABEL,
-                      fontSize: 15,
+                      marginTop: 15,
+                      marginLeft: width * 0.04,
                     }}>
-                    Back to list
-                  </Text>
-                </TouchableOpacity>
-              </>
-            )}
+                    <LinearGradient
+                      start={{x: 0, y: 0}}
+                      end={{x: 1, y: 0}}
+                      style={{
+                        width: '100%',
+                        borderRadius: 100,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        padding: 13,
+                      }}
+                      colors={['#420E92', '#E7003F']}>
+                      {activity ? (
+                        <ActivityIndicator size="small" color="#ffffff" />
+                      ) : (
+                        <Label
+                          primary
+                          font={16}
+                          bold
+                          style={{color: '#ffffff'}}>
+                          Save
+                        </Label>
+                      )}
+                    </LinearGradient>
+                  </TouchableOpacity>
 
-            <WithDrawModal
-              ModalRef={ModalState}
-              details
-              onPressWithDrawal={props.onPressWithDrawal}
-              yourBalance={props.yourBalance}
-              AmmountHandleChange={props.AmmountHandleChange}
-              ammount={props.ammount}
-              activity={props.activity}
-              accountId={selectedAccount}
-              activeno={props.activeno}
-              setActiveno={props.setActiveno}
-            />
+                  <TouchableOpacity
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'center',
+                      width: '100%',
+                      marginTop: 4,
+                      padding: 8,
+                    }}
+                    onPress={() => setAccountAddFormVisibility(false)}>
+                    <Text
+                      style={{
+                        fontWeight: '600',
+                        color: Colors.DARK_LABEL,
+                        fontSize: 15,
+                      }}>
+                      Back to list
+                    </Text>
+                  </TouchableOpacity>
+                </>
+              )}
 
-            {/*  <LabelButton
+              <WithDrawModal
+                ModalRef={ModalState}
+                details
+                onPressWithDrawal={props.onPressWithDrawal}
+                yourBalance={props.yourBalance}
+                AmmountHandleChange={props.AmmountHandleChange}
+                ammount={props.ammount}
+                activity={props.activity}
+                accountId={selectedAccount}
+                activeno={props.activeno}
+                setActiveno={props.setActiveno}
+              />
+
+              {/*  <LabelButton
                 primary
                 headingtype="h3"
                 bold
@@ -542,26 +550,26 @@ const AddaccountModal = props => {
                 }}>
                 Close
               </LabelButton> */}
-          </ScrollView>
+            </ScrollView>
+          </View>
         </View>
-      </View>
-      <BuyLifeCongrats
-        ModalRef={SucessModalState}
-        heading={'Congratulations'}
-        description={'Your Account Details has been added'}
-        requestOnPress={() => {
-          SucessModalState.current(false);
-        }}
-        closeOnPress={() => {
-          SucessModalState.current(false);
-          setModelState({
-            ...ModelState,
-            state: !ModelState.state,
-          });
-        }}
-      />
-      <Modals ModalRef={ModalErrorState} Error />
-    </Modal>
+        <BuyLifeCongrats
+          ModalRef={SucessModalState}
+          heading={'Congratulations'}
+          description={'Your Account Details has been added'}
+          requestOnPress={() => {
+            SucessModalState.current(false);
+          }}
+          closeOnPress={() => {
+            SucessModalState.current(false);
+            setModelState({
+              ...ModelState,
+              state: !ModelState.state,
+            });
+          }}
+        />
+      </Modal>
+    </>
   );
 };
 

@@ -45,6 +45,7 @@ import {
   TriviaJoyAPI,
   AllCreatorsList,
   ProductDetails,
+  IS_LOADING,
 } from '../../redux/actions';
 import socketIO from 'socket.io-client';
 import {useTranslation} from 'react-i18next';
@@ -79,23 +80,23 @@ const interstitial = InterstitialAd.createForAdRequest(adUnitId, {
 });
 const index = props => {
   const {t, i18n} = useTranslation();
+  const socket = socketIO(MYServer);
+  const LandingData = useSelector(state => state.app.LandingData);
+  const isloading = useSelector(state => state.app.isloading);
+  const gameEnterStatus = useSelector(state => state.app.gameEnterStatus);
+  const walletData = useSelector(state => state.app.walletData);
+  const livePlans = useSelector(state => state.app.livePlans);
+  const userData = useSelector(state => state.app.userData);
+  const totalLives = useSelector(state => state.app.totalLives);
+  const navigation = useNavigation();
   const ModelVersioncheck = useRef();
   const [headerValue, setHeaderValue] = useState(0);
   const [loader, setLoader] = useState(false);
   const [refreshing, setRefreshing] = React.useState(false);
-
   const [activeSlide, setActiveSlide] = useState();
-  const userData = useSelector(state => state.app.userData);
-  const LandingData = useSelector(state => state.app.LandingData);
-  const gameEnterStatus = useSelector(state => state.app.gameEnterStatus);
-  const totalLives = useSelector(state => state.app.totalLives);
-  const loading = useSelector(state => state.app.loading);
   const [buffer, setBuffer] = useState(false);
   const [videoAction, setVideoAction] = useState(true);
   const [imgSlider, setImageSlider] = useState([]);
-  const navigation = useNavigation();
-  const walletData = useSelector(state => state.app.walletData);
-  const livePlans = useSelector(state => state.app.livePlans);
   const dispatch = useDispatch();
   const dispatch2 = useDispatch();
   const dispatch3 = useDispatch();
@@ -104,41 +105,47 @@ const index = props => {
   const dispatch6 = useDispatch();
   const dispatch7 = useDispatch();
   const dispatch8 = useDispatch();
-  console.log('deep2', LandingData?.is_testing);
-  const socket = socketIO(MYServer);
+  const dispatch9 = useDispatch();
+  //console.log('isloading', isloading);
   const AddModalState = useRef();
+  const [Emails, setEmails] = useState('');
   const defaultAppAdmob = firebase.admob();
   const [time, setTime] = useState(() => {
     dispatch(getLandingScreen());
-    var CurrentDate = new Date().toString();
+    var CurrentDate = new Date();
     var duration = dayjs(LandingData?.gameShow?.start_date).diff(
-      dayjs(CurrentDate),
+      dayjs(CurrentDate.toLocaleString()),
       'seconds',
     );
-    return duration;
+    return parseInt(duration);
   });
-  // const [enable_ad, setEnable_ad] = useState(false);
   const countDownFinishHandler = () => {
     console.log('counter_finish');
     onRefresh();
   };
-
+  console.log('landing_Data', LandingData);
+  console.log('time_duration', time);
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    dispatch6(getWalletData());
     dispatch(getLandingScreen());
-    var CurrentDate = new Date().toString();
+    dispatch6(getWalletData());
+    var CurrentDate = new Date();
     var duration = dayjs(LandingData?.gameShow?.start_date).diff(
-      dayjs(CurrentDate),
+      dayjs(CurrentDate.toLocaleString()),
       'seconds',
     );
-    console.log('show', duration);
-    setTime(duration);
+    setTime(parseInt(duration));
+    !isloading && LandingData?.gameShow?.status === 'on_boarding'
+      ? socket.on('sendOnboarding', msg => {
+          console.log('Should navigate');
+          NavigateToQuiz(true);
+        })
+      : null;
     Testnavigate();
     NavigateToQuiz();
-    wait(500).then(() => setRefreshing(false));
+    wait(800).then(() => setRefreshing(false));
   }, []);
-
+  // console.log('gameshow_date_from_backend', LandingData?.gameShow?.start_date);
   appsFlyer.initSdk(
     {
       isDebug: true,
@@ -155,7 +162,7 @@ const index = props => {
   const inAppUpdates = new SpInAppUpdates(
     false, // isDebug
   );
-  const InAppiupdate = () => {
+  const InAppupdate = () => {
     inAppUpdates.checkNeedsUpdate({curVersion: versionandroid}).then(result => {
       if (result.shouldUpdate) {
         const updateOptions: StartUpdateOptions = Platform.select({
@@ -165,7 +172,6 @@ const index = props => {
               'There is a new version of the app available on the App Store, do you want to update it?',
             buttonUpgradeText: 'Update',
             buttonCancelText: 'Cancel',
-            //country: 'it', // 👈🏻 the country code for the specific version to lookup for (optional)
           },
           android: {
             updateType: IAUUpdateKind.FLEXIBLE,
@@ -177,58 +183,66 @@ const index = props => {
   };
 
   useEffect(() => {
-    dispatch6(getWalletData());
-    dispatch8(getLiveShowPlans());
-    dispatch5(AllCreatorsList());
-    dispatch7(LeaderBoardWinners());
-    InAppiupdate();
-    // setEnable_ad(LandingData?.enable_onboarding_ad);
-    socket.on('sendStartlivegameshow', msg => {
+    let isMounted = true;
+    if (isMounted) {
       dispatch(getLandingScreen());
-    });
-    socket.on('sendOnboarding', msg => {
-      console.log('Should navigate');
-      NavigateToQuiz(true);
-    });
-    {
-      console.log('First time render');
+      dispatch6(getWalletData());
+      dispatch8(getLiveShowPlans());
+      dispatch5(AllCreatorsList());
+      dispatch7(LeaderBoardWinners());
+      setEmails(LandingData?.internalEmails);
+      let arr = [];
+      LandingData?.host_sliders_data?.map(ele => {
+        arr.push(ele.url);
+      });
+      InAppupdate();
+      socket.on('sendStartlivegameshow', msg => {
+        dispatch(getLandingScreen());
+        console.log('socketevent', msg);
+      });
+      socket.on('sendOnboarding', msg => {
+        console.log('Should navigate');
+        NavigateToQuiz(true);
+      });
+
+      appsFlyer.initSdk(
+        {
+          isDebug: true,
+          appId: '1613371170',
+          devKey: 'WsirNxAS4HZB9sjUxGjHtD',
+        },
+        result => {
+          console.log('result', result);
+        },
+        error => {
+          console.error(error);
+        },
+      );
+      var CurrentDate = new Date();
+      var duration = dayjs(LandingData?.gameShow?.start_date).diff(
+        dayjs(CurrentDate.toLocaleString()),
+        'seconds',
+      );
+      setTime(parseInt(duration));
+      setImageSlider(arr);
+      LandingData?.gameShow?.status === 'on_boarding' ||
+      LandingData?.gameShow?.status === 'started'
+        ? NavigateToQuiz()
+        : null;
+      CreateChannal();
+      defaultAppAdmob
+        .setRequestConfiguration({
+          maxAdContentRating: MaxAdContentRating.PG,
+          tagForChildDirectedTreatment: true,
+          tagForUnderAgeOfConsent: true,
+        })
+        .then(() => {});
     }
-    dispatch(getLandingScreen());
-    appsFlyer.initSdk(
-      {
-        isDebug: true,
-        appId: '1613371170',
-        devKey: 'WsirNxAS4HZB9sjUxGjHtD',
-      },
-      result => {
-        console.log('result', result);
-      },
-      error => {
-        console.error(error);
-      },
-    );
-    var CurrentDate = new Date().toString();
-    var duration = dayjs(LandingData?.upcoming_gameshow?.start_date).diff(
-      dayjs(CurrentDate),
-      'seconds',
-    );
-    // console.log('duration1', LandingData?.enable_onboarding_ad);
-    setTime(duration);
-    let arr = [];
-    LandingData?.host_sliders_data?.map(ele => {
-      arr.push(ele.url);
-    });
-    setImageSlider(arr);
-    NavigateToQuiz();
-    CreateChannal();
-    defaultAppAdmob
-      .setRequestConfiguration({
-        maxAdContentRating: MaxAdContentRating.PG,
-        tagForChildDirectedTreatment: true,
-        tagForUnderAgeOfConsent: true,
-      })
-      .then(() => {});
+    return () => {
+      isMounted = false;
+    };
   }, []);
+
   var onInstallConversionDataCanceller = appsFlyer.onInstallConversionData(
     res => {
       if (JSON.parse(res.data.is_first_launch) == true) {
@@ -275,64 +289,56 @@ const index = props => {
       channelName: 'Winjoy',
     });
   };
-
   const NavigateToQuiz = fromSocket => {
-    if (!LandingData?.is_testing) {
+    if (!LandingData?.is_testing_user) {
       if (
         LandingData?.gameShow?.status === 'on_boarding' ||
         LandingData?.gameShow?.status === 'started' ||
         fromSocket
       ) {
-        /*   if (enable_ad) {
-            interstitial?.show();
-          } */
         if (interstitial.loaded) {
-          interstitial
-            .show()
-            .catch(error => console.warn('admob_error', error));
+          interstitial.show().catch(error => console.log('admob_error', error));
         }
         {
-          console.log(
-            'LandingData?.gameShow?.status',
-            LandingData?.gameShow?.status,
-          );
+          console.log('Gameshow_Status', LandingData?.gameShow?.status);
         }
         navigation.navigate('GameStack', {
           screen: 'Quiz',
           params: {
             streamUrl: LandingData.streamUrl,
             uri: LandingData?.gameShow?.live_stream?.key,
-            gameshowStatus: LandingData?.gameShow?.status,
+            gameshow: LandingData?.gameShow,
             completed_questions: LandingData?.gameShow?.completed_questions,
           },
         });
       }
     }
   };
-  //LandingData?.internalEmails &&
+  /* 
+  const array = Emails.split(',');
+  const result = array?.filter(all_email => {
+    let my_emails = userData?.email;
+    const a = all_email === my_emails ? true : false;
+    console.log('result', a);
+  });
+  console.log('all_Emails', array); */
+  // console.log('testing_user', LandingData?.is_testing_user);
   const Testnavigate = () => {
     if (
-      !LandingData?.is_testing &&
+      LandingData?.is_testing_user &&
       LandingData?.gameShow?.status === 'on_boarding'
     ) {
       navigation.navigate('GameStack', {
         screen: 'Quiz',
         params: {
+          streamUrl: LandingData.streamUrl,
           uri: LandingData?.gameShow?.live_stream?.key,
           gameshowStatus: LandingData?.gameShow?.status,
+          completed_questions: LandingData?.gameShow?.completed_questions,
         },
       });
     } else {
       return null;
-    }
-  };
-
-  const LetBegin = () => {
-    // dispatch2(CheckGameEnterStatus());
-    if (gameEnterStatus.status === 'success') {
-      NavigateToQuiz();
-    } else {
-      alert('game not started yet!');
     }
   };
 
@@ -414,25 +420,7 @@ const index = props => {
       },
     );
   };
-  const showRewardAd = () => {
-    // Create a new instance
-    const rewardAd = RewardedAd.createForAdRequest(
-      'ca-app-pub-6197023613008935/9639539887',
-    );
 
-    // Add event handlers
-    rewardAd.onAdEvent((type, error) => {
-      if (type === RewardedAdEventType.LOADED) {
-        rewardAd.show();
-      }
-      if (type === RewardedAdEventType.EARNED_REWARD) {
-        console.log('User earned reward of 5 lives');
-      }
-    });
-
-    // Load a new advert
-    rewardAd.load();
-  };
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
@@ -477,6 +465,7 @@ const index = props => {
         }
       });
   }, []);
+
   return (
     <SafeAreaView style={{backgroundColor: '#420E92'}}>
       <Header
@@ -509,12 +498,18 @@ const index = props => {
         refreshControl={
           <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
         }>
-        <View style={{width: '100%', alignItems: 'center'}}>
+        <View
+          style={{
+            width: '100%',
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
           <LinearGradient
             colors={['#5B0C86', '#E7003F']}
             style={styles.mainView}>
             <View style={styles.wrap}>
-              {loader ? (
+              {isloading ? (
                 <ActivityIndicator size="large" color="#ffffff" />
               ) : (
                 <>
@@ -648,8 +643,7 @@ const index = props => {
                 item={item}
                 onPress={() => {
                   index === 0
-                    ? (navigation.navigate('TriviaJoy'),
-                      dispatch4(TriviaJoyAPI()))
+                    ? navigation.navigate('TriviaJoy')
                     : index === 1
                     ? navigation.navigate('DealsJoy')
                     : navigation.navigate('AllCreatorsPage');
@@ -658,55 +652,52 @@ const index = props => {
             )}
             keyExtractor={item => item.id}
           />
-
-          <View
-            style={{
-              flex: 1,
-              marginTop: 8,
-              flexDirection: 'row',
-            }}>
-            {loading ? (
-              <ActivityIndicator size="small" color="#fffff" />
-            ) : (
+          {isloading ? (
+            <ActivityIndicator size="small" color="#000000" />
+          ) : (
+            <View
+              style={{
+                flex: 1,
+                marginTop: 5,
+                flexDirection: 'row',
+                marginBottom: 0,
+              }}>
               <SliderBox
                 images={imgSlider}
                 sliderBoxHeight={150}
-                resizeMode={'cover'}
+                resizeMode={'contain'}
                 ImageComponentStyle={{
-                  borderRadius: 15,
-                  width: '95%',
-                  shadowColor: '#d9dbda',
-                  shadowOffset: {width: 0, height: 1},
-                  shadowOpacity: 5,
-                  shadowRadius: 7,
-                  elevation: 4,
-                  //  marginTop: 5,
+                  borderRadius: Platform.OS === 'android' ? 8 : 15,
+                  width: '94%',
+                  padding: 0,
                 }}
-                imageLoadingColor="black"
+                imageLoadingColor="#000000"
                 dotColor="#FFEE58"
                 inactiveDotColor="#90A4AE"
-                dotStyle={{top: 5}}
+                dotStyle={{top: 2.3}}
                 autoplay={true}
                 circleLoop={true}
                 onCurrentImagePressed={index =>
                   console.warn(`image ${index} pressed`)
                 }
                 currentImageEmitter={index =>
-                  console.warn(`current pos is: ${index}`)
+                  console.warn(`current postors is: ${index}`)
                 }
               />
-            )}
-          </View>
+            </View>
+          )}
           <View
             style={{
               justifyContent: 'center',
               alignItems: 'center',
             }}
           />
-          {LandingData?.home_middle_banners_data ? (
+          {isloading ? (
+            <ActivityIndicator size="small" color="#000000" />
+          ) : LandingData?.home_middle_banners_data ? (
             <HomeCard
               images={LandingData?.home_middle_banners_data}
-              time={time}
+              time={!isloading ? time : 0}
               gameShow={LandingData?.gameShow}
               upcoming_gameshow={LandingData?.upcoming_gameshow}
               countDownFinish={() => {
@@ -769,7 +760,6 @@ const index = props => {
 
           <FlatList
             horizontal={true}
-            style={{}}
             contentContainerStyle={{
               alignSelf: 'flex-start',
               paddingRight: width * 0.04,
@@ -792,8 +782,8 @@ const index = props => {
             keyExtractor={item => item.id}
             ListEmptyComponent={() => (
               <>
-                {loading ? (
-                  <ActivityIndicator size="large" color="yellow" />
+                {isloading ? (
+                  <ActivityIndicator size="large" color="#000000" />
                 ) : (
                   <Text
                     style={{

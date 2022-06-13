@@ -151,10 +151,6 @@ const index = ({props, navigation}) => {
   };
   const renderItem = ({item, i}) => {
     return (
-      // <TouchableOpacity
-      //   onPress={() => navigation.navigate("WishlistDetails", { item })}
-      // >
-
       <Section
         style={styles.Section}
         disabled={true}
@@ -178,9 +174,7 @@ const index = ({props, navigation}) => {
               style={{width: width * 0.48}}>
               {item?.product?.title} x {item?.qty}
             </Label>
-            {/* <Label notAlign darkmuted bold font={12} style={{ width: width * 0.5,height:height*0.05 }}>
-                {item.description}
-              </Label> */}
+
             <Label
               notAlign
               primary
@@ -218,9 +212,9 @@ const index = ({props, navigation}) => {
       </Section>
     );
   };
-  {
+  /*   {
     console.log('cartData?.total', cartData?.data?.price);
-  }
+  } */
   const eventName3 = 'remove_from_cart';
   const eventValues3 = {
     af_content_id: 12,
@@ -287,12 +281,6 @@ const index = ({props, navigation}) => {
                     />
                   )
                 }
-                // refreshControl={
-                //   <RefreshControl
-                //     onRefresh={onRefresh}
-                //     refreshing={refreshing}
-                //   />
-                // }
                 contentContainerStyle={{
                   paddingBottom: height * 0.06,
                 }}

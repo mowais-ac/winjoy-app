@@ -14,12 +14,9 @@ import {useNavigation} from '@react-navigation/native';
 import {connect, useSelector} from 'react-redux';
 const {width, height} = Dimensions.get('window');
 
-const Bell = props => {
+const Cart_count = props => {
   const navigation = useNavigation();
   const cartData = useSelector(state => state.app.cartData);
-  const counter = useSelector(state => state.app.counter);
-  console.log('counter', counter);
-  //const {Bell} = props;
 
   return (
     <>
@@ -32,10 +29,6 @@ const Bell = props => {
           resizeMode={'stretch'}>
           {cartData?.data?.length > 0 ? (
             <>
-              {/*  <Image source={Images.BellPop} style={styles.Pop1} />
-              <Label notAlign bold style={styles.Label} font={11}>
-                {cartData?.data?.length}
-              </Label> */}
               <View style={styles.Pop}>
                 <Text style={styles.Label}>{cartData?.data?.length}</Text>
               </View>
@@ -83,11 +76,5 @@ const styles = StyleSheet.create({
     fontSize: 10,
   },
 });
-/* const mapStateToProps = state => {
-  const {Bell} = state;
-  return {
-    Bell,
-  };
-}; */
-export default Bell;
-//export default connect(mapStateToProps, null)(Bell);
+
+export default Cart_count;

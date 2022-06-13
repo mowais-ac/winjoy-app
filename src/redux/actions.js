@@ -56,6 +56,10 @@ export const getLandingScreen = () => {
       console.log('landingdata', json);
       if (json && json.status === 'success') {
         dispatch({
+          type: types.IS_LOADING,
+          payload: false,
+        });
+        dispatch({
           type: types.GET_LANDING_DATA,
           payload: json,
         });
@@ -452,7 +456,6 @@ export const AllCreatorsList = () => {
 export const GetCartData = () => {
   try {
     return async dispatch => {
-      
       dispatch({type: types.SHOW_LOADER});
       const Token = await EncryptedStorage.getItem('Token');
       const result = await fetch(`${Config.API_URL}/cart`, {

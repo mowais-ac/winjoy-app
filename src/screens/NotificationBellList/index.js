@@ -69,7 +69,6 @@ const index = ({navigation}) => {
   const counterMain = useSelector(state => state.app.counter);
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-
     wait(500).then(() => setRefreshing(false));
   }, []);
 
@@ -169,8 +168,6 @@ const styles = StyleSheet.create({
     color: '#e7003f',
     fontFamily: 'Axiforma-Regular',
   },
-  ///modal styles
-
   button: {
     borderRadius: 20,
     padding: 10,
