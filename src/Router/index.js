@@ -21,16 +21,16 @@ import OneSignal from 'react-native-onesignal';
 import {useSelector, useDispatch} from 'react-redux';
 //import linking from '../Components/linking';
 import dynamicLinks from '@react-native-firebase/dynamic-links';
-import {getLiveShowPlans} from '../redux/actions';
+import {getLiveShowPlans, getLandingScreen} from '../redux/actions';
 import {useNavigation} from '@react-navigation/native';
 import LeaderBoard from '../screens/LeaderBoard';
 const Stack = createNativeStackNavigator();
 
 function index(props) {
-  //const navigation = useNavigation();
+  // const navigation = useNavigation();
   const [isLogedin, setIsLogedin] = useState(false);
   const livePlans = useSelector(state => state.app.livePlans);
-  EncryptedStorage.getItem('Token').then(data => {
+  const mytoken = EncryptedStorage.getItem('Token').then(data => {
     if (data != null) setIsLogedin(true);
     else setIsLogedin(false);
   });
@@ -39,45 +39,7 @@ function index(props) {
   useEffect(() => {
     dispatch2(getLiveShowPlans());
   }, []);
-  /*  const handleDynamicLink = link => {
-    if (`${link.url}`) {
-      navigation.navigate('Register', {
-        referral_code: link,
-      });
-    } else {
-      alert(`${link.url}`);
-    }
-  };
-  useEffect(async () => {
-    const unsubscribe = dynamicLinks().onLink(handleDynamicLink);
-    dynamicLinks()
-      .getInitialLink()
-      .then(link => {
-        if ('https://winjoy.ae' === `${link.url}`) {
-          navigation.navigate('Register', {
-            referral_code: link,
-          });
-        } else {
-          alert(`${link.url}`);
-        }
-      });
-    return () => {
-      unsubscribe();
-    };
-  }, []); */
-  /* useEffect(() => {
-    const getUrl = async () => {
-      const initialUrl = await Linking.getInitialURL();
-      if (initialUrl !== null) {
-        return;
-      }
-      if (initialUrl.includes('view_profile')) {
-        Alert.alert(initialUrl);
-        RootNavigation.navigate('view_profile');
-      }
-    };
-    getUrl();
-  }); */
+
   const [state, dispatch] = React.useReducer(
     (prevState, action) => {
       switch (action.type) {
@@ -115,7 +77,7 @@ function index(props) {
       kOSSettingsKeyInFocusDisplayOption: 2,
     });
     OneSignal.inFocusDisplaying(2);
-  
+
     const bootstrapAsync = async () => {
       let userToken;
       try {
@@ -130,21 +92,6 @@ function index(props) {
     };
     bootstrapAsync();
   }, []);
-  /* const config = {
-    screens: {
-      Landing: {
-        path: 'Landing/:id',
-        params: {
-          id: null,
-        },
-      },
-    },
-  };
-  // Deep links
-  const linking = {
-    prefixes: ['https://winjoy.ae', 'winjoy://'],
-    config,
-  }; */
 
   const authContext = React.useMemo(
     () => ({
@@ -153,8 +100,8 @@ function index(props) {
         // We will also need to handle errors if sign in failed
         // After getting token, we need to persist the token using `SecureStore`
         // In the example, we'll use a dummy token
-
-        dispatch({type: 'SIGN_IN', token: 'dummy-auth-token'});
+        console.log('signin', data);
+        dispatch({type: 'SIGN_IN', token: data});
       },
       signOut: () => {
         dispatch({type: 'SIGN_OUT'});
@@ -165,18 +112,21 @@ function index(props) {
         // We will also need to handle errors if sign up failed
         // After getting token, we need to persist the token using `SecureStore`
         // In the example, we'll use a dummy token
-
-        dispatch({type: 'SIGN_IN', token: 'dummy-auth-token'});
+        dispatch({type: 'SIGN_IN', token: data});
       },
     }),
 
     [],
   );
+  /*   React.useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      console.log('Refreshed!');
+    });
+    return unsubscribe;
+  }, [navigation]); */
   return (
     <AuthContext.Provider value={authContext}>
-      <NavigationContainer
-      //linking={linking}
-      >
+      <NavigationContainer>
         <Stack.Navigator
           screenOptions={{
             headerShown: false,
@@ -193,7 +143,6 @@ function index(props) {
               <Stack.Screen name="BottomTabStack" component={BottomTabStack} />
               <Stack.Screen name="MenuStack" component={MenuStack} />
               <Stack.Screen name="Cart" component={Cart} />
-
               <Stack.Screen
                 name="NotificationBellList"
                 component={NotificationBellList}

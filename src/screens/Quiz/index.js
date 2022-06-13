@@ -18,6 +18,7 @@ import {
   BackHandler,
   Alert,
 } from 'react-native';
+import DeviceInfo from 'react-native-device-info';
 import styled from 'styled-components/native';
 import Video from 'react-native-video';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -63,16 +64,12 @@ const {width, height} = Dimensions.get('window');
 let timer = () => {};
 
 const BackgroundVideo = ({route, navigation}) => {
-  const dispatch = useDispatch();
-  //gameshow Winners dispatch
-  const dispatch1 = useDispatch();
-  const dispatch2 = useDispatch();
-  const dispatch3 = useDispatch();
+  const socket = socketIO(MYServer);
   const userData = useSelector(state => state.app.userData);
   const totalLives = useSelector(state => state.app.totalLives);
+  const {uri, gameshow, completed_questions, streamUrl} = route.params;
+  const [stream, setstream] = useState('');
   const [availLifeActivity, setAvailLifeActivity] = useState(false);
-  const socket = socketIO(MYServer);
-  const {uri, gameshowStatus, completed_questions, streamUrl} = route.params;
   const [selected, setSelected] = useState(null);
   const [buffer, setBuffer] = useState(false);
   const [timeLeft, setTimeLeft] = useState(10);
@@ -96,8 +93,14 @@ const BackgroundVideo = ({route, navigation}) => {
   const winnerModal = useRef();
   const [updatedAnswer, setUpdatedAnswer] = useState();
   const [activeQuestion, setActiveQuestion] = useState(1);
-  const dispatchGameEnter = useDispatch();
   const [refreshing, setRefreshing] = useState(false);
+  const buildNumber = DeviceInfo.getBuildNumber();
+  const dispatchGameEnter = useDispatch();
+  const dispatch = useDispatch();
+  //gameshow Winners dispatch
+  const dispatch1 = useDispatch();
+  const dispatch2 = useDispatch();
+  const dispatch3 = useDispatch();
 
   const backAction = () => {
     Alert.alert(
@@ -114,6 +117,7 @@ const BackgroundVideo = ({route, navigation}) => {
     );
     return true;
   };
+  // console.log('streamUrl', streamUrl);
   const Is_platform = Platform.OS === 'android' ? 'android' : 'ios';
   const startTimer = () => {
     timer = setTimeout(() => {
@@ -124,11 +128,14 @@ const BackgroundVideo = ({route, navigation}) => {
       setTimeLeft(timeLeft - 1);
     }, 1000);
   };
-  /*  const enter_gameshow = async () => {
+  const enter_gameshow = async () => {
     const Token = await EncryptedStorage.getItem('Token');
     const body = JSONtoForm({
       device_using: Is_platform,
+      device_version: buildNumber,
+      live_gameshow_id: gameshow.id,
     });
+    console.log('bodyyyy', body);
     const requestOptions = {
       method: 'POST',
       headers: {
@@ -136,8 +143,9 @@ const BackgroundVideo = ({route, navigation}) => {
         Accept: 'application/json',
         Authorization: `Bearer ${Token}`,
       },
+      body,
     };
-    await fetch(`${Config.API_URL}/joinGameshow`, requestOptions, body)
+    await fetch(`${Config.API_URL}/joinGameshow`, requestOptions)
       .then(async response => response.json())
       .then(res => {
         console.log({joingameshow_res: res});
@@ -145,9 +153,9 @@ const BackgroundVideo = ({route, navigation}) => {
       .catch(e => {
         console.log(e);
       });
-  }; */
+  };
   const onRefresh = React.useCallback(() => {
-    //enter_gameshow();
+    enter_gameshow();
     setRefreshing(true);
     dispatch1(getLandingScreen());
     wait(100).then(() => setRefreshing(false));
@@ -191,9 +199,10 @@ const BackgroundVideo = ({route, navigation}) => {
   };
 
   useEffect(() => {
-    // enter_gameshow();
+    setstream(streamUrl);
+    enter_gameshow();
     dispatchGameEnter(CheckGameEnterStatus());
-    if (gameshowStatus === 'started') {
+    if (gameshow?.status === 'started') {
       userEliminate.current = true;
       onRefresh();
       Questions();
@@ -330,7 +339,6 @@ const BackgroundVideo = ({route, navigation}) => {
       winnerModal.current(false);
     });
   }, []);
-
   const SaveResponse = useCallback(async activeQ => {
     setActivity(true);
 
@@ -404,7 +412,7 @@ const BackgroundVideo = ({route, navigation}) => {
           {liveStream ? (
             <Video
               source={{
-                uri: streamUrl,
+                uri: stream ? stream : null,
               }}
               hls={true}
               paused={false}
@@ -433,16 +441,16 @@ const BackgroundVideo = ({route, navigation}) => {
                       opacity: 1.2,
                       borderRadius: 10,
                       backgroundColor: 'red',
-                      paddingHorizontal: 8,
-                      paddingVertical: 4,
-                      //height: 28,
+                      paddingTop: 2.2,
                       marginLeft: 20,
-                      marginTop: 5,
+                      height: 25,
+                      width: 50,
+                      justifyContent: 'center',
+                      alignItems: 'center',
                     }}>
                     <Text
                       style={{
                         color: '#ffff',
-                        textAlign: 'center',
                         fontSize: 16,
                         fontFamily: 'Axiforma',
                       }}>
@@ -538,6 +546,7 @@ const BackgroundVideo = ({route, navigation}) => {
                                   fontSize: 12,
                                   color: '#E7003F',
                                   lineHeight: 12,
+                                  textAlign: 'center',
                                 }}>
                                 {timeLeft <= 0 ? "Time's Up" : timeLeft}
                               </Text>

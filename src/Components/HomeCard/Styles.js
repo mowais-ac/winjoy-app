@@ -9,13 +9,13 @@ import {Dimensions, StyleSheet} from 'react-native';
 
 const {width, height} = Dimensions.get('window');
 export default StyleSheet.create({
-  mainViewWrap: {
+  mainViewWrapa: {
     width: '100%',
     paddingHorizontal: 10,
     marginTop: 16,
   },
 
-  mainView: {
+  mainViewa: {
     alignItems: 'center',
     borderRadius: 11,
     height: height * 0.1,
@@ -23,12 +23,12 @@ export default StyleSheet.create({
     backgroundColor: '#f05b31',
     flexDirection: 'row',
   },
-  textView: {
+  textViewa: {
     width: '100%',
     paddingHorizontal: 10,
     justifyContent: 'space-between',
   },
-  commingSoonTxt: {
+  commingSoonTxta: {
     fontFamily: 'Axiforma-SemiBold',
     fontSize: 16,
     color: '#ffffff',
@@ -36,7 +36,7 @@ export default StyleSheet.create({
     textAlign: 'left',
   },
 
-  circularView: {
+  circularViewa: {
     alignItems: 'center',
     justifyContent: 'center',
     width: 40,
@@ -49,10 +49,10 @@ export default StyleSheet.create({
     right: 10,
     bottom: 36,
   },
-  imageView: {
+  imageViewa: {
     justifyContent: 'center',
   },
-  Margin: {
+  Margina: {
     height: height * 0.04,
     width: width * 0.3,
     backgroundColor: '#ffffff',

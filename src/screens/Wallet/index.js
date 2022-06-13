@@ -115,6 +115,8 @@ const index = ({props, navigation}) => {
         w_amount: activeno,
         account_id: accountId,
       });
+
+      // console.log("withdrawl_body",body)
       const requestOptions = {
         method: 'POST',
         headers: {
@@ -277,7 +279,7 @@ const index = ({props, navigation}) => {
 
         <TopupPaymentModals ModalRef={ModalStateTopup} />
 
-        <WithDrawModal
+        {/* <WithDrawModal
           ModalRef={ModalState}
           details
           onPressWithDrawal={() => onPress()}
@@ -289,9 +291,8 @@ const index = ({props, navigation}) => {
           // AmmountHandleChange={text => setAmmount(text)}
           // ammount={ammount}
           activity={activity}
-        />
+        /> */}
 
-        <Modals ModalRef={ModalErrorState} message_error={messageError} Alert />
         <SuccessModal
           ModalRef={ModalState2}
           details
@@ -304,6 +305,7 @@ const index = ({props, navigation}) => {
               : walletData?.wallet?.your_balance
           }
         />
+        <Modals ModalRef={ModalErrorState} message_error={messageError} Alert />
       </ScrollView>
     </SafeAreaView>
   );

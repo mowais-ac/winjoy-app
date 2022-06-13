@@ -32,7 +32,7 @@ function HomeCard({
     return (
       <View key={index}>
         <Image
-          style={[styles.mainView, {overlayColor: '#f6f1f3'}]}
+          style={[styles.mainViewa, {overlayColor: '#f6f1f3'}]}
           source={{uri: item.url}}
         />
       </View>
@@ -40,13 +40,13 @@ function HomeCard({
   }
   console.log({'gameShow?.status': gameShow?.status});
   return (
-    <View style={styles.mainViewWrap}>
-      <View style={[styles.mainView, style]}>
+    <View style={styles.mainViewWrapa}>
+      <View style={[styles.mainViewa, style]}>
         <Image
-          style={[styles.mainView, {position: 'absolute'}]}
+          style={[styles.mainViewa, {position: 'absolute'}]}
           source={{uri: images[0]?.url}}
         />
-        <View style={styles.textView}>
+        <View style={styles.textViewa}>
           {gameShow?.status === 'on_boarding' ? (
             <View
               style={{
@@ -55,41 +55,41 @@ function HomeCard({
                 justifyContent: 'space-between',
               }}>
               <View>
-                <Text style={styles.commingSoonTxt}>LIVE</Text>
-                <Text style={[styles.commingSoonTxt, {color: '#D9FE51'}]}>
+                <Text style={styles.commingSoonTxta}>LIVE</Text>
+                <Text style={[styles.commingSoonTxta, {color: '#D9FE51'}]}>
                   TRIVIA
                 </Text>
               </View>
             </View>
-          ) : gameShow?.status === 'inprocess' || gameShow?.status === '' ? (
+          ) : gameShow?.status === 'inprocess' || gameShow === '' ? (
             <View
               style={{
                 flex: 1,
                 flexDirection: 'row',
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                width: '100%',
+                width: '94%',
               }}>
               <View>
                 <Text
                   style={[
-                    styles.commingSoonTxt,
+                    styles.commingSoonTxta,
                     {fontFamily: 'Axiforma-Regular', marginBottom: 15},
                   ]}>
                   Prize
                 </Text>
-                <Text style={styles.commingSoonTxt}>
+                <Text style={styles.commingSoonTxta}>
                   AED{' '}
                   {FormatNumber(+upcoming_gameshow?.price?.toLocaleString())}
                 </Text>
               </View>
               <View style={{paddingTop: 5}}>
-                <Text style={[styles.commingSoonTxt, {fontSize: 13}]}>
+                <Text style={[styles.commingSoonTxta, {fontSize: 13}]}>
                   TRIVIA
                 </Text>
                 <Text
                   style={[
-                    styles.commingSoonTxt,
+                    styles.commingSoonTxta,
                     {color: '#ffffff', fontSize: 13},
                   ]}>
                   COMING SOON

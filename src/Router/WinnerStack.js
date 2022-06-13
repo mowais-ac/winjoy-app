@@ -11,7 +11,6 @@ export default index = () => (
       headerShown: false,
     }}>
     <Stack.Screen name="Winners" component={Winners} />
-
     <Stack.Screen name="Cart" component={Cart} />
   </Stack.Navigator>
 );

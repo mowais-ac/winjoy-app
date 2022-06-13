@@ -103,7 +103,7 @@ const WinnersModal = props => {
     setRefferalLivePlans(li);
     setId(idforFirst);
   }, []);
-
+  console.log('gameShowWinners', gameShowWinners);
   return (
     <Modal
       animationType="slide"

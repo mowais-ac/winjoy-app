@@ -100,6 +100,8 @@ export default (state = INITIAL_STATE, action) => {
       return {...state, creatorExpList: action.payload};
     case types.IS_LOADING:
       return {...state, isloading: action.payload};
+    case types.BELL_NOTIFICATION:
+      return {...state, bell_notification: action.payload};
     default:
       return state;
   }
