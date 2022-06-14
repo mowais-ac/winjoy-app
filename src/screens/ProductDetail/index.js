@@ -16,7 +16,11 @@ import Label from '../../Components/Label';
 const {width, height} = Dimensions.get('window');
 import LinearGradient from 'react-native-linear-gradient';
 import {Card} from '../../Components';
-import {GetCartData, RemoveCartData} from '../../redux/actions';
+import {
+  GetCartData,
+  RemoveCartData,
+  getLandingScreen,
+} from '../../redux/actions';
 import {
   widthPercentageToDP,
   heightPercentageToDP,
@@ -48,6 +52,7 @@ const ProductDetail = ({props, navigation, route}) => {
   const dispatch = useDispatch();
   const dispatch2 = useDispatch();
   const dispatch3 = useDispatch();
+  const dispatch6 = useDispatch();
   const SucessModalState = useRef();
   const ModalErrorState = useRef();
   const counterMain = useSelector(state => state.app.counter);
@@ -83,6 +88,7 @@ const ProductDetail = ({props, navigation, route}) => {
 
   useEffect(() => {
     Settings.setAppID('1149665975867657');
+    dispatch6(getLandingScreen());
     _Api(productId);
     socket.on('sendOnboarding', msg => {
       console.log('Should navigate from product details');
@@ -184,8 +190,10 @@ const ProductDetail = ({props, navigation, route}) => {
       navigation.navigate('GameStack', {
         screen: 'Quiz',
         params: {
+          streamUrl: LandingData.streamUrl,
           uri: LandingData?.gameShow?.live_stream?.key,
-          gameshowStatus: LandingData?.gameShow?.status,
+          gameshow: LandingData?.gameShow,
+          completed_questions: LandingData?.gameShow?.completed_questions,
         },
       });
     }
@@ -549,7 +557,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
   },
   pdView: {
-    minHeight: 100,
+    height: 'auto',
+    marginBottom: 24,
   },
   metaText: {
     lineHeight: 20,

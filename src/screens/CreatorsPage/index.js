@@ -30,6 +30,7 @@ import {
   ExperienceProductData,
   GetCreatorPageData,
   ProductDetails,
+  getLandingScreen,
 } from '../../redux/actions';
 import Config from 'react-native-config';
 import EncryptedStorage from 'react-native-encrypted-storage';
@@ -47,6 +48,7 @@ const index = ({route, navigation}) => {
   const dispatch3 = useDispatch();
   const dispatch4 = useDispatch();
   const dispatch5 = useDispatch();
+  const dispatch6 = useDispatch();
   const ModalState = useRef();
   const celebrity_id = useRef();
   const experience_id = useRef();
@@ -64,6 +66,7 @@ const index = ({route, navigation}) => {
   const {id} = route.params;
   const [data, setdata] = useState([]);
   useEffect(() => {
+    dispatch6(getLandingScreen());
     _Api(id);
     socket.on('sendOnboarding', msg => {
       console.log('Should navigate from product details');
@@ -168,8 +171,10 @@ const index = ({route, navigation}) => {
       navigation.navigate('GameStack', {
         screen: 'Quiz',
         params: {
+          streamUrl: LandingData.streamUrl,
           uri: LandingData?.gameShow?.live_stream?.key,
-          gameshowStatus: LandingData?.gameShow?.status,
+          gameshow: LandingData?.gameShow,
+          completed_questions: LandingData?.gameShow?.completed_questions,
         },
       });
     }

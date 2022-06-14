@@ -438,10 +438,10 @@ const BackgroundVideo = ({route, navigation}) => {
                   </View>
                   <View
                     style={{
+                      paddingBottom: 1,
                       opacity: 1.2,
                       borderRadius: 10,
                       backgroundColor: 'red',
-                      paddingTop: 2.2,
                       marginLeft: 20,
                       height: 25,
                       width: 50,

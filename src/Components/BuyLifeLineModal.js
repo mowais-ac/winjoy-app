@@ -101,8 +101,8 @@ const BuyLifeLineModal = props => {
 
         <View style={styles.ModalBody}>
           <Text style={styles.descriptionText}>
-            Pay AED 30 to buy 10 life lines, once you are done with the payment,
-            you will be able to avail life lines in our gameshow.
+            Pay AED {props.amount} to buy {props.lives} lives, once you are done
+            with the payment you will be able to avail lives in the gameshow.
           </Text>
           <View style={[styles.SmallBorder, {width: width * 0.1, height: 2}]} />
           <Text

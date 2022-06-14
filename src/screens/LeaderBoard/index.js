@@ -103,7 +103,7 @@ const index = ({route, navigation}) => {
                 alignItems: 'center',
               }}>
               <Text style={[styles.headerText, {lineHeight: 30}]}>
-                LeaderBoard
+                Leaderboard
               </Text>
 
               <View style={{width: width, height: height * 0.28}}>

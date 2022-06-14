@@ -150,7 +150,7 @@ const index = ({route, navigation}) => {
                 on the winjoy app?
               </Text>
               <Text style={styles.paragraph}>
-                18+ years Residents of UAE and GCC.
+                18+ years residents of UAE and GCC.
               </Text>
 
               <Text style={styles.heading}>
@@ -163,7 +163,7 @@ const index = ({route, navigation}) => {
                 entered into a prize draw relative to that particular offer. If
                 your purchase a merch, the prize relative to that purchase is
                 shown, so in relativity you will be entered into that prize draw
-                only. s Residents of UAE and GCC.
+                only residents of UAE and GCC.
               </Text>
               <Text style={styles.heading}>
                 What happens if I lose my internet connection?
@@ -249,9 +249,11 @@ const index = ({route, navigation}) => {
                 ‘Account’ tab to change your password.
               </Text>
               <Text style={styles.heading}>
-                What Credit Cards does Winjoy accept? Winjoy accepts all major
-                credit/debits cards including (but not limited to):
-                Visa,MasterCard and Amex.
+                What Credit Cards does Winjoy accept?
+              </Text>
+              <Text style={styles.paragraph}>
+                Winjoy accepts all major credit/debits cards including (but not
+                limited to): Visa,MasterCard and Amex.
               </Text>
               <Text style={styles.heading}>
                 How do I close my Winjoy account?{' '}
@@ -384,7 +386,6 @@ const index = ({route, navigation}) => {
                 ticket holders as to the status of each campaign.
               </Text>
 
-              <Text style={styles.heading}>Security</Text>
               <Text style={styles.heading}>
                 Are my personal details secure with Winjoy?{' '}
               </Text>

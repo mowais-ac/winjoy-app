@@ -159,15 +159,6 @@ const WithDrawModal = props => {
                   onPress={() => tabSwitchHandler('200')}>
                   <Text style={[styles.tabBtnTxt]}>AED 200</Text>
                 </TouchableOpacity>
-                <TouchableOpacity
-                  disabled={a <= 301 ? true : false}
-                  style={[
-                    styles.tabBtn,
-                    props.activeno === '250' ? styles.tabBtnActive : null,
-                  ]}
-                  onPress={() => tabSwitchHandler('250')}>
-                  <Text style={[styles.tabBtnTxt]}>AED 250</Text>
-                </TouchableOpacity>
               </View>
               <View
                 style={{
@@ -245,7 +236,7 @@ const WithDrawModal = props => {
                     marginTop: 5,
                     lineHeight: 20,
                   }}>
-                  Contestants can only withdraw a maximum amount of 250 DHS.
+                  Contestants can only withdraw a maximum amount of 200 AED.
                 </Text>
               </View>
             </View>

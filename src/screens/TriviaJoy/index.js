@@ -28,19 +28,26 @@ import axios from 'axios';
 import dayjs from 'dayjs';
 import socketIO from 'socket.io-client';
 import Header from '../../Components/Header';
-import {TriviaJoyAPI, CheckGameEnterStatus} from '../../redux/actions';
+import {
+  TriviaJoyAPI,
+  CheckGameEnterStatus,
+  getLandingScreen,
+} from '../../redux/actions';
 import CountDown from 'react-native-countdown-component';
 import {RFValue} from 'react-native-responsive-fontsize';
 import HowItWorkModal from '../../Components/HowItWorkModal';
 import {wait} from '../../Constants/Functions';
 const MYServer = 'https://node-winjoyserver-deploy.herokuapp.com/';
 const index = ({props, navigation}) => {
+  const LandingData = useSelector(state => state.app.LandingData);
   const userData = useSelector(state => state.app.userData);
-  const dispatch = useDispatch();
-  const AddModalState = useRef();
   const triviaJoyData = useSelector(state => state.app.triviaJoyData);
   const gameEnterStatus = useSelector(state => state.app.gameEnterStatus);
   const totalLives = useSelector(state => state.app.totalLives);
+  const dispatch = useDispatch();
+  const dispatch2 = useDispatch();
+  const dispatch4 = useDispatch();
+  const AddModalState = useRef();
   const socket = socketIO(MYServer);
   const [renderBtn, setRenderBtn] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
@@ -61,6 +68,7 @@ const index = ({props, navigation}) => {
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
+    dispatch4(getLandingScreen());
     dispatch(TriviaJoyAPI());
     var CurrentDate = new Date();
     var duration = dayjs(triviaJoyData?.upcoming_gameshow?.start_date).diff(
@@ -75,6 +83,7 @@ const index = ({props, navigation}) => {
   useEffect(() => {
     let isMounted = true;
     if (isMounted) {
+      dispatch4(getLandingScreen());
       dispatch(TriviaJoyAPI());
       var CurrentDate = new Date();
       var duration = dayjs(triviaJoyData?.upcoming_gameshow?.start_date).diff(
@@ -96,7 +105,10 @@ const index = ({props, navigation}) => {
         navigation.navigate('GameStack', {
           screen: 'Quiz',
           params: {
-            uri: triviaJoyData?.on_going_gameshow?.live_stream?.key,
+            streamUrl: LandingData.streamUrl,
+            uri: LandingData?.gameShow?.live_stream?.key,
+            gameshow: LandingData?.gameShow,
+            completed_questions: LandingData?.gameShow?.completed_questions,
           },
         });
       } else {

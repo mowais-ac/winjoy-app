@@ -138,7 +138,7 @@ const index = ({route, navigation}) => {
               type: types.TOTAL_LIVES,
               totalLives: json?.lives,
             });
-          }, 500);
+          }, 4000);
 
           // dispatch(getLiveShowPlans());
         } else {
