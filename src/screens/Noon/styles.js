@@ -8,7 +8,7 @@ export default StyleSheet.create({
     // backgroundColor:colors.background,
   },
   headerText: {
-    color: '#ffffff',
+    color: '#D9FE51',
     fontFamily: 'Axiforma-SemiBold',
     fontSize: RFValue(22),
   },
@@ -47,7 +47,6 @@ export default StyleSheet.create({
   paragraph: {
     color: '#000000',
     paddingBottom: 10,
-    textAlign: 'justify',
   },
   listeItem: {},
 });

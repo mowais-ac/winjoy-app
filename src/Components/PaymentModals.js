@@ -14,6 +14,7 @@ import {
   KeyboardAvoidingView,
   ActivityIndicator,
 } from 'react-native';
+import {useSelector} from 'react-redux';
 import appsFlyer from 'react-native-appsflyer';
 import CheckBox from '@react-native-community/checkbox';
 import Label from './Label';
@@ -35,15 +36,20 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import types from '../redux/types';
 import {useDispatch} from 'react-redux';
 import {AppEventsLogger, Settings} from 'react-native-fbsdk-next';
+import NoonConformation from './NoonConformation';
+
 const {width, height} = Dimensions.get('window');
 
 const PaymentModals = props => {
   const ref_input2 = useRef();
+  const user = useSelector(state => state.app.userData);
+  const Noonconformation = useRef();
   const ref_input3 = useRef();
   const [ModelState, setModelState] = useState({
     state: false,
     details: null,
   });
+  const [userInfo, setUserInfo] = useState([]);
   const [activeTab, setActiveTab] = useState('card');
   const [selectedcheck, setselectedcheck] = useState('');
   const [name, setName] = useState('');
@@ -60,6 +66,7 @@ const PaymentModals = props => {
   const Deliver = 'deliver';
   const Donation = 'donation';
   const [is_wallet, setIs_wallet] = useState(false);
+  const [noonId, setnoonId] = useState(null);
   const [wallet, setwallet] = useState('');
   const [activity, setActivity] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -79,16 +86,20 @@ const PaymentModals = props => {
   useEffect(() => {
     if (props.ModalRef) props.ModalRef.current = HandleChange;
   });
+  useEffect(() => {
+    setUserInfo(user);
+  }, []);
 
   useEffect(() => {
     setwallet(selectedcheck === Deliver ? props.total + 15 : props.total);
-
     if (is_wallet === true) {
       PostCreditCardInfo();
     } else {
       console.log('post not successfull');
     }
   }, [is_wallet, selectedcheck]);
+
+  // console.log('userInfo1', userInfo.user_name);
   const HandleChange = (state, details = null, ForceSuccess = false) => {
     setModelState({state, details, ForceSuccess});
   };
@@ -124,9 +135,7 @@ const PaymentModals = props => {
   const PostCreditCardInfo = async () => {
     let expData = await AsyncStorage.getItem('expData');
     let ids = await AsyncStorage.getItem('ids');
-    {
-      console.log('expData', expData);
-    }
+    console.log('expData', expData);
     const expDataParse = JSON.parse(expData);
     const expData1 = [];
     const dat2 = JSON.parse(ids);
@@ -144,9 +153,7 @@ const PaymentModals = props => {
         expData1.push(element);
       });
     }
-
     let number = number1 + number2 + number3 + number4;
-
     let month = expiryDate.split('/')[0];
     let year = expiryDate.split('/')[1];
     if (is_wallet === true) {
@@ -158,20 +165,16 @@ const PaymentModals = props => {
       postData = {
         products: expData1,
       };
-
       const data = {
         shippingtype: selectedcheck,
         address: address,
-        card_number: number2,
-        exp_month: month,
-        exp_year: year,
-        cvc: cvc,
+        isTest: false,
+        country: '',
         type: 'products',
         is_wallet: is_wallet,
+        user_name: userInfo.user_name,
       };
-      {
-        console.log('paymentdata', JSONtoForm(data));
-      }
+      console.log('paymentdata', JSONtoForm(data));
       const requestOptions = {
         method: 'POST',
         headers: {
@@ -181,8 +184,8 @@ const PaymentModals = props => {
         },
         body: JSONtoForm(data),
       };
-      console.log('paymentbodyy', requestOptions.body);
-      await fetch(`${Config.API_URL}/paynow`, requestOptions)
+      console.log('paymentdata', requestOptions.body);
+      await fetch(`${Config.API_URL}/order/paynow`, requestOptions)
         .then(async response => response.json())
         .then(async res => {
           setActivity(false);
@@ -194,9 +197,7 @@ const PaymentModals = props => {
               fb_purchase();
               fb_checkout();
               SucessModalState.current(true);
-              {
-                console.log('res', res);
-              }
+              console.log('res', res);
               await AsyncStorage.removeItem('ids');
               await AsyncStorage.removeItem('expData');
               dispatch({
@@ -228,7 +229,7 @@ const PaymentModals = props => {
           }
         });
     } else {
-      if (!number2) {
+      /*   if (!number2) {
         ModalErrorState.current(true, {
           heading: 'Error',
           Error: 'Card Number Required',
@@ -243,82 +244,79 @@ const PaymentModals = props => {
           heading: 'Error',
           Error: 'CVC Required',
         });
-      } else {
-        setActivity(true);
-        const Token = await EncryptedStorage.getItem('Token');
-        let dat = [];
-        let postData = {};
-        expData1.map(element => {});
-        postData = {
-          products: expData1,
-        };
+      } */
 
-        const data = {
-          shippingtype: selectedcheck,
-          address: address,
-          card_number: number2,
-          exp_month: month,
-          exp_year: year,
-          cvc: cvc,
-          type: 'products',
-          is_wallet: is_wallet,
-        };
+      setActivity(true);
+      const Token = await EncryptedStorage.getItem('Token');
+      let dat = [];
+      let postData = {};
+      expData1.map(element => {});
+      postData = {
+        products: expData1,
+      };
 
-        const requestOptions = {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            Accept: 'application/json',
-            Authorization: `Bearer ${Token}`,
-          },
-          body: JSONtoForm(data),
-        };
-        {
-          console.log('paymentbody', requestOptions);
-        }
-        await fetch(`${Config.API_URL}/paynow`, requestOptions)
-          .then(async response => response.json())
-          .then(async res => {
-            setActivity(false);
-            try {
-              console.log('res', res);
-              if (res) {
-                {
-                  console.log('res', res);
-                }
-                fun_purchase();
-                fun_purchaselog();
-                fb_purchase();
-                fb_checkout();
-                await AsyncStorage.removeItem('ids');
-                await AsyncStorage.removeItem('expData');
-                dispatch({
-                  type: types.CART_COUNTER,
-                  counter: '',
-                });
-                //setSuccess(false);
-                SucessModalState.current(true);
-              } else if (res.status === 'action_required') {
-                navigation.navigate('WebView', {
-                  uri: res?.next_action?.use_stripe_sdk?.stripe_js,
-                });
-              }
-              /*  else {
-              ModalErrorState.current(true, {
-                heading: 'Error',
-                Error: res?.error,
+      const data = {
+        shippingtype: selectedcheck,
+        address: address,
+        isTest: false,
+        country: '',
+        type: 'products',
+        is_wallet: is_wallet,
+      };
+
+      const requestOptions = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Accept: 'application/json',
+          Authorization: `Bearer ${Token}`,
+        },
+        body: JSONtoForm(data),
+      };
+      console.log('paymentbody', requestOptions);
+      await fetch(`${Config.API_URL}/order/create`, requestOptions)
+        .then(async response => response.json())
+        .then(async res => {
+          setActivity(false);
+          try {
+            console.log('productsres', res);
+            if (res.status === 'order_created') {
+              await AsyncStorage.setItem(
+                'noon_orderid',
+                res?.order?.noon_p_order_reference,
+              );
+              navigation.navigate('WebView', {
+                uri: res?.order?.noon_p_checkout_post_url,
               });
-              setActivity(false);
+              // setnoonId(res.noon_p_order_reference);
+              console.log('productsres2', res);
+              fun_purchase();
+              fun_purchaselog();
+              fb_purchase();
+              fb_checkout();
+              await AsyncStorage.removeItem('ids');
+              await AsyncStorage.removeItem('expData');
+              dispatch({
+                type: types.CART_COUNTER,
+                counter: '',
+              });
+
+              //  Noonconformation.current(true);
+              // SucessModalState.current(true);
+            } /* else if (res.status === 'action_required') {
+              navigation.navigate('WebView', {
+                uri: res?.next_action?.use_stripe_sdk?.stripe_js,
+              });
             } */
-            } catch (error) {
-              {
-                console.log(error);
-              }
+          } catch (error) {
+            {
+              console.log(error);
             }
-          });
-      }
+          }
+        });
     }
   };
+  console.log('noonid', noonId);
   const eventName = 'af_purchase';
   const eventValues = {
     af_price: 99,
@@ -421,13 +419,14 @@ const PaymentModals = props => {
                         onValueChange={() => {
                           setselectedcheck(Pickup);
                         }}
-                        style={{marginLeft: 3, alignSelf: 'flex-start'}}
+                        style={{margin: 0}}
                       />
                       <View
                         style={{
                           flexDirection: 'column',
                           justifyContent: 'center',
                           marginLeft: 8,
+                          width: '92%',
                         }}>
                         <Text style={{color: '#420E92', fontWeight: '700'}}>
                           Pickup
@@ -465,7 +464,7 @@ const PaymentModals = props => {
                         onValueChange={() => {
                           setselectedcheck(Deliver);
                         }}
-                        style={styles.checkbox}
+                        style={{margin: 0}}
                       />
                       <View
                         style={{
@@ -522,7 +521,7 @@ const PaymentModals = props => {
                     }}>
                     <View
                       style={[
-                        {flexDirection: 'row', padding: 15},
+                        {flexDirection: 'row', padding: 10},
                         selectedcheck === Donation ? styles.selectedBox : null,
                       ]}>
                       {/*   {console.log(selectedcheck)} */}
@@ -558,6 +557,7 @@ const PaymentModals = props => {
                               color: '#420E92',
                               fontWeight: '700',
                               fontFamily: 'Axiforma',
+                              lineHeight: 20,
                             }}>
                             Make a donation
                           </Text>
@@ -567,6 +567,7 @@ const PaymentModals = props => {
                               color: 'black',
                               fontWeight: '400',
                               fontFamily: 'Axiforma',
+                              textAlign: 'justify',
                               lineHeight: 20,
                             }}>
                             We at Winjoy believe in changing the lives of people
@@ -668,79 +669,6 @@ const PaymentModals = props => {
 
                 {activeTab === 'card' ? (
                   <>
-                    <View style={styles.mView}>
-                      <Label notAlign darkmuted style={styles.titleTxt}>
-                        Name on Card
-                      </Label>
-                      <View style={styles.Main2}>
-                        <TextInput
-                          editable={false}
-                          placeholder="Name on Card"
-                          placeholderTextColor={Colors.DARK_LABEL}
-                          //keyboardType={'default'}
-                          style={styles.MarginLarge}
-                        />
-                      </View>
-                    </View>
-                    <View style={styles.mView}>
-                      <Label notAlign darkmuted style={styles.titleTxt}>
-                        Card Number
-                      </Label>
-                      <View style={[styles.Main2, {flexDirection: 'row'}]}>
-                        <TextInput
-                          placeholder="•••• •••• •••• ••••"
-                          placeholderTextColor={Colors.DARK_LABEL}
-                          keyboardType={'numeric'}
-                          maxLength={16}
-                          //onSubmitEditing={() => ref_input3.current.focus()}
-                          ref={ref_input2}
-                          // onBlur={onBlur}
-                          onChangeText={text => {
-                            setNumber2(text);
-                          }}
-                          style={styles.MarginLargeNumber}
-                        />
-                      </View>
-                    </View>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        width: width * 0.9,
-                        justifyContent: 'space-between',
-                        alignSelf: 'center',
-                      }}>
-                      <View style={[styles.mView, {width: width * 0.4}]}>
-                        <Label notAlign darkmuted style={styles.titleTxt}>
-                          Expiry date
-                        </Label>
-                        <View style={styles.Main1}>
-                          <TextInput
-                            placeholder="MM/YY "
-                            placeholderTextColor={Colors.DARK_LABEL}
-                            keyboardType={'numeric'}
-                            maxLength={5}
-                            onChangeText={text => formatFunction(text)}
-                            value={expiryDate}
-                            style={styles.MarginLarge}
-                          />
-                        </View>
-                      </View>
-                      <View style={[styles.mView, {width: width * 0.4}]}>
-                        <Label notAlign darkmuted style={styles.titleTxt}>
-                          CVV
-                        </Label>
-                        <View style={styles.Main1}>
-                          <TextInput
-                            placeholder="CVV"
-                            placeholderTextColor={Colors.DARK_LABEL}
-                            keyboardType={'numeric'}
-                            maxLength={3}
-                            onChangeText={text => setCvc(text)}
-                            style={styles.MarginLarge}
-                          />
-                        </View>
-                      </View>
-                    </View>
                     <TouchableOpacity
                       disabled={activity}
                       onPress={() => {
@@ -784,15 +712,13 @@ const PaymentModals = props => {
                     </TouchableOpacity>
                     <View
                       style={{
-                        marginLeft: 130,
                         flexDirection: 'row',
-                        marginVertical: 20,
-                        //alignItems: 'center',
+                        marginTop: 35,
                         justifyContent: 'center',
-                        width: 100,
+                        width: '100%',
                       }}>
                       <TouchableOpacity
-                        style={{marginTop: 10}}
+                        style={{marginTop: 15}}
                         onPress={() => {
                           setSuccess();
                         }}>
@@ -809,14 +735,14 @@ const PaymentModals = props => {
                       </TouchableOpacity>
                       <View
                         style={{
-                          margin: 6,
+                          margin: 10,
                           height: 30,
                           borderWidth: 1,
                           borderColor: '#EFEAF4',
                         }}
                       />
                       <TouchableOpacity
-                        style={{marginTop: 10}}
+                        style={{marginTop: 15}}
                         onPress={() => {
                           setSuccess(false);
                           setModelState({
@@ -842,33 +768,7 @@ const PaymentModals = props => {
                     </View>
                   </>
                 ) : (
-                  //{(props.total>=)}
-
                   <>
-                    {/* <View
-                      style={{
-                        backgroundColor: '#E6DFEE',
-                        width: '87%',
-                        borderRadius: 15,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        padding: 13,
-                        margin: 20,
-                      }}>
-                      <Text
-                        style={{
-                          color: '#420E92',
-                          fontWeight: 'bold',
-                          fontFamily: 'Axiforma-Regular',
-                          fontSize: 16.5,
-                        }}>
-                        Pay AED{' '}
-                        {selectedcheck === Deliver
-                          ? props.total + 15
-                          : props.total}
-                      </Text>
-                    </View> */}
-
                     <View
                       style={{
                         marginVertical: 10,
@@ -996,7 +896,6 @@ const PaymentModals = props => {
                         }}
                         style={{
                           width: width * 0.9,
-
                           borderRadius: 10,
                           justifyContent: 'center',
                           alignItems: 'center',
@@ -1052,6 +951,7 @@ const PaymentModals = props => {
             });
           }}
         />
+        <NoonConformation ModalRef={Noonconformation} Orderid={noonId} />
         <Modals ModalRef={ModalErrorState} Alert />
       </KeyboardAvoidingView>
     </Modal>
@@ -1068,8 +968,8 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.BG_MUTED,
   },
   ModalView: {
-    height: height * 0.82,
-    marginTop: height * 0.2,
+    height: height * 0.85,
+    marginTop: height * 0.18,
     borderTopLeftRadius: 37,
     borderTopRightRadius: 37,
     backgroundColor: Colors.BENEFICIARY,
@@ -1088,7 +988,7 @@ const styles = StyleSheet.create({
   ModalBody: {
     marginTop: height * 0.01,
     backgroundColor: Colors.WHITE,
-    height: height * 0.72,
+    height: height * 0.76,
   },
   CheckImage: {
     alignSelf: 'center',
@@ -1106,8 +1006,6 @@ const styles = StyleSheet.create({
   },
   select: {
     flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
     padding: 10,
   },
   CloseBtn: {

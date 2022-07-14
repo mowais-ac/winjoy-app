@@ -20,7 +20,6 @@ import LabelButton from './LabelButton';
 import Config from 'react-native-config';
 import {JSONtoForm} from '../Constants/Functions';
 import CountryModal from './CountryModal';
-
 const {width, height} = Dimensions.get('window');
 
 const InputField = React.forwardRef((props, ref) => {

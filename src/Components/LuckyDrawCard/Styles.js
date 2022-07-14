@@ -10,16 +10,15 @@ import {Dimensions, StyleSheet} from 'react-native';
 const {width, height} = Dimensions.get('window');
 export default StyleSheet.create({
   mainView: {
-    alignItems: 'center',
     backgroundColor: '#f05b31',
     borderRadius: widthConverter(10),
-    height: heightConverter(110),
+    height: heightConverter(95),
     width: widthPercentageToDP('95%'),
     flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'flex-start',
     // marginVertical: -30,
-
-    //   paddingRight: widthConverter(20),
+    // paddingRight: widthConverter(20),
   },
   textView: {
     alignItems: 'center',

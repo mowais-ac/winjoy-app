@@ -86,7 +86,7 @@ const BuysuccessModal = props => {
             headingtype="h2"
             font={15}
             style={{color: '#0B2142', lineHeight: 25, marginTop: 10}}>
-            You have Buy lives successfully
+            {props.description ? props.description : 'Buy Lives sucessfully'}
           </Label>
 
           <LabelButton

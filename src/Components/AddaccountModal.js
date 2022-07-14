@@ -15,6 +15,7 @@ import {
   Text,
   Keyboard,
   Platform,
+  Modal,
 } from 'react-native';
 import Label from './Label';
 import LabelButton from './LabelButton';
@@ -37,7 +38,7 @@ import axios from 'axios';
 import {FormatNumber, wait} from '../Constants/Functions';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 const {width, height} = Dimensions.get('window');
-import Modal from 'react-native-modal';
+//import Modal from 'react-native-modal';
 
 const AddaccountModal = props => {
   const [Topupamount, settopupammount] = useState('10');
@@ -71,7 +72,7 @@ const AddaccountModal = props => {
   const ApproveRef = useRef();
   const DeclineRef = useRef();
   const SucessModalState = useRef();
-  const ModalErrorState = useRef();
+  const ModalErrorStates = useRef();
   const navigation = useNavigation();
   const {t} = useTranslation();
   useEffect(() => {
@@ -90,7 +91,7 @@ const AddaccountModal = props => {
 
   const Postaddaccount = async () => {
     if (!activeTab) {
-      ModalErrorState.current(true, {
+      ModalErrorStates.current(true, {
         heading: 'Error',
         Error: 'Enter account type',
       });
@@ -108,7 +109,7 @@ const AddaccountModal = props => {
           bank_name: bankName,
         };
       } else {
-        console.log('pi: ', paypal_id);
+        console.log('paypal_id', paypal_id);
         data = {
           type: activeTab,
           paypal_id: paypal_id,
@@ -137,7 +138,7 @@ const AddaccountModal = props => {
             loadAccountsList();
             setAccountAddFormVisibility(false);
           } else {
-            ModalErrorState.current(true, {
+            ModalErrorStates.current(true, {
               heading: 'Error',
               Error: res?.error,
             });
@@ -217,12 +218,11 @@ const AddaccountModal = props => {
   };
   return (
     <>
-      <Modals ModalRef={ModalErrorState} Error />
+      <Modals ModalRef={ModalErrorStates} Error />
       <Modal
         animationType="slide"
-        style={{margin: 0}}
-        avoidKeyboard={true}
-        isVisible={ModelState.state}
+        transparent={true}
+        visible={ModelState.state}
         statusBarTranslucent={false}
         onRequestClose={() => {
           modalCloseHandle();
@@ -238,14 +238,14 @@ const AddaccountModal = props => {
           }}>
           <View style={styles.MainView} />
         </TouchableWithoutFeedback>
+        <KeyboardAwareScrollView keyboardDismissMode="interactive">
+          <View style={styles.ModalView}>
+            <View style={styles.SmallBorder} />
+            <Label primary headingtype="h3" bold2 style={styles.ModalHead}>
+              Choose / add cccount details
+            </Label>
 
-        <View style={styles.ModalView}>
-          <View style={styles.SmallBorder} />
-          <Label primary headingtype="h3" bold2 style={styles.ModalHead}>
-            Choose / add cccount details
-          </Label>
-          <View style={styles.ModalBody}>
-            <ScrollView>
+            <View style={styles.ModalBody}>
               {!accountAddFormVisibility ? (
                 <>
                   <View
@@ -533,11 +533,11 @@ const AddaccountModal = props => {
                 setActiveno={props.setActiveno}
               />
 
-              {/*  <LabelButton
+              <LabelButton
                 primary
                 headingtype="h3"
                 bold
-                style={styles.CloseBtn}
+                style={[styles.CloseBtn, {marginBottom: 15}]}
                 onPress={() => {
                   setModelState({
                     ...ModelState,
@@ -549,10 +549,10 @@ const AddaccountModal = props => {
                   if (props.onClose) props.onClose();
                 }}>
                 Close
-              </LabelButton> */}
-            </ScrollView>
+              </LabelButton>
+            </View>
           </View>
-        </View>
+        </KeyboardAwareScrollView>
         <BuyLifeCongrats
           ModalRef={SucessModalState}
           heading={'Congratulations'}
@@ -652,8 +652,8 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.BG_MUTED,
   },
   ModalView: {
-    height: height * 0.65,
-    marginTop: height * 0.32,
+    height: height * 0.75,
+    marginTop: height * 0.23,
     borderTopLeftRadius: 37,
     borderTopRightRadius: 37,
     backgroundColor: Colors.BENEFICIARY,
@@ -682,7 +682,7 @@ const styles = StyleSheet.create({
   ModalBody: {
     marginTop: height * 0.02,
     backgroundColor: Colors.WHITE,
-    height: height * 0.9,
+    height: height * 0.7,
   },
   CheckImage: {
     alignSelf: 'center',

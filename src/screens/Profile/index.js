@@ -84,8 +84,6 @@ const index = ({props, navigation, route}) => {
         Authorization: `Bearer ${Token}`,
       },
     };
-    // alert(13123);
-
     await axios
       .get(`${Config.API_URL}/livegameshow/user/game/history`, requestOptions)
       .then(response => {
@@ -196,11 +194,6 @@ const index = ({props, navigation, route}) => {
                 About
               </Text>
             </TouchableOpacity>
-            {/* <TouchableOpacity
-            onPress={() => { setSelected(3) }}
-          >
-            <Text style={[styles.text, { color: selected === 3 ? "#ffff00" : "#ffffff" }]}>Friends</Text>
-          </TouchableOpacity> */}
           </View>
           {selected === 1 ? (
             <>
@@ -302,7 +295,7 @@ const index = ({props, navigation, route}) => {
               )}
             </View>
           ) : null}
-          {selected === 3 ? (
+          {/*  {selected === 3 ? (
             <>
               {friendData?.length > 0 && (
                 <Label
@@ -364,7 +357,7 @@ const index = ({props, navigation, route}) => {
                 }}
               />
             </>
-          ) : null}
+          ) : null} */}
         </View>
       </LinearGradient>
     </>
@@ -392,7 +385,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: 30,
   },
-
   aView: {
     alignItems: 'center',
     width: widthPercentageToDP('100%'),
@@ -408,8 +400,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
   },
   avatarView: {
-    //position: 'absolute',
-
     width: widthConverter(90),
     height: widthConverter(90),
     borderRadius: heightConverter(90),

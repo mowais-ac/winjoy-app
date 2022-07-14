@@ -111,7 +111,6 @@ const CountryModal = props => {
                 fieldstyle={styles.TransactionInputF}
                 shadow
                 NoIcon
-                textAlign={'center'}
                 placeholder="Search Country"
                 placeholderTextColor={Colors.DARK_MUTED}
                 onEdit={HandleTextChange}
@@ -198,9 +197,12 @@ const styles = StyleSheet.create({
   TransactionInput: {
     backgroundColor: Colors.WHITE,
     marginTop: height * 0.02,
+    width: '90%',
   },
   TransactionInputF: {
     color: Colors.BLACK,
+    width: '50%',
+    textAlign: 'center',
   },
   CountryView: {
     borderBottomWidth: 1,

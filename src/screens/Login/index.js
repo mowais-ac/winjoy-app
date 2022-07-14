@@ -195,7 +195,6 @@ const index = ({navigation}) => {
         },
         body,
       };
-
       await fetch(`${Config.API_URL}/auth/login`, requestOptions)
         .then(async response => response.json())
         .then(async res => {
@@ -228,12 +227,10 @@ const index = ({navigation}) => {
             if (await IsSuspended(res.data.token))
               return ModalState.current(true, {
                 heading: 'Account suspended',
-                Error:
-                  'Your account has been inactive/suspended. Please contact support for further details.',
+                Error:'Your account has been inactive/suspended. Please contact support for further details.',
               });
             if (await IsVerified(res.data.token)) {
               await EncryptedStorage.setItem('Token', res.data.token);
-
               signIn(res.data.token);
             } else {
               dispatch({

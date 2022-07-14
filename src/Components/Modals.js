@@ -29,6 +29,7 @@ const Modals = props => {
   const navigation = useNavigation();
 
   useEffect(() => {
+    //  console.log('props.ModalRef', props.ModalRef);
     if (props.ModalRef) props.ModalRef.current = HandleChange;
   });
 
@@ -63,23 +64,6 @@ const Modals = props => {
           .then(async res => {
             if (res.status && res.status.toLowerCase() === 'success') {
               if (ibool === true) {
-                // await fetch(
-                //   `${Config.API_URL}/user/current-balance`,
-                //   requestOptions
-                // )
-                //   .then(async (response) => response.json())
-                //   .then(async (res) => {
-                //     if (res.status && res.status.toLowerCase() === "success") {
-                //       let coins = {
-                //         Balance: res.data[0],
-                //         date: GetDate(),
-                //       };
-                //       await EncryptedStorage.setItem(
-                //         "Coins",
-                //         JSON.stringify(coins)
-                //       );
-                //     }
-                //   });
                 await fetch(
                   `${Config.API_URL}/user/current-balance`,
                   requestOptions,
@@ -227,7 +211,6 @@ const Modals = props => {
     );
   } else if (props.Error && ModelState.details) {
     const details = ModelState.details;
-
     return (
       <Modal
         animationType="slide"

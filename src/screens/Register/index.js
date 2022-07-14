@@ -163,7 +163,7 @@ const index = route => {
         phone_no: `+${phone_no}`,
         password,
         password_confirmation,
-        // google_register: false,
+        google_register: false,
         ...(await GetUserDeviceDetails()),
       });
       {
@@ -177,11 +177,11 @@ const index = route => {
         },
         body,
       };
-      console.log('bodyreg', body);
+      //console.log('bodyreg', body);
       await fetch(`${Config.API_URL}/auth/new_register`, requestOptions)
         .then(response => response.json())
         .then(async res => {
-          console.log('registerres', res);
+          console.log('register_res', res);
           if (res.status && res.status.toLowerCase() === 'success') {
             fun_completeregistration();
             fb_Register();
@@ -201,7 +201,6 @@ const index = route => {
                   return p;
                 }, [])
               : [];
-
             ModalState.current(true, {
               heading: 'Error',
               Error: res.message,

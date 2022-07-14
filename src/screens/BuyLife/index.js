@@ -53,9 +53,6 @@ const rewardAd = RewardedAd.createForAdRequest(adUnitId, {
 const index = ({route, navigation}) => {
   const livePlans = useSelector(state => state.app.livePlans);
   const totalLives = useSelector(state => state.app.totalLives);
-  {
-    console.log('livePlans.plan', livePlans);
-  }
   const defaultAppAdmob = firebase.admob();
   const ModalState = useRef();
   const AddModalState = useRef();
@@ -85,9 +82,7 @@ const index = ({route, navigation}) => {
       })
       .then(() => {});
   }, []);
-
   const [loaded, setLoaded] = useState(false);
-
   useEffect(() => {
     const eventListener = rewardAd.onAdEvent(type => {
       if (type === RewardedAdEventType?.LOADED) {
@@ -111,7 +106,6 @@ const index = ({route, navigation}) => {
     setvideo1(livePlans.videoEnable);
     wait(100).then(() => setRefreshing(false));
   }, [video1]);
-
   const getData = async () => {
     try {
       const Token = await EncryptedStorage.getItem('Token');
@@ -127,22 +121,19 @@ const index = ({route, navigation}) => {
         },
       );
       const json = await result.json();
-      {
-        console.log('buyliveplan', json);
-      }
       if (json.status === 'success') {
-        if (json.message === 'Lives buy successfully') {
+        if (json.message === 'You have successfully earned a live') {
           rewardAd.show();
-          setTimeout(() => {
+          setInterval(() => {
             dispatch2({
               type: types.TOTAL_LIVES,
               totalLives: json?.lives,
             });
-          }, 4000);
+          }, 35 * 1000);
 
-          // dispatch(getLiveShowPlans());
+          dispatch(getLiveShowPlans());
         } else {
-          alert(json);
+          console.log('resp_video', json);
         }
       }
     } catch (error) {
@@ -278,7 +269,6 @@ const index = ({route, navigation}) => {
                         videofunction();
                         setIdVideoAdd(item.id);
                         setVideo(item.video_url);
-
                         if (video1) {
                           if (rewardAd.loaded) {
                             getData().catch(error =>

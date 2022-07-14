@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   TextInput,
 } from 'react-native';
+import Modals from '../Components/Modals';
 import Label from './Label';
 import LabelButton from './LabelButton';
 import {Colors, Images} from '../Constants/Index';
@@ -27,7 +28,9 @@ import BuysuccessModal from '../Components/BuysuccessModal';
 import types from '../redux/types';
 const {width, height} = Dimensions.get('window');
 const BuyLifeLineModal = props => {
+  const ModalStateError = useRef();
   const SucessModalState = useRef();
+  const [mg, setMg] = useState('');
   const [ModelState, setModelState] = useState({
     state: false,
     details: null,
@@ -53,13 +56,26 @@ const BuyLifeLineModal = props => {
       );
       const json = await result.json();
       console.log('buylive', json);
-      dispatch({
-        type: types.TOTAL_LIVES,
-        totalLives: json?.lives,
-      });
-      SucessModalState.current(true);
+      if (json.status === 'success') {
+        setMg(json.message);
+        dispatch({
+          type: types.TOTAL_LIVES,
+          totalLives: json?.lives ? json?.lives : '0',
+        });
+        SucessModalState.current(true);
+      } else {
+        ModalStateError.current(true, {
+          heading: 'Error',
+          Error: json.message
+            ? json.message
+            : "you don't enough balance to buy these lives",
+        });
+      }
+
       // alert(json.message);
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
   const HandleChange = (state, details = null, ForceSuccess = false) => {
     setModelState({state, details, ForceSuccess});
@@ -117,7 +133,7 @@ const BuyLifeLineModal = props => {
             ]}>
             AED {props.amount}
           </Text>
-          <Text style={styles.descriptionText}>Buy {props.lives} lives</Text>
+          <Text style={styles.descriptionText}>Buys {props.lives} lives</Text>
           <TouchableOpacity
             onPress={() => {
               getData();
@@ -162,8 +178,7 @@ const BuyLifeLineModal = props => {
       </View>
       <BuysuccessModal
         ModalRef={SucessModalState}
-        //heading={'Congratulations'}
-        //description={'Products Bought'}
+        description={mg}
         requestOnPress={() => {
           SucessModalState.current(false);
         }}
@@ -175,6 +190,7 @@ const BuyLifeLineModal = props => {
           });
         }}
       />
+      <Modals ModalRef={ModalStateError} Error />
     </Modal>
   );
 };

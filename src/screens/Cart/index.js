@@ -536,7 +536,7 @@ const styles = StyleSheet.create({
     color: Colors.WHITE,
   },
   headerText: {
-    color: '#ffffff',
+    color: '#D9FE51',
     fontFamily: 'Axiforma-SemiBold',
     fontSize: RFValue(22),
   },

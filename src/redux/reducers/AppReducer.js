@@ -27,7 +27,7 @@ const INITIAL_STATE = {
   dealsJoyData: [],
   triviaJoyData: [],
   gameEnterStatus: [],
-  totalLives: '',
+  totalLives: '0',
   allCreatorsList: [],
   cartData: [],
   removeCartData: [],

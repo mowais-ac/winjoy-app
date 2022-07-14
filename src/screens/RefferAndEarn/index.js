@@ -72,6 +72,7 @@ const index = ({route, navigation}) => {
   const [totalRef, setTotalRef] = useState([]);
   const totalLives = useRef();
   const [loader, setLoader] = useState(false);
+  const [mg, setMg] = useState('');
   const [id, setId] = useState(0);
   const [Link, setLink] = useState('');
   const [ModelState, setModelState] = useState({
@@ -241,8 +242,10 @@ const index = ({route, navigation}) => {
       .then(response => response.json())
       .then(async res => {
         setLoader(false);
-        console.log('referearn', res);
+        // console.log('referearn', res);
         if (res.status === 'success') {
+          setMg(res.message);
+          // console.log('referalearn', res);
           dispatch(getLiveShowPlans());
           totalLives.current = res?.lives;
           dispatch2({
@@ -340,12 +343,10 @@ const index = ({route, navigation}) => {
               }}>
               <View style={{width: width, justifyContent: 'center'}}>
                 <View style={styles.SmallBorder} />
-
                 <Text
                   style={[styles.text, {textAlign: 'center', width: width}]}>
                   Refer To Earn Lives
                 </Text>
-
                 <View style={{alignItems: 'center', marginTop: 10}}>
                   <View
                     style={{
@@ -491,8 +492,6 @@ const index = ({route, navigation}) => {
                           }}
                         />
                       )}
-
-                      //   ListEmptyComponent={this.RenderEmptyContainerOnGoing()}
                     />
                   ) : null}
                   {selected === 1 ? (
@@ -636,10 +635,8 @@ const index = ({route, navigation}) => {
                   <BuyLifeCongrats
                     ModalRef={SucessModalState}
                     heading={'Congratulations'}
-                    description={
-                      totalLives.current +
-                      ' lives are ready to use. Feel free to play more games & win amazing prizes.'
-                    }
+                    // total_lives={totalLives.current}
+                    description={mg}
                     requestOnPress={() => {
                       SucessModalState.current(false);
                     }}

@@ -72,7 +72,12 @@ function ClosingSoonCard({item, onPress}) {
           bold
           font={10}
           dark
-          style={{color: '#000000', height: 38, lineHeight: 12, width: '85%'}}>
+          style={{
+            color: '#000000',
+            height: 38,
+            lineHeight: 16.5,
+            width: '85%',
+          }}>
           {item?.prize_title}
         </Label>
 

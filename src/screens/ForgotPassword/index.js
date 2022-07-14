@@ -8,7 +8,6 @@ import {
   Alert,
   SafeAreaView,
 } from 'react-native';
-
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview';
 import Config from 'react-native-config';
 import LinearGradient from 'react-native-linear-gradient';
@@ -18,12 +17,9 @@ import Label from '../../Components/Label';
 import LabelButton from '../../Components/LabelButton';
 import LongButton from '../../Components/LongButton';
 import Modals from '../../Components/Modals';
-
 import {JSONtoForm} from '../../Constants/Functions';
-
 import {Images} from '../../Constants/Index';
 import GoBack from '../../Components/GoBack';
-
 const {width, height} = Dimensions.get('window');
 
 const index = ({navigation}) => {

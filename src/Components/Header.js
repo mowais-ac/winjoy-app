@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
   },
   Bell: {
     marginLeft: width * 0.63,
-    //backgroundColor: 'pink',
+   
   },
   Heading: {
     marginLeft: width * 0.05,

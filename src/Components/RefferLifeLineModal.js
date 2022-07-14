@@ -63,7 +63,7 @@ const RefferLifeLineModal = props => {
   const [selected, setSelected] = useState(0);
   const [id, setId] = useState(0);
   const [validatorIndex, setValidatorIndex] = useState(false);
-  //const validatorIndex=[];
+  const [mg, setMg] = useState('');
   const [updateData, setUpdateData] = useState(false);
   const [refferalLivePlans, setRefferalLivePlans] = useState([]);
   const [totalRef, setTotalRef] = useState([]);
@@ -246,6 +246,7 @@ const RefferLifeLineModal = props => {
       .then(async res => {
         setLoader(false);
         if (res.status === 'success') {
+          setMg(res.message);
           dispatch(getLiveShowPlans());
           totalLives.current = res?.lives;
           SucessModalState.current(true);
@@ -560,10 +561,8 @@ const RefferLifeLineModal = props => {
             <BuyLifeCongrats
               ModalRef={SucessModalState}
               heading={'Congratulations'}
-              description={
-                totalLives.current +
-                ' lives are ready to use. Feel free to play more games & win amazin prizes.'
-              }
+              total_lives={totalLives.current}
+              description={mg}
               requestOnPress={() => {
                 SucessModalState.current(false);
               }}

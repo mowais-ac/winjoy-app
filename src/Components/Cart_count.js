@@ -11,7 +11,7 @@ import {
 import {Images} from '../Constants/Index';
 import Label from './Label';
 import {useNavigation} from '@react-navigation/native';
-import {connect, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 const {width, height} = Dimensions.get('window');
 
 const Cart_count = props => {

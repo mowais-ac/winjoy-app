@@ -9,6 +9,7 @@ import {
   Alert,
   TouchableOpacity,
   TextInput,
+  Text,
 } from 'react-native';
 import Label from './Label';
 import LabelButton from './LabelButton';
@@ -76,16 +77,41 @@ const BuyLifeCongrats = props => {
           />
         </View>
         <View style={styles.ModalBody}>
-          <Label primary headingtype="h1" bold2 style={{color: '#420E92'}}>
-            {props.heading}
-          </Label>
           <Label
             primary
             headingtype="h1"
-            font={16}
-            style={{color: '#0B2142', lineHeight: 25}}>
-            {props.description}
+            bold2
+            style={{color: '#420E92', lineHeight: 35}}>
+            {props.heading}
           </Label>
+          <View
+            style={{
+              marginTop: 5,
+              flexDirection: 'row',
+              justifyContent: 'center',
+              marginHorizontal: 10,
+            }}>
+            {/* <Text
+              style={{
+                color: '#0B2142',
+                lineHeight: 22,
+                fontFamily: 'Axiforma',
+                fontWeight: '700',
+                paddingHorizontal: 4,
+              }}>
+              {props.total_lives ? props.total_lives : 'NAN'}
+            </Text> */}
+            <Text
+              style={{
+                color: '#0B2142',
+                lineHeight: 23,
+                fontFamily: 'Axiforma-Regular',
+                textAlign: 'justify',
+              }}>
+              {props.description}
+            </Text>
+          </View>
+
           <TouchableOpacity
             onPress={() => {
               props.closeOnPress();

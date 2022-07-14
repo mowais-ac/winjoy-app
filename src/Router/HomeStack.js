@@ -13,7 +13,8 @@ import CreatorExperience from '../screens/CreatorExperience';
 import Cart from '../screens/Cart';
 import ProductDetail from '../screens/ProductDetail';
 import LeaderBoard from '../screens/LeaderBoard';
-
+import Noon from '../screens/Noon';
+import Orders from '../screens/MyOrders/Orders.js';
 const Stack = createNativeStackNavigator();
 export default index = () => (
   <Stack.Navigator
@@ -26,11 +27,13 @@ export default index = () => (
     <Stack.Screen name="CreatorsPage" component={CreatorsPage} />
     <Stack.Screen name="AllCreatorsPage" component={AllCreatorsPage} />
     <Stack.Screen name="CreatorsGallery" component={CreatorsGallery} />
+    <Stack.Screen name="Noon" component={Noon} />
     <Stack.Screen
       name="ExperienceProductDetail"
       component={ExperienceProductDetail}
     />
     <Stack.Screen name="Cart" component={Cart} />
+    <Stack.Screen name="Orders" component={Orders} />
     <Stack.Screen name="ProductDetail" component={ProductDetail} />
     <Stack.Screen name="AllCreatorsList" component={AllCreatorsList} />
 

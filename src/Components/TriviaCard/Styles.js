@@ -40,6 +40,7 @@ export default StyleSheet.create({
   text: {
     fontFamily: 'Axiforma-Regular',
     color: '#ffffff',
+    lineHeight: 20,
   },
   text2: {
     fontFamily: 'Axiforma-Regular',

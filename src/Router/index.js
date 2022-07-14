@@ -105,7 +105,7 @@ function index(props) {
       },
       signOut: () => {
         dispatch({type: 'SIGN_OUT'});
-        EncryptedStorage.clear();
+        EncryptedStorage.clear('root');
       },
       signUp: async data => {
         // In a production app, we need to send user data to server and get a token

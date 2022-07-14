@@ -10,7 +10,7 @@ export default StyleSheet.create({
     marginBottom: Platform.OS === 'android' ? 0 : 35,
   },
   headerText: {
-    color: '#ffffff',
+    color: '#D9FE51',
     fontFamily: 'Axiforma-SemiBold',
     fontSize: RFValue(22),
   },

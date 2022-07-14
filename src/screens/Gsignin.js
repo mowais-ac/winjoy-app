@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react';
-
 import auth from '@react-native-firebase/auth';
 // Import all the components we are going to use
 import {

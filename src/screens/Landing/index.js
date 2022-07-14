@@ -15,8 +15,10 @@ import {
   Platform,
   StatusBar,
   BackHandler,
+  AppState,
 } from 'react-native';
 import {NativeModules} from 'react-native';
+import {useIsFocused} from '@react-navigation/native';
 import SpInAppUpdates, {
   NeedsUpdateResponse,
   IAUUpdateKind,
@@ -52,7 +54,7 @@ import {useTranslation} from 'react-i18next';
 import HowItWorkModal from '../../Components/HowItWorkModal';
 import NewVersionmodal from '../../Components/NewVersionmodal';
 import packageJson from '../../../package.json';
-import {getLiveShowPlans} from '../../redux/actions';
+import {getLiveShowPlans, GetCartData} from '../../redux/actions';
 import {LeaderBoardWinners} from '../../redux/actions';
 import dynamicLinks from '@react-native-firebase/dynamic-links';
 import appsFlyer from 'react-native-appsflyer';
@@ -79,6 +81,7 @@ const interstitial = InterstitialAd.createForAdRequest(adUnitId, {
   requestNonPersonalizedAdsOnly: true,
 });
 const index = props => {
+  const isFocused = useIsFocused();
   const {t, i18n} = useTranslation();
   const socket = socketIO(MYServer);
   const LandingData = useSelector(state => state.app.LandingData);
@@ -98,6 +101,7 @@ const index = props => {
   const [videoAction, setVideoAction] = useState(true);
   const [imgSlider, setImageSlider] = useState([]);
   const dispatch = useDispatch();
+  const dispatch1 = useDispatch();
   const dispatch2 = useDispatch();
   const dispatch3 = useDispatch();
   const dispatch4 = useDispatch();
@@ -106,12 +110,11 @@ const index = props => {
   const dispatch7 = useDispatch();
   const dispatch8 = useDispatch();
   const dispatch9 = useDispatch();
-  //console.log('isloading', isloading);
+  const defaultAppAdmob = firebase.admob();
   const AddModalState = useRef();
   const [Emails, setEmails] = useState('');
-  const defaultAppAdmob = firebase.admob();
   const [time, setTime] = useState(() => {
-    dispatch(getLandingScreen());
+    /* dispatch(getLandingScreen()); */
     var CurrentDate = new Date();
     var duration = dayjs(LandingData?.gameShow?.start_date).diff(
       dayjs(CurrentDate.toLocaleString()),
@@ -123,8 +126,6 @@ const index = props => {
     console.log('counter_finish');
     onRefresh();
   };
-  console.log('landing_Data', LandingData);
-  console.log('time_duration', time);
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     dispatch(getLandingScreen());
@@ -145,7 +146,6 @@ const index = props => {
     NavigateToQuiz();
     wait(800).then(() => setRefreshing(false));
   }, []);
-  // console.log('gameshow_date_from_backend', LandingData?.gameShow?.start_date);
   appsFlyer.initSdk(
     {
       isDebug: true,
@@ -159,6 +159,9 @@ const index = props => {
       console.error(error);
     },
   );
+  /*  console.log('landing_Data', LandingData);
+  console.log('time_duration', time); */
+  //InApp upgrade app
   const inAppUpdates = new SpInAppUpdates(
     false, // isDebug
   );
@@ -181,14 +184,37 @@ const index = props => {
       }
     });
   };
-
+  //Navigate to Noon
+  const handleDynamicLink = link => {
+    // Handle dynamic link inside your own application
+    if (link.url === 'https://winjoy.ae') {
+      navigation.navigate('Noon');
+    }
+  };
   useEffect(() => {
-    let isMounted = true;
-    if (isMounted) {
+    const unsubscribe = dynamicLinks().onLink(handleDynamicLink);
+    // When the component is unmounted, remove the listener
+    return () => unsubscribe();
+  }, []);
+  useEffect(() => {
+    dynamicLinks()
+      .getInitialLink()
+      .then(async link => {
+        if (link.url === 'https://winjoy.ae') {
+          console.log('mylink', link.url);
+          navigation.navigate('Noon');
+        } else {
+          alert(link.url);
+        }
+      });
+  }, []);
+  useEffect(() => {
+    if (isFocused) {
       dispatch(getLandingScreen());
       dispatch6(getWalletData());
       dispatch8(getLiveShowPlans());
       dispatch5(AllCreatorsList());
+      dispatch1(GetCartData());
       dispatch7(LeaderBoardWinners());
       setEmails(LandingData?.internalEmails);
       let arr = [];
@@ -204,7 +230,6 @@ const index = props => {
         console.log('Should navigate');
         NavigateToQuiz(true);
       });
-
       appsFlyer.initSdk(
         {
           isDebug: true,
@@ -236,13 +261,12 @@ const index = props => {
           tagForChildDirectedTreatment: true,
           tagForUnderAgeOfConsent: true,
         })
-        .then(() => {});
+        .then(e => {
+          console.log(e);
+        });
     }
-    return () => {
-      isMounted = false;
-    };
-  }, []);
-
+  }, [isFocused]);
+  //appsflyer integration
   var onInstallConversionDataCanceller = appsFlyer.onInstallConversionData(
     res => {
       if (JSON.parse(res.data.is_first_launch) == true) {
@@ -263,10 +287,46 @@ const index = props => {
       }
     },
   );
-
   var onAppOpenAttributionCanceller = appsFlyer.onAppOpenAttribution(res => {
     console.log(res);
   });
+  const eventName1 = 'af_list_view';
+  const eventValues1 = {
+    af_content_list: 1,
+    af_content_type: 'Home_products',
+  };
+  const fun_listview = () => {
+    appsFlyer.logEvent(
+      eventName1,
+      eventValues1,
+      res => {
+        console.log(res);
+      },
+      err => {
+        console.error(err);
+      },
+    );
+  };
+  const eventName = 'af_content_view';
+  const eventValues = {
+    af_price: 99,
+    af_content_id: 12,
+    af_content_type: 'General',
+    af_currency: 'AED',
+    af_content: 'Homeproducts',
+  };
+  const fun_contentview = () => {
+    appsFlyer.logEvent(
+      eventName,
+      eventValues,
+      res => {
+        console.log(res);
+      },
+      err => {
+        console.error(err);
+      },
+    );
+  };
   useEffect(() => {
     return () => {
       // Optionaly remove listeners for deep link data if you no longer need them after componentWillUnmount
@@ -289,6 +349,7 @@ const index = props => {
       channelName: 'Winjoy',
     });
   };
+  //navigate to gameshow
   const NavigateToQuiz = fromSocket => {
     if (!LandingData?.is_testing_user) {
       if (
@@ -299,9 +360,7 @@ const index = props => {
         if (interstitial.loaded) {
           interstitial.show().catch(error => console.log('admob_error', error));
         }
-        {
-          console.log('Gameshow_Status', LandingData?.gameShow?.status);
-        }
+        console.log('Gameshow_Status', LandingData?.gameShow?.status);
         navigation.navigate('GameStack', {
           screen: 'Quiz',
           params: {
@@ -314,15 +373,7 @@ const index = props => {
       }
     }
   };
-  /* 
-  const array = Emails.split(',');
-  const result = array?.filter(all_email => {
-    let my_emails = userData?.email;
-    const a = all_email === my_emails ? true : false;
-    console.log('result', a);
-  });
-  console.log('all_Emails', array); */
-  // console.log('testing_user', LandingData?.is_testing_user);
+  //Istesting enable, navigate to gameshow
   const Testnavigate = () => {
     if (
       LandingData?.is_testing_user &&
@@ -341,7 +392,6 @@ const index = props => {
       return null;
     }
   };
-
   function _renderItem({item, index}) {
     if (item.type === 'image') {
       return (
@@ -381,48 +431,8 @@ const index = props => {
       );
     }
   }
-  const eventName1 = 'af_list_view';
-  const eventValues1 = {
-    af_content_list: 1,
-    af_content_type: 'Home_products',
-  };
-  const fun_listview = () => {
-    appsFlyer.logEvent(
-      eventName1,
-      eventValues1,
-      res => {
-        console.log(res);
-      },
-      err => {
-        console.error(err);
-      },
-    );
-  };
-
-  const eventName = 'af_content_view';
-  const eventValues = {
-    af_price: 99,
-    af_content_id: 12,
-    af_content_type: 'General',
-    af_currency: 'AED',
-    af_content: 'Homeproducts',
-  };
-
-  const fun_contentview = () => {
-    appsFlyer.logEvent(
-      eventName,
-      eventValues,
-      res => {
-        console.log(res);
-      },
-      err => {
-        console.error(err);
-      },
-    );
-  };
-
   const [loaded, setLoaded] = useState(false);
-
+  //admob interstitialAd for gameshow
   useEffect(() => {
     const eventListener = interstitial.onAdEvent(type => {
       if (type === AdEventType.LOADED) {
@@ -440,6 +450,7 @@ const index = props => {
       eventListener();
     };
   }, []);
+  //pushnotification press to navigate specific screen
   useEffect(() => {
     // Assume a message-notification contains a "type" property in the data payload of the screen to open
     messaging().onNotificationOpenedApp(remoteMessage => {

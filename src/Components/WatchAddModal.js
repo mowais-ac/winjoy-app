@@ -73,9 +73,6 @@ const WatchAddModal = props => {
         },
       );
       const json = await result.json();
-      /* {
-        console.log('buyliveplan', json);
-      } */
       if (json.status === 'success') {
         if (json.message === 'Lives buy successfully') {
           dispatch2({
@@ -83,11 +80,8 @@ const WatchAddModal = props => {
             totalLives: json?.lives,
           });
           props.ad();
-          /* setModelState({
-            ...ModelState,
-            state: (ModelState.state = false),
-          }); */
-          //dispatch(getLiveShowPlans());
+
+          dispatch(getLiveShowPlans());
           fb_watchvideo();
           onRefresh();
         } else {

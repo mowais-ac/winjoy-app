@@ -169,7 +169,7 @@ const index = ({route, navigation}) => {
                 What happens if I lose my internet connection?
               </Text>
               <Text style={styles.paragraph}>
-                You should only play Winjoy if you have a strong and stable
+                You should only play WinJoy if you have a strong and stable
                 internet connection. If you do get disconnected, our system will
                 attempt to reconnect you multiple times but if it is unable to
                 establish a link, your game will be over. Unfortunately, we

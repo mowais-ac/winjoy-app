@@ -43,41 +43,41 @@ const index = ({props, navigation}) => {
 
   let data2 = [
     {
-      name: t('view_profile'),
+      name: 'View Profile',
       icon: require('../../assets/imgs/humburgerIcons/viewProfile.png'),
     },
     {
-      name: t('wallet'),
+      name: 'Wallet',
       icon: require('../../assets/imgs/humburgerIcons/wallet.png'),
     },
     {
-      name: t('my_order'),
+      name: 'My Purchases',
       icon: require('../../assets/imgs/humburgerIcons/myOrders.png'),
     },
     {
-      name: t('My Tickets'),
+      name: 'My Tickets',
       icon: require('../../assets/imgs/humburgerIcons/myOrders.png'),
     },
     {
-      name: t('refer_&_Earn'),
+      name: 'Refer & Earn',
       icon: require('../../assets/imgs/humburgerIcons/reffer.png'),
     },
     {
-      name: t('Buy Lives'),
+      name: 'Buy Lives',
       icon: require('../../assets/imgs/humburgerIcons/buyLives.png'),
     },
     {
-      name: t('leaderboard'),
+      name: 'Leaderboard',
       icon: require('../../assets/imgs/humburgerIcons/leaderBoard.png'),
     },
 
     {
-      name: t('played_games'),
+      name: 'Played Games',
       icon: require('../../assets/imgs/humburgerIcons/playedGames.png'),
     },
 
     {
-      name: t('logout'),
+      name: 'Logout',
       icon: require('../../assets/imgs/humburgerIcons/logout.png'),
     },
   ];
@@ -213,17 +213,17 @@ const index = ({props, navigation}) => {
                       if (item.name === 'Leaderboard') {
                         navigation.navigate('LeaderBoard');
                       }
-                      if (item.name === 'View profile') {
+                      if (item.name === 'View Profile') {
                         navigation.navigate('Profile', {
                           selected: 2,
                         });
                       }
-                      if (item.name === 'Played games') {
+                      if (item.name === 'Played Games') {
                         navigation.navigate('Profile', {
                           selected: 1,
                         });
                       }
-                      if (item.name === 'My purchases') {
+                      if (item.name === 'My Purchases') {
                         navigation.navigate('Orders');
                         //navigation.navigate('Gsignin');
                       }
@@ -237,7 +237,7 @@ const index = ({props, navigation}) => {
                       if (item.name === 'Buy Lives') {
                         navigation.navigate('BuyLife');
                       }
-                      if (item.name === t('refer_&_Earn')) {
+                      if (item.name === t('Refer & Earn')) {
                         navigation.navigate('RefferAndEarn');
                       }
                     }}>
@@ -268,7 +268,6 @@ const index = ({props, navigation}) => {
               );
             }}
           />
-
           <View style={{width: '95%', alignItems: 'center'}}>
             <View
               style={{
@@ -463,7 +462,6 @@ const index = ({props, navigation}) => {
             <SelectCurrencyModal ModalRef={ModalStateCurrency} details />
           </View>
         </View>
-
         <Text
           style={{
             fontSize: 11,

@@ -210,7 +210,7 @@ const index = ({route, navigation}) => {
       },
     };
     ButtonRef.current.SetActivity(true);
-
+    console.log('edit', body);
     const URL =
       Config.API_URL +
       (val === 0 ? `/update/personal-details` : `/update/career-details`);
@@ -225,10 +225,8 @@ const index = ({route, navigation}) => {
           dispatch({
             type: types.USER_DATA,
             userData: res?.user,
-            //  user: res.data.data,
           });
           alert(res.message);
-
           ButtonRef.current.SetActivity(false);
           navigation.reset({
             index: 0,

@@ -44,11 +44,9 @@ const WithDrawModal = props => {
   const ModalErrorState = useRef();
   const a = props.yourBalance - props.ammount;
   const withdrawprocessHandle = () => {
-    //alert(a);
     if (a <= 50) {
       alert('Your wallet balance can not be below AED 50');
     } else {
-      //alert('sccuess');
       props.onPressWithDrawal(props.accountId);
     }
   };
@@ -60,11 +58,11 @@ const WithDrawModal = props => {
   const HandleChange = (state, details = null, ForceSuccess = false) => {
     setModelState({state, details, ForceSuccess});
   };
-  //const [props.activeno, setActiveno] = useState('25');
+
   const tabSwitchHandler = tab => {
     props.setActiveno(tab);
   };
-  console.log('props.activeno', props.activeno);
+  // console.log('activeno', props.activeno);
   return (
     <>
       <Modal
@@ -81,6 +79,7 @@ const WithDrawModal = props => {
           });
           if (props.onClose) props.onClose();
         }}>
+        
         <TouchableWithoutFeedback
           onPress={() => {
             setModelState({

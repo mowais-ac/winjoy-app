@@ -17,6 +17,7 @@ import {
   ActivityIndicator,
   BackHandler,
   Alert,
+  AppState,
 } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 import styled from 'styled-components/native';
@@ -40,6 +41,7 @@ import {
   heightConverter,
   widthConverter,
 } from '../../Components/Helpers/Responsive';
+import {useIsFocused} from '@react-navigation/native';
 import {FormatNumber, wait} from '../../Constants/Functions';
 import {RFValue} from 'react-native-responsive-fontsize';
 import Colors from '../../Constants/Colors';
@@ -47,7 +49,7 @@ import socketIO from 'socket.io-client';
 import ProgressCircle from 'react-native-progress-circle';
 import {useDispatch, useSelector} from 'react-redux';
 import types from '../../redux/types';
-import {CheckGameEnterStatus, GameShowWinners} from '../../redux/actions';
+import {GameShowWinners} from '../../redux/actions';
 import WinnersModal from '../../Components/WinnersModal';
 const MYServer = 'https://node-winjoyserver-deploy.herokuapp.com/';
 import {getLandingScreen} from '../../redux/actions';
@@ -64,6 +66,7 @@ const {width, height} = Dimensions.get('window');
 let timer = () => {};
 
 const BackgroundVideo = ({route, navigation}) => {
+  const Isfocused = useIsFocused();
   const socket = socketIO(MYServer);
   const userData = useSelector(state => state.app.userData);
   const totalLives = useSelector(state => state.app.totalLives);
@@ -95,9 +98,7 @@ const BackgroundVideo = ({route, navigation}) => {
   const [activeQuestion, setActiveQuestion] = useState(1);
   const [refreshing, setRefreshing] = useState(false);
   const buildNumber = DeviceInfo.getBuildNumber();
-  const dispatchGameEnter = useDispatch();
   const dispatch = useDispatch();
-  //gameshow Winners dispatch
   const dispatch1 = useDispatch();
   const dispatch2 = useDispatch();
   const dispatch3 = useDispatch();
@@ -117,7 +118,6 @@ const BackgroundVideo = ({route, navigation}) => {
     );
     return true;
   };
-  // console.log('streamUrl', streamUrl);
   const Is_platform = Platform.OS === 'android' ? 'android' : 'ios';
   const startTimer = () => {
     timer = setTimeout(() => {
@@ -135,7 +135,7 @@ const BackgroundVideo = ({route, navigation}) => {
       device_version: buildNumber,
       live_gameshow_id: gameshow.id,
     });
-    console.log('bodyyyy', body);
+    // console.log('bodyyyy', body);
     const requestOptions = {
       method: 'POST',
       headers: {
@@ -155,19 +155,38 @@ const BackgroundVideo = ({route, navigation}) => {
       });
   };
   const onRefresh = React.useCallback(() => {
-    enter_gameshow();
     setRefreshing(true);
     dispatch1(getLandingScreen());
     wait(100).then(() => setRefreshing(false));
   }, []);
+  const appState = useRef(AppState.currentState);
+  const [appStateVisible, setAppStateVisible] = useState(appState.current);
+  useEffect(() => {
+    const subscription = AppState.addEventListener('change', nextAppState => {
+      if (
+        appState.current.match(/inactive|background/) &&
+        nextAppState === 'active'
+      ) {
+        navigation.navigate('TriviaJoy');
+      }
+      console.log('App has come to the foreground!');
 
+      appState.current = nextAppState;
+      setAppStateVisible(appState.current);
+      if ('background' === appState.current) {
+        navigation.navigate('TriviaJoy');
+      }
+      console.log('AppState', appState.current);
+    });
+    return () => {
+      subscription.remove();
+    };
+  }, []);
   useEffect(() => {
     startTimer();
     return () => clearTimeout(timer);
   });
-
   const [loaded, setLoaded] = useState(false);
-
   const Questions = async () => {
     setActivityScreen(true);
     const Token = await EncryptedStorage.getItem('Token');
@@ -201,7 +220,7 @@ const BackgroundVideo = ({route, navigation}) => {
   useEffect(() => {
     setstream(streamUrl);
     enter_gameshow();
-    dispatchGameEnter(CheckGameEnterStatus());
+
     if (gameshow?.status === 'started') {
       userEliminate.current = true;
       onRefresh();
@@ -438,7 +457,7 @@ const BackgroundVideo = ({route, navigation}) => {
                   </View>
                   <View
                     style={{
-                      paddingBottom: 1,
+                      paddingBottom: Platform.OS === 'android' ? 1 : 0,
                       opacity: 1.2,
                       borderRadius: 10,
                       backgroundColor: 'red',
@@ -447,6 +466,7 @@ const BackgroundVideo = ({route, navigation}) => {
                       width: 50,
                       justifyContent: 'center',
                       alignItems: 'center',
+                      paddingTop: Platform.OS === 'ios' ? 1.2 : 0,
                     }}>
                     <Text
                       style={{

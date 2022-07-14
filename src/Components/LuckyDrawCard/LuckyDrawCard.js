@@ -8,7 +8,7 @@ import {
   StyleSheet,
   Image,
 } from 'react-native';
-import {widthConverter} from '../Helpers/Responsive';
+import {widthConverter, heightConverter} from '../Helpers/Responsive';
 import styles from './Styles';
 import CountDown from 'react-native-countdown-component';
 import LongButton from '../LongButton';
@@ -17,7 +17,13 @@ function LuckyDrawCard({style, onPress, finish, time, image}) {
   return (
     <View style={[styles.mainView, style]}>
       <Image
-        style={[styles.mainView, {position: 'absolute'}]}
+        style={{
+          position: 'absolute',
+          resizeMode: 'contain',
+          height: 140,
+          width: '100%',
+          borderRadius: 12,
+        }}
         source={{uri: image}}
       />
       <LongButton
@@ -26,7 +32,6 @@ function LuckyDrawCard({style, onPress, finish, time, image}) {
           {
             backgroundColor: '#ffffff',
             position: 'absolute',
-
             bottom: 10,
             left: 15,
           },

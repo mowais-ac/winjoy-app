@@ -179,15 +179,18 @@ const Entries = ({navigation}) => {
                   </Text>
                 </View>
               </View>
-              <Text
-                style={{
-                  color: '#000000',
-                  fontWeight: '400',
-                  fontSize: 18,
-                  fontFamily: 'Axiforma',
-                }}>
-                {item?.user?.name}
-              </Text>
+              <View style={{width: '20%'}}>
+                <Text
+                  style={{
+                    color: '#000000',
+                    fontWeight: '400',
+                    fontSize: 18,
+                    fontFamily: 'Axiforma',
+                    textAlign: 'center',
+                  }}>
+                  {item?.user?.name}
+                </Text>
+              </View>
             </View>
             <View
               style={{
@@ -231,24 +234,28 @@ const Entries = ({navigation}) => {
                   </Text>
                 </View>
               </View>
-              <Text
-                style={{
-                  color: '#000000',
-                  fontWeight: '500',
-                  fontSize: 18,
-                  fontFamily: 'Axiforma',
-                }}>
+              <View style={{width: '20%'}}>
                 <Text
                   style={{
                     color: '#000000',
-                    fontWeight: '700',
+                    fontWeight: '500',
                     fontSize: 18,
                     fontFamily: 'Axiforma',
+                    textAlign: 'center',
                   }}>
-                  AED
-                </Text>{' '}
-                {item?.product?.price}
-              </Text>
+                  <Text
+                    style={{
+                      color: '#000000',
+                      fontWeight: '700',
+                      fontSize: 18,
+                      fontFamily: 'Axiforma',
+                      textAlign: 'center',
+                    }}>
+                    AED
+                  </Text>{' '}
+                  {item?.product?.price}
+                </Text>
+              </View>
             </View>
             <View
               style={{
@@ -261,13 +268,13 @@ const Entries = ({navigation}) => {
             />
             <View style={{alignItems: 'center', marginVertical: 16}}>
               <Text
-                numberOfLines={1}
+                numberOfLines={2}
                 style={{
                   color: '#000000',
                   fontWeight: '400',
                   fontSize: 11,
                   fontFamily: 'Axiforma',
-                  lineHeight: 30,
+                  lineHeight: 20,
                 }}>
                 THIS COUPON GIVES YOU A CHANCE TO ENTER THE LUCKY DRAW
               </Text>
@@ -327,11 +334,14 @@ const Entries = ({navigation}) => {
           }}
         />
 
-        <View style={styles.MainTop}>
+        {/* <View style={styles.MainTop}>
           <UserInfo style={styles.header} OwnUser popup status />
-        </View>
-        <View style={{marginVertical: 5}}>
-          <Label bold headingtype="h2">
+        </View> */}
+        <View>
+          <Label
+            bold
+            headingtype="h2"
+            style={{marginVertical: 10, color: '#D9FE51'}}>
             Tickets
           </Label>
         </View>

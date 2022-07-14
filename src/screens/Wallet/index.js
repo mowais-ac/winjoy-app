@@ -47,16 +47,16 @@ import socketIO from 'socket.io-client';
 import AddaccountModal from '../../Components/AddaccountModal';
 const MYServer = 'https://node-winjoyserver-deploy.herokuapp.com/';
 const index = ({props, navigation}) => {
-  const LandingData = useSelector(state => state.app.LandingData);
   const socket = socketIO(MYServer);
-  const [activeno, setActiveno] = useState('25');
   const {t} = useTranslation();
-  const [refreshing, setRefreshing] = React.useState(false);
-  const [productData, setProductData] = useState([]);
-  const [ammount, setAmmount] = useState('10');
+  const LandingData = useSelector(state => state.app.LandingData);
   const userData = useSelector(state => state.app.userData);
   const walletData = useSelector(state => state.app.walletData);
-  const dispatch = useDispatch();
+  const [activeno, setActiveno] = useState('25');
+  const [ammount, setAmmount] = useState('10');
+  const [messageError, setmessageError] = useState('error occurs');
+  const [refreshing, setRefreshing] = React.useState(false);
+  const [productData, setProductData] = useState([]);
   const ModalStateTopup = useRef();
   const ModalState = useRef();
   const ModalState2 = useRef();
@@ -64,6 +64,7 @@ const index = ({props, navigation}) => {
   const [headerValue, setHeaderValue] = useState(0);
   const [activity, setActivity] = useState(false);
   const accountmodal = useRef();
+  const dispatch = useDispatch();
   const Combined_closed = () => {
     ModalState2.current(false);
     accountmodal.current(false);
@@ -82,7 +83,7 @@ const index = ({props, navigation}) => {
       NavigateToQuiz(true);
     });
   }, []);
-  const [messageError, setmessageError] = useState('error occurs');
+
   const NavigateToQuiz = fromSocket => {
     if (
       LandingData?.gameShow?.status === 'on_boarding' ||
@@ -106,9 +107,8 @@ const index = ({props, navigation}) => {
   };
   const HandleWithdraw = async accountId => {
     setActivity(true);
-    console.log('account id', accountId);
+    // console.log('account id', accountId);
     if (!activeno) {
-      // alert('plz enter activeno');
     } else {
       const Token = await EncryptedStorage.getItem('Token');
       const body = JSONtoForm({
@@ -116,7 +116,6 @@ const index = ({props, navigation}) => {
         account_id: accountId,
       });
 
-      // console.log("withdrawl_body",body)
       const requestOptions = {
         method: 'POST',
         headers: {
@@ -130,18 +129,22 @@ const index = ({props, navigation}) => {
         .then(async response => response.json())
         .then(async res => {
           setActivity(false);
-          console.log('resswith1', res);
+          console.log('wallet_res', res);
           setmessageError(res.message);
           if (res.status === 'error') {
+            accountmodal.current(false);
             ModalErrorState.current(true);
           } else {
+            accountmodal.current(false);
             dispatch(getWalletData());
             ModalState.current(false);
             ModalStateTopup.current(false);
             ModalState2.current(true);
           }
         })
-        .catch(e => {});
+        .catch(e => {
+          console.log(e);
+        });
     }
   };
 
@@ -164,7 +167,7 @@ const index = ({props, navigation}) => {
           colors={['#420E92', '#E7003F']}
           style={styles.lineargradient}>
           <Header />
-          <View style={styles.info_mainView}>
+          {/*  <View style={styles.info_mainView}>
             <View style={styles.avatarView}>
               <ProfilePicture
                 picture={userData?.profile_image}
@@ -189,6 +192,16 @@ const index = ({props, navigation}) => {
                   userData?.last_name?.slice(1)}
               </Text>
             </View>
+          </View> */}
+          <View style={{alignItems: 'center', marginVertical: 20}}>
+            <Text
+              style={{
+                color: '#D9FE51',
+                fontFamily: 'Axiforma-SemiBold',
+                fontSize: 23,
+              }}>
+              Wallet
+            </Text>
           </View>
         </LinearGradient>
 
@@ -292,7 +305,7 @@ const index = ({props, navigation}) => {
           // ammount={ammount}
           activity={activity}
         /> */}
-
+        <Modals ModalRef={ModalErrorState} message_error={messageError} Alert />
         <SuccessModal
           ModalRef={ModalState2}
           details
@@ -305,7 +318,6 @@ const index = ({props, navigation}) => {
               : walletData?.wallet?.your_balance
           }
         />
-        <Modals ModalRef={ModalErrorState} message_error={messageError} Alert />
       </ScrollView>
     </SafeAreaView>
   );

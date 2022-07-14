@@ -188,11 +188,15 @@ const Orders = ({navigation}) => {
             borderBottomLeftRadius: 20,
           }}>
           <Header />
-          <View style={styles.MainTop}>
+          {/*  <View style={styles.MainTop}>
             <UserInfo style={styles.header} OwnUser popup status />
-          </View>
+          </View> */}
           <View>
-            <Label white bold headingtype="h3">
+            <Label
+              white
+              bold
+              headingtype="h3"
+              style={{marginVertical: 10, color: '#D9FE51'}}>
               Purchases
             </Label>
           </View>
@@ -216,7 +220,8 @@ const Orders = ({navigation}) => {
                 <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
               }
               contentContainerStyle={{
-                paddingHorizontal: 10,
+                paddingHorizontal: 11,
+                marginTop: 5,
               }}
             />
           </>

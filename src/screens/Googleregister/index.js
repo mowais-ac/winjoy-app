@@ -94,7 +94,7 @@ const index = ({route, navigation}) => {
             });
             dispatch2({
               type: types.TOTAL_LIVES,
-              totalLives: 0,
+              totalLives: '0',
             });
             await EncryptedStorage.setItem('Token', res.data.token);
             loading.current.SetActivity(false);
@@ -137,7 +137,7 @@ const index = ({route, navigation}) => {
             <GoBack />
             <Image source={Images.Logo} style={styles.Logo} />
             <Label bold headingtype="h1" style={styles.Heading}>
-              Google_Register
+              Google signin
             </Label>
             <Label
               light
