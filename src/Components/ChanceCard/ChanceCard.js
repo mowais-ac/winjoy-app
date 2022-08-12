@@ -31,11 +31,8 @@ function ChanceCard({
       style={{
         width: '100%',
         //  height: height * 0.53,
-
         backgroundColor: '#ffffff',
-
         borderRadius: 10,
-
         // justifyContent: "center",
         alignItems: 'center',
         elevation: 3,

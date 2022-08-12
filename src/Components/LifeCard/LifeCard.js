@@ -7,11 +7,31 @@ import {
   ImageBackground,
 } from 'react-native';
 import Config from 'react-native-config';
+import EncryptedStorage from 'react-native-encrypted-storage';
 import LinearGradient from 'react-native-linear-gradient';
 import {RFValue} from 'react-native-responsive-fontsize';
 const {width, height} = Dimensions.get('window');
 import styles from './Styles';
-function LifeCard({onPress, amount, lives}) {
+function LifeCard({onPress, amount, lives, id}) {
+  const getData = async () => {
+    try {
+      const Token = await EncryptedStorage.getItem('Token');
+      const result = await fetch(`${Config.API_URL}/buy_lives_plan/${id}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Accept: 'application/json',
+          Authorization: `Bearer ${Token}`,
+        },
+      });
+      const json = await result.json();
+      if (json.status === 'success') {
+        console.log('jsonssss', json);
+      }
+    } catch (error) {
+      alert(error);
+    }
+  };
   return (
     <TouchableOpacity onPress={onPress}>
       <LinearGradient

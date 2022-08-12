@@ -24,6 +24,11 @@ import dynamicLinks from '@react-native-firebase/dynamic-links';
 import {getLiveShowPlans, getLandingScreen} from '../redux/actions';
 import {useNavigation} from '@react-navigation/native';
 import LeaderBoard from '../screens/LeaderBoard';
+import LiveStack from './LiveStack';
+import Webmodal from '../screens/WebModal/Webmodal';
+import BuyLife from '../screens/BuyLife';
+import Landing from '../screens/Landing';
+import Webmodallive from '../screens/Webmodallive/Webmodallive';
 const Stack = createNativeStackNavigator();
 
 function index(props) {
@@ -128,11 +133,10 @@ function index(props) {
     <AuthContext.Provider value={authContext}>
       <NavigationContainer>
         <Stack.Navigator
+          initialRouteName="BottomTabStack"
           screenOptions={{
             headerShown: false,
-          }}
-          //initialRouteName='BottomTabStack'
-        >
+          }}>
           {state.isLoading ? (
             // We haven't finished checking for the token yet
             <Stack.Screen name="Splash" component={Splash} />
@@ -147,8 +151,13 @@ function index(props) {
                 name="NotificationBellList"
                 component={NotificationBellList}
               />
+              <Stack.Screen name="LiveStack" component={LiveStack} />
               <Stack.Screen name="GameStack" component={GameStack} />
               <Stack.Screen name="WebView" component={WebView} />
+              <Stack.Screen name="Landing" component={Landing} />
+              <Stack.Screen name="Webmodal" component={Webmodal} />
+              <Stack.Screen name="Webmodallive" component={Webmodallive} />
+              <Stack.Screen name="BuyLife" component={BuyLife} />
             </>
           )}
         </Stack.Navigator>

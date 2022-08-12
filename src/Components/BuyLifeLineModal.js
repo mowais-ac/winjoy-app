@@ -14,6 +14,7 @@ import Modals from '../Components/Modals';
 import Label from './Label';
 import LabelButton from './LabelButton';
 import {Colors, Images} from '../Constants/Index';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import LongButton from './LongButton';
 import {useNavigation} from '@react-navigation/native';
 import EncryptedStorage from 'react-native-encrypted-storage';
@@ -55,24 +56,29 @@ const BuyLifeLineModal = props => {
         },
       );
       const json = await result.json();
-      console.log('buylive', json);
       if (json.status === 'success') {
+        console.log('buylive', json);
         setMg(json.message);
         dispatch({
           type: types.TOTAL_LIVES,
           totalLives: json?.lives ? json?.lives : '0',
         });
-        SucessModalState.current(true);
+        navigation.navigate('Webmodal', {
+          uri: json?.order?.noon_p_checkout_post_url,
+        });
+        await AsyncStorage.setItem(
+          'Buylife_noon_orderid',
+          json?.order?.noon_p_order_reference,
+        );
+        //SucessModalState.current(true);
       } else {
         ModalStateError.current(true, {
           heading: 'Error',
           Error: json.message
             ? json.message
-            : "you don't enough balance to buy these lives",
+            : "you don't have enough balance to buy these lives",
         });
       }
-
-      // alert(json.message);
     } catch (error) {
       console.log(error);
     }
@@ -141,7 +147,6 @@ const BuyLifeLineModal = props => {
             style={{
               height: heightConverter(20),
               width: width * 0.9,
-
               justifyContent: 'center',
               alignItems: 'center',
               marginTop: height * 0.06,

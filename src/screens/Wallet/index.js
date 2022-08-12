@@ -78,33 +78,8 @@ const index = ({props, navigation}) => {
 
   useEffect(() => {
     dispatch(getWalletData());
-    socket.on('sendOnboarding', msg => {
-      console.log('Should navigate from product details');
-      NavigateToQuiz(true);
-    });
   }, []);
 
-  const NavigateToQuiz = fromSocket => {
-    if (
-      LandingData?.gameShow?.status === 'on_boarding' ||
-      LandingData?.gameShow?.status === 'started' ||
-      fromSocket
-    ) {
-      {
-        console.log(
-          'LandingData?.gameShow?.status pd',
-          LandingData?.gameShow?.status,
-        );
-      }
-      navigation.navigate('GameStack', {
-        screen: 'Quiz',
-        params: {
-          uri: LandingData?.gameShow?.live_stream?.key,
-          gameshowStatus: LandingData?.gameShow?.status,
-        },
-      });
-    }
-  };
   const HandleWithdraw = async accountId => {
     setActivity(true);
     // console.log('account id', accountId);

@@ -102,7 +102,6 @@ const BackgroundVideo = ({route, navigation}) => {
   const dispatch1 = useDispatch();
   const dispatch2 = useDispatch();
   const dispatch3 = useDispatch();
-
   const backAction = () => {
     Alert.alert(
       'We are live!',
@@ -135,7 +134,6 @@ const BackgroundVideo = ({route, navigation}) => {
       device_version: buildNumber,
       live_gameshow_id: gameshow.id,
     });
-    // console.log('bodyyyy', body);
     const requestOptions = {
       method: 'POST',
       headers: {
@@ -156,32 +154,52 @@ const BackgroundVideo = ({route, navigation}) => {
   };
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
+    dispatch3(GameShowWinners());
     dispatch1(getLandingScreen());
-    wait(100).then(() => setRefreshing(false));
+    wait(1500).then(() => setRefreshing(false));
   }, []);
   const appState = useRef(AppState.currentState);
   const [appStateVisible, setAppStateVisible] = useState(appState.current);
-  useEffect(() => {
-    const subscription = AppState.addEventListener('change', nextAppState => {
-      if (
-        appState.current.match(/inactive|background/) &&
-        nextAppState === 'active'
-      ) {
-        navigation.navigate('TriviaJoy');
-      }
-      console.log('App has come to the foreground!');
 
-      appState.current = nextAppState;
-      setAppStateVisible(appState.current);
-      if ('background' === appState.current) {
-        navigation.navigate('TriviaJoy');
-      }
-      console.log('AppState', appState.current);
-    });
+  /*   useEffect(() => {
+    if (Isfocused) {
+      const subscription = AppState.addEventListener('change', nextAppState => {
+        if (
+          appState.current.match(/inactive|background/) &&
+          nextAppState === 'active'
+        )
+          appState.current = nextAppState;
+        setAppStateVisible(appState.current);
+        if (appState.current === 'inactive' || 'background')
+          console.log('checkstate', appState.current);
+        navigation.navigate('Landing');
+      });
+      return () => {
+        subscription.remove();
+      };
+    }
+  }, [Isfocused]); */
+  useEffect(() => {
+    if(Isfocused){
+    AppState.addEventListener('change', _handlechange);
     return () => {
-      subscription.remove();
-    };
-  }, []);
+      AppState.removeEventListener('change', _handlechange);
+    }}
+  }, [Isfocused]);
+  const _handlechange = nextAppState => {
+    if (
+      appState.current.match(/inactive|background/) &&
+      nextAppState === 'active'
+    ) {
+      console.log('app foreground');
+    }
+    appState.current = nextAppState;
+    setAppStateVisible(appState.current);
+    if (appState.current === 'active') {
+      navigation.navigate('Landing');
+    }
+    console.log('appState', appState.current);
+  };
   useEffect(() => {
     startTimer();
     return () => clearTimeout(timer);
@@ -204,9 +222,9 @@ const BackgroundVideo = ({route, navigation}) => {
       )
       .then(response => {
         let res = response.data;
-        /*  {
+        /*  
           console.log('resquestionsapi', res.questions);
-        } */
+         */
         questionRef.current = res;
         setActivityScreen(false);
         setGameShowCheck(true);
@@ -216,11 +234,9 @@ const BackgroundVideo = ({route, navigation}) => {
         setTimerFlag(true);
       });
   };
-
   useEffect(() => {
     setstream(streamUrl);
     enter_gameshow();
-
     if (gameshow?.status === 'started') {
       userEliminate.current = true;
       onRefresh();
@@ -314,28 +330,20 @@ const BackgroundVideo = ({route, navigation}) => {
       }
     });
   }, []);
-
   useEffect(async () => {
     socket.on('sendHideQuestion', msg => {
       setGameShowCheck(false);
     });
-    socket.on('sendHideAnswer', msg => {});
     socket.on('sendEndShow', msg => {
       onRefresh();
-      dispatch2(GameShowWinners());
-      navigation.navigate('BottomTabStack', {screen: 'WINNERS'});
+      navigation.navigate('WINNERS');
     });
     socket.on('sendCount', msg => {
       setJoinedUsers(msg);
     });
     socket.on('sendSwitchNextQuestion', msg => {
-      /*  {
-        console.log('msg', msg);
-      } */
       let inc = msg.completed_question;
-      {
-        console.log('increment', inc);
-      }
+      console.log('increment', inc);
       setActiveQuestion(inc);
       answerId.current = null;
       setGameShowCheck(true);
@@ -360,7 +368,6 @@ const BackgroundVideo = ({route, navigation}) => {
   }, []);
   const SaveResponse = useCallback(async activeQ => {
     setActivity(true);
-
     let ans = '';
     questionRef.current[activeQ]?.answer.map(item => {
       if (item.is_correct === 1) {
@@ -423,12 +430,11 @@ const BackgroundVideo = ({route, navigation}) => {
         });
     }
   }, []);
-
   return (
     <View style={{backgroundColor: 'black'}}>
       <Wrapper>
         <View style={styles.gradientView}>
-          {liveStream ? (
+          {stream ? (
             <Video
               source={{
                 uri: stream ? stream : null,
@@ -530,7 +536,6 @@ const BackgroundVideo = ({route, navigation}) => {
                         <Label primary bold dark style={styles.questionTitle}>
                           {questionRef.current[activeQuestion - 1]?.question}
                         </Label>
-
                         <EliminateQuizResult
                           options={
                             questionRef.current[activeQuestion - 1]?.answer

@@ -22,6 +22,7 @@ import {
   heightPercentageToDP,
   widthConverter,
 } from '../../Components/Helpers/Responsive';
+import {useIsFocused} from '@react-navigation/native';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import Config from 'react-native-config';
 import axios from 'axios';
@@ -33,6 +34,7 @@ import {
   CheckGameEnterStatus,
   getLandingScreen,
 } from '../../redux/actions';
+import Picknumbers from '../../Components/Livescomponents/Picknumbers';
 import CountDown from 'react-native-countdown-component';
 import {RFValue} from 'react-native-responsive-fontsize';
 import HowItWorkModal from '../../Components/HowItWorkModal';
@@ -44,6 +46,7 @@ const index = ({props, navigation}) => {
   const triviaJoyData = useSelector(state => state.app.triviaJoyData);
   const gameEnterStatus = useSelector(state => state.app.gameEnterStatus);
   const totalLives = useSelector(state => state.app.totalLives);
+  const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const dispatch2 = useDispatch();
   const dispatch4 = useDispatch();
@@ -51,13 +54,13 @@ const index = ({props, navigation}) => {
   const socket = socketIO(MYServer);
   const [renderBtn, setRenderBtn] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const [PnmodalVisible, setPnmodalVisible] = useState(false);
   const onCountDownFinish = () => {
     setRenderBtn(true);
     onRefresh();
   };
-
   const [time, setTime] = useState(() => {
-    dispatch(TriviaJoyAPI());
+    /*  dispatch(TriviaJoyAPI()); */
     var CurrentDate = new Date();
     var duration = dayjs(triviaJoyData?.upcoming_gameshow?.start_date).diff(
       dayjs(CurrentDate.toLocaleString()),
@@ -81,8 +84,7 @@ const index = ({props, navigation}) => {
   }, []);
 
   useEffect(() => {
-    let isMounted = true;
-    if (isMounted) {
+    if (isFocused) {
       dispatch4(getLandingScreen());
       dispatch(TriviaJoyAPI());
       var CurrentDate = new Date();
@@ -92,14 +94,10 @@ const index = ({props, navigation}) => {
       );
       setTime(parseInt(duration));
     }
-    return () => {
-      isMounted = false;
-    };
-  }, []);
+  }, [isFocused]);
 
   const LetBegin = () => {
     dispatch2(CheckGameEnterStatus());
-
     if (gameEnterStatus.status === 'success') {
       if (gameEnterStatus.message === 'Welcome to Live Game Show') {
         navigation.navigate('GameStack', {
@@ -163,7 +161,12 @@ const index = ({props, navigation}) => {
           </Label>
 
           {triviaJoyData?.on_going_gameshow !== null ? (
-            <TouchableOpacity onPress={() => LetBegin()}>
+            <TouchableOpacity
+              onPress={() =>
+                LandingData?.gameShow?.type === 'in_venue'
+                  ? setPnmodalVisible(true)
+                  : LetBegin()
+              }>
               <View
                 style={[
                   styles.newGameView,
@@ -333,7 +336,13 @@ const index = ({props, navigation}) => {
 
         <View style={{marginBottom: height * 0.05}} />
       </LinearGradient>
-
+      <Picknumbers
+        PnmodalVisible={PnmodalVisible}
+        setPnmodalVisible={setPnmodalVisible}
+        Quiz={LetBegin}
+        code={LandingData?.gameShow?.code}
+        id={LandingData?.gameShow?.id}
+      />
       <HowItWorkModal
         ModalRef={AddModalState}
         details

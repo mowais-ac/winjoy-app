@@ -29,8 +29,8 @@ import LinearGradient from 'react-native-linear-gradient';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Config from 'react-native-config';
-
 const {width, height} = Dimensions.get('window');
+
 const index = ({route, navigation}) => {
   const [headerValue, setHeaderValue] = useState(0);
   const [selected, setSelected] = useState(0);

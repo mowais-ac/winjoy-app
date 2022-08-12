@@ -15,9 +15,15 @@ import ProductDetail from '../screens/ProductDetail';
 import LeaderBoard from '../screens/LeaderBoard';
 import Noon from '../screens/Noon';
 import Orders from '../screens/MyOrders/Orders.js';
+import Quiz from '../screens/Quiz';
+import LiveProducts from '../screens/LiveProducts.js';
+import GoldenTulip from '../screens/Fanjoy/GoldenTulip';
+import Fanjoy from '../screens/Fanjoy/Fanjoy';
+import Prizes from '../screens/Fanjoy/Prizes';
 const Stack = createNativeStackNavigator();
 export default index = () => (
   <Stack.Navigator
+    initialRouteName="Landing"
     screenOptions={{
       headerShown: false,
     }}>
@@ -36,7 +42,9 @@ export default index = () => (
     <Stack.Screen name="Orders" component={Orders} />
     <Stack.Screen name="ProductDetail" component={ProductDetail} />
     <Stack.Screen name="AllCreatorsList" component={AllCreatorsList} />
-
+    <Stack.Screen name="Fanjoy" component={Fanjoy} />
+    <Stack.Screen name="Prizes" component={Prizes} />
+    <Stack.Screen name="GoldenTulip" component={GoldenTulip} />
     <Stack.Screen
       name="SimpleProductDetailInExperience"
       component={SimpleProductDetailInExperience}

@@ -1,6 +1,6 @@
 import EncryptedStorage from 'react-native-encrypted-storage';
 import Config from 'react-native-config';
-
+import {Winjoy} from './Winjoy';
 import types from './types';
 const API_URL = 'https://mocki.io/v1/48419bdb-1d76-45a1-89cb-3ac3fcc7f6ca';
 
@@ -145,6 +145,87 @@ export const getAllCreator = () => {
       }
     };
   } catch (error) {}
+};
+
+export const Fanjoyalldata = () => {
+  try {
+    return async dispatch => {
+      const Token = await EncryptedStorage.getItem('Token');
+      const result = await fetch(
+        `https://testing.winjoy.ae/public/api/web/fanjoy/index`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Accept: 'application/json',
+            Authorization: `Bearer ${Token}`,
+          },
+        },
+      );
+      const json = await result.json();
+
+      if (json && json.status === 'success') {
+        dispatch({
+          type: types.FANJOY_ALL_DATA,
+          payload: {loading: false, data: json},
+        });
+      } else {
+      }
+    };
+  } catch (error) {}
+};
+export const Fanjoy_dataList = () => {
+  try {
+    return async dispatch => {
+      const Token = await EncryptedStorage.getItem('Token');
+      const result = await fetch(
+        `https://testing.winjoy.ae/public/api/web/products/list`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Accept: 'application/json',
+            Authorization: `Bearer ${Token}`,
+          },
+        },
+      );
+      const json = await result.json();
+      if (json) {
+        dispatch({
+          type: types.FANJOY_DATA_LIST,
+          payload: {loading: false, data: json},
+        });
+      } else {
+      }
+    };
+  } catch (error) {}
+};
+export const Slug_Details = slug => {
+  try {
+    return async dispatch => {
+      const Token = await EncryptedStorage.getItem('Token');
+      const result = await fetch(
+        `https://testing.winjoy.ae/public/api/web/product/${slug}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Accept: 'application/json',
+            Authorization: `Bearer ${Token}`,
+          },
+        },
+      );
+      const json = await result.json();
+      if (json) {
+        dispatch({
+          type: types.SLUG_DETAILS,
+          payload: {loading: false, data: json},
+        });
+      }
+    };
+  } catch (error) {
+    console.log(error);
+  }
 };
 export const GetGalleryData = id => {
   try {
@@ -565,4 +646,25 @@ export const CreatorExperienceList = id => {
       }
     };
   } catch (error) {}
+};
+export const Live_Luckydraw = data => {
+  try {
+    return async dispatch => {
+      const Token = await EncryptedStorage.getItem('Token');
+      return await Winjoy.post('enter/liveluckydraw', data, {
+        headers: {
+          Authorization: `Bearer ${'4437|Vfslk6akr2M6MbswI2q6IHjaLrBLLFj5mSPtDiuw'}`,
+        },
+      }).then(res => {
+        if (res.data) {
+          dispatch({
+            type: types.POST_LIVELUCKY_DRAW,
+            payload: {data: res.data, loading: false},
+          });
+        }
+      });
+    };
+  } catch (error) {
+    console.log(error);
+  }
 };

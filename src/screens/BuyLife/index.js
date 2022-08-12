@@ -22,13 +22,15 @@ import {
   WjBackground,
 } from '../../Components';
 import styles from './styles';
+import {useIsFocused} from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
 import EncryptedStorage from 'react-native-encrypted-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import I18n from 'react-native-i18n';
 import axios from 'axios';
 import Config from 'react-native-config';
 import {RFValue} from 'react-native-responsive-fontsize';
-import {FormatNumber, wait} from '../../Constants/Functions';
+import {FormatNumber, wait, JSONtoForm} from '../../Constants/Functions';
 import BuyLifeLineModal from '../../Components/BuyLifeLineModal';
 import WatchAddModal from '../../Components/WatchAddModal';
 import RefferLifeLineModal from '../../Components/RefferLifeLineModal';
@@ -41,6 +43,7 @@ import {
   MaxAdContentRating,
 } from '@react-native-firebase/admob';
 import {firebase} from '@react-native-firebase/admob';
+import NoonBuylives from '../../Components/NoonBuylives';
 const {width, height} = Dimensions.get('window');
 
 const adUnitId =
@@ -51,6 +54,7 @@ const rewardAd = RewardedAd.createForAdRequest(adUnitId, {
   requestNonPersonalizedAdsOnly: true,
 });
 const index = ({route, navigation}) => {
+  const Isfocused = useIsFocused();
   const livePlans = useSelector(state => state.app.livePlans);
   const totalLives = useSelector(state => state.app.totalLives);
   const defaultAppAdmob = firebase.admob();
@@ -61,6 +65,8 @@ const index = ({route, navigation}) => {
   const [amount, setAmount] = useState();
   const [video, setVideo] = useState();
   const [lives, setLives] = useState();
+  const [SmodalVisible, setSmodalVisible] = useState();
+  const [orderinfo, setOrderinfo] = useState([]);
   const [idVideoAdd, setIdVideoAdd] = useState();
   const [id, setId] = useState();
   const [refreshing, setRefreshing] = useState(false);
@@ -71,7 +77,41 @@ const index = ({route, navigation}) => {
     dispatch(getLiveShowPlans());
     setvideo1(livePlans.videoEnable);
   };
-  useEffect(() => {
+  const SendOrderId = async () => {
+    try {
+      const Token = await EncryptedStorage.getItem('Token');
+      const orderid = await AsyncStorage.getItem('Buylife_noon_orderid');
+      console.log('orderid1', orderid);
+      const body = JSONtoForm({
+        order_id: orderid,
+      });
+      const result = await fetch(`${Config.API_URL}/order/pay_now_buy_live`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Accept: 'application/json',
+          Authorization: `Bearer ${Token}`,
+        },
+        body,
+      });
+      const json = await result.json();
+      console.log('myresp', json);
+      await AsyncStorage.removeItem('Buylife_noon_orderid');
+      if (json.status === 'success') {
+        setOrderinfo(json);
+        setSmodalVisible(true);
+        console.log('success', json);
+      }
+      if (json.status === 'error') {
+        setOrderinfo(json);
+        setSmodalVisible(true);
+        console.log('error', json);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(async () => {
     dispatch(getLiveShowPlans());
     setvideo1(livePlans.videoEnable);
     defaultAppAdmob
@@ -81,6 +121,9 @@ const index = ({route, navigation}) => {
         tagForUnderAgeOfConsent: true,
       })
       .then(() => {});
+
+    let orderid = await AsyncStorage.getItem('Buylife_noon_orderid');
+    orderid === null ? console.log('id_null') : SendOrderId();
   }, []);
   const [loaded, setLoaded] = useState(false);
   useEffect(() => {
@@ -122,19 +165,15 @@ const index = ({route, navigation}) => {
       );
       const json = await result.json();
       if (json.status === 'success') {
-        if (json.message === 'You have successfully earned a live') {
-          rewardAd.show();
-          setInterval(() => {
-            dispatch2({
-              type: types.TOTAL_LIVES,
-              totalLives: json?.lives,
-            });
-          }, 35 * 1000);
-
-          dispatch(getLiveShowPlans());
-        } else {
-          console.log('resp_video', json);
-        }
+        console.log('jsonssss', json);
+        rewardAd.show();
+        setInterval(() => {
+          dispatch2({
+            type: types.TOTAL_LIVES,
+            totalLives: json?.lives,
+          });
+        }, 35 * 1000);
+        dispatch(getLiveShowPlans());
       }
     } catch (error) {
       alert(error);
@@ -215,10 +254,14 @@ const index = ({route, navigation}) => {
                   <LifeCard
                     onPress={() => {
                       ModalState.current(true);
+                      //navigation.navigate('Webmodal', {
+                      // uri: 'https://www.google.com.pk',
+                      //});
                       setAmount(item?.amount);
                       setLives(item?.lives);
-                      setId(item?.id);
+                      setIdVideoAdd(item?.id);
                     }}
+                    id={item?.id}
                     amount={item?.amount}
                     lives={item?.lives}
                   />
@@ -304,7 +347,7 @@ const index = ({route, navigation}) => {
             details
             amount={amount}
             lives={lives}
-            id={id}
+            id={idVideoAdd}
             // onPressContinue={()=>alert("hii")}
           />
           <WatchAddModal
@@ -335,6 +378,11 @@ const index = ({route, navigation}) => {
             }
             requestOnPress={() => SucessModalState.current(false)}
             closeOnPress={() => SucessModalState.current(false)}
+          />
+          <NoonBuylives
+            SmodalVisible={SmodalVisible}
+            setSmodalVisible={setSmodalVisible}
+            Data={orderinfo}
           />
         </LinearGradient>
       </ScrollView>

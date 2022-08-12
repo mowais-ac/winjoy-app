@@ -31,9 +31,14 @@ import BuyLifeLineModal from '../../Components/BuyLifeLineModal';
 import WatchAddModal from '../../Components/WatchAddModal';
 import RefferLifeLineModal from '../../Components/RefferLifeLineModal';
 import BuyLifeCongrats from '../../Components/BuyLifeCongrats';
-import {GameShowWinners, LuckyDrawWinnersAPI} from '../../redux/actions';
+import {
+  GameShowWinners,
+  LuckyDrawWinnersAPI,
+  getLandingScreen,
+} from '../../redux/actions';
 import LuckyDraw from './LuckyDraw';
 import {useFocusEffect} from '@react-navigation/native';
+import {useIsFocused} from '@react-navigation/native';
 const {width, height} = Dimensions.get('window');
 const index = ({route, navigation}) => {
   const livePlans = useSelector(state => state.app.livePlans);
@@ -41,6 +46,7 @@ const index = ({route, navigation}) => {
   const luckyDrawWinners = useSelector(state => state.app.luckyDrawWinners);
   const loading = useSelector(state => state.event.loading);
   const ModalState = useRef();
+  const isFocused = useIsFocused();
   const AddModalState = useRef();
   const RefferModalState = useRef();
   const SucessModalState = useRef();
@@ -53,12 +59,13 @@ const index = ({route, navigation}) => {
   const [selected, setSelected] = useState(0);
   const dispatch = useDispatch();
   const dispatch2 = useDispatch();
+  const dispatch3 = useDispatch();
   const routeSelected = route?.params?.selected;
   useEffect(() => {
-    //  dispatch(getLiveShowPlans());
-    dispatch(GameShowWinners());
+    if (isFocused) dispatch(GameShowWinners());
+    dispatch3(getLandingScreen());
     dispatch2(LuckyDrawWinnersAPI());
-  }, []);
+  }, [isFocused]);
   useFocusEffect(
     React.useCallback(() => {
       if (routeSelected) {

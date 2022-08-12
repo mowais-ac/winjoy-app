@@ -280,7 +280,9 @@ const Modals = props => {
         </View>
       </Modal>
     );
-  } else if (props.Alert) {
+  } 
+  
+  else if (props.Alert) {
     return (
       <Modal
         animationType="slide"
@@ -320,6 +322,64 @@ const Modals = props => {
                 }
                 notAlign>
                 {props.message_error}
+              </Label>
+            </View>
+            <LongButton
+              text="Close"
+              style={[{marginTop: height * 0.06}, styles.ProfileBtn]}
+              shadowless
+              onPress={() => {
+                setModelState({
+                  ...ModelState,
+                  state: !ModelState.state,
+                });
+                if (props.onClose) props.onClose();
+              }}
+            />
+          </View>
+        </View>
+      </Modal>
+    );
+  } else if (props.NumberError) {
+    return (
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={ModelState.state}
+        statusBarTranslucent={false}
+        onRequestClose={() => {
+          setModelState({
+            ...ModelState,
+            state: !ModelState.state,
+          });
+          if (props.onClose) props.onClose();
+        }}>
+        <TouchableWithoutFeedback
+          onPress={() => {
+            setModelState({
+              ...ModelState,
+              state: !ModelState.state,
+            });
+            if (props.onClose) props.onClose();
+          }}>
+          <View style={styles.MainView} />
+        </TouchableWithoutFeedback>
+        <View style={styles.ErrorView}>
+          <View style={styles.SmallBorder} />
+          <Label primary headingtype="h3" bold2 style={styles.ModalHead}>
+            Alert
+          </Label>
+          <View style={styles.ErrorBody}>
+            <View style={styles.ErrorTxt}>
+              <Label
+                headingtype="h5"
+                bold2
+                style={
+                  ([styles.TextHeading],
+                  {marginTop: 7, color: 'blue', lineHeight: 20})
+                }
+                notAlign>
+                {props.message}
               </Label>
             </View>
             <LongButton

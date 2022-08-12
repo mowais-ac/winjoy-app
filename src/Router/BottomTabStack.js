@@ -17,19 +17,13 @@ import Cart from '../screens/Cart';
 const {width, height} = Dimensions.get('window');
 const Tab = createBottomTabNavigator();
 
-
 export default function index() {
-
   return (
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
         tabBarActiveTintColor: Colors.REDESH,
         tabBarInactiveTintColor: Colors.BLACK,
-        // tabBarStyle: {
-        //   position: 'absolute',
-        //   borderTopColor: 'rgba(0, 0, 0, .2)',
-        // },
         labelStyle: {fontFamily: 'ProximaNova Regular'},
         tabStyle: {borderLeftColor: Colors.LIGHT_MUTED, borderLeftWidth: 3},
         style: {height: height * 0.08},

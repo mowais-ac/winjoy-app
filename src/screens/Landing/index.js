@@ -24,7 +24,7 @@ import SpInAppUpdates, {
   IAUUpdateKind,
   StartUpdateOptions,
 } from 'sp-react-native-in-app-updates';
-import {getWalletData} from '../../redux/actions';
+import EncryptedStorage from 'react-native-encrypted-storage';
 import {useDispatch, useSelector} from 'react-redux';
 import {FormatNumber, wait} from '../../Constants/Functions';
 import {SliderBox} from 'react-native-image-slider-box';
@@ -48,14 +48,16 @@ import {
   AllCreatorsList,
   ProductDetails,
   IS_LOADING,
+  getWalletData,
+  getLiveShowPlans,
+  GetCartData,
+  LeaderBoardWinners,
 } from '../../redux/actions';
 import socketIO from 'socket.io-client';
 import {useTranslation} from 'react-i18next';
 import HowItWorkModal from '../../Components/HowItWorkModal';
 import NewVersionmodal from '../../Components/NewVersionmodal';
 import packageJson from '../../../package.json';
-import {getLiveShowPlans, GetCartData} from '../../redux/actions';
-import {LeaderBoardWinners} from '../../redux/actions';
 import dynamicLinks from '@react-native-firebase/dynamic-links';
 import appsFlyer from 'react-native-appsflyer';
 const MYServer = 'https://node-winjoyserver-deploy.herokuapp.com/';
@@ -71,6 +73,8 @@ import {
   AdEventType,
 } from '@react-native-firebase/admob';
 import {firebase} from '@react-native-firebase/admob';
+import Picknumbers from '../../Components/Livescomponents/Picknumbers';
+
 Settings.setAppID('1149665975867657');
 const adUnitId =
   Platform.OS === 'android'
@@ -100,6 +104,7 @@ const index = props => {
   const [buffer, setBuffer] = useState(false);
   const [videoAction, setVideoAction] = useState(true);
   const [imgSlider, setImageSlider] = useState([]);
+  const [PnmodalVisible, setPnmodalVisible] = useState(false);
   const dispatch = useDispatch();
   const dispatch1 = useDispatch();
   const dispatch2 = useDispatch();
@@ -136,15 +141,40 @@ const index = props => {
       'seconds',
     );
     setTime(parseInt(duration));
-    !isloading && LandingData?.gameShow?.status === 'on_boarding'
+
+    socket.on('sendOnboarding', msg => {
+      dispatch(getLandingScreen());
+      console.log('Should navigate');
+      if (LandingData?.gameShow?.type === 'in_venue') {
+        setPnmodalVisible(true);
+      } else {
+        dispatch(getLandingScreen());
+        NavigateToQuiz();
+        Testnavigate();
+      }
+    });
+    /* in_venue */
+    if (
+      LandingData?.gameShow?.status === 'on_boarding' ||
+      LandingData?.gameShow?.status === 'started'
+    ) {
+      if (LandingData?.gameShow?.type === 'in_venue') {
+        setPnmodalVisible(true);
+      } else {
+        NavigateToQuiz();
+        Testnavigate();
+      }
+    }
+    /*  !isloading && LandingData?.gameShow?.status === 'on_boarding'
       ? socket.on('sendOnboarding', msg => {
           console.log('Should navigate');
           NavigateToQuiz(true);
         })
-      : null;
-    Testnavigate();
-    NavigateToQuiz();
-    wait(800).then(() => setRefreshing(false));
+      : null; */
+    //Testnavigate();
+    //NavigateToQuiz();
+
+    wait(1000).then(() => setRefreshing(false));
   }, []);
   appsFlyer.initSdk(
     {
@@ -159,8 +189,6 @@ const index = props => {
       console.error(error);
     },
   );
-  /*  console.log('landing_Data', LandingData);
-  console.log('time_duration', time); */
   //InApp upgrade app
   const inAppUpdates = new SpInAppUpdates(
     false, // isDebug
@@ -195,8 +223,51 @@ const index = props => {
     const unsubscribe = dynamicLinks().onLink(handleDynamicLink);
     // When the component is unmounted, remove the listener
     return () => unsubscribe();
+    /*     const Token = await EncryptedStorage.getItem('Token');
+    console.log(Token); */
   }, []);
   useEffect(() => {
+    //for liveluckydraw
+    socket.on('sendOnboard', msg => {
+      console.log('onboard', msg);
+      if (msg.status === 'on_board')
+        navigation.navigate('LiveStack', {screen: 'LiveProducts'});
+    });
+    socket.on('startProductlivestream', msg => {
+      dispatch(getLandingScreen());
+      console.log('Productlivestream', msg);
+    });
+
+    //for gameshow
+    socket.on('sendStartlivegameshow', msg => {
+      dispatch(getLandingScreen());
+      console.log('socketevent', msg);
+    });
+    socket.on('sendOnboarding', msg => {
+      dispatch(getLandingScreen());
+      console.log('Should navigate2');
+      if (LandingData?.gameShow?.type === 'in_venue') {
+        console.log('aftab1');
+        setPnmodalVisible(true);
+      } else {
+        console.log('aftab2');
+        dispatch(getLandingScreen());
+        NavigateToQuiz();
+        Testnavigate();
+      }
+    });
+    /*    in_venue */
+    /*     if (
+      LandingData?.gameShow?.status === 'on_boarding' ||
+      LandingData?.gameShow?.status === 'started'
+    ) {
+      if (LandingData?.gameShow?.type === 'in_venue') {
+        setPnmodalVisible(true);
+      } else {
+        NavigateToQuiz();
+        Testnavigate();
+      }
+    } */
     dynamicLinks()
       .getInitialLink()
       .then(async link => {
@@ -222,13 +293,29 @@ const index = props => {
         arr.push(ele.url);
       });
       InAppupdate();
+      socket.on('sendOnboard', msg => {
+        console.log('onboard', msg);
+        if (msg === 'onboard')
+          navigation.navigate('LiveStack', {screen: 'LiveProducts'});
+      });
+      socket.on('startProductlivestream', msg => {
+        dispatch(getLandingScreen());
+        console.log('Productlivestream', msg);
+      });
+
       socket.on('sendStartlivegameshow', msg => {
         dispatch(getLandingScreen());
         console.log('socketevent', msg);
       });
       socket.on('sendOnboarding', msg => {
+        dispatch(getLandingScreen());
         console.log('Should navigate');
-        NavigateToQuiz(true);
+        if (LandingData?.gameShow?.type === 'in_venue') {
+          setPnmodalVisible(true);
+        } else {
+          NavigateToQuiz();
+          Testnavigate();
+        }
       });
       appsFlyer.initSdk(
         {
@@ -243,6 +330,7 @@ const index = props => {
           console.error(error);
         },
       );
+
       var CurrentDate = new Date();
       var duration = dayjs(LandingData?.gameShow?.start_date).diff(
         dayjs(CurrentDate.toLocaleString()),
@@ -250,10 +338,18 @@ const index = props => {
       );
       setTime(parseInt(duration));
       setImageSlider(arr);
-      LandingData?.gameShow?.status === 'on_boarding' ||
-      LandingData?.gameShow?.status === 'started'
-        ? NavigateToQuiz()
-        : null;
+      /*    in_venue */
+      if (
+        LandingData?.gameShow?.status === 'on_boarding' ||
+        LandingData?.gameShow?.status === 'started'
+      ) {
+        if (LandingData?.gameShow?.type === 'in_venue') {
+          setPnmodalVisible(true);
+        } else {
+          NavigateToQuiz();
+          Testnavigate();
+        }
+      }
       CreateChannal();
       defaultAppAdmob
         .setRequestConfiguration({
@@ -352,33 +448,26 @@ const index = props => {
   //navigate to gameshow
   const NavigateToQuiz = fromSocket => {
     if (!LandingData?.is_testing_user) {
-      if (
-        LandingData?.gameShow?.status === 'on_boarding' ||
-        LandingData?.gameShow?.status === 'started' ||
-        fromSocket
-      ) {
-        if (interstitial.loaded) {
-          interstitial.show().catch(error => console.log('admob_error', error));
-        }
-        console.log('Gameshow_Status', LandingData?.gameShow?.status);
-        navigation.navigate('GameStack', {
-          screen: 'Quiz',
-          params: {
-            streamUrl: LandingData.streamUrl,
-            uri: LandingData?.gameShow?.live_stream?.key,
-            gameshow: LandingData?.gameShow,
-            completed_questions: LandingData?.gameShow?.completed_questions,
-          },
-        });
+      console.log('abce');
+
+      if (interstitial.loaded) {
+        interstitial.show().catch(error => console.log('admob_error', error));
       }
+      console.log('Gameshow_Status1', LandingData?.gameShow?.status);
+      navigation.navigate('GameStack', {
+        screen: 'Quiz',
+        params: {
+          streamUrl: LandingData.streamUrl,
+          uri: LandingData?.gameShow?.live_stream?.key,
+          gameshow: LandingData?.gameShow,
+          completed_questions: LandingData?.gameShow?.completed_questions,
+        },
+      });
     }
   };
   //Istesting enable, navigate to gameshow
   const Testnavigate = () => {
-    if (
-      LandingData?.is_testing_user &&
-      LandingData?.gameShow?.status === 'on_boarding'
-    ) {
+    if (LandingData?.is_testing_user) {
       navigation.navigate('GameStack', {
         screen: 'Quiz',
         params: {
@@ -388,8 +477,6 @@ const index = props => {
           completed_questions: LandingData?.gameShow?.completed_questions,
         },
       });
-    } else {
-      return null;
     }
   };
   function _renderItem({item, index}) {
@@ -478,19 +565,14 @@ const index = props => {
   }, []);
 
   return (
-    <SafeAreaView style={{backgroundColor: '#420E92'}}>
+    <SafeAreaView style={styles.SafeAreaView}>
       <Header
-        style={{
-          position: 'absolute',
-          zIndex: 1000,
-          backgroundColor: headerValue !== 0 ? 'rgba(0,0,0,0.5)' : null,
-          width: '100%',
-          borderBottomRightRadius: 10,
-          borderBottomLeftRadius: 10,
-          top: Platform.OS === 'android' ? 0 : height * 0.05,
-        }}
+        style={[
+          styles.header,
+          {backgroundColor: headerValue !== 0 ? 'rgba(0,0,0,0.5)' : null},
+          {top: Platform.OS === 'android' ? 0 : height * 0.05},
+        ]}
       />
-
       {LandingData && LandingData.updated_version ? (
         <NewVersionmodal
           updatedVersion={LandingData?.updated_version}
@@ -499,6 +581,25 @@ const index = props => {
           updatedVersionios={LandingData?.updated_version_ios}
         />
       ) : null}
+      {/*   <TouchableOpacity
+        style={{marginTop: 70}}
+        onPress={
+          () => navigation.navigate('LiveStack', {screen: 'LiveProducts'})
+          //navigation.navigate('Fanjoy')
+        }>
+        <Text
+          style={[
+            styles.text,
+            {
+              color: '#fff',
+              fontSize: RFValue(15),
+              fontFamily: 'Axiforma-SemiBold',
+            },
+          ]}>
+          {' '}
+          Your Balance
+        </Text>
+      </TouchableOpacity> */}
       <ScrollView
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
@@ -509,13 +610,7 @@ const index = props => {
         refreshControl={
           <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
         }>
-        <View
-          style={{
-            width: '100%',
-            flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
+        <View style={styles.mainbody}>
           <LinearGradient
             colors={['#5B0C86', '#E7003F']}
             style={styles.mainView}>
@@ -545,25 +640,9 @@ const index = props => {
             <View style={styles.yellowBtn}>
               <TouchableOpacity onPress={() => navigation.navigate('WALLET')}>
                 <View style={styles.secondHeaderMiddleView}>
-                  <Text
-                    style={[
-                      styles.text,
-                      {
-                        color: '#fff',
-                        fontSize: RFValue(15),
-                        fontFamily: 'Axiforma-SemiBold',
-                      },
-                    ]}>
+                  <Text style={styles.text}>
                     Your Balance:{' '}
-                    <Text
-                      style={[
-                        styles.text,
-                        {
-                          color: '#ffff00',
-                          fontSize: RFValue(15),
-                          fontFamily: 'Axiforma-SemiBold',
-                        },
-                      ]}>
+                    <Text style={styles.text2}>
                       AED{' '}
                       {walletData?.wallet?.your_balance
                         ? FormatNumber(
@@ -582,61 +661,26 @@ const index = props => {
                 }>
                 <ImageBackground
                   resizeMode="cover"
-                  style={{
-                    shadowOffset: {width: 0, height: 1},
-                    shadowOpacity: 0.5,
-                    shadowRadius: 4,
-                    elevation: 4,
-                    width: 50,
-                    height: 40,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
+                  style={styles.bgheart}
                   source={require('../../assets/imgs/pinkHeart.png')}>
-                  <Text
-                    style={{
-                      color: '#E7003F',
-                      fontFamily: 'Axiforma-SemiBold',
-                      fontSize: RFValue(12),
-                    }}>
+                  <Text style={styles.livetext}>
                     {totalLives ? totalLives : 0}
                   </Text>
                 </ImageBackground>
               </TouchableOpacity>
             </View>
           </LinearGradient>
-
-          <View>
-            <TouchableOpacity
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                borderRadius: 100,
-                height: 40,
-                marginTop: -20,
-                paddingHorizontal: 15,
-                backgroundColor: '#ffffff',
-                marginBottom: 10,
-                justifyContent: 'space-between',
-              }}
-              onPress={() => {
-                AddModalState.current(true);
-              }}>
-              <Image
-                style={{width: 22, height: 22, marginRight: 10}}
-                source={require('../../assets/imgs/iconPlay.png')}
-              />
-              <Text
-                style={{
-                  color: '#420E92',
-                  fontSize: RFValue(14),
-                  fontFamily: 'Axiforma-SemiBold',
-                }}>
-                How it works
-              </Text>
-            </TouchableOpacity>
-          </View>
-
+          <TouchableOpacity
+            style={styles.howitworkbtn}
+            onPress={() => {
+              AddModalState.current(true);
+            }}>
+            <Image
+              style={{width: 22, height: 22, marginRight: 10}}
+              source={require('../../assets/imgs/iconPlay.png')}
+            />
+            <Text style={styles.howitworkbtext}>How it works</Text>
+          </TouchableOpacity>
           <FlatList
             horizontal={true}
             style={{marginLeft: 1, width: '100%'}}
@@ -666,13 +710,7 @@ const index = props => {
           {isloading ? (
             <ActivityIndicator size="small" color="#000000" />
           ) : (
-            <View
-              style={{
-                flex: 1,
-                marginTop: 5,
-                flexDirection: 'row',
-                marginBottom: 0,
-              }}>
+            <View style={styles.sliderbody}>
               <SliderBox
                 images={imgSlider}
                 sliderBoxHeight={150}
@@ -697,12 +735,6 @@ const index = props => {
               />
             </View>
           )}
-          <View
-            style={{
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          />
           {isloading ? (
             <ActivityIndicator size="small" color="#000000" />
           ) : LandingData?.home_middle_banners_data ? (
@@ -716,50 +748,24 @@ const index = props => {
               }}
             />
           ) : null}
-          <View
-            style={{
-              width: '95%',
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              marginTop: 10,
-            }}>
-            <View
-              style={{
-                marginVertical: 10,
-                marginHorizontal: 5,
-              }}>
+          <View style={styles.shoptextbody}>
+            <View style={styles.shopinner}>
+              <Text style={styles.shoptext1}>Shop to Win</Text>
               <Text
-                style={{
-                  color: '#E7003F',
-                  fontSize: 20,
-                  fontFamily: 'Axiforma-Bold',
-                }}>
-                Shop to Win
-              </Text>
-              <Text
-                style={{
-                  color: '#0B2142',
-                  fontSize: 16,
-                  fontFamily: 'Axiforma-Regular',
-                  lineHeight: Platform.OS === 'android' ? 20 : 28,
-                }}>
+                style={[
+                  styles.shoptext2,
+                  {lineHeight: Platform.OS === 'android' ? 20 : 28},
+                ]}>
                 Shop More Win More
               </Text>
             </View>
             <LongButton
               style={[styles.Margin, {backgroundColor: '#ffffff'}]}
-              textstyle={{
-                color: '#000000',
-                fontFamily: 'Axiforma-SemiBold',
-                fontSize: 14,
-              }}
+              textstyle={styles.longbtntext}
               text="View all"
               font={16}
               shadowless
               onPress={() => {
-                // {
-                //   Platform.OS === 'android' ? fun_contentview() : null;
-                // }
                 fun_contentview();
                 fun_listview();
                 navigation.navigate('PRODUCTS', {
@@ -978,6 +984,14 @@ const index = props => {
           cross={true}
         />
       </ScrollView>
+      <Picknumbers
+        PnmodalVisible={PnmodalVisible}
+        setPnmodalVisible={setPnmodalVisible}
+        Quiz={NavigateToQuiz}
+        test={Testnavigate}
+        code={LandingData?.gameShow?.code}
+        id={LandingData?.gameShow?.id}
+      />
     </SafeAreaView>
   );
 };

@@ -149,8 +149,8 @@ android {
         applicationId "com.winjoy"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 48
-        versionName "1.48"
+        versionCode 53
+        versionName "1.53"
         multiDexEnabled true
     }
     splits {
@@ -195,7 +195,6 @@ android {
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
     }
-
     // applicationVariants are e.g. debug, release
     applicationVariants.all { variant ->
         variant.outputs.each { output ->

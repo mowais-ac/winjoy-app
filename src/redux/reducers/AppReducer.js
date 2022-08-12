@@ -4,7 +4,10 @@ const INITIAL_STATE = {
   counter: 0,
   lastGameData: {},
   userData: [],
-
+  fanjoyalldata: {loading: true, data: []},
+  Fanjoy_data_list: {loading: true, data: []},
+  postliveluckydraw: {loading: true, data: []},
+  slugDetails: {loading: true, data: []},
   name: '',
   age: 0,
   walletData: [],
@@ -34,6 +37,8 @@ const INITIAL_STATE = {
   productsDetals: [],
   creatorExpList: [],
   isloading: true,
+
+  /*   Homedata: {loading: false, LandingData: []}, */
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -48,6 +53,46 @@ export default (state = INITIAL_STATE, action) => {
       return {...state, walletData: action.payload};
     case types.GET_LANDING_DATA:
       return {...state, LandingData: action.payload};
+    case types.POST_LIVELUCKY_DRAW:
+      return {
+        ...state,
+        postliveluckydraw: {
+          loading: action.payload.loading,
+          data: action.payload.data,
+        },
+      };
+    case types.SLUG_DETAILS:
+      return {
+        ...state,
+        slugDetails: {
+          loading: action.payload.loading,
+          data: action.payload.data,
+        },
+      };
+    /*   case types.GET_LANDING_DATA:
+      return {
+        ...state,
+        Homedata: {
+          loading: action.payload.loading,
+          LandingData: action.payload.LandingData,
+        },
+      }; */
+    case types.FANJOY_ALL_DATA:
+      return {
+        ...state,
+        fanjoyalldata: {
+          loading: action.payload.loading,
+          data: action.payload.data,
+        },
+      };
+    case types.FANJOY_DATA_LIST:
+      return {
+        ...state,
+        Fanjoy_data_list: {
+          loading: action.payload.loading,
+          data: action.payload.data,
+        },
+      };
     case types.GET_PRODUCTS_LIST:
       return {...state, productsData: action.payload};
     case types.GET_LIVE_PLANS:

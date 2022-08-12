@@ -6,8 +6,14 @@ import EncryptedStorage from 'react-native-encrypted-storage';
 import Background from '../../Components/Background';
 import {IsVerified} from '../../Constants/Functions';
 import {RFValue} from 'react-native-responsive-fontsize';
+import {getLandingScreen} from '../../redux/actions';
+import {useDispatch, useSelector} from 'react-redux';
 const {width, height} = Dimensions.get('window');
 export default function index({navigation}) {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getLandingScreen());
+  }, []);
   return (
     <>
       <LinearGradient

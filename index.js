@@ -4,10 +4,19 @@ import {name as appName} from './app.json';
 import PushNotification from 'react-native-push-notification';
 import 'react-native-gesture-handler';
 PushNotification.configure({
-  onNotification: function (notification) {
-    console.log('NOTIFICATION:', notification);
+  onRegister: function (token) {
+    console.log(token);
   },
-  requestPermissions: Platform.OS === 'ios',
+  onNotification: notification => {
+    console.log('NOTIFICATION:', JSON.stringify(notification));
+  },
+  permissions: {
+    alert: true,
+    badge: true,
+    sound: true,
+  },
+  popInitialNotification: true,
+  requestPermissions: true,
 });
 
 LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message

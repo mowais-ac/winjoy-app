@@ -127,6 +127,7 @@ const index = ({route, navigation}) => {
                 flexDirection: 'row',
                 flexWrap: 'wrap',
                 width: '100%',
+                backgroundColor: 'red',
               }}>
               {resData?.map((item, index) => {
                 return (
