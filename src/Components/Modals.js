@@ -280,9 +280,7 @@ const Modals = props => {
         </View>
       </Modal>
     );
-  } 
-  
-  else if (props.Alert) {
+  } else if (props.Alert) {
     return (
       <Modal
         animationType="slide"
@@ -527,7 +525,7 @@ const styles = StyleSheet.create({
     marginTop: height * 0.02,
   },
   RequestMsg: {
-    marginTop: height * 0.01,
+    marginTop: height * 0.03,
     width: width * 0.75,
     lineHeight: height * 0.03,
   },

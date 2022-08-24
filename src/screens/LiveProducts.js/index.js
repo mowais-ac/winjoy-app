@@ -16,6 +16,8 @@ import {
   KeyboardAvoidingView,
   ScrollView,
 } from 'react-native';
+import Modals from '../../Components/Modals';
+import BuyLifeCongrats from '../../Components/BuyLifeCongrats';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview';
 import ProfilePicture from '../../Components/ProfilePicture';
 import DeviceInfo from 'react-native-device-info';
@@ -35,7 +37,6 @@ import {io} from 'socket.io-client';
 import {useDispatch, useSelector} from 'react-redux';
 import types from '../../redux/types';
 import {useIsFocused} from '@react-navigation/native';
-import {GameShowWinners, getLandingScreen} from '../../redux/actions';
 import mensuit from '../../assets/imgs/mensuit.jpg';
 import bgcart from '../../assets/imgs/bgcart.png';
 import Cart_count from '../../Components/Cart_count';
@@ -53,15 +54,29 @@ import Nolives from '../../Components/Livescomponents/Nolives';
 import Picknumbers from '../../Components/Livescomponents/Picknumbers';
 import Buyliveform from '../../Components/Livescomponents/Buyliveform';
 import Redirecting from '../../Components/Livescomponents/Redirecting';
-import {Live_Luckydraw} from '../../redux/actions';
+import {
+  Live_Luckydraw,
+  getWalletData,
+  GameShowWinners,
+  getLandingScreen,
+  Home_Details,
+  Winner,
+} from '../../redux/actions';
 import {Winjoy} from '../../redux/Winjoy';
 import {useNavigation} from '@react-navigation/native';
+import Livepayment from '../../Components/Livepayment';
+import Liveaddtocartmodal from '../../Components/Liveaddtoccartmodal';
 const LiveProducts = ({route, navigation}) => {
   const Isfocused = useIsFocused();
+  const LandingData = useSelector(state => state.app.LandingData);
+  const Homedetails = useSelector(state => state.app.homeDetails.data);
   const userData = useSelector(state => state.app.userData);
+  const Winnerdata = useSelector(state => state.app.winner);
+  const walletData = useSelector(state => state.app.walletData);
   const totalLives = useSelector(state => state.app.totalLives);
   const Luckydrawlive = useSelector(state => state.app.postliveluckydraw);
   const [stream, setstream] = useState(true);
+  const ModalErrorState = useRef();
   const [checkLive, setChecklive] = useState(true);
   const [joinedUsers, setJoinedUsers] = useState(0);
   const [activityScreen, setActivityScreen] = useState(false);
@@ -73,7 +88,8 @@ const LiveProducts = ({route, navigation}) => {
   const [no3, setno3] = useState(0);
   const [no4, setno4] = useState(0);
   const [no5, setno5] = useState(0);
-  const [paymentMethod, setPaymentMethod] = useState();
+  const [paymentMethod, setPaymentMethod] = useState(null);
+  const [paymentMethod2, setPaymentMethod2] = useState(null);
   const [orderinfo, setOrderinfo] = useState([]);
   const [UNM_Visible, setUNM_Visible] = useState(false);
   const [ELD_Visible, setELD_Visible] = useState(false);
@@ -85,26 +101,63 @@ const LiveProducts = ({route, navigation}) => {
   const [SmodalVisible, setSmodalVisible] = useState(false);
   const [Itemshow1, setItemshow1] = useState(false);
   const [BuyProduct, setBuyProduct] = useState(false);
-  const [Itemshow2, setItemshow2] = useState(true);
+  const [Itemshow2, setItemshow2] = useState(false);
+  const [Loader, setLoader] = useState(false);
   const [EndLuckydraw, setEndLuckydraw] = useState(false);
   const [LE_Visible, setLE_Visible] = useState(false);
   const [shippingAddress, setShippingAddress] = useState('dubai');
   const [defaultAddress, setDefaultAddress] = useState(
     'Floor # 24, Room # 2402, API Wolrd Tower, Sheikh Zayed Road, Dubai',
   );
+  const SucessModalState = useRef();
+  const [CM_Visible, setCM_Visible] = useState(false);
+  const [Lpayment_Visible, setLpayment_Visible] = useState(false);
+  const [shippingAddress2, setShippingAddress2] = useState('dubai');
+  const [defaultAddress2, setDefaultAddress2] = useState(
+    'Floor # 24, Room # 2402, API Wolrd Tower, Sheikh Zayed Road, Dubai',
+  );
   const socket = io('https://node-winjoyserver-deploy.herokuapp.com/');
   const dispatch1 = useDispatch();
   const dispatch2 = useDispatch();
+  const dispatch3 = useDispatch();
+  const dispatch4 = useDispatch();
+  const Liveluckydraw = useDispatch();
+  const backAction = () => {
+    Alert.alert(
+      'We are live!',
+      "You can't use other features as we are currently live. Are you sure you want to quit WinJoy app?",
+      [
+        {
+          text: 'Continue watching',
+          onPress: () => null,
+          style: 'cancel',
+        },
+        {text: 'Quit', onPress: () => BackHandler.exitApp()},
+      ],
+    );
+    return true;
+  };
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', backAction);
+    return () =>
+      BackHandler.removeEventListener('hardwareBackPress', backAction);
+  }, []);
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     dispatch1(getLandingScreen());
     wait(1000).then(() => setRefreshing(false));
   }, []);
   useEffect(() => {
+    dispatch1(getLandingScreen());
+    Liveluckydraw(Home_Details());
+    dispatch3(Winner(Homedetails.live_luckydraw?.id));
+    dispatch4(getWalletData());
     socket.on('sendCount', msg => {
       setJoinedUsers(msg);
     });
-    socket.on('sendProductStartlive', msg => {});
+    socket.on('sendProductStartlive', msg => {
+      setItemshow2(true);
+    });
     socket.on('sendShowProductWinner', msg => {
       setWmodalVisible(true);
     });
@@ -121,25 +174,34 @@ const LiveProducts = ({route, navigation}) => {
     });
   }, []);
   const GetData = async () => {
+    setLoader(true);
     try {
       const Token = await EncryptedStorage.getItem('Token');
       console.log(Token);
-      const data = {live_luckydraw_id: 1};
+      const data = {live_luckydraw_id: Homedetails?.live_luckydraw?.id};
       return await Winjoy.post(
         'enter/liveluckydraw',
         {data},
         {
           headers: {
-            Authorization: `Bearer ${'4437|Vfslk6akr2M6MbswI2q6IHjaLrBLLFj5mSPtDiuw'}`,
+            Authorization: `Bearer ${Token}`,
           },
         },
       ).then(res => {
-        if (res.data) {
+        if (res?.data?.status === 'success') {
+          setLoader(false);
           setUNM_Visible(true);
           console.log('sarwar', res.data);
+        } else {
+          setLoader(false);
+          ModalErrorState.current(true, {
+            heading: 'error',
+            Error: res?.data?.message,
+          });
         }
       });
     } catch (error) {
+      setLoader(false);
       console.log(error);
     }
   };
@@ -161,7 +223,7 @@ const LiveProducts = ({route, navigation}) => {
         body,
       });
       const json = await result.json();
-      console.log('myresp', json);
+      //   console.log('myresp', json);
       await AsyncStorage.removeItem('Buylife_noon_orderid1');
       if (json.status === 'success') {
         setLE_Visible(false);
@@ -169,7 +231,7 @@ const LiveProducts = ({route, navigation}) => {
         setOrderinfo(json);
         setSmodalVisible(true);
 
-        console.log('success', json);
+        //   console.log('success', json);
       }
       if (json.status === 'error') {
         setOrderinfo(json);
@@ -181,69 +243,172 @@ const LiveProducts = ({route, navigation}) => {
     }
   };
   const OrderDetail = async () => {
+    setLoader(true);
     const Token = await EncryptedStorage.getItem('Token');
     const body = JSONtoForm({
-      product_id: 52,
-      shipping_country: 'Pakistan',
+      product_id: Homedetails?.live_luckydraw?.product?.product_id,
+      shipping_country: shippingAddress,
       shipping_method: paymentMethod,
-      shipping_address: '8th Street',
+      shipping_address: defaultAddress,
       num1: no1,
       num2: no2,
       num3: no3,
       num4: no4,
       num5: no5,
     });
+    console.log(body);
     const requestOptions = {
       method: 'POST',
       headers: {
         'Content-Type': 'multipart/form-data',
         Accept: 'application/json',
-        Authorization: `Bearer ${'4437|Vfslk6akr2M6MbswI2q6IHjaLrBLLFj5mSPtDiuw'}`,
+        Authorization: `Bearer ${Token}`,
       },
       body,
     };
-    await fetch(
-      `https://testing.winjoy.ae/public/api/fanjoy/order/create`,
-      requestOptions,
-    )
+    await fetch(`${Config.API_URL}/fanjoy/order/create`, requestOptions)
       .then(async response => response.json())
       .then(res => {
+        //setItemshow2(false);
         setModalVisible(false);
+        setUNM_Visible(false);
+        setLoader(false);
         setELD_Visible(true);
-        console.log({joingameshow_res: res});
+        console.log({joingameshow_res1: res});
       })
       .catch(e => {
+        setLoader(false);
         console.log(e);
       });
   };
   const JoinUsers = async () => {
+    setLoader(true);
     const Token = await EncryptedStorage.getItem('Token');
     const body = JSONtoForm({
-      live_luckydraw_id: 1,
+      live_luckydraw_id: Homedetails?.live_luckydraw?.id,
     });
     const requestOptions = {
       method: 'POST',
       headers: {
         'Content-Type': 'multipart/form-data',
         Accept: 'application/json',
-        Authorization: `Bearer ${'4437|Vfslk6akr2M6MbswI2q6IHjaLrBLLFj5mSPtDiuw'}`,
+        Authorization: `Bearer ${Token}`,
       },
       body,
     };
+
     await fetch(
-      `https://testing.winjoy.ae/public/api/web/liveluckydraw/participants`,
+      `${Config.API_URL}/web/liveluckydraw/participants`,
       requestOptions,
     )
       .then(async response => response.json())
       .then(res => {
-        setJoinerList(res.participants);
-        setELD_Visible(false);
-        setItemshow2(false);
-        setItemshow1(true);
-        console.log({ress: res});
+        if (res.status === 'success') {
+          setLoader(false);
+          setJoinerList(res.participants);
+          setELD_Visible(false);
+          setItemshow2(false);
+          setItemshow1(true);
+        }
       })
       .catch(e => {
+        setLoader(false);
         console.log(e);
+      });
+  };
+  const Payment_wallet = async () => {
+    setLoader(true);
+    const Token = await EncryptedStorage.getItem('Token');
+    const data = {
+      shippingtype: paymentMethod2,
+      address: defaultAddress2,
+      isTest: false,
+      country: shippingAddress2,
+      type: 'products',
+      is_wallet: true,
+      user_name: userData?.user_name,
+    };
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        Accept: 'application/json',
+        Authorization: `Bearer ${Token}`,
+      },
+      body: JSONtoForm(data),
+    };
+    console.log('paymentdata', requestOptions.body);
+    await fetch(`${Config.API_URL}/order/paynow`, requestOptions)
+      .then(async response => response.json())
+      .then(async res => {
+        try {
+          console.log('respayment', res);
+          if (res.status === 200) {
+            setLoader(false);
+            SucessModalState.current(true);
+            console.log('res', res);
+            /*   dispatch({
+                type: types.CART_COUNTER,
+                counter: '',
+              }); */
+          } else if (res.status === 'action_required') {
+            setLoader(false);
+            if (res.status === 'invalid') {
+              ModalErrorState.current(true, {
+                heading: 'Error',
+              });
+            }
+          }
+        } catch (error) {
+          setLoader(false);
+          console.log(error);
+        }
+      });
+  };
+  const Payment_noon = async () => {
+    setLoader(true);
+    const Token = await EncryptedStorage.getItem('Token');
+    const data = {
+      shippingtype: paymentMethod2,
+      address: defaultAddress2,
+      isTest: false,
+      country: shippingAddress2,
+      type: 'products',
+      is_wallet: false,
+    };
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        Accept: 'application/json',
+        Authorization: `Bearer ${Token}`,
+      },
+      body: JSONtoForm(data),
+    };
+    await fetch(`${Config.API_URL}/order/create`, requestOptions)
+      .then(async response => response.json())
+      .then(async res => {
+        try {
+          console.log('productsres', res);
+          if (res.status === 'order_created') {
+            setLoader(false);
+            await AsyncStorage.setItem(
+              'noon_orderid',
+              res?.order?.noon_p_order_reference,
+            );
+            navigation.navigate('WebView', {
+              uri: res?.order?.noon_p_checkout_post_url,
+            });
+            // console.log('productsres2', res);
+            /*  dispatch({
+              type: types.CART_COUNTER,
+              counter: '',
+            }); */
+          }
+        } catch (error) {
+          setLoader(false);
+          console.log(error);
+        }
       });
   };
   const data = [
@@ -275,13 +440,23 @@ const LiveProducts = ({route, navigation}) => {
     setChecklive(true);
     //setJoinedUsers(30);
   }, [Isfocused]);
-  //console.log(userData);
+  const loop = [
+    'aftab',
+    'aftab',
+    'aftab',
+    'owais',
+    'aftab',
+    'aftab',
+    'aftab',
+    'owais',
+  ];
+  // console.log('Homedetails', Winnerdata?.data?.winner);
   return (
     <View style={styles.gradientView}>
       {stream ? (
         <Video
           source={{
-            uri: false,
+            uri: LandingData?.streamUrl,
           }}
           hls={true}
           paused={false}
@@ -305,7 +480,7 @@ const LiveProducts = ({route, navigation}) => {
               <Text style={styles.join_text}>{joinedUsers}</Text>
             </View>
           </View>
-          {/*  <ImageBackground source={bgcart} style={styles.bg_cart}>
+          {/*   <ImageBackground source={bgcart} style={styles.bg_cart}>
             <Cart_count style={styles.cart} />
           </ImageBackground> */}
         </View>
@@ -321,18 +496,27 @@ const LiveProducts = ({route, navigation}) => {
           ]}>
           {Itemshow2 && (
             <Chat
+              data={Homedetails?.live_luckydraw?.product}
               userInfo={userData}
+              loading={Loader}
               onPress={() => {
                 totalLives >= 120 ? GetData() : setLE_Visible(true);
               }}
             />
           )}
+
           {Itemshow1 && <Randomnames data={JoinerList} />}
-          {BuyProduct && <WinningProduct />}
+          {BuyProduct && (
+            <WinningProduct
+              setCM_Visible={setCM_Visible}
+              data={Homedetails?.live_luckydraw?.product}
+            />
+          )}
           {EndLuckydraw && <Redirecting />}
         </LinearGradient>
       )}
       <ShippingModal
+        loading={Loader}
         OrderDetail={() => OrderDetail}
         paymentMethod={paymentMethod}
         setPaymentMethod={setPaymentMethod}
@@ -361,11 +545,13 @@ const LiveProducts = ({route, navigation}) => {
         onPress={() => setBlmodalVisible(true)}
       />
       <Enterluckydraw
+        loading={Loader}
         JoinUsers={() => JoinUsers}
         ELD_Visible={ELD_Visible}
         setELD_Visible={setELD_Visible}
       />
       <WinnerModal
+        Winner={Winnerdata?.data?.winner}
         WmodalVisible={WmodalVisible}
         setWmodalVisible={setWmodalVisible}
       />
@@ -386,6 +572,35 @@ const LiveProducts = ({route, navigation}) => {
         setSmodalVisible={setSmodalVisible}
         Data={orderinfo}
       />
+      <Livepayment
+        setLpayment_Visible={setLpayment_Visible}
+        Lpayment_Visible={Lpayment_Visible}
+      />
+      <Liveaddtocartmodal
+        walletamount={walletData}
+        data={Homedetails?.live_luckydraw?.product}
+        loading={Loader}
+        paymentMethod2={paymentMethod2}
+        setPaymentMethod2={setPaymentMethod2}
+        CM_Visible={CM_Visible}
+        setCM_Visible={setCM_Visible}
+        Payment_api={() => Payment_wallet}
+        Payment_api2={() => Payment_noon}
+      />
+      <BuyLifeCongrats
+        ModalRef={SucessModalState}
+        heading={'Alert'}
+        description={'Successfully buy product'}
+        requestOnPress={() => {
+          SucessModalState.current(false);
+        }}
+        closeOnPress={() => {
+          SucessModalState.current(false);
+          setPaymentMethod2(null);
+          setCM_Visible(false);
+        }}
+      />
+      <Modals ModalRef={ModalErrorState} Error />
     </View>
   );
 };

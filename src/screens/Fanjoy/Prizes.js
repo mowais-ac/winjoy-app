@@ -42,7 +42,7 @@ const {width, height} = Dimensions.get('window');
 
 const Prizes = ({navigation}) => {
   const Fanjoy_datalist = useSelector(state => state.app.Fanjoy_data_list);
-  const [Activedata, setActivedata] = useState();
+  const [Activedata, setActivedata] = useState(0);
   const [Data, setData] = useState(null);
   const [refreshing, setRefreshing] = useState(false);
   const dispatch = useDispatch();
@@ -54,7 +54,7 @@ const Prizes = ({navigation}) => {
   useEffect(() => {
     dispatch(Fanjoy_dataList());
   }, []);
-  console.log('fanjoyss', Fanjoy_datalist?.data);
+  //console.log('fanjoyss', Fanjoy_datalist?.data);
 
   const list1 = ['abc', 'abc2', 'abc3', 'abc4', 'abc5', 'abc6'];
   return (
@@ -84,11 +84,24 @@ const Prizes = ({navigation}) => {
             justifyContent: 'center',
           }}
           renderItem={({item}) => (
-            <View style={styles.selectbody}>
+            <View style={[styles.selectbody, {backgroundColor: 'red'}]}>
               <TouchableOpacity
                 onPress={() => setActivedata(item)}
-                style={styles.selectbtn}>
-                <Text style={styles.btntext1}>{item.name}</Text>
+                style={[
+                  styles.selectbtn,
+                  item.id == Activedata.id
+                    ? {backgroundColor: '#E7003F'}
+                    : {backgroundColor: '#fff'},
+                ]}>
+                <Text
+                  style={[
+                    styles.btntext1,
+                    item.id == Activedata.id
+                      ? {color: '#fff'}
+                      : {color: '#E7003F'},
+                  ]}>
+                  {item.name}
+                </Text>
               </TouchableOpacity>
             </View>
           )}
@@ -104,7 +117,6 @@ const Prizes = ({navigation}) => {
           )}
         />
       </View>
-
       <ScrollView>
         <FlatList
           data={Activedata?.products}
@@ -155,14 +167,12 @@ const styles = StyleSheet.create({
     top: Platform.OS === 'android' ? 0 : height * 0.03,
   },
   selectbody: {
-    backgroundColor: '#D7D7EB',
     width: 115,
     height: 41,
     borderRadius: 20,
     marginHorizontal: 5,
   },
   selectbtn: {
-    backgroundColor: '#fff',
     width: 115,
     height: 41,
     borderRadius: 20,
@@ -172,7 +182,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   btntext1: {
-    color: '#E7003F',
     fontFamily: 'Axiforma',
     fontSize: 15,
     fontWeight: '600',
@@ -200,6 +209,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: '600',
     fontSize: 15,
+    marginTop: 5,
     fontFamily: 'Axiforma',
   },
   topbtn: {
@@ -314,9 +324,9 @@ const styles = StyleSheet.create({
   causestext1: {color: '#420E92', fontSize: 15.5, fontWeight: '700'},
   viewbtn: {color: '#E7003F', fontSize: 16, fontWeight: '600'},
   storkepic: {
-    textShadowColor: '#D9FE51',
+    textShadowColor: '#E7003F',
     textShadowOffset: {width: 0, height: 0},
-    color: '#E7003F',
+    color: '#D9FE51',
     fontSize: 26,
     textShadowRadius: 5.5,
     fontFamily: 'Axiforma-Regular',

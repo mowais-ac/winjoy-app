@@ -1,5 +1,4 @@
 import {
-  Modal,
   StyleSheet,
   Text,
   View,
@@ -8,39 +7,42 @@ import {
   TouchableOpacity,
   TextInput,
   Button,
-  ActivityIndicator,
 } from 'react-native';
 import React, {useState} from 'react';
-//import Modal from 'react-native-modal';
-import donation from '../../assets/imgs/d.png';
-import check from '../../assets/imgs/c.png';
-import meal from '../../assets/imgs/meal.png';
-import plant from '../../assets/imgs/plant.png';
-const ShippingModal = ({
-  modalVisible,
-  setModalVisible,
-  paymentMethod,
-  setPaymentMethod,
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import EncryptedStorage from 'react-native-encrypted-storage';
+import {GetDate, JSONtoForm} from '../Constants/Functions';
+import Config from 'react-native-config';
+import Modal from 'react-native-modal';
+import donation from '../assets/imgs/d.png';
+import check from '../assets/imgs/c.png';
+import meal from '../assets/imgs/meal.png';
+import plant from '../assets/imgs/plant.png';
+import Livepayment from './Livepayment';
+const Liveaddtocartmodal = ({
+  CM_Visible,
+  setCM_Visible,
+  paymentMethod2,
+  setPaymentMethod2,
   setShippingAddress,
-  OrderDetail,
+  Payment_api,
+  Payment_api2,
   loading,
+  data,
+  walletamount,
 }) => {
+  const [Lpayment_Visible, setLpayment_Visible] = useState(false);
   return (
     <Modal
-      // swipeDirection={['down']}
-      // useNativeDriverForBackdrop
-      // hasBackdrop={true}
-      // onSwipeComplete={() => setModalVisible(false)}
-      // isVisible={modalVisible}
-      // style={{margin: 0}}
-      // onBackButtonPress={() => {
-      //   setModalVisible(false);
-      // }}
-      animationType="slide"
-      transparent={true}
-      visible={modalVisible}
-      statusBarTranslucent={false}
-      onRequestClose={() => setModalVisible(false)}>
+      swipeDirection={['down']}
+      useNativeDriverForBackdrop
+      hasBackdrop={true}
+      onSwipeComplete={() => setCM_Visible(false)}
+      isVisible={CM_Visible}
+      style={{margin: 0}}
+      onBackButtonPress={() => {
+        setCM_Visible(false);
+      }}>
       <View style={styles.modalView}>
         <View style={styles.notch} />
         <View style={styles.container}>
@@ -50,13 +52,16 @@ const ShippingModal = ({
           <View
             style={[
               styles.pickup,
-              {borderColor: paymentMethod === 'pickup' ? '#420E92' : '#ECF1F9'},
+              {
+                borderColor:
+                  paymentMethod2 === 'pickup' ? '#420E92' : '#ECF1F9',
+              },
             ]}>
             <View style={styles.mainbtn}>
               <TouchableOpacity
-                onPress={() => setPaymentMethod('pickup')}
+                onPress={() => setPaymentMethod2('pickup')}
                 style={styles.checkBox}>
-                {paymentMethod == 'pickup' && (
+                {paymentMethod2 == 'pickup' && (
                   <Image source={check} style={styles.checkImage} />
                 )}
               </TouchableOpacity>
@@ -71,14 +76,14 @@ const ShippingModal = ({
               styles.deliver,
               {
                 borderColor:
-                  paymentMethod === 'deliver' ? '#420E92' : '#ECF1F9',
+                  paymentMethod2 === 'deliver' ? '#420E92' : '#ECF1F9',
               },
             ]}>
             <View style={styles.mainbtn}>
               <TouchableOpacity
-                onPress={() => setPaymentMethod('deliver')}
+                onPress={() => setPaymentMethod2('deliver')}
                 style={styles.checkBox}>
-                {paymentMethod == 'deliver' && (
+                {paymentMethod2 == 'deliver' && (
                   <Image source={check} style={styles.checkImage} />
                 )}
               </TouchableOpacity>
@@ -100,7 +105,7 @@ const ShippingModal = ({
               styles.donate,
               {
                 borderColor:
-                  paymentMethod === 'donation' ? '#420E92' : '#ECF1F9',
+                  paymentMethod2 === 'donation' ? '#420E92' : '#ECF1F9',
               },
             ]}>
             <View style={styles.icon}>
@@ -108,9 +113,9 @@ const ShippingModal = ({
             </View>
             <View style={styles.mainbtn}>
               <TouchableOpacity
-                onPress={() => setPaymentMethod('donation')}
+                onPress={() => setPaymentMethod2('donation')}
                 style={styles.checkBox}>
-                {paymentMethod == 'donation' && (
+                {paymentMethod2 == 'donation' && (
                   <Image source={check} style={styles.checkImage} />
                 )}
               </TouchableOpacity>
@@ -123,20 +128,19 @@ const ShippingModal = ({
               around the world.{' '}
             </Text>
           </View>
-
           <View
             style={[
               styles.plant,
-              {borderColor: paymentMethod === 'plant' ? '#420E92' : '#ECF1F9'},
+              {borderColor: paymentMethod2 === 'plant' ? '#420E92' : '#ECF1F9'},
             ]}>
             <View style={styles.icon}>
               <Image source={plant} style={styles.plantimg} />
             </View>
             <View style={styles.mainbtn}>
               <TouchableOpacity
-                onPress={() => setPaymentMethod('plant')}
+                onPress={() => setPaymentMethod2('plant')}
                 style={styles.checkBox}>
-                {paymentMethod === 'plant' && (
+                {paymentMethod2 === 'plant' && (
                   <Image source={check} style={styles.checkImage} />
                 )}
               </TouchableOpacity>
@@ -151,16 +155,16 @@ const ShippingModal = ({
           <View
             style={[
               styles.meal,
-              {borderColor: paymentMethod === 'meal' ? '#420E92' : '#ECF1F9'},
+              {borderColor: paymentMethod2 === 'meal' ? '#420E92' : '#ECF1F9'},
             ]}>
             <View style={styles.icon}>
               <Image source={meal} style={styles.mealimg} />
             </View>
             <View style={styles.mainbtn}>
               <TouchableOpacity
-                onPress={() => setPaymentMethod('meal')}
+                onPress={() => setPaymentMethod2('meal')}
                 style={styles.checkBox}>
-                {paymentMethod == 'meal' && (
+                {paymentMethod2 == 'meal' && (
                   <Image source={check} style={styles.checkImage} />
                 )}
               </TouchableOpacity>
@@ -174,31 +178,36 @@ const ShippingModal = ({
             </Text>
           </View>
         </View>
-        {console.log(paymentMethod)}
         <TouchableOpacity
-          onPress={OrderDetail()}
-          disabled={paymentMethod === null ? true : false}
+          onPress={() => setLpayment_Visible(true)}
+          disabled={paymentMethod2 === null ? true : false}
           style={[
             styles.enterbtn,
-            {backgroundColor: paymentMethod === null ? '#ECEAF2' : '#420E92'},
+            {backgroundColor: paymentMethod2 === null ? '#ECEAF2' : '#420E92'},
           ]}>
-          {loading ? (
-            <ActivityIndicator size="small" color="#fff" />
-          ) : (
-            <Text style={styles.entertext}>Enter Now</Text>
-          )}
+          <Text style={styles.entertext}>Enter Now</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => setModalVisible(false)}
+          onPress={() => setCM_Visible(false)}
           style={styles.closebtn}>
           <Text style={styles.closetext}>Close</Text>
         </TouchableOpacity>
       </View>
+      <Livepayment
+        paymentMethod2={paymentMethod2}
+        walletamount={walletamount}
+        data={data}
+        loading={loading}
+        Payment_api={Payment_api()}
+        Payment_api2={Payment_api2()}
+        setLpayment_Visible={setLpayment_Visible}
+        Lpayment_Visible={Lpayment_Visible}
+      />
     </Modal>
   );
 };
 
-export default ShippingModal;
+export default Liveaddtocartmodal;
 
 const styles = StyleSheet.create({
   centeredView: {
@@ -306,7 +315,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   inputtext: {
-    height: 40,
     marginTop: '2%',
     backgroundColor: '#fff',
     borderRadius: 50,
@@ -395,17 +403,16 @@ const styles = StyleSheet.create({
   },
 
   enterbtn: {
-    justifyContent: 'center',
-    alignItems: 'center',
     height: 45,
-    marginTop: '6%',
-
+    marginTop: '7%',
+    // backgroundColor: '#420E92',
     borderRadius: 50,
   },
   entertext: {
     fontSize: 17,
     fontFamily: 'Axiforma',
     color: '#fff',
+    marginTop: '3%',
     alignSelf: 'center',
   },
   closebtn: {

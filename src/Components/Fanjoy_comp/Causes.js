@@ -5,9 +5,12 @@ import * as Progress from 'react-native-progress';
 import LinearGradient from 'react-native-linear-gradient';
 import {useDispatch, useSelector} from 'react-redux';
 import {Slug_Details} from '../../redux/actions';
+import moment from 'moment';
 const Causes = props => {
   const progress = props?.u_stock ? (props?.u_stock / props?.stock) * 1 : 0;
+  var dateToFormat = props.date;
 
+  const conduct_date = moment(dateToFormat).format('DD-M-YYYY');
   return (
     <View
       style={{
@@ -25,7 +28,7 @@ const Causes = props => {
         <View style={{alignItems: 'center'}}>
           <Text
             style={{
-              marginTop: 3,
+              marginTop: 6,
               color: '#777777',
               fontWeight: '600',
               fontFamily: 'Axiforma',
@@ -41,6 +44,8 @@ const Causes = props => {
               fontWeight: '700',
               fontFamily: 'Axiforma',
               lineHeight: 25,
+              paddingLeft: 11,
+              alignSelf: 'flex-start',
             }}>
             {' '}
             <Text
@@ -117,8 +122,11 @@ const Causes = props => {
               fontSize: 12.5,
               fontWeight: '600',
               fontFamily: 'Axiforma',
+              lineHeight: 23,
             }}>
-            Draw date to be announced soon
+            {conduct_date
+              ? `Draw date to be ${conduct_date} `
+              : 'Draw date to be announced soon'}
           </Text>
         </View>
       </TouchableOpacity>

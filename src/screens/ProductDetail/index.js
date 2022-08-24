@@ -131,9 +131,9 @@ const ProductDetail = ({props, navigation, route}) => {
     } else {
       setActivity(true);
       var postData = JSON.stringify({
-        is_from_experience: false,
+        // is_from_experience: false,
         product_id: pd?.product?.luckydraw?.product_id,
-        count: count,
+        quantity: count,
       });
       console.log('postData', postData);
       const Token = await EncryptedStorage.getItem('Token');
@@ -154,7 +154,6 @@ const ProductDetail = ({props, navigation, route}) => {
             dispatch3(GetCartData());
             //console.log({ProductDetails: res});
             setActivity(false);
-
             //SucessModalState.current(true);
             dispatch({
               type: types.CART_COUNTER,

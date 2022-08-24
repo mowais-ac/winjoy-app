@@ -5,20 +5,21 @@ const ChatList = props => {
   return (
     <View
       style={{
-        height: 60,
+        height: 65,
         flexDirection: 'row',
-        width: '97%',
+        width: '98%',
         alignItems: 'center',
         justifyContent: 'space-between',
         paddingTop: 8,
+        paddingHorizontal: 8,
       }}>
       <ProfilePicture
-        picture={props?.userInfo?.profile_image}
-        id={props?.userInfo?.id}
-        name={
-          props?.userInfo?.first_name?.slice(0, 1)?.toUpperCase() +
-          props?.userInfo?.last_name?.slice(0, 1)?.toUpperCase()
-        }
+        //picture={props?.userInfo?.profile_image}
+        //id={props?.userInfo?.id}
+        //name={
+        // props?.userInfo?.first_name?.slice(0, 1)?.toUpperCase() +
+        //  props?.userInfo?.last_name?.slice(0, 1)?.toUpperCase()
+        // }
         style={styles.avatarView}
         font={19}
       />
@@ -38,7 +39,7 @@ const ChatList = props => {
             fontWeight: 'bold',
             fontFamily: 'Axiforma-Regular',
           }}>
-          {props?.userInfo?.user_name}
+          {props?.name}
         </Text>
         <Text numberOfLines={2} style={{color: '#fff'}}>
           {props?.Inputdata}

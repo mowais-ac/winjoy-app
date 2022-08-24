@@ -11,15 +11,67 @@ import {
 } from 'react-native';
 import React, {useState, useRef, useEffect, useMemo, useCallback} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
+import Config from 'react-native-config';
+import {JSONtoForm} from '../../Constants/Functions';
+import EncryptedStorage from 'react-native-encrypted-storage';
 import PS5 from '../../assets/imgs/ps5.png';
 import bgcart from '../../assets/imgs/bgcart.png';
+import Modals from '../Modals';
 const {width, height} = Dimensions.get('window');
-const WinningProduct = () => {
+const WinningProduct = props => {
+  //console.log(props?.data?.product_id);
+  const [Loader, setLoader] = useState(false);
+  const ModalErrorState = useRef();
+  const BuyProduct = async () => {
+    setLoader(true);
+    var postData = JSON.stringify({
+      type: 'fanjoy',
+      product_id: props?.data?.product_id,
+      quantity: 1,
+    });
+    const Token = await EncryptedStorage.getItem('Token');
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: `Bearer ${Token}`,
+      },
+      body: postData,
+    };
+    await fetch(
+      `https://winjoy.incubyter.com/public/api/add_to_cart`,
+      requestOptions,
+    )
+      .then(async response => response.json())
+      .then(async res => {
+        if (res.status === 'success') {
+          setLoader(false);
+          props.setCM_Visible(true);
+          // dispatch3(GetCartData());
+          // console.log({ProductDetailss: res});
+          /*  dispatch({
+            type: types.CART_COUNTER,
+            counter: counterMain + count,
+          }); */
+        } else {
+          setLoader(false);
+          ModalErrorState.current(true, {
+            heading: 'Error',
+            Error: res.message,
+            array: res.errors ? Object.values(res.errors) : [],
+          });
+        }
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  };
   return (
     <View
       style={{
         alignItems: 'center',
-        height: height * 0.32,
+        height: 190,
         width: '90%',
         position: 'absolute',
         bottom: '5%',
@@ -40,30 +92,39 @@ const WinningProduct = () => {
           <View style={styles.top_setter}>
             <View style={styles.p_des}>
               <View style={styles.bg_pImage}>
-                <Image resizeMode="cover" source={PS5} style={styles.p_image} />
+                <Image
+                  resizeMode="cover"
+                  source={{uri: props?.data?.image}}
+                  style={styles.p_image}
+                />
               </View>
               <View style={styles.inner_p_details}>
-                <Text style={styles.p_title}>Men suit</Text>
+                <Text style={styles.p_title}>{props?.data?.title}</Text>
                 <Text numberOfLines={3} style={styles.p_detail}>
-                  spend AED100 on any work that needs doing around the house.
+                  {props?.data?.description}
                 </Text>
                 <Text style={styles.p_price}>
-                  Price <Text>100</Text>
+                  Price <Text>{props?.data?.price}</Text>
                 </Text>
               </View>
             </View>
           </View>
         </View>
-        <TouchableOpacity style={styles.btn}>
+        <TouchableOpacity onPress={() => BuyProduct()} style={styles.btn}>
           <LinearGradient
             start={{x: 0, y: 0}}
             end={{x: 1, y: 0}}
             style={styles.inner_btn}
             colors={['#420E92', '#E7003F']}>
-            <Text style={styles.btn_text}>Add to cart</Text>
+            {Loader ? (
+              <ActivityIndicator size="small" color="#fff" />
+            ) : (
+              <Text style={styles.btn_text}>Add to cart</Text>
+            )}
           </LinearGradient>
         </TouchableOpacity>
       </View>
+      <Modals ModalRef={ModalErrorState} Error />
     </View>
   );
 };
@@ -71,7 +132,7 @@ const styles = StyleSheet.create({
   productView: {
     backgroundColor: '#fff',
     alignItems: 'center',
-    height: height * 0.22,
+    height: 190,
     position: 'absolute',
     bottom: 0,
     borderRadius: 20,
@@ -142,6 +203,7 @@ const styles = StyleSheet.create({
     width: '94%',
   },
   p_des: {
+    paddingHorizontal: 4,
     flexDirection: 'row',
     alignItems: 'center',
     height: 112,
@@ -179,7 +241,7 @@ const styles = StyleSheet.create({
   },
   inner_btn: {
     width: '100%',
-    height: '100%',
+    height: 45,
     borderRadius: 100,
     justifyContent: 'center',
     alignItems: 'center',

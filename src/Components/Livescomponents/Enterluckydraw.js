@@ -1,5 +1,12 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  ActivityIndicator,
+} from 'react-native';
 import Modal from 'react-native-modal';
 import up_arrow from '../../assets/imgs/arrow-u.png';
 import down_arrow from '../../assets/imgs/d-arrow.png';
@@ -38,10 +45,14 @@ const Enterluckydraw = props => {
               <TouchableOpacity
                 onPress={props?.JoinUsers()}
                 style={styles.submitbtn}>
-                <Text style={styles.submittext}>Confirm</Text>
+                {props.loading ? (
+                  <ActivityIndicator size="small" color="#fff" />
+                ) : (
+                  <Text style={styles.submittext}>Confirm</Text>
+                )}
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => setELD_Visible(false)}
+                onPress={() => props.setELD_Visible(false)}
                 style={styles.closebtn}>
                 <Text style={styles.closetext}>Hide</Text>
               </TouchableOpacity>
@@ -103,7 +114,8 @@ const styles = StyleSheet.create({
   },
   submitbtn: {
     height: 45,
-    marginTop: '7%',
+    alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: '#420E92',
     borderRadius: 50,
     width: '80%',
@@ -112,7 +124,6 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontFamily: 'Axiforma',
     color: '#fff',
-    marginTop: '3%',
     alignSelf: 'center',
   },
   closebtn: {
@@ -138,6 +149,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     fontSize: 20,
   },
+  
   uppertext2: {
     color: '#000',
     fontFamily: 'Axiforma-Regular',

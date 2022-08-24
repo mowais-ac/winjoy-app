@@ -151,17 +151,14 @@ export const Fanjoyalldata = () => {
   try {
     return async dispatch => {
       const Token = await EncryptedStorage.getItem('Token');
-      const result = await fetch(
-        `https://testing.winjoy.ae/public/api/web/fanjoy/index`,
-        {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            Accept: 'application/json',
-            Authorization: `Bearer ${Token}`,
-          },
+      const result = await fetch(`${Config.API_URL}/web/fanjoy/index`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Accept: 'application/json',
+          Authorization: `Bearer ${Token}`,
         },
-      );
+      });
       const json = await result.json();
 
       if (json && json.status === 'success') {
@@ -178,17 +175,14 @@ export const Fanjoy_dataList = () => {
   try {
     return async dispatch => {
       const Token = await EncryptedStorage.getItem('Token');
-      const result = await fetch(
-        `https://testing.winjoy.ae/public/api/web/products/list`,
-        {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            Accept: 'application/json',
-            Authorization: `Bearer ${Token}`,
-          },
+      const result = await fetch(`${Config.API_URL}/web/products/list`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Accept: 'application/json',
+          Authorization: `Bearer ${Token}`,
         },
-      );
+      });
       const json = await result.json();
       if (json) {
         dispatch({
@@ -204,17 +198,14 @@ export const Slug_Details = slug => {
   try {
     return async dispatch => {
       const Token = await EncryptedStorage.getItem('Token');
-      const result = await fetch(
-        `https://testing.winjoy.ae/public/api/web/product/${slug}`,
-        {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            Accept: 'application/json',
-            Authorization: `Bearer ${Token}`,
-          },
+      const result = await fetch(`${Config.API_URL}/web/product/${slug}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Accept: 'application/json',
+          Authorization: `Bearer ${Token}`,
         },
-      );
+      });
       const json = await result.json();
       if (json) {
         dispatch({
@@ -653,7 +644,7 @@ export const Live_Luckydraw = data => {
       const Token = await EncryptedStorage.getItem('Token');
       return await Winjoy.post('enter/liveluckydraw', data, {
         headers: {
-          Authorization: `Bearer ${'4437|Vfslk6akr2M6MbswI2q6IHjaLrBLLFj5mSPtDiuw'}`,
+          Authorization: `Bearer ${Token}`,
         },
       }).then(res => {
         if (res.data) {
@@ -663,6 +654,63 @@ export const Live_Luckydraw = data => {
           });
         }
       });
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const Home_Details = () => {
+  try {
+    return async dispatch => {
+      const Token = await EncryptedStorage.getItem('Token');
+      //  const result = await fetch(`${Config.API_URL}/liveluckydraw`, {
+
+      const result = await fetch(`${Config.API_URL}/liveluckydraw`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Accept: 'application/json',
+          Authorization: `Bearer ${Token}`,
+        },
+      });
+      const json = await result.json();
+      if (json) {
+        dispatch({
+          type: types.HOME_DETAILS,
+          payload: {loading: false, data: json},
+        });
+      }
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const Winner = e => {
+  try {
+    return async dispatch => {
+      const Token = await EncryptedStorage.getItem('Token');
+      const result = await fetch(
+        `${Config.API_URL}/web/liveluckydraw/winner/${e}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Accept: 'application/json',
+            Authorization: `Bearer ${Token}`,
+          },
+        },
+      );
+      const json = await result.json();
+
+      console.log(json);
+
+      if (json) {
+        dispatch({
+          type: types.WINNER,
+          payload: {loading: false, data: json},
+        });
+      }
     };
   } catch (error) {
     console.log(error);

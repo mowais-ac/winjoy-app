@@ -30,7 +30,7 @@ import UserInfo from '../../Components/UserInfo';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import Config from 'react-native-config';
 import car from '../../assets/imgs/room.png';
-import {FormatNumber, wait,JSONtoForm} from '../../Constants/Functions';
+import {FormatNumber, wait, JSONtoForm} from '../../Constants/Functions';
 import LinearGradient from 'react-native-linear-gradient';
 import CountDown from 'react-native-countdown-component';
 import Causes from '../../Components/Fanjoy_comp/Causes';
@@ -39,10 +39,27 @@ import Collabs from '../../Components/Fanjoy_comp/Collabs';
 import palm from '../../../src/assets/imgs/palm_tree.png';
 import rashid from '../../../src/assets/imgs/rashid_img.png';
 import {Slug_Details} from '../../redux/actions';
+import UniquenoModal from '../../Components/Livescomponents/UniquenoModal';
+import ShippingModal from '../../Components/Livescomponents/ShippingModal';
+import Enterluckydraw from '../../Components/Livescomponents/Enterluckydraw';
 const {width, height} = Dimensions.get('window');
 
-const GoldenTulip = ({navigation, slug, route}) => {
+const GoldenTulip = ({navigation, slug, route, props}) => {
   const SlugDetails = useSelector(state => state.app.slugDetails);
+  const totalLives = useSelector(state => state.app.totalLives);
+  const [UNM_Visible, setUNM_Visible] = useState(false);
+  const [ELD_Visible, setELD_Visible] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState(false);
+  const [shippingAddress, setShippingAddress] = useState('dubai');
+  const [JoinerList, setJoinerList] = useState([]);
+  const [loader, setLoader] = useState(false);
+  const [no1, setno1] = useState(0);
+  const [no2, setno2] = useState(0);
+  const [no3, setno3] = useState(0);
+  const [no4, setno4] = useState(0);
+  const [no5, setno5] = useState(0);
+  const [id, setId] = useState(0);
   const [Data, setData] = useState(null);
   const [refreshing, setRefreshing] = useState(false);
   const dispatch1 = useDispatch();
@@ -51,10 +68,11 @@ const GoldenTulip = ({navigation, slug, route}) => {
     wait(500).then(() => setRefreshing(false));
   }, []);
   const OrderDetail = async () => {
+    setLoader(true);
     const Token = await EncryptedStorage.getItem('Token');
     const body = JSONtoForm({
-      product_id: 52,
-      shipping_country: 'Pakistan',
+      product_id: SlugDetails?.data?.product?.product_id,
+      shipping_country: shippingAddress,
       shipping_method: paymentMethod,
       shipping_address: '8th Street',
       num1: no1,
@@ -63,30 +81,65 @@ const GoldenTulip = ({navigation, slug, route}) => {
       num4: no4,
       num5: no5,
     });
+    console.log('mybody', body);
     const requestOptions = {
       method: 'POST',
       headers: {
         'Content-Type': 'multipart/form-data',
         Accept: 'application/json',
-        Authorization: `Bearer ${'4437|Vfslk6akr2M6MbswI2q6IHjaLrBLLFj5mSPtDiuw'}`,
+        Authorization: `Bearer ${Token}`,
       },
       body,
     };
-    await fetch(
-      `https://testing.winjoy.ae/public/api/fanjoy/order/create`,
-      requestOptions,
-    )
+    await fetch(`${Config.API_URL}/fanjoy/order/create`, requestOptions)
       .then(async response => response.json())
       .then(res => {
+        setLoader(false);
         setModalVisible(false);
         setELD_Visible(true);
         console.log({joingameshow_res: res});
       })
       .catch(e => {
+        setLoader(false);
         console.log(e);
       });
   };
-  console.log('s', SlugDetails?.data);
+  const JoinUsers = async () => {
+    setLoader(true);
+    const Token = await EncryptedStorage.getItem('Token');
+    const body = JSONtoForm({
+      live_luckydraw_id: Homedetails?.live_luckydraw?.id,
+    });
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        Accept: 'application/json',
+        Authorization: `Bearer ${Token}`,
+      },
+      body,
+    };
+
+    await fetch(
+      `${Config.API_URL}/web/liveluckydraw/participants`,
+      requestOptions,
+    )
+      .then(async response => response.json())
+      .then(res => {
+        if (res.status === 'success') {
+          setLoader(false);
+          setJoinerList(res.participants);
+          setELD_Visible(false);
+          setItemshow2(false);
+          setItemshow1(true);
+        }
+      })
+      .catch(e => {
+        setLoader(false);
+        console.log(e);
+      });
+  };
+  //console.log('s', SlugDetails?.data);
   const list1 = ['abc', 'abc2', 'abc3', 'abc4', 'abc5', 'abc6'];
   return (
     <ScrollView style={styles.srollbody}>
@@ -110,7 +163,13 @@ const GoldenTulip = ({navigation, slug, route}) => {
               end={{x: 1, y: 0}}
               colors={['#420E92', '#E7003F']}
               style={styles.topbtn}>
-              <TouchableOpacity>
+              <TouchableOpacity
+                onPress={
+                  totalLives >= 120
+                    ? () => setUNM_Visible(true)
+                    : () =>
+                        alert('not enough lives to buy this product        ')
+                }>
                 <Text style={styles.btntext}>Enter Now</Text>
               </TouchableOpacity>
             </LinearGradient>
@@ -198,7 +257,54 @@ const GoldenTulip = ({navigation, slug, route}) => {
       <View
         style={{
           marginHorizontal: 10,
-        }}></View>
+        }}>
+        <Text style={styles.contexttest}>
+          <View style={styles.circle} />
+          Pool and facities access for one or two people.
+        </Text>
+        <Text style={styles.contexttest}>
+          <View style={styles.circle} /> Choose to gain access for one day or
+          one month
+        </Text>
+        <Text style={styles.contexttest}>
+          <View style={styles.circle} />
+          Customers can vists at 8 am and stay until 6pm
+        </Text>
+        <Text style={styles.contexttest}>
+          <View style={styles.circle} />
+          Facities includes: pool access | sauna | shower
+        </Text>
+      </View>
+      <UniquenoModal
+        setModalVisible={setModalVisible}
+        setno5={setno5}
+        setno4={setno4}
+        setno3={setno3}
+        setno2={setno2}
+        setno1={setno1}
+        no5={no5}
+        no4={no4}
+        no3={no3}
+        no2={no2}
+        no1={no1}
+        UNM_Visible={UNM_Visible}
+        setUNM_Visible={setUNM_Visible}
+      />
+      <ShippingModal
+        loading={loader}
+        OrderDetail={() => OrderDetail}
+        paymentMethod={paymentMethod}
+        setPaymentMethod={setPaymentMethod}
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        setShippingAddress={setShippingAddress}
+      />
+      <Enterluckydraw
+        loading={loader}
+        JoinUsers={() => JoinUsers}
+        ELD_Visible={ELD_Visible}
+        setELD_Visible={setELD_Visible}
+      />
     </ScrollView>
   );
 };
@@ -241,6 +347,20 @@ const styles = StyleSheet.create({
   },
   toptext2: {color: '#fff', fontWeight: 'bold', fontSize: 26},
   toptext3: {color: '#fff', fontWeight: 'bold', fontSize: 17},
+  circle: {
+    width: 10,
+    height: 10,
+    borderRadius: 100,
+    backgroundColor: '#420E92',
+  },
+  contexttest: {
+    color: '#000',
+    fontFamily: 'Axiforma-Regular',
+    fontSize: 15,
+    marginTop: 10,
+    paddingLeft: 4,
+    // textAlign: 'justify',
+  },
   topbtn: {
     height: 46,
     width: 160,

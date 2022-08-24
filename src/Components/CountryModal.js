@@ -41,12 +41,16 @@ const CountryModal = props => {
               Authorization: `Bearer ${Token}`,
             },
           };
-          await fetch(`${Config.API_URL}/countries/list`, requestOptions)
+          //await fetch(`${Config.API_URL}/countries/list`, requestOptions)
+          await fetch(
+            `https://testing.winjoy.ae/public/api/countries/list`,
+            requestOptions,
+          )
             .then(async response => response.json())
             .then(async res => {
-              // console.log('res', res);
+              console.log('res', res);
               if (!isActive) return;
-              setData(res.sort((a, b) => (a.name > b.name ? 1 : -1)));
+              setData(res.countries.sort((a, b) => (a.name > b.name ? 1 : -1)));
             });
         }
       } catch (err) {
@@ -56,7 +60,6 @@ const CountryModal = props => {
     check();
     return () => (isActive = false);
   }, []);
-
   const HandleTextChange = t => {
     if (!t || t === '') return setFiltered(null);
     else

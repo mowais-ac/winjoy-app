@@ -52,6 +52,9 @@ import {
   getLiveShowPlans,
   GetCartData,
   LeaderBoardWinners,
+  Home_Details,
+  Fanjoyalldata,
+  Slug_Details,
 } from '../../redux/actions';
 import socketIO from 'socket.io-client';
 import {useTranslation} from 'react-i18next';
@@ -64,6 +67,7 @@ const MYServer = 'https://node-winjoyserver-deploy.herokuapp.com/';
 import {Settings, AppEventsLogger} from 'react-native-fbsdk-next';
 import DeviceInfo from 'react-native-device-info';
 import messaging from '@react-native-firebase/messaging';
+import Causes from '../../Components/Fanjoy_comp/Causes';
 import {
   InterstitialAd,
   TestIds,
@@ -91,6 +95,8 @@ const index = props => {
   const LandingData = useSelector(state => state.app.LandingData);
   const isloading = useSelector(state => state.app.isloading);
   const gameEnterStatus = useSelector(state => state.app.gameEnterStatus);
+  const Fanjoy_data = useSelector(state => state.app.fanjoyalldata);
+  const Homedetails = useSelector(state => state?.app?.homeDetails?.data);
   const walletData = useSelector(state => state.app.walletData);
   const livePlans = useSelector(state => state.app.livePlans);
   const userData = useSelector(state => state.app.userData);
@@ -115,6 +121,8 @@ const index = props => {
   const dispatch7 = useDispatch();
   const dispatch8 = useDispatch();
   const dispatch9 = useDispatch();
+  const dispatch10 = useDispatch();
+  const dispatch11 = useDispatch();
   const defaultAppAdmob = firebase.admob();
   const AddModalState = useRef();
   const [Emails, setEmails] = useState('');
@@ -226,18 +234,19 @@ const index = props => {
     /*     const Token = await EncryptedStorage.getItem('Token');
     console.log(Token); */
   }, []);
+  //console.log('hometesting', Homedetails?.live_luckydraw?.status);
   useEffect(() => {
     //for liveluckydraw
     socket.on('sendOnboard', msg => {
-      console.log('onboard', msg);
-      if (msg.status === 'on_board')
+      dispatch10(Home_Details());
+      // console.log('onboard', msg.status);
+      if (msg.status === Homedetails?.live_luckydraw?.status)
         navigation.navigate('LiveStack', {screen: 'LiveProducts'});
     });
     socket.on('startProductlivestream', msg => {
       dispatch(getLandingScreen());
-      console.log('Productlivestream', msg);
+      //  console.log('Productlivestream', msg);
     });
-
     //for gameshow
     socket.on('sendStartlivegameshow', msg => {
       dispatch(getLandingScreen());
@@ -245,19 +254,16 @@ const index = props => {
     });
     socket.on('sendOnboarding', msg => {
       dispatch(getLandingScreen());
-      console.log('Should navigate2');
       if (LandingData?.gameShow?.type === 'in_venue') {
-        console.log('aftab1');
         setPnmodalVisible(true);
       } else {
-        console.log('aftab2');
         dispatch(getLandingScreen());
         NavigateToQuiz();
         Testnavigate();
       }
     });
     /*    in_venue */
-    /*     if (
+    if (
       LandingData?.gameShow?.status === 'on_boarding' ||
       LandingData?.gameShow?.status === 'started'
     ) {
@@ -267,20 +273,30 @@ const index = props => {
         NavigateToQuiz();
         Testnavigate();
       }
-    } */
+    }
+
     dynamicLinks()
       .getInitialLink()
       .then(async link => {
         if (link.url === 'https://winjoy.ae') {
-          console.log('mylink', link.url);
+          // console.log('mylink', link.url);
           navigation.navigate('Noon');
         } else {
           alert(link.url);
         }
       });
+    return () => {
+      dispatch10(Home_Details());
+      //console.log('test');
+      if ('on_board' === Homedetails?.live_luckydraw?.status) {
+        navigation.navigate('LiveStack', {screen: 'LiveProducts'});
+      }
+    };
   }, []);
   useEffect(() => {
     if (isFocused) {
+      dispatch10(Home_Details());
+      dispatch(Fanjoyalldata());
       dispatch(getLandingScreen());
       dispatch6(getWalletData());
       dispatch8(getLiveShowPlans());
@@ -294,22 +310,22 @@ const index = props => {
       });
       InAppupdate();
       socket.on('sendOnboard', msg => {
-        console.log('onboard', msg);
-        if (msg === 'onboard')
+        dispatch10(Home_Details());
+        //  console.log('onboard', msg);
+        if (msg.status === Homedetails?.live_luckydraw?.status)
           navigation.navigate('LiveStack', {screen: 'LiveProducts'});
       });
       socket.on('startProductlivestream', msg => {
         dispatch(getLandingScreen());
-        console.log('Productlivestream', msg);
+        //console.log('Productlivestream', msg);
       });
-
       socket.on('sendStartlivegameshow', msg => {
         dispatch(getLandingScreen());
-        console.log('socketevent', msg);
+        // console.log('socketevent', msg);
       });
       socket.on('sendOnboarding', msg => {
         dispatch(getLandingScreen());
-        console.log('Should navigate');
+        // console.log('Should navigate');
         if (LandingData?.gameShow?.type === 'in_venue') {
           setPnmodalVisible(true);
         } else {
@@ -324,13 +340,12 @@ const index = props => {
           devKey: 'WsirNxAS4HZB9sjUxGjHtD',
         },
         result => {
-          console.log('result', result);
+          // console.log('result', result);
         },
         error => {
           console.error(error);
         },
       );
-
       var CurrentDate = new Date();
       var duration = dayjs(LandingData?.gameShow?.start_date).diff(
         dayjs(CurrentDate.toLocaleString()),
@@ -361,7 +376,14 @@ const index = props => {
           console.log(e);
         });
     }
+    return () => {
+      dispatch10(Home_Details());
+      if ('on_board' === Homedetails?.live_luckydraw?.status) {
+        navigation.navigate('LiveStack', {screen: 'LiveProducts'});
+      }
+    };
   }, [isFocused]);
+
   //appsflyer integration
   var onInstallConversionDataCanceller = appsFlyer.onInstallConversionData(
     res => {
@@ -581,11 +603,11 @@ const index = props => {
           updatedVersionios={LandingData?.updated_version_ios}
         />
       ) : null}
-      {/*   <TouchableOpacity
+      {/*  <TouchableOpacity
         style={{marginTop: 70}}
         onPress={
           () => navigation.navigate('LiveStack', {screen: 'LiveProducts'})
-          //navigation.navigate('Fanjoy')
+          //navigation.navigate('Webrtc')
         }>
         <Text
           style={[
@@ -897,7 +919,7 @@ const index = props => {
                   }}>
                   Fanjoy
                 </Text>
-                <Text
+                {/*  <Text
                   style={{
                     color: '#0B2142',
                     fontSize: 16,
@@ -905,28 +927,33 @@ const index = props => {
                     lineHeight: Platform.OS === 'android' ? 22 : 30,
                   }}>
                   Products by creators
-                </Text>
+                </Text> */}
               </View>
               <LongButton
                 style={[
                   styles.Margin,
-                  {backgroundColor: '#ffffff', width: width * 0.35},
+                  {
+                    backgroundColor: '#ffffff',
+                    width: width * 0.3,
+                    marginBottom: 4,
+                  },
                 ]}
                 textstyle={{
                   color: '#000000',
                   fontFamily: 'Axiforma-SemiBold',
                   fontSize: 14,
                 }}
-                text="View all stars"
+                text="View all"
                 font={16}
                 shadowless
                 onPress={() => {
-                  navigation.navigate('AllCreatorsList');
+                  // navigation.navigate('AllCreatorsList');
+                  navigation.navigate('Fanjoy');
                 }}
               />
             </View>
 
-            <FlatList
+            {/*      <FlatList
               showsVerticalScrollIndicator={false}
               showsHorizontalScrollIndicator={false}
               data={LandingData?.funJoy}
@@ -954,6 +981,37 @@ const index = props => {
                 marginTop: 10,
               }}
               keyExtractor={item => item.id}
+            /> */}
+
+            <FlatList
+              data={Fanjoy_data?.data?.allProducts}
+              horizontal={true}
+              renderItem={({item}) => (
+                <Causes
+                  onpress={async () => {
+                    await dispatch1(Slug_Details(item?.product_slug));
+                    navigation?.navigate('GoldenTulip');
+                  }}
+                  title={item.title}
+                  lives={item.lives}
+                  stock={item.stock}
+                  u_stock={item.updated_stocks}
+                  image={item.image}
+                />
+              )}
+              keyExtractor={item => item}
+              ListEmptyComponent={() => (
+                <Text
+                  style={{
+                    color: '#000000',
+                    textAlign: 'center',
+                  }}>
+                  The list is empty
+                </Text>
+              )}
+              contentContainerStyle={{
+                paddingVertical: 5,
+              }}
             />
           </LinearGradient>
           {LandingData?.luckydraw_results_data ? (

@@ -92,7 +92,7 @@ const PaymentModals = props => {
 
   useEffect(() => {
     setwallet(selectedcheck === Deliver ? props.total + 15 : props.total);
-    if (is_wallet === true) {
+    if (is_wallet) {
       PostCreditCardInfo();
     } else {
       console.log('post not successfull');

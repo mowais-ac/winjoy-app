@@ -5,8 +5,8 @@ import up_arrow from '../../assets/imgs/arrow-u.png';
 import down_arrow from '../../assets/imgs/d-arrow.png';
 import tropy from '../../assets/imgs/t.png';
 import LinearGradient from 'react-native-linear-gradient';
-
 import ProfilePicture from '../ProfilePicture';
+
 const WinnerModal = props => {
   return (
     <Modal
@@ -37,18 +37,18 @@ const WinnerModal = props => {
             </View>
             <View style={{justifyContent: 'center', alignItems: 'center'}}>
               <ProfilePicture
-                // picture={userInfo?.profile_image}
-                // id={userInfo?.id}
-                // name={
-                //   userInfo?.first_name?.slice(0, 1)?.toUpperCase() +
-                //   userInfo?.last_name?.slice(0, 1)?.toUpperCase()
-                // }
+                picture={props?.Winner?.profile_image}
+                //id={props?.Winner?.id}
+                name={
+                  props?.Winner?.first_name?.slice(0, 1)?.toUpperCase() +
+                  props?.Winner?.last_name?.slice(0, 1)?.toUpperCase()
+                }
                 style={styles.avatarView}
-                font={28}
+                font={24}
               />
               <View style={{marginVertical: 10}}>
                 <Text numberOfLines={1} style={styles.winnertext}>
-                  abc
+                  {props?.Winner?.user_name}
                 </Text>
               </View>
             </View>
@@ -118,11 +118,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderColor: '#fff',
-    elevation: 3,
+    elevation: 4,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
-      height: 7,
+      height: 5,
     },
     shadowOpacity: 0.43,
     shadowRadius: 9.51,

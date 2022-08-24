@@ -8,6 +8,8 @@ const INITIAL_STATE = {
   Fanjoy_data_list: {loading: true, data: []},
   postliveluckydraw: {loading: true, data: []},
   slugDetails: {loading: true, data: []},
+  homeDetails: {loading: true, data: []},
+  winner: {loading: true, data: []},
   name: '',
   age: 0,
   walletData: [],
@@ -69,14 +71,14 @@ export default (state = INITIAL_STATE, action) => {
           data: action.payload.data,
         },
       };
-    /*   case types.GET_LANDING_DATA:
+    case types.WINNER:
       return {
         ...state,
-        Homedata: {
+        winner: {
           loading: action.payload.loading,
-          LandingData: action.payload.LandingData,
+          data: action.payload.data,
         },
-      }; */
+      };
     case types.FANJOY_ALL_DATA:
       return {
         ...state,
@@ -113,6 +115,8 @@ export default (state = INITIAL_STATE, action) => {
         loader: action.l,
         winExperienceProductData: action.payload,
       };
+    case types.HOME_DETAILS:
+      return {...state, homeDetails: action.payload};
     case types.EXPERIENCE_PRODUCT_DETAILS:
       return {...state, expProductDetail: action.payload};
     case types.EXPERIENCE_ID:

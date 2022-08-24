@@ -10,7 +10,11 @@ const Redirecting = () => {
     timer = setTimeout(() => {
       if (timeLeft <= 0) {
         clearTimeout(timer);
-        return navigation.navigate('Landing');
+        return navigation.reset({
+          index: 0,
+          routes: [{name: 'BottomTabStack'}],
+        });
+        //navigation.navigate('Landing');
       }
       setTimeLeft(timeLeft - 1);
     }, 1000);

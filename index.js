@@ -18,7 +18,6 @@ PushNotification.configure({
   popInitialNotification: true,
   requestPermissions: true,
 });
-
 LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
 LogBox.ignoreAllLogs(); //Ignore all log notifications
 AppRegistry.registerComponent(appName, () => App);

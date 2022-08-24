@@ -149,8 +149,8 @@ android {
         applicationId "com.winjoy"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 53
-        versionName "1.53"
+        versionCode 55
+        versionName "1.55"
         multiDexEnabled true
     }
     splits {

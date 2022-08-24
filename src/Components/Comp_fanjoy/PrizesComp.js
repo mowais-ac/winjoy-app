@@ -28,7 +28,7 @@ const PrizesComp = props => {
               fontSize: 14,
               fontWeight: '700',
               fontFamily: 'Axiforma',
-              lineHeight: 25,
+              lineHeight: 35,
             }}>
             {props?.title}
           </Text>
@@ -67,7 +67,7 @@ const PrizesComp = props => {
             colors={['#420E92', '#E7003F']}
             style={{
               marginVertical: 5,
-              width: '50%',
+              width: '55%',
               height: 34,
               borderRadius: 20,
               alignItems: 'center',
@@ -78,7 +78,7 @@ const PrizesComp = props => {
                 style={{
                   color: '#fff',
                   lineHeight: 18,
-                  fontSize: 14,
+                  fontSize: 12,
                   fontWeight: '700',
                   fontFamily: 'Axiforma',
                 }}>

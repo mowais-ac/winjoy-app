@@ -1,10 +1,17 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
-import Modal from 'react-native-modal';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  Modal,
+} from 'react-native';
+//import Modal from 'react-native-modal';
 import up_arrow from '../../assets/imgs/arrow-u.png';
 import down_arrow from '../../assets/imgs/d-arrow.png';
 const UniquenoModal = props => {
-  console.log('aftab', props.no1, props.no2);
+  // console.log('aftab', props.no1, props.no2);
   const Increasement = no => {
     if (props?.no1 >= 0 && props?.no1 <= 8) {
       props?.setno1(props?.no1 + no);
@@ -57,15 +64,20 @@ const UniquenoModal = props => {
   };
   return (
     <Modal
-      swipeDirection={['down']}
-      useNativeDriverForBackdrop
-      hasBackdrop={true}
-      onSwipeComplete={() => props?.setUNM_Visible(false)}
-      isVisible={props?.UNM_Visible}
-      style={{margin: 0}}
-      onBackButtonPress={() => {
-        props?.setUNM_Visible(false);
-      }}>
+      // swipeDirection={['down']}
+      // useNativeDriverForBackdrop
+      // hasBackdrop={true}
+      // onSwipeComplete={() => props?.setUNM_Visible(false)}
+      // isVisible={props?.UNM_Visible}
+      // style={{margin: 0}}
+      // onBackButtonPress={() => {
+      //   props?.setUNM_Visible(false);
+      // }}
+      animationType="slide"
+      transparent={true}
+      visible={props?.UNM_Visible}
+      statusBarTranslucent={false}
+      onRequestClose={() => props?.setUNM_Visible(false)}>
       <TouchableOpacity
         style={styles.MainView}
         onPress={() => props?.setUNM_Visible(false)}
@@ -139,7 +151,10 @@ const UniquenoModal = props => {
             </View>
             <View style={styles.mainbtn}>
               <TouchableOpacity
-                onPress={() => props?.setModalVisible(true)}
+                onPress={() => {
+                  props?.setModalVisible(true);
+                  props?.setUNM_Visible(false);
+                }}
                 style={styles.submitbtn}>
                 <Text style={styles.submittext}>Submit</Text>
               </TouchableOpacity>
@@ -171,8 +186,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   modalView: {
-    marginTop: 320,
-    //height: '60%',
+    // marginTop: 320,
+    height: '46%',
     backgroundColor: 'white',
     width: '100%',
     borderWidth: 2,
@@ -214,7 +229,7 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontFamily: 'Axiforma',
     color: '#fff',
-    marginTop: '3%',
+    marginTop: '4%',
     alignSelf: 'center',
   },
   closebtn: {
@@ -230,7 +245,7 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontFamily: 'Axiforma',
     color: '#420E92',
-    marginTop: '3%',
+    marginTop: '4%',
     alignSelf: 'center',
   },
 

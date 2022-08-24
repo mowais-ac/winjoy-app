@@ -35,15 +35,31 @@ import CountDown from 'react-native-countdown-component';
 import Causes from '../../Components/Fanjoy_comp/Causes';
 import Vacation from '../../Components/Fanjoy_comp/Vacation';
 import Collabs from '../../Components/Fanjoy_comp/Collabs';
-import ShippingModal from '../../Components/Livescomponents/ShippingModal';
 import {Fanjoyalldata, Slug_Details} from '../../redux/actions';
 import GoldenTulip from './GoldenTulip';
+import dayjs from 'dayjs';
+import moment from 'moment';
+import UniquenoModal from '../../Components/Livescomponents/UniquenoModal';
+import ShippingModal from '../../Components/Livescomponents/ShippingModal';
+import Enterluckydraw from '../../Components/Livescomponents/Enterluckydraw';
 const {width, height} = Dimensions.get('window');
 
 const Fanjoy = ({navigation}) => {
   const Fanjoy_data = useSelector(state => state.app.fanjoyalldata);
   const [Data, setData] = useState(null);
   const [slug, setSlug] = useState(null);
+  const [UNM_Visible, setUNM_Visible] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState(false);
+  const [shippingAddress, setShippingAddress] = useState('dubai');
+  const [no1, setno1] = useState(0);
+  const [no2, setno2] = useState(0);
+  const [no3, setno3] = useState(0);
+  const [no4, setno4] = useState(0);
+  const [no5, setno5] = useState(0);
+  const [id, setId] = useState(0);
+  const [loader, setLoader] = useState(false);
+  const [ELD_Visible, setELD_Visible] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const dispatch = useDispatch();
   const dispatch1 = useDispatch();
@@ -51,10 +67,26 @@ const Fanjoy = ({navigation}) => {
     setRefreshing(true);
     wait(500).then(() => setRefreshing(false));
   }, []);
-
+  const [time, setTime] = useState(() => {
+    dispatch(Fanjoyalldata());
+    var CurrentDate = new Date();
+    var duration = dayjs(Fanjoy_data?.data.luckydraw_upcoming).diff(
+      dayjs(CurrentDate.toLocaleString()),
+      'seconds',
+    );
+    return parseInt(duration);
+  });
   useEffect(() => {
     dispatch(Fanjoyalldata());
+    var CurrentDate = new Date();
+    var duration = dayjs(Fanjoy_data?.data.luckydraw_upcoming).diff(
+      dayjs(CurrentDate.toLocaleString()),
+      'seconds',
+    );
+    setTime(parseInt(duration));
   }, []);
+  var dateToFormat = Fanjoy_data?.data.luckydraw_upcoming; //TIMESTAMP
+  const date = moment(dateToFormat).format('DD MMM YYYY');
 
   const list1 = ['abc', 'abc2', 'abc3', 'abc4', 'abc5', 'abc6'];
   return (
@@ -86,10 +118,10 @@ const Fanjoy = ({navigation}) => {
         <View style={styles.timerinnerbody}>
           <View>
             <Text style={styles.timmertext1}>Next Lucky Draw</Text>
-            <Text style={styles.timmertext2}>26 May 2022</Text>
+            <Text style={styles.timmertext2}>{date}</Text>
           </View>
           <CountDown
-            //until={}
+            until={time}
             size={16}
             //onFinish={() => alert('Finished')}
             digitStyle={styles.digit}
@@ -156,12 +188,14 @@ const Fanjoy = ({navigation}) => {
               onpress={async () => {
                 await dispatch1(Slug_Details(item?.product_slug));
                 navigation?.navigate('GoldenTulip');
+                setId(item.product_id);
               }}
               title={item.title}
               lives={item.lives}
               stock={item.stock}
               u_stock={item.updated_stocks}
               image={item.image}
+              date={item.luckydraw.conduct_date}
             />
           )}
           keyExtractor={item => item}
@@ -182,7 +216,7 @@ const Fanjoy = ({navigation}) => {
 
       <View style={styles.causetextbody}>
         <Text style={styles.causestext1}>WHAT WOULD YOU LIKE TO WIN?</Text>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('Prizes')}>
           <Text style={styles.viewbtn}>View All</Text>
         </TouchableOpacity>
       </View>
@@ -245,37 +279,6 @@ const Fanjoy = ({navigation}) => {
         />
       </View>
       <Text style={styles.outtext2}>Win your favourite brand's products</Text>
-
-      {/* <TouchableOpacity
-            style={{backgroundColor: 'red', width: 40, height: 30}}
-            onPress={() => setModalVisible(true)}>
-            <Text>ShippingModal</Text>
-          </TouchableOpacity> */}
-      {/*   <TouchableOpacity
-            style={{backgroundColor: 'red', width: 40, height: 30}}
-            onPress={() => setUNM_Visible(true)}>
-            <Text>UNM_Modal</Text>
-          </TouchableOpacity> */}
-      {/*  <TouchableOpacity
-            style={{backgroundColor: 'red', width: 40, height: 30}}
-            onPress={() => setELD_Visible(true)}>
-            <Text>Enter luckydraw</Text>
-          </TouchableOpacity> */}
-      {/* <Enterluckydraw
-        ELD_Visible={ELD_Visible}
-        setELD_Visible={setELD_Visible}
-      /> */}
-      {/* <UniquenoModal
-        UNM_Visible={UNM_Visible}
-        setUNM_Visible={setUNM_Visible}
-      /> */}
-      {/*     <ShippingModal
-        paymentMethod={paymentMethod}
-        setPaymentMethod={setPaymentMethod}
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
-        setShippingAddress={setShippingAddress}
-      /> */}
     </ScrollView>
   );
 };

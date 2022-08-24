@@ -20,6 +20,7 @@ import LiveProducts from '../screens/LiveProducts.js';
 import GoldenTulip from '../screens/Fanjoy/GoldenTulip';
 import Fanjoy from '../screens/Fanjoy/Fanjoy';
 import Prizes from '../screens/Fanjoy/Prizes';
+//import Webrtc from '../screens/Webtrc';
 const Stack = createNativeStackNavigator();
 export default index = () => (
   <Stack.Navigator
@@ -39,6 +40,7 @@ export default index = () => (
       component={ExperienceProductDetail}
     />
     <Stack.Screen name="Cart" component={Cart} />
+    {/*  <Stack.Screen name="Webrtc" component={Webrtc} /> */}
     <Stack.Screen name="Orders" component={Orders} />
     <Stack.Screen name="ProductDetail" component={ProductDetail} />
     <Stack.Screen name="AllCreatorsList" component={AllCreatorsList} />

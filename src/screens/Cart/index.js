@@ -334,7 +334,6 @@ const index = ({props, navigation}) => {
                       {FormatNumber(Math.trunc(cartData?.vat))}
                     </Text>
                   </View>
-
                   <TouchableOpacity
                     onPress={() => {
                       {

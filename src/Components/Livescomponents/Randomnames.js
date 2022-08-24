@@ -27,7 +27,7 @@ class Randomnames extends Component {
             style={{
               height: 100,
               backgroundColor: 'rgba(0, 0, 0, 0.3)',
-              width: 350,
+              width: 360,
               borderRadius: 10,
               marginVertical: 5,
               flexDirection: 'row',
@@ -36,14 +36,14 @@ class Randomnames extends Component {
               marginBottom: 5,
             }}>
             <ProfilePicture
-              picture={item?.profile_image}
+              picture={item?.user?.profile_image}
               id={item?.id}
               name={
-                item?.first_name?.slice(0, 1)?.toUpperCase() +
-                item?.last_name?.slice(0, 1)?.toUpperCase()
+                item?.user?.first_name?.slice(0, 1)?.toUpperCase() +
+                item?.user?.last_name?.slice(0, 1)?.toUpperCase()
               }
               style={styles.avatarView}
-              font={25}
+              font={20}
             />
             <Text
               numberOfLines={1}
@@ -54,7 +54,7 @@ class Randomnames extends Component {
                 fontFamily: 'Axiforma-Regular',
                 paddingLeft: 12,
               }}>
-              {item.user_name}
+              {item?.user?.user_name}
             </Text>
           </View>
         </View>
@@ -72,7 +72,7 @@ class Randomnames extends Component {
   }
 
   startScroll() {
-    this.activeInterval = setInterval(this.scrolling, 32);
+    this.activeInterval = setInterval(this.scrolling, 34);
   }
 
   scrolling = () => {
@@ -84,7 +84,7 @@ class Randomnames extends Component {
     }
     if (data.length > 5) {
       // Increment position with each new interval
-      const position = currentPosition + 10;
+      const position = currentPosition + 3;
       this.ticker.scrollToOffset({offset: position, animated: false});
       // After position passes this value, snaps back to beginning
       const maxOffset = data.length * itemWidth;
@@ -122,6 +122,8 @@ class Randomnames extends Component {
 
   render() {
     const {data} = this.getWrappedData();
+
+    //console.log('data', data);
     return (
       <FlatList
         initialNumToRender={4}

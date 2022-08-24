@@ -6,86 +6,125 @@ import {
   Image,
   TouchableOpacity,
   StyleSheet,
+  ActivityIndicator,
+  FlatList,
 } from 'react-native';
-import React, {useState} from 'react';
+import {io} from 'socket.io-client';
+import React, {useState, useEffect, useRef, useCallback} from 'react';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview';
 import arrow from '../../assets/imgs/r-arrow.png';
 const {width, height} = Dimensions.get('window');
 import ChatList from './ChatList';
 import {ScrollView} from 'react-native-gesture-handler';
 const Chat = props => {
-  const [Inputdata, setInputdata] = useState();
+  const [Inputdata, setInputdata] = useState('');
+  const msgg = useRef();
+  const [user, setUser] = useState('');
+  const [data, setData] = useState([]);
+  const socket = io('https://node-winjoyserver-deploy.herokuapp.com/');
   const [arr, setarr] = useState([]);
-  console.log(props?.userInfo?.user_name);
 
-  const updatedArray = [
+  const addTodo = useCallback(() => {
+    socket.on('userConnected', data => {
+      setUser(data);
+      console.log('user', data);
+    });
+    socket.on('sendMessage', msg => {
+      let clonearray = [...data];
+      setData(clonearray.concat(msg.message));
+    });
+  }, [data, user]);
+  useEffect(() => {
+    addTodo();
+  }, [data]);
+  /* const updatedArray = [
     ...arr,
     {
-      msg: Inputdata,
-      name: props?.userInfo?.user_name,
+      msg: data,
+      name: user,
     },
-  ];
+  ]; */
+
+  const sendMessage = () => {
+    if (!!Inputdata) {
+      socket.emit('sendChatMessage', Inputdata);
+      socket.emit('newUser', props?.userInfo?.user_name);
+      setInputdata();
+      return;
+    }
+    alert('please enter your message');
+  };
 
   return (
     <View style={styles.mainbody}>
-      <View style={styles.innerbody}>
-        <View style={{height: 270, marginBottom: 5}}>
-          <ScrollView>
-            {arr.map((item, index) => {
-              return (
-                <ChatList
-                  key={index}
-                  userInfo={props?.userInfo}
-                  Inputdata={item?.msg}
-                  name={item?.name}
-                />
-              );
-            })}
-          </ScrollView>
+      <KeyboardAwareScrollView
+        enableOnAndroid={true}
+        style={{height: '100%'}}
+        enableAutoAutomaticScroll={Platform.OS === 'ios'}
+        extraHeight={130}
+        extraScrollHeight={130}>
+        <View style={styles.innerbody}>
+          <View
+            style={{
+              // backgroundColor: 'pink',
+              marginBottom: 10,
+              height: 325,
+            }}>
+            <FlatList
+              inverted={true}
+              data={data}
+              renderItem={({item}) => {
+                return (
+                  <ChatList
+                    //key={index}
+                    // userInfo={props?.userInfo}
+                    Inputdata={item}
+                    name={user}
+                  />
+                );
+              }}
+            />
+          </View>
+
+          <View style={styles.msgbody}>
+            <TextInput
+              value={Inputdata}
+              placeholder="write something here"
+              placeholderTextColor={'#fff'}
+              keyboardType={'default'}
+              onChangeText={text => {
+                setInputdata(text);
+              }}
+              onSubmitEditing={sendMessage}
+              style={styles.input}
+            />
+            <TouchableOpacity onPress={sendMessage} style={styles.msgbtn}>
+              <Image source={arrow} style={{width: 15, height: 15}} />
+            </TouchableOpacity>
+          </View>
         </View>
-        {/* <View>
-          <ChatList userInfo={props?.userInfo} Inputdata={Inputdata} />
-           <ChatList />
-          <ChatList />
-          <ChatList /> 
-        </View> */}
-        <View style={styles.msgbody}>
-          <TextInput
-            value={Inputdata}
-            placeholder="write something here"
-            placeholderTextColor={'#fff'}
-            keyboardType={'default'}
-            onChangeText={text => {
-              setInputdata(text);
-            }}
-            style={styles.input}
-          />
-          <TouchableOpacity
-            onPress={() => {
-              setInputdata(), setarr(updatedArray);
-            }}
-            style={styles.msgbtn}>
-            <Image source={arrow} style={{width: 15, height: 15}} />
-          </TouchableOpacity>
-        </View>
-      </View>
+      </KeyboardAwareScrollView>
       <View style={styles.livebody}>
         <View style={styles.innerlivecontent}>
-          <Image style={styles.liveimg} />
-          <View style={{width: 135}}>
+          <Image style={styles.liveimg} source={{uri: props?.data?.image}} />
+          <View style={{width: 135, marginLeft: 5}}>
             <Text style={styles.livetext1}>Get chance to</Text>
             <Text style={styles.livetext2}>
               Win{' '}
               <Text numberOfLines={2} style={styles.livetext3}>
-                gourmet dining on a bus
+                {props?.data?.title}
               </Text>
             </Text>
           </View>
         </View>
         <View style={styles.innerlive}>
-          <Text style={styles.livetext4}>30 Lives</Text>
+          <Text style={styles.livetext4}>{props.data.lives} Lives</Text>
           <TouchableOpacity onPress={props?.onPress} style={styles.livebtn}>
-            <Text style={styles.livetext5}>Enter Now</Text>
+            {props.loading ? (
+              <ActivityIndicator size="small" color="#fff" />
+            ) : (
+              <Text style={styles.livetext5}>Enter Now</Text>
+            )}
           </TouchableOpacity>
         </View>
       </View>
@@ -94,7 +133,9 @@ const Chat = props => {
 };
 const styles = StyleSheet.create({
   mainbody: {
-    height: height * 0.55,
+    height: 550,
+    // height: 450,
+    // backgroundColor: 'pink',
     width: '100%',
     position: 'absolute',
     bottom: 0,
@@ -102,12 +143,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   innerbody: {
-    height: height * 0.4,
-    width: '98%',
+    //width: '98%',
+    // top: 50,
     borderRadius: 20,
     alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: 10,
+    //backgroundColor: 'red',
+
+    // justifyContent: 'space-between',
   },
   msgbody: {
     backgroundColor: '#000000',
@@ -122,7 +164,7 @@ const styles = StyleSheet.create({
   livebody: {
     backgroundColor: '#fff',
     justifyContent: 'center',
-    height: height * 0.13,
+    height: 105,
     width: '90%',
     bottom: 0,
     position: 'absolute',
@@ -134,7 +176,7 @@ const styles = StyleSheet.create({
   innerlivecontent: {
     flexDirection: 'row',
     width: '65%',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
     alignItems: 'center',
   },
 
