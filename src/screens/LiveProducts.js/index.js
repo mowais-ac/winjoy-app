@@ -652,7 +652,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: '700',
     fontFamily: 'Axiforma',
-    lineHeight: 16.5,
+    lineHeight: 22,
   },
   activity: {position: 'absolute', top: 290, left: 0, right: 0},
   left_liveinnerTop: {

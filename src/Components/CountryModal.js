@@ -28,7 +28,6 @@ const CountryModal = props => {
   useEffect(() => {
     let isActive = true;
     if (props.CountryRef) props.CountryRef.current = setIsVisible;
-
     const check = async () => {
       try {
         if (Data === null) {
@@ -41,11 +40,15 @@ const CountryModal = props => {
               Authorization: `Bearer ${Token}`,
             },
           };
-          //await fetch(`${Config.API_URL}/countries/list`, requestOptions)
-          await fetch(
+          await fetch(`${Config.API_URL}/countries/list`, requestOptions)
+            /*  await fetch(
             `https://testing.winjoy.ae/public/api/countries/list`,
             requestOptions,
-          )
+          ) */
+            /* await fetch(
+            'https://fortunaze.incubyter.com/public/api/countries/list',
+            requestOptions,
+          ) */
             .then(async response => response.json())
             .then(async res => {
               console.log('res', res);

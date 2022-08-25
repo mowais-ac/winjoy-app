@@ -143,7 +143,7 @@ const Info_btn = props => {
                       textAlign: 'center',
                       fontFamily: 'Axiforma-Bold',
                     }}>
-                    Go to Goolge Play Store
+                    Go to Google Play Store
                   </Text>
                 </View>
               </TouchableOpacity>
@@ -178,7 +178,6 @@ const Info_btn = props => {
                 </View>
               </TouchableOpacity>
             )}
-
             <TouchableOpacity
               onPress={() => setShowModal(false)}
               style={{

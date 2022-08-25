@@ -5,7 +5,7 @@ import PushNotification from 'react-native-push-notification';
 import 'react-native-gesture-handler';
 PushNotification.configure({
   onRegister: function (token) {
-    console.log(token);
+    console.log('PushToken', token);
   },
   onNotification: notification => {
     console.log('NOTIFICATION:', JSON.stringify(notification));

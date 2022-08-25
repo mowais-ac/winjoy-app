@@ -64,10 +64,10 @@ import {
 import {firebase} from '@react-native-firebase/admob';
 const {width, height} = Dimensions.get('window');
 let timer = () => {};
-
 const BackgroundVideo = ({route, navigation}) => {
   const Isfocused = useIsFocused();
   const socket = socketIO(MYServer);
+  const LandingData = useSelector(state => state.app.LandingData);
   const userData = useSelector(state => state.app.userData);
   const totalLives = useSelector(state => state.app.totalLives);
   const {uri, gameshow, completed_questions, streamUrl} = route.params;
@@ -75,6 +75,7 @@ const BackgroundVideo = ({route, navigation}) => {
   const [availLifeActivity, setAvailLifeActivity] = useState(false);
   const [selected, setSelected] = useState(null);
   const [buffer, setBuffer] = useState(false);
+  const [loaded, setLoaded] = useState(false);
   const [timeLeft, setTimeLeft] = useState(10);
   const [activityScreen, setActivityScreen] = useState(false);
   const [activity, setActivity] = useState(false);
@@ -98,10 +99,16 @@ const BackgroundVideo = ({route, navigation}) => {
   const [activeQuestion, setActiveQuestion] = useState(1);
   const [refreshing, setRefreshing] = useState(false);
   const buildNumber = DeviceInfo.getBuildNumber();
+  const Is_platform = Platform.OS === 'android' ? 'android' : 'ios';
   const dispatch = useDispatch();
   const dispatch1 = useDispatch();
   const dispatch2 = useDispatch();
   const dispatch3 = useDispatch();
+  /* useEffect(() => {
+    dispatch1(getLandingScreen());
+  }, []); */
+
+  //console.log('vistaof', LandingData);
   const backAction = () => {
     Alert.alert(
       'We are live!',
@@ -117,7 +124,6 @@ const BackgroundVideo = ({route, navigation}) => {
     );
     return true;
   };
-  const Is_platform = Platform.OS === 'android' ? 'android' : 'ios';
   const startTimer = () => {
     timer = setTimeout(() => {
       if (timeLeft <= 0) {
@@ -132,7 +138,7 @@ const BackgroundVideo = ({route, navigation}) => {
     const body = JSONtoForm({
       device_using: Is_platform,
       device_version: buildNumber,
-      live_gameshow_id: gameshow.id,
+      live_gameshow_id: gameshow?.id,
     });
     const requestOptions = {
       method: 'POST',
@@ -146,7 +152,7 @@ const BackgroundVideo = ({route, navigation}) => {
     await fetch(`${Config.API_URL}/joinGameshow`, requestOptions)
       .then(async response => response.json())
       .then(res => {
-        console.log({joingameshow_res: res});
+        // console.log({joinGameshow_res: res});
       })
       .catch(e => {
         console.log(e);
@@ -158,9 +164,8 @@ const BackgroundVideo = ({route, navigation}) => {
     dispatch1(getLandingScreen());
     wait(1500).then(() => setRefreshing(false));
   }, []);
-  const appState = useRef(AppState.currentState);
-  const [appStateVisible, setAppStateVisible] = useState(appState.current);
-
+  /*  const appState = useRef(AppState.currentState);
+  const [appStateVisible, setAppStateVisible] = useState(appState.current); */
   /*   useEffect(() => {
     if (Isfocused) {
       const subscription = AppState.addEventListener('change', nextAppState => {
@@ -179,14 +184,15 @@ const BackgroundVideo = ({route, navigation}) => {
       };
     }
   }, [Isfocused]); */
-  useEffect(() => {
-    if(Isfocused){
-    AppState.addEventListener('change', _handlechange);
-    return () => {
-      AppState.removeEventListener('change', _handlechange);
-    }}
-  }, [Isfocused]);
-  const _handlechange = nextAppState => {
+  /*   useEffect(() => {
+    if (Isfocused) {
+      AppState.addEventListener('change', _handlechange);
+      return () => {
+        AppState.removeEventListener('change', _handlechange);
+      };
+    }
+  }, [Isfocused]); */
+  /*   const _handlechange = nextAppState => {
     if (
       appState.current.match(/inactive|background/) &&
       nextAppState === 'active'
@@ -199,12 +205,11 @@ const BackgroundVideo = ({route, navigation}) => {
       navigation.navigate('Landing');
     }
     console.log('appState', appState.current);
-  };
+  }; */
   useEffect(() => {
     startTimer();
     return () => clearTimeout(timer);
   });
-  const [loaded, setLoaded] = useState(false);
   const Questions = async () => {
     setActivityScreen(true);
     const Token = await EncryptedStorage.getItem('Token');
@@ -235,7 +240,6 @@ const BackgroundVideo = ({route, navigation}) => {
       });
   };
   useEffect(() => {
-    setstream(streamUrl);
     enter_gameshow();
     if (gameshow?.status === 'started') {
       userEliminate.current = true;
@@ -270,9 +274,9 @@ const BackgroundVideo = ({route, navigation}) => {
       .then(async response => response.json())
       .then(async res => {
         setAvailLifeActivity(false);
-        /*    {
+        /* 
           console.log('reslives', res);
-        } */
+         */
         if (res.message === 'Live availed successfully') {
           dispatch({
             type: types.TOTAL_LIVES,
@@ -388,7 +392,7 @@ const BackgroundVideo = ({route, navigation}) => {
         answer: answerId.current,
         live_gameshow_id: questionRef.current[activeQ]?.live_gameshow_id,
       });
-      console.log('body: ', body);
+      //console.log('body: ', body);
 
       const requestOptions = {
         method: 'POST',
@@ -434,10 +438,10 @@ const BackgroundVideo = ({route, navigation}) => {
     <View style={{backgroundColor: 'black'}}>
       <Wrapper>
         <View style={styles.gradientView}>
-          {stream ? (
+          {liveStream ? (
             <Video
               source={{
-                uri: stream ? stream : null,
+                uri: streamUrl,
               }}
               hls={true}
               paused={false}
@@ -479,6 +483,7 @@ const BackgroundVideo = ({route, navigation}) => {
                         color: '#ffff',
                         fontSize: 16,
                         fontFamily: 'Axiforma',
+                        lineHeight: 22,
                       }}>
                       LIVE
                     </Text>

@@ -41,6 +41,29 @@ import Carousel from 'react-native-snap-carousel';
 import Video from 'react-native-video';
 import PushNotification from 'react-native-push-notification';
 import {useNavigation} from '@react-navigation/native';
+import socketIO from 'socket.io-client';
+import {useTranslation} from 'react-i18next';
+import HowItWorkModal from '../../Components/HowItWorkModal';
+import NewVersionmodal from '../../Components/NewVersionmodal';
+import packageJson from '../../../package.json';
+import dynamicLinks from '@react-native-firebase/dynamic-links';
+import appsFlyer from 'react-native-appsflyer';
+import {Settings, AppEventsLogger} from 'react-native-fbsdk-next';
+import DeviceInfo from 'react-native-device-info';
+import messaging from '@react-native-firebase/messaging';
+import Causes from '../../Components/Fanjoy_comp/Causes';
+import {Winjoy} from '../../redux/Winjoy';
+import {firebase} from '@react-native-firebase/admob';
+import Picknumbers from '../../Components/Livescomponents/Picknumbers';
+import Config from 'react-native-config';
+import {
+  InterstitialAd,
+  TestIds,
+  RewardedAd,
+  RewardedAdEventType,
+  MaxAdContentRating,
+  AdEventType,
+} from '@react-native-firebase/admob';
 import {
   getLandingScreen,
   CheckGameEnterStatus,
@@ -56,29 +79,7 @@ import {
   Fanjoyalldata,
   Slug_Details,
 } from '../../redux/actions';
-import socketIO from 'socket.io-client';
-import {useTranslation} from 'react-i18next';
-import HowItWorkModal from '../../Components/HowItWorkModal';
-import NewVersionmodal from '../../Components/NewVersionmodal';
-import packageJson from '../../../package.json';
-import dynamicLinks from '@react-native-firebase/dynamic-links';
-import appsFlyer from 'react-native-appsflyer';
 const MYServer = 'https://node-winjoyserver-deploy.herokuapp.com/';
-import {Settings, AppEventsLogger} from 'react-native-fbsdk-next';
-import DeviceInfo from 'react-native-device-info';
-import messaging from '@react-native-firebase/messaging';
-import Causes from '../../Components/Fanjoy_comp/Causes';
-import {
-  InterstitialAd,
-  TestIds,
-  RewardedAd,
-  RewardedAdEventType,
-  MaxAdContentRating,
-  AdEventType,
-} from '@react-native-firebase/admob';
-import {firebase} from '@react-native-firebase/admob';
-import Picknumbers from '../../Components/Livescomponents/Picknumbers';
-
 Settings.setAppID('1149665975867657');
 const adUnitId =
   Platform.OS === 'android'
@@ -108,8 +109,13 @@ const index = props => {
   const [refreshing, setRefreshing] = React.useState(false);
   const [activeSlide, setActiveSlide] = useState();
   const [buffer, setBuffer] = useState(false);
+  const [loaded, setLoaded] = useState(false);
   const [videoAction, setVideoAction] = useState(true);
   const [imgSlider, setImageSlider] = useState([]);
+  const [home, setHome] = useState(null);
+  const [status, setStatus] = useState('');
+  const [home2, setHome2] = useState(null);
+  const [status2, setStatus2] = useState('');
   const [PnmodalVisible, setPnmodalVisible] = useState(false);
   const dispatch = useDispatch();
   const dispatch1 = useDispatch();
@@ -123,18 +129,71 @@ const index = props => {
   const dispatch9 = useDispatch();
   const dispatch10 = useDispatch();
   const dispatch11 = useDispatch();
+  const datas1 = useRef([]);
+  const datas2 = useRef([]);
   const defaultAppAdmob = firebase.admob();
   const AddModalState = useRef();
   const [Emails, setEmails] = useState('');
+  const Homenavigator = async () => {
+    if (home === null) {
+      setLoader(true);
+      try {
+        const Token = await EncryptedStorage.getItem('Token');
+        console.log(Token);
+        return await Winjoy.get('home', {
+          headers: {
+            Authorization: `Bearer ${Token}`,
+          },
+        }).then(res => {
+          if (res?.data?.status === 'success') {
+            setLoader(false);
+            setHome(res.data);
+            //  console.log('sarwar1', res.data);
+          }
+          /*  else {
+          setLoader(false);
+          ModalErrorState.current(true, {
+            heading: 'error',
+            Error: res?.data?.message,
+          });
+        } */
+        });
+      } catch (error) {
+        setLoader(false);
+        console.log(error);
+      }
+    }
+  };
+  const Livenavigator = async () => {
+    if (home2 === null) {
+      const Token = await EncryptedStorage.getItem('Token');
+      const requestOptions = {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Accept: 'application/json',
+          Authorization: `Bearer ${Token}`,
+        },
+      };
+      await fetch(`${Config.API_URL}/liveluckydraw`, requestOptions)
+        //await fetch('https://testing.winjoy.ae/public/api/', requestOptions)
+        .then(async response => response.json())
+        .then(async res => {
+          // console.log('aftab1', res);
+          setHome2(res);
+        });
+    }
+  };
   const [time, setTime] = useState(() => {
     /* dispatch(getLandingScreen()); */
     var CurrentDate = new Date();
-    var duration = dayjs(LandingData?.gameShow?.start_date).diff(
+    var duration = dayjs(home?.gameShow?.start_date).diff(
       dayjs(CurrentDate.toLocaleString()),
       'seconds',
     );
     return parseInt(duration);
   });
+  //console.log('home2', home?.gameShow?.start_date);
   const countDownFinishHandler = () => {
     console.log('counter_finish');
     onRefresh();
@@ -144,59 +203,25 @@ const index = props => {
     dispatch(getLandingScreen());
     dispatch6(getWalletData());
     var CurrentDate = new Date();
-    var duration = dayjs(LandingData?.gameShow?.start_date).diff(
+    var duration = dayjs(home?.gameShow?.start_date).diff(
       dayjs(CurrentDate.toLocaleString()),
       'seconds',
     );
     setTime(parseInt(duration));
-
-    socket.on('sendOnboarding', msg => {
-      dispatch(getLandingScreen());
-      console.log('Should navigate');
-      if (LandingData?.gameShow?.type === 'in_venue') {
-        setPnmodalVisible(true);
-      } else {
-        dispatch(getLandingScreen());
-        NavigateToQuiz();
-        Testnavigate();
-      }
-    });
     /* in_venue */
     if (
-      LandingData?.gameShow?.status === 'on_boarding' ||
-      LandingData?.gameShow?.status === 'started'
+      home?.gameShow?.status === 'on_boarding' ||
+      home?.gameShow?.status === 'started'
     ) {
-      if (LandingData?.gameShow?.type === 'in_venue') {
+      if (home?.gameShow?.type === 'in_venue') {
         setPnmodalVisible(true);
       } else {
         NavigateToQuiz();
         Testnavigate();
       }
     }
-    /*  !isloading && LandingData?.gameShow?.status === 'on_boarding'
-      ? socket.on('sendOnboarding', msg => {
-          console.log('Should navigate');
-          NavigateToQuiz(true);
-        })
-      : null; */
-    //Testnavigate();
-    //NavigateToQuiz();
-
     wait(1000).then(() => setRefreshing(false));
   }, []);
-  appsFlyer.initSdk(
-    {
-      isDebug: true,
-      appId: '1613371170',
-      devKey: 'WsirNxAS4HZB9sjUxGjHtD',
-    },
-    result => {
-      console.log('result', result);
-    },
-    error => {
-      console.error(error);
-    },
-  );
   //InApp upgrade app
   const inAppUpdates = new SpInAppUpdates(
     false, // isDebug
@@ -228,46 +253,38 @@ const index = props => {
     }
   };
   useEffect(() => {
+    dispatch(getLandingScreen());
     const unsubscribe = dynamicLinks().onLink(handleDynamicLink);
-    // When the component is unmounted, remove the listener
     return () => unsubscribe();
-    /*     const Token = await EncryptedStorage.getItem('Token');
-    console.log(Token); */
   }, []);
-  //console.log('hometesting', Homedetails?.live_luckydraw?.status);
   useEffect(() => {
+    Livenavigator();
+    Homenavigator();
     //for liveluckydraw
     socket.on('sendOnboard', msg => {
-      dispatch10(Home_Details());
-      // console.log('onboard', msg.status);
-      if (msg.status === Homedetails?.live_luckydraw?.status)
+      Livenavigator();
+      if (msg.status === home2?.live_luckydraw?.status)
         navigation.navigate('LiveStack', {screen: 'LiveProducts'});
     });
-    socket.on('startProductlivestream', msg => {
-      dispatch(getLandingScreen());
-      //  console.log('Productlivestream', msg);
-    });
-    //for gameshow
-    socket.on('sendStartlivegameshow', msg => {
-      dispatch(getLandingScreen());
-      console.log('socketevent', msg);
-    });
+    if ('on_board' === home2?.live_luckydraw?.status) {
+      navigation.navigate('LiveStack', {screen: 'LiveProducts'});
+    }
+    //for Gameshow
     socket.on('sendOnboarding', msg => {
-      dispatch(getLandingScreen());
-      if (LandingData?.gameShow?.type === 'in_venue') {
+      Homenavigator();
+      if (home?.gameShow?.type === 'in_venue') {
         setPnmodalVisible(true);
       } else {
-        dispatch(getLandingScreen());
         NavigateToQuiz();
         Testnavigate();
       }
     });
-    /*    in_venue */
+    /*  in_venue */
     if (
-      LandingData?.gameShow?.status === 'on_boarding' ||
-      LandingData?.gameShow?.status === 'started'
+      home?.gameShow?.status === 'on_boarding' ||
+      home?.gameShow?.status === 'started'
     ) {
-      if (LandingData?.gameShow?.type === 'in_venue') {
+      if (home?.gameShow?.type === 'in_venue') {
         setPnmodalVisible(true);
       } else {
         NavigateToQuiz();
@@ -285,86 +302,61 @@ const index = props => {
           alert(link.url);
         }
       });
-    return () => {
-      dispatch10(Home_Details());
-      //console.log('test');
-      if ('on_board' === Homedetails?.live_luckydraw?.status) {
-        navigation.navigate('LiveStack', {screen: 'LiveProducts'});
-      }
-    };
-  }, []);
+  }, [home, home2]);
   useEffect(() => {
     if (isFocused) {
-      dispatch10(Home_Details());
+      Livenavigator();
+      Homenavigator();
       dispatch(Fanjoyalldata());
-      dispatch(getLandingScreen());
       dispatch6(getWalletData());
       dispatch8(getLiveShowPlans());
       dispatch5(AllCreatorsList());
       dispatch1(GetCartData());
       dispatch7(LeaderBoardWinners());
-      setEmails(LandingData?.internalEmails);
+      dispatch(getLandingScreen());
       let arr = [];
       LandingData?.host_sliders_data?.map(ele => {
         arr.push(ele.url);
       });
       InAppupdate();
+      //for liveluckydraw
       socket.on('sendOnboard', msg => {
-        dispatch10(Home_Details());
-        //  console.log('onboard', msg);
-        if (msg.status === Homedetails?.live_luckydraw?.status)
+        Livenavigator();
+        if (msg.status === home2?.live_luckydraw?.status)
           navigation.navigate('LiveStack', {screen: 'LiveProducts'});
       });
-      socket.on('startProductlivestream', msg => {
-        dispatch(getLandingScreen());
-        //console.log('Productlivestream', msg);
-      });
-      socket.on('sendStartlivegameshow', msg => {
-        dispatch(getLandingScreen());
-        // console.log('socketevent', msg);
-      });
+      if ('on_board' === home2?.live_luckydraw?.status) {
+        navigation.navigate('LiveStack', {screen: 'LiveProducts'});
+      }
+      //for Gameshow
       socket.on('sendOnboarding', msg => {
-        dispatch(getLandingScreen());
-        // console.log('Should navigate');
-        if (LandingData?.gameShow?.type === 'in_venue') {
+        Homenavigator();
+        if (home?.gameShow?.type === 'in_venue') {
           setPnmodalVisible(true);
         } else {
           NavigateToQuiz();
           Testnavigate();
         }
       });
-      appsFlyer.initSdk(
-        {
-          isDebug: true,
-          appId: '1613371170',
-          devKey: 'WsirNxAS4HZB9sjUxGjHtD',
-        },
-        result => {
-          // console.log('result', result);
-        },
-        error => {
-          console.error(error);
-        },
-      );
-      var CurrentDate = new Date();
-      var duration = dayjs(LandingData?.gameShow?.start_date).diff(
-        dayjs(CurrentDate.toLocaleString()),
-        'seconds',
-      );
-      setTime(parseInt(duration));
-      setImageSlider(arr);
       /*    in_venue */
       if (
-        LandingData?.gameShow?.status === 'on_boarding' ||
-        LandingData?.gameShow?.status === 'started'
+        home?.gameShow?.status === 'on_boarding' ||
+        home?.gameShow?.status === 'started'
       ) {
-        if (LandingData?.gameShow?.type === 'in_venue') {
+        if (home?.gameShow?.type === 'in_venue') {
           setPnmodalVisible(true);
         } else {
           NavigateToQuiz();
           Testnavigate();
         }
       }
+      var CurrentDate = new Date();
+      var duration = dayjs(home?.gameShow?.start_date).diff(
+        dayjs(CurrentDate.toLocaleString()),
+        'seconds',
+      );
+      setTime(parseInt(duration));
+      setImageSlider(arr);
       CreateChannal();
       defaultAppAdmob
         .setRequestConfiguration({
@@ -376,90 +368,7 @@ const index = props => {
           console.log(e);
         });
     }
-    return () => {
-      dispatch10(Home_Details());
-      if ('on_board' === Homedetails?.live_luckydraw?.status) {
-        navigation.navigate('LiveStack', {screen: 'LiveProducts'});
-      }
-    };
-  }, [isFocused]);
-
-  //appsflyer integration
-  var onInstallConversionDataCanceller = appsFlyer.onInstallConversionData(
-    res => {
-      if (JSON.parse(res.data.is_first_launch) == true) {
-        if (res.data.af_status === 'Non-organic') {
-          var media_source = res.data.media_source;
-          var campaign = res.data.campaign;
-          console.log(
-            'This is first launch and a Non-Organic install. Media source: ' +
-              media_source +
-              ' Campaign: ' +
-              campaign,
-          );
-        } else if (res.data.af_status === 'Organic') {
-          console.log('This is first launch and a Organic Install');
-        }
-      } else {
-        console.log('This is not first launch');
-      }
-    },
-  );
-  var onAppOpenAttributionCanceller = appsFlyer.onAppOpenAttribution(res => {
-    console.log(res);
-  });
-  const eventName1 = 'af_list_view';
-  const eventValues1 = {
-    af_content_list: 1,
-    af_content_type: 'Home_products',
-  };
-  const fun_listview = () => {
-    appsFlyer.logEvent(
-      eventName1,
-      eventValues1,
-      res => {
-        console.log(res);
-      },
-      err => {
-        console.error(err);
-      },
-    );
-  };
-  const eventName = 'af_content_view';
-  const eventValues = {
-    af_price: 99,
-    af_content_id: 12,
-    af_content_type: 'General',
-    af_currency: 'AED',
-    af_content: 'Homeproducts',
-  };
-  const fun_contentview = () => {
-    appsFlyer.logEvent(
-      eventName,
-      eventValues,
-      res => {
-        console.log(res);
-      },
-      err => {
-        console.error(err);
-      },
-    );
-  };
-  useEffect(() => {
-    return () => {
-      // Optionaly remove listeners for deep link data if you no longer need them after componentWillUnmount
-      if (onInstallConversionDataCanceller) {
-        onInstallConversionDataCanceller();
-        console.log('unregister onInstallConversionDataCanceller');
-        onInstallConversionDataCanceller = null;
-      }
-      if (onAppOpenAttributionCanceller) {
-        onAppOpenAttributionCanceller();
-        console.log('unregister onAppOpenAttributionCanceller');
-        onAppOpenAttributionCanceller = null;
-      }
-    };
-  });
+  }, [isFocused, home, home2]);
   //PushNotification
   const CreateChannal = () => {
     PushNotification.createChannel({
@@ -469,34 +378,32 @@ const index = props => {
   };
   //navigate to gameshow
   const NavigateToQuiz = fromSocket => {
-    if (!LandingData?.is_testing_user) {
-      console.log('abce');
-
+    if (!home?.is_testing_user) {
       if (interstitial.loaded) {
         interstitial.show().catch(error => console.log('admob_error', error));
       }
-      console.log('Gameshow_Status1', LandingData?.gameShow?.status);
+      console.log('Gameshow_Status1', status);
       navigation.navigate('GameStack', {
         screen: 'Quiz',
         params: {
-          streamUrl: LandingData.streamUrl,
-          uri: LandingData?.gameShow?.live_stream?.key,
-          gameshow: LandingData?.gameShow,
-          completed_questions: LandingData?.gameShow?.completed_questions,
+          streamUrl: home?.streamUrl,
+          uri: home?.gameShow?.live_stream?.key,
+          gameshow: home?.gameShow,
+          completed_questions: home?.gameShow?.completed_questions,
         },
       });
     }
   };
   //Istesting enable, navigate to gameshow
   const Testnavigate = () => {
-    if (LandingData?.is_testing_user) {
+    if (home?.is_testing_user) {
       navigation.navigate('GameStack', {
         screen: 'Quiz',
         params: {
-          streamUrl: LandingData.streamUrl,
-          uri: LandingData?.gameShow?.live_stream?.key,
-          gameshowStatus: LandingData?.gameShow?.status,
-          completed_questions: LandingData?.gameShow?.completed_questions,
+          streamUrl: home?.streamUrl,
+          uri: home?.gameShow?.live_stream?.key,
+          gameshowStatus: home?.gameShow?.status,
+          completed_questions: home?.gameShow?.completed_questions,
         },
       });
     }
@@ -540,7 +447,6 @@ const index = props => {
       );
     }
   }
-  const [loaded, setLoaded] = useState(false);
   //admob interstitialAd for gameshow
   useEffect(() => {
     const eventListener = interstitial.onAdEvent(type => {
@@ -585,7 +491,6 @@ const index = props => {
         }
       });
   }, []);
-
   return (
     <SafeAreaView style={styles.SafeAreaView}>
       <Header
@@ -603,7 +508,7 @@ const index = props => {
           updatedVersionios={LandingData?.updated_version_ios}
         />
       ) : null}
-      {/*  <TouchableOpacity
+      {/*       <TouchableOpacity
         style={{marginTop: 70}}
         onPress={
           () => navigation.navigate('LiveStack', {screen: 'LiveProducts'})
@@ -919,15 +824,6 @@ const index = props => {
                   }}>
                   Fanjoy
                 </Text>
-                {/*  <Text
-                  style={{
-                    color: '#0B2142',
-                    fontSize: 16,
-                    fontFamily: 'Axiforma',
-                    lineHeight: Platform.OS === 'android' ? 22 : 30,
-                  }}>
-                  Products by creators
-                </Text> */}
               </View>
               <LongButton
                 style={[
@@ -947,41 +843,10 @@ const index = props => {
                 font={16}
                 shadowless
                 onPress={() => {
-                  // navigation.navigate('AllCreatorsList');
                   navigation.navigate('Fanjoy');
                 }}
               />
             </View>
-
-            {/*      <FlatList
-              showsVerticalScrollIndicator={false}
-              showsHorizontalScrollIndicator={false}
-              data={LandingData?.funJoy}
-              horizontal={true}
-              renderItem={({item}) => (
-                <FanJoyCard
-                  style={{
-                    width: width / 3.45,
-                    height: height * 0.2,
-                    shadowOffset: {width: 0, height: 1},
-                    shadowOpacity: 0.3,
-                    shadowRadius: 4,
-                    elevation: 4,
-                  }}
-                  name={item?.first_name + ' ' + item.last_name}
-                  imageUrl={item?.image}
-                  fans={item.fans}
-                  id={item.id}
-                />
-              )}
-              ItemSeparatorComponent={() => {
-                return <View style={{width: width * 0.03}} />;
-              }}
-              contentContainerStyle={{
-                marginTop: 10,
-              }}
-              keyExtractor={item => item.id}
-            /> */}
 
             <FlatList
               data={Fanjoy_data?.data?.allProducts}
@@ -1047,8 +912,8 @@ const index = props => {
         setPnmodalVisible={setPnmodalVisible}
         Quiz={NavigateToQuiz}
         test={Testnavigate}
-        code={LandingData?.gameShow?.code}
-        id={LandingData?.gameShow?.id}
+        code={home?.gameShow?.code}
+        id={home?.gameShow?.id}
       />
     </SafeAreaView>
   );

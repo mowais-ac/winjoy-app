@@ -8,7 +8,7 @@ import {
   Platform,
   ActivityIndicator,
 } from 'react-native';
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useCallback} from 'react';
 import Modal from 'react-native-modal';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import Config from 'react-native-config';
@@ -23,51 +23,49 @@ const Picknumbers = props => {
   const [error, setError] = useState(false);
   const [msg, setMsg] = useState('');
   const [loading, setLoading] = useState(false);
-  const enter_gameshow = async () => {
+  console.log(Feild);
+  const enter_gameshow = useCallback(async () => {
     setLoading(true);
     const Token = await EncryptedStorage.getItem('Token');
     const body = JSONtoForm({
       device_using: Is_platform,
-      device_version: buildNumber,
-      live_gameshow_id: props?.id,
-      verification_code: Feild,
+      device_version: parseInt(buildNumber),
+      live_gameshow_id: parseInt(props?.id),
+      verification_code: parseInt(Feild),
     });
+
     const requestOptions = {
       method: 'POST',
       headers: {
-        'Content-Type': 'multipart/form-data',
+        'Content-Type': 'application/json',
         Accept: 'application/json',
         Authorization: `Bearer ${Token}`,
       },
       body,
     };
-    //console.log('bodyyy', body);
-    await fetch(
-      `https://winjoy.incubyter.com/public/api/joinGameshow`,
+    // console.log(body);
+    // console.log(Feild);
+    const result = await fetch(
+      'https://winjoy.incubyter.com/public/api/joinGameshow',
       requestOptions,
-    )
-      .then(response => response.json())
-      .then(responseData => {
-        setLoading(false);
-
-        console.log('joingameshow_res', responseData);
-        if (responseData?.livegameshow?.code === Feild) {
-          props?.setPnmodalVisible(false);
-          props?.Quiz();
-          props?.test();
-        } else {
-          ModalStateError.current(true, {
-            heading: 'Error',
-            Error: responseData.message
-              ? responseData.message
-              : 'you entered invalid code',
-          });
-        }
-      })
-      .catch(e => {
-        console.log(e);
+    );
+    const json = await result.json();
+    //console.log(json);
+    if (json?.status === 'success') {
+      setLoading(false);
+      if (json?.livegameshow?.code === Feild) {
+        props?.setPnmodalVisible(false);
+        props?.Quiz();
+        props?.test();
+      }
+    } else {
+      setLoading(false);
+      ModalStateError.current(true, {
+        heading: 'Error',
+        Error: json.message ? json.message : 'you entered invalid code',
       });
-  };
+    }
+  });
   return (
     <Modal
       useNativeDriverForBackdrop
@@ -99,7 +97,12 @@ const Picknumbers = props => {
               <TextInput
                 maxLength={6}
                 placeholder="Enter 6 numbers"
-                style={{paddingHorizontal: 10, color: '#000'}}
+                style={{
+                  paddingHorizontal: 10,
+                  color: '#000',
+                  alignSelf: 'center',
+                  paddingVertical: 13,
+                }}
                 onChangeText={e => setField(e)}
                 keyboardType={'number-pad'}
               />
@@ -107,9 +110,7 @@ const Picknumbers = props => {
             <View style={styles.mainbtn}>
               <TouchableOpacity
                 disabled={Feild === null ? true : false}
-                onPress={() => {
-                  enter_gameshow();
-                }}
+                onPress={() => enter_gameshow()}
                 style={[
                   styles.submitbtn,
                   {backgroundColor: Feild === null ? '#B5ABC4' : '#420E92'},
