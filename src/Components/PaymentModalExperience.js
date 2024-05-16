@@ -49,7 +49,6 @@ const PaymentModals = props => {
   const DeclineRef = useRef();
   const SucessModalState = useRef();
   const ModalErrorState = useRef();
-
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -86,13 +85,9 @@ const PaymentModals = props => {
 
   const PostCreditCardInfo = async () => {
     let number = number1 + number2 + number3 + number4;
-    console.log('number ', number1 + number2 + number3 + number4);
-    console.log('cvc', cvc);
-    console.log('expiry', expiryDate);
     let month = expiryDate.split('/')[0];
     let year = expiryDate.split('/')[1];
-    console.log('month', month);
-    console.log('year', year);
+
     if (!number) {
       ModalErrorState.current(true, {
         heading: 'Error',
@@ -139,7 +134,7 @@ const PaymentModals = props => {
         experience_id: props?.experience_id,
         instructions: props.instructions,
       });
-      console.log('body', body);
+      
       const requestOptions = {
         method: 'POST',
         headers: {
@@ -149,12 +144,12 @@ const PaymentModals = props => {
         },
         body,
       };
-      console.log('req', requestOptions);
+
       await fetch(`${Config.API_URL}/paynow`, requestOptions)
         .then(async response => response.json())
         .then(async res => {
           setActivity(false);
-          console.log('res', res);
+
           if (res.status === 'success') {
             SucessModalState.current(true);
           } else if (res.status === 'action_required') {

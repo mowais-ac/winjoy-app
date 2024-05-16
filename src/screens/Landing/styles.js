@@ -10,6 +10,92 @@ const {width, height} = Dimensions.get('window');
 const {StyleSheet} = require('react-native');
 
 export default StyleSheet.create({
+  SafeAreaView: {backgroundColor: '#420E92'},
+  header: {
+    position: 'absolute',
+    zIndex: 1000,
+    width: '100%',
+    borderBottomRightRadius: 10,
+    borderBottomLeftRadius: 10,
+  },
+  text: {
+    color: '#fff',
+    fontSize: RFValue(15),
+    fontFamily: 'Axiforma-SemiBold',
+  },
+  mainbody: {
+    width: '100%',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  bgheart: {
+    shadowOffset: {width: 0, height: 1},
+    shadowOpacity: 0.5,
+    shadowRadius: 4,
+    elevation: 4,
+    width: 50,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  livetext: {
+    color: '#E7003F',
+    fontFamily: 'Axiforma-SemiBold',
+    fontSize: RFValue(12),
+  },
+  howitworkbtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderRadius: 100,
+    height: 40,
+    marginTop: -20,
+    paddingHorizontal: 15,
+    backgroundColor: '#ffffff',
+    marginBottom: 10,
+    justifyContent: 'space-between',
+  },
+  howitworkbtext: {
+    color: '#420E92',
+    fontSize: RFValue(14),
+    fontFamily: 'Axiforma-SemiBold',
+  },
+  sliderbody: {
+ 
+    marginTop: 5,
+
+  },
+  shoptextbody: {
+    width: '95%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 10,
+  },
+
+  shopinner: {
+    marginVertical: 10,
+    marginHorizontal: 5,
+  },
+  shoptext1: {
+    color: '#E7003F',
+    fontSize: 20,
+    fontFamily: 'Axiforma-Bold',
+  },
+  longbtntext: {
+    color: '#000000',
+    fontFamily: 'Axiforma-SemiBold',
+    fontSize: 14,
+  },
+  shoptext2: {
+    color: '#0B2142',
+    fontSize: 16,
+    fontFamily: 'Axiforma-Regular',
+  },
+  text2: {
+    color: '#ffff00',
+    fontSize: RFValue(15),
+    fontFamily: 'Axiforma-SemiBold',
+  },
   image: {
     width: width,
     height: height * 0.3,
@@ -40,7 +126,7 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderColor: '#ffffff',
-    elevation: 5,
+    elevation: 3,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -106,7 +192,7 @@ export default StyleSheet.create({
     borderTopRightRadius: 0,
     overflow: 'hidden',
   },
-  wrapper: {},
+
   slide1: {
     flex: 1,
     justifyContent: 'center',
@@ -142,7 +228,7 @@ export default StyleSheet.create({
   avatarBannerView: {
     alignItems: 'center',
     backgroundColor: '#f05b31',
-    borderRadius: widthConverter(10),
+    borderRadius: 12,
     height: height * 0.15,
     width: widthPercentageToDP('95%'),
     flexDirection: 'row',

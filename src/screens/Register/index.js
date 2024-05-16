@@ -1,39 +1,42 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   Image,
   View,
   StyleSheet,
   Dimensions,
   ScrollView,
-  SafeAreaView,
+  TouchableOpacity,
+  Text
 } from 'react-native';
 
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import Config from 'react-native-config';
 import {useTranslation} from 'react-i18next';
+import {RFValue} from 'react-native-responsive-fontsize';
 import Background from '../../Components/Background';
 import InputField from '../../Components/InputField';
 import Label from '../../Components/Label';
 import LabelButton from '../../Components/LabelButton';
 import LongButton from '../../Components/LongButton';
-
+import LinearGradient from 'react-native-linear-gradient';
+import BackIcon from 'react-native-vector-icons/Ionicons';
 import {
   JSONtoForm,
   IsVerified,
   GetUserDeviceDetails,
 } from '../../Constants/Functions';
-
 import {Images} from '../../Constants/Index';
 import Modals from '../../Components/Modals';
 import GoBack from '../../Components/GoBack';
 import {useDispatch} from 'react-redux';
 import types from '../../redux/types';
-
 const {width, height} = Dimensions.get('window');
-
-const index = ({navigation}) => {
+import {useNavigation} from '@react-navigation/native';
+const index = ({navigation,route}) => {
+  const referral_code = route.params;
   const {t} = useTranslation();
+  const [referral, setReferral] = useState(null);
   const fnameref = useRef();
   const lnameref = useRef();
   const unameref = useRef();
@@ -41,16 +44,23 @@ const index = ({navigation}) => {
   const passref = useRef();
   const phoneref = useRef();
   const cpassref = useRef();
-  const Buttonref = useRef();
+  const r = useRef();
   const ModalState = useRef();
   const dispatch = useDispatch();
+  const [userInfo, setUserInfo] = useState(null);
+  const [gettingLoginStatus, setGettingLoginStatus] = useState(true);
+
+
+  useEffect(async () => {
+    setReferral(await EncryptedStorage.getItem('myreferral'));
+  }, []);
 
   const HandleClick = async () => {
     let isnull = false;
     if (
       emailref.current.validateEmail() &&
       phoneref.current.validatePhone() &&
-      !Buttonref.current.GetActivity()
+      !r.current.GetActivity()
     ) {
       for (let e of [
         fnameref,
@@ -91,6 +101,7 @@ const index = ({navigation}) => {
         email,
         phone_no,
         password,
+
         password_confirmation,
       ].filter(e => e == null || e == '');
 
@@ -101,19 +112,23 @@ const index = ({navigation}) => {
         cpassref.current.Error();
         return;
       }
-      Buttonref.current.SetActivity(true);
+      r.current.SetActivity(true);
 
       const body = JSONtoForm({
         first_name,
         last_name,
         user_name,
         email,
+        referral_code: referral,
         phone_no: `+${phone_no}`,
         password,
         password_confirmation,
+        google_register: false,
         ...(await GetUserDeviceDetails()),
       });
-      console.log('Body', body);
+      {
+        console.log('bodyy', body);
+      }
       const requestOptions = {
         method: 'POST',
         headers: {
@@ -122,20 +137,19 @@ const index = ({navigation}) => {
         },
         body,
       };
-
+      //console.log('bodyreg', body);
       await fetch(`${Config.API_URL}/auth/new_register`, requestOptions)
         .then(response => response.json())
         .then(async res => {
-          console.log('res', res);
+          console.log('register_res', res);
           if (res.status && res.status.toLowerCase() === 'success') {
+            fun_completeregistration();
             await EncryptedStorage.setItem('Token', res.data.token);
-            if (await IsVerified(res.data.token)) {
-              navigation.replace('TabsStack');
-            } else {
-              navigation.replace('Verify', {email, phone: phone_no});
-            }
+            //console.log('res.data.token', res.data.token);
+            r.current.SetActivity(false);
+            navigation.replace('Verify', {email, phone: phone_no});
           } else {
-            Buttonref.current.SetActivity(false);
+            r.current.SetActivity(false);
             const array = res.errors
               ? Object.values(res.errors).reduce((p, n) => {
                   p.push(
@@ -146,7 +160,6 @@ const index = ({navigation}) => {
                   return p;
                 }, [])
               : [];
-
             ModalState.current(true, {
               heading: 'Error',
               Error: res.message,
@@ -158,25 +171,115 @@ const index = ({navigation}) => {
     }
   };
 
-  const GetUserName = () => {
-    return (
-      <InputField
-        style={styles.Margin}
-        placeholder={t('user')}
-        autoCapitalize="none"
-        ref={unameref}
-        Icon="user"
-        CheckUser
-      />
-    );
-  };
+  // useEffect(() => {
+  //   // Initial configuration
+  //   GoogleSignin.configure({
+  //     webClientId:
+  //       '389658608176-lv2ddmmfpnv2uoaf5nf333e5jj4oku7o.apps.googleusercontent.com',
+  //   });
+  //   _isSignedIn();
+  // }, []);
+  // const _isSignedIn = async () => {
+  //   const isSignedIn = await GoogleSignin.isSignedIn();
+  //   if (isSignedIn) {
+  //     console.log('User is already signed in');
+  //     _getCurrentUserInfo();
+  //     _signOut();
+  //   } else {
+  //     console.log('Please Login');
+  //   }
+  //   setGettingLoginStatus(false);
+  // };
+  // const _getCurrentUserInfo = async () => {
+  //   try {
+  //     let info = await GoogleSignin.signInSilently();
+  //     console.log('User Info', info);
+  //     setUserInfo(info);
+  //   } catch (error) {
+  //     if (error.code === statusCodes.SIGN_IN_REQUIRED) {
+  //       console.log('User has not signed in yet');
+  //       console.log('User has not signed in yet');
+  //     } else {
+  //       console.log("Unable to get user's info");
+  //       console.log("Unable to get user's info");
+  //     }
+  //   }
+  // };
+  // const _signIn = async () => {
+  //   // It will prompt google Signin Widget
+  //   try {
+  //     await GoogleSignin.hasPlayServices({
+  //       showPlayServicesUpdateDialog: true,
+  //     });
+  //     const userInfo = await GoogleSignin.signIn();
+  //     navigation.navigate('Googleregister', {
+  //       data: userInfo,
+  //     });
+  //     console.log('User Info', userInfo);
+
+  //     setUserInfo(userInfo);
+  //   } catch (error) {
+  //     console.log('Message', JSON.stringify(error));
+  //     if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+  //       console.log('User Cancelled the Login Flow');
+  //     } else if (error.code === statusCodes.IN_PROGRESS) {
+  //       console.log('Signing In');
+  //     } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+  //       alert('Play Services Not Available or Outdated');
+  //     } else {
+  //       alert(error.message);
+  //     }
+  //   }
+  // };
+  // const _signOut = async () => {
+  //   setGettingLoginStatus(true);
+  //   // Remove user session from the device.
+  //   try {
+  //     await GoogleSignin.revokeAccess();
+  //     await GoogleSignin.signOut();
+  //     // Removing user Info
+  //     setUserInfo(null);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  //   setGettingLoginStatus(false);
+  // };
+  // const GetUserName = () => {
+  //   return (
+  //     <InputField
+  //       style={styles.Margin}
+  //       placeholder={t('user')}
+  //       autoCapitalize="none"
+  //       ref={unameref}
+  //       Icon="user"
+  //       CheckUser
+  //     />
+  //   );
+  // };
+
   return (
-    <SafeAreaView>
-      <Background height={1.08} design />
+    <LinearGradient
+      start={{x: 0, y: 0}}
+      end={{x: 1, y: 0}}
+      colors={['#420E92', '#E7003F']}
+      style={{
+        display: 'flex',
+        flex: 1,
+      }}>
       <ScrollView>
         <KeyboardAwareScrollView keyboardDismissMode="interactive">
           <View style={styles.MainTop}>
-            <GoBack />
+          <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+      <View style={styles.container}>
+        <BackIcon
+          name="arrow-back"
+          size={20}
+          color="#FFFFFF"
+          style={{top: height * 0.001}}
+        />
+        <Text style={styles.text}>Back</Text>
+      </View>
+    </TouchableOpacity>
             <Image source={Images.Logo} style={styles.Logo} />
             <Label bold headingtype="h1" style={styles.Margin}>
               {t('create_account')}
@@ -195,7 +298,7 @@ const index = ({navigation}) => {
               ref={lnameref}
               Icon="id"
             />
-            <GetUserName />
+            {/* <GetUserName /> */}
 
             <InputField
               style={styles.Margin}
@@ -215,6 +318,7 @@ const index = ({navigation}) => {
                 phone
               />
             </View>
+
             <InputField
               style={styles.Margin}
               placeholder={t('password')}
@@ -222,6 +326,7 @@ const index = ({navigation}) => {
               ref={passref}
               Icon="lock"
             />
+
             <Label
               light
               muted
@@ -241,10 +346,19 @@ const index = ({navigation}) => {
               style={[styles.Margin, {backgroundColor: '#ffffff'}]}
               text={t('create_account')}
               font={17}
-              onPress={HandleClick}
-              ref={Buttonref}
+              onPress={() => {
+                HandleClick();
+              }}
+              ref={r}
               textstyle={{color: '#E7003F'}}
             />
+            {/* <LongButton
+              style={{backgroundColor: '#ffffff', marginTop: 15}}
+              text="Register with Google"
+              black
+              Icon="google"
+              onPress={_signIn}
+            /> */}
             <Label
               light
               style={[styles.Terms, {lineHeight: height * 0.03}]}
@@ -272,22 +386,16 @@ const index = ({navigation}) => {
               />
             </Label>
           </View>
-          {/* <LabelButton
-          style={styles.MarginBack}
-          text="Go Back"
-          black
-          onPress={() => navigation.replace("Splash")}
-        /> */}
           <View style={{marginTop: height * 0.05}} />
         </KeyboardAwareScrollView>
       </ScrollView>
-    </SafeAreaView>
+    </LinearGradient>
   );
 };
 
 const styles = StyleSheet.create({
   MainTop: {
-    height: height * 1.04,
+    height: 'auto',
     alignItems: 'center',
   },
   Logo: {
@@ -305,6 +413,18 @@ const styles = StyleSheet.create({
   PasswordTxt: {
     width: width * 0.85,
     marginTop: height * 0.01,
+  },
+  container: {
+    width: width * 0.95,
+    height: Platform.OS === 'android' ? height * 0.08 : height * 0.14,
+
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  text: {
+    fontFamily: 'Axiforma-Regular',
+    fontSize: RFValue(12),
+    color: "#fff",
   },
 });
 

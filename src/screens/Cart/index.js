@@ -12,13 +12,13 @@ import {
   Pressable,
   TouchableOpacity,
   TextInput,
+  Platform,
+  ScrollView,
 } from 'react-native';
-
 import Background from '../../Components/Background';
 import SafeArea from '../../Components/SafeArea';
 import Label from '../../Components/Label';
 import Header from '../../Components/Header';
-
 import {Colors} from '../../Constants/Index';
 import Section from '../../Components/Section';
 import UserInfo from '../../Components/UserInfo';
@@ -46,10 +46,13 @@ const {width, height} = Dimensions.get('window');
 import {connect, useDispatch, useSelector} from 'react-redux';
 import types from '../../redux/types';
 import {WjBackground} from '../../Components';
-const index = ({navigation}) => {
+import {getWalletData} from '../../redux/actions';
+const index = ({props, navigation}) => {
+ // const defaultAppAnalytics = firebase.analytics();
   const dispatch = useDispatch();
   const dispatch2 = useDispatch();
   const dispatch3 = useDispatch();
+  const dispatch6 = useDispatch();
   const ModalState = useRef();
   const SucessModalState = useRef();
   const ModalStateError = useRef();
@@ -63,278 +66,325 @@ const index = ({navigation}) => {
     state: false,
     details: null,
   });
+  const walletData = useSelector(state => state.app.walletData);
   const cartData = useSelector(state => state.app.cartData);
   const removeCartData = useSelector(state => state.app.removeCartData);
   const loading = useSelector(state => state.event.loading);
   const counterMain = useSelector(state => state.app.counter);
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
+    dispatch6(getWalletData());
     dispatch(GetCartData());
-    wait(500).then(() => setRefreshing(false));
+    wait(1000).then(() => setRefreshing(false));
   }, []);
   const PostData = async () => {
     ModalState.current(true);
   };
-  useEffect(() => {
-    dispatch(GetCartData());
-  }, []);
 
+  const eventName = 'af_initiated_checkout';
+  const eventValues = {
+    af_price: 99,
+    af_content_id: 13,
+    af_content_type: 'General',
+    af_currency: 'AED',
+    af_quantity: 1,
+    //  af_revenue: pd?.product?.price,
+  };
+
+
+  useEffect(() => {
+    dispatch6(getWalletData());
+    dispatch(GetCartData());
+
+    firebase.app();
+    firebase.analytics();
+  }, []);
+  const addCustomEvent = async () => {
+    await defaultAppAnalytics.logAddToCart({
+      currency: '0088',
+      value: 4,
+    });
+  };
+  console.log('wallet', walletData?.wallet?.your_balance);
   const RemoveItem = (id, qty) => {
-    console.log('qqty', qty);
     setId(id);
     dispatch2(RemoveCartData(id));
-    dispatch(GetCartData());
+    onRefresh();
     setUpdateData(!updateData);
     dispatch3({
       type: types.CART_COUNTER,
       counter: counterMain - qty,
     });
   };
-  const renderItem = ({item}) => {
+  const [active, setactive] = useState(false);
+
+  const Switchhandle = tab => {
+    setactive(tab);
+  };
+  const renderItem = ({item, i}) => {
     return (
-      // <TouchableOpacity
-      //   onPress={() => navigation.navigate("WishlistDetails", { item })}
-      // >
-      <View>
-        <Section
-          style={styles.Section}
-          disabled={true}
-          //onPress={() => navigation.navigate("ProductDetails", { item })}
-        >
-          <View style={styles.SectionView}>
-            <View style={styles.ImageView}>
-              <Image
-                source={{
-                  uri: item?.product?.image,
-                }}
-                style={styles.Image}
-              />
-            </View>
-            <View style={[styles.TextView, {width: width * 0.53}]}>
-              <Label
-                notAlign
-                dark
-                bold2
-                headingtype="h6"
-                style={{width: width * 0.48}}>
-                {item?.product?.title} x {item?.qty}
-              </Label>
-              {/* <Label notAlign darkmuted bold font={12} style={{ width: width * 0.5,height:height*0.05 }}>
-                {item.description}
-              </Label> */}
-              <Label
-                notAlign
-                primary
-                bold
-                headingtype="h6"
-                style={styles.LessMargin}>
-                Total: AED {FormatNumber(+item?.product?.price * item?.qty)}
-              </Label>
-            </View>
-            <TouchableOpacity
-              style={{
-                position: 'absolute',
-                right: 20,
+      <Section
+        style={styles.Section}
+        disabled={true}
+        //onPress={() => navigation.navigate("ProductDetails", { item })}
+      >
+        <View style={styles.SectionView}>
+          <View style={styles.ImageView}>
+            <Image
+              source={{
+                uri: item?.product?.image,
               }}
-              onPress={() => RemoveItem(item.id, item?.qty)}>
-              {loading && item.id === id ? (
-                <ActivityIndicator
-                  size="small"
-                  color="#000000"
-                  style={{left: 5}}
-                />
-              ) : (
-                <Entypo
-                  name="cross"
-                  size={25}
-                  color={Colors.DARK_MUTED}
-                  style={{left: 5, opacity: 0.5}}
-                />
-              )}
-            </TouchableOpacity>
+              style={styles.Image}
+            />
           </View>
-        </Section>
-      </View>
-      // </TouchableOpacity>
+          <View style={[styles.TextView, {width: width * 0.53}]}>
+            <Label
+              notAlign
+              dark
+              bold2
+              headingtype="h6"
+              style={{width: width * 0.48}}>
+              {item?.product?.title} x {item?.qty}
+            </Label>
+
+            <Label
+              notAlign
+              primary
+              bold
+              headingtype="h6"
+              style={styles.LessMargin}>
+              Total: AED {FormatNumber(+item?.product?.price * item?.qty)}
+            </Label>
+          </View>
+          <TouchableOpacity
+            style={{
+              position: 'absolute',
+              right: 20,
+            }}
+            onPress={() => {
+              RemoveItem(item.id, item?.qty)
+            }}>
+            {loading && item.id === id ? (
+              <ActivityIndicator
+                size="small"
+                color="#000000"
+                style={{left: 5}}
+              />
+            ) : (
+              <Entypo
+                name="cross"
+                size={25}
+                color={Colors.DARK_MUTED}
+                style={{left: 5, opacity: 0.5}}
+              />
+            )}
+          </TouchableOpacity>
+        </View>
+      </Section>
     );
+  };
+  /*   {
+    console.log('cartData?.total', cartData?.data?.price);
+  } */
+  const eventName3 = 'remove_from_cart';
+  const eventValues3 = {
+    af_content_id: 12,
+    af_content_type: 'T-shirt',
   };
 
   return (
-    <SafeAreaView style={{height: height}}>
-      <WjBackground
-        style={{
-          height: height * 0.19,
-          borderBottomRightRadius: 20,
-          borderBottomLeftRadius: 20,
-        }}
-      />
-      <Header value={3} />
-      <View style={{alignItems: 'center'}}>
-        <Text style={[styles.headerText, {marginTop: 20}]}>Cart</Text>
-      </View>
-      {cartData?.data === null ? (
-        <Label primary bold headingtype="h4" style={{marginTop: 15}}>
-          No data
-        </Label>
-      ) : (
-        <View style={{marginTop: height * 0.06}}>
-          <View style={{height: '85%'}}>
-            <FlatList
-              data={cartData?.data}
-              renderItem={renderItem}
-              scrollEnabled={true}
-              keyExtractor={e => e.id.toString()}
-              extraData={updateData}
-              ListEmptyComponent={
-                listloader ? (
-                  <ActivityIndicator
-                    size="large"
-                    color="#000000"
-                    style={{marginTop: height * 0.2}}
-                  />
-                ) : (
-                  <NotFoundCart
-                    text="Cart"
-                    onPress={() => navigation.navigate('PRODUCTS')}
-                  />
-                )
-              }
-              refreshControl={
-                <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
-              }
-              contentContainerStyle={{
-                paddingBottom: height * 0.06,
-              }}
-            />
+    <SafeAreaView
+      style={{
+        height: height,
+        backgroundColor: Platform.OS === 'android' ? null : '#420E92',
+      }}>
+      <View style={{backgroundColor: '#f6f1f3'}}>
+        <LinearGradient
+          start={{x: 0, y: 0}}
+          end={{x: 1, y: 0}}
+          colors={['#420E92', '#E7003F']}
+          style={{
+            height: 'auto',
+            borderBottomRightRadius: 20,
+            borderBottomLeftRadius: 20,
+          }}>
+          <Header />
+          <View style={{alignItems: 'center'}}>
+            <Text style={[styles.headerText, {marginVertical: 20}]}>Cart</Text>
           </View>
-          {cartData?.data?.length > 0 ? (
-            <View style={styles.card2}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  width: widthPercentageToDP('83'),
-                }}>
-                <Text style={[styles.metaText, {fontSize: RFValue(17)}]}>
-                  Total
-                </Text>
-                <Text
-                  style={[
-                    styles.text,
-                    {fontWeight: 'bold', fontSize: RFValue(17)},
-                  ]}>
-                  {'AED '}
-                  {FormatNumber(+cartData?.sub_total)}
-                </Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  width: widthPercentageToDP('83'),
-                }}>
-                <Text style={styles.metaText}>Sub Total</Text>
-                <Text style={styles.text}>
-                  {'AED '}
-                  {FormatNumber(Math.trunc(cartData?.total))}
-                </Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  width: widthPercentageToDP('83'),
-                }}>
-                <Text style={styles.metaText}>Vat 5%</Text>
-                <Text style={styles.text}>
-                  {'AED '}
-                  {FormatNumber(Math.trunc(cartData?.vat))}
-                </Text>
-              </View>
+        </LinearGradient>
 
-              {/* <View style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              width: widthPercentageToDP("83")
-            }}>
-              <Text style={[styles.metaText, { fontWeight: 'bold' }]}>Buy a test</Text>
-              <Text style={styles.text}>Gold Coin</Text>
-
-            </View> */}
-
-              <TouchableOpacity
-                onPress={() => {
-                  // ModalState.current(true);
-                  PostData();
-                }}
-                disabled={activity}
-                style={{
-                  height: heightConverter(55),
-                  width: width - 25,
-                  position: 'absolute',
-                  bottom: 0,
-                  borderBottomLeftRadius: 10,
-                  borderBottomRightRadius: 10,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
-                <LinearGradient
-                  start={{x: 0, y: 0}}
-                  end={{x: 1, y: 0}}
-                  style={{
-                    height: heightConverter(55),
-                    width: width - 25,
-                    position: 'absolute',
-                    bottom: 0,
-                    borderBottomLeftRadius: 10,
-                    borderBottomRightRadius: 10,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                  colors={['#420E92', '#E7003F']}>
-                  {activity ? (
-                    <ActivityIndicator size="small" color={'#fff'} />
+        {cartData?.data === null ? (
+          <Label primary bold headingtype="h4" style={{marginTop: 15}}>
+            No data
+          </Label>
+        ) : (
+          <View style={{marginTop: 5}}>
+            <View style={{height: '80%'}}>
+              <FlatList
+                data={cartData?.data}
+                renderItem={renderItem}
+                scrollEnabled={true}
+                keyExtractor={i => i}
+                extraData={updateData}
+                ListEmptyComponent={
+                  listloader ? (
+                    <ActivityIndicator
+                      size="large"
+                      color="#000000"
+                      style={{marginTop: height * 0.2}}
+                    />
                   ) : (
-                    <Label primary font={16} bold style={{color: '#ffffff'}}>
-                      Checkout
-                    </Label>
-                  )}
-                </LinearGradient>
-              </TouchableOpacity>
+                    <NotFoundCart
+                      text="Cart"
+                      onPress={() => navigation.navigate('PRODUCTS')}
+                    />
+                  )
+                }
+                contentContainerStyle={{
+                  paddingBottom: height * 0.06,
+                }}
+              />
             </View>
-          ) : null}
-        </View>
-      )}
-      <PaymentModals ModalRef={ModalState} details total={cartData?.total} />
-      <Modals
-        ModalRef={ModalStateError}
-        Error
-        onClose={() => {
-          setModelState({
-            ...ModelState,
-            state: !ModelState.state,
-          });
-        }}
-      />
-      <BuyLifeCongrats
-        ModalRef={SucessModalState}
-        heading={'Congratulations'}
-        description={'Products bought'}
-        requestOnPress={() => {
-          SucessModalState.current(false);
-        }}
-        closeOnPress={() => {
-          SucessModalState.current(false);
-          setModelState({
-            ...ModelState,
-            state: !ModelState.state,
-          });
-        }}
-      />
+            {cartData?.data?.length > 0 ? (
+              <View style={styles.card2Wrap}>
+                <View style={styles.card2}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      width: widthPercentageToDP('83'),
+                    }}>
+                    <Text style={[styles.metaText, {fontSize: RFValue(17)}]}>
+                      Total
+                    </Text>
+                    <Text
+                      style={[
+                        styles.text,
+                        {fontWeight: 'bold', fontSize: RFValue(17)},
+                      ]}>
+                      {'AED '}
+                      {FormatNumber(+cartData?.sub_total)}
+                    </Text>
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      width: widthPercentageToDP('83'),
+                    }}>
+                    <Text style={styles.metaText}>Sub Total</Text>
+                    <Text style={styles.text}>
+                      {'AED '}
+                      {FormatNumber(Math.trunc(cartData?.total))}
+                    </Text>
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      width: widthPercentageToDP('83'),
+                    }}>
+                    <Text style={styles.metaText}>Vat 5%</Text>
+                    <Text style={styles.text}>
+                      {'AED '}
+                      {FormatNumber(Math.trunc(cartData?.vat))}
+                    </Text>
+                  </View>
+                  <TouchableOpacity
+                    onPress={() => {
+                     
+                    //  addCustomEvent();
+                      ModalState.current(true);
+                      PostData();
+                    }}
+                    disabled={activity}
+                    style={{
+                      height: heightConverter(55),
+                      width: width - 25,
+                      position: 'absolute',
+                      bottom: 0,
+                      borderBottomLeftRadius: 10,
+                      borderBottomRightRadius: 10,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}>
+                    <LinearGradient
+                      start={{x: 0, y: 0}}
+                      end={{x: 1, y: 0}}
+                      style={{
+                        height: heightConverter(55),
+                        width: width - 25,
+                        position: 'absolute',
+                        bottom: 0,
+                        borderBottomLeftRadius: 10,
+                        borderBottomRightRadius: 10,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}
+                      colors={['#420E92', '#E7003F']}>
+                      {activity ? (
+                        <ActivityIndicator size="small" color={'#fff'} />
+                      ) : (
+                        <Label
+                          primary
+                          font={16}
+                          bold
+                          style={{color: '#ffffff'}}>
+                          Checkout
+                        </Label>
+                      )}
+                    </LinearGradient>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            ) : null}
+          </View>
+        )}
+
+        <PaymentModals
+          ModalRef={ModalState}
+          details
+          total={cartData?.sub_total}
+          onload={() => {
+            onRefresh();
+          }}
+          yourBalance={
+            walletData?.wallet?.your_balance === null
+              ? 0
+              : walletData?.wallet?.your_balance
+          }
+        />
+        <Modals
+          ModalRef={ModalStateError}
+          Error
+          onClose={() => {
+            setModelState({
+              ...ModelState,
+              state: !ModelState.state,
+            });
+          }}
+        />
+        <BuyLifeCongrats
+          ModalRef={SucessModalState}
+          heading={'Congratulations'}
+          description={'Products bought'}
+          requestOnPress={() => {
+            SucessModalState.current(false);
+          }}
+          closeOnPress={() => {
+            SucessModalState.current(false);
+            onRefresh();
+            setModelState({
+              ...ModelState,
+              state: !ModelState.state,
+            });
+          }}
+        />
+      </View>
     </SafeAreaView>
   );
 };
@@ -342,6 +392,18 @@ const index = ({navigation}) => {
 const styles = StyleSheet.create({
   MainTop: {
     height: height * 0.18,
+  },
+  card2Wrap: {
+    top: '100%',
+    bottom: 2,
+    left: 0,
+    position: 'absolute',
+    paddingHorizontal: 5,
+    width: '100%',
+    shadowOffset: {width: 0, height: 1},
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 3.5,
   },
   header: {
     flexDirection: 'row',
@@ -388,12 +450,13 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     borderRadius: 10,
     padding: 10,
-    bottom: 10,
+    bottom: 5,
     left: 2,
     alignItems: 'center',
     elevation: 3,
     position: 'absolute',
     paddingTop: 13,
+    marginVertical: 30,
   },
   metaText: {
     color: '#000000',
@@ -428,7 +491,7 @@ const styles = StyleSheet.create({
     color: Colors.WHITE,
   },
   headerText: {
-    color: '#ffffff',
+    color: '#D9FE51',
     fontFamily: 'Axiforma-SemiBold',
     fontSize: RFValue(22),
   },

@@ -8,7 +8,7 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
-
+import LinearGradient from 'react-native-linear-gradient';
 import Background from '../../Components/Background';
 import SafeArea from '../../Components/SafeArea';
 import Label from '../../Components/Label';
@@ -210,7 +210,7 @@ const index = ({route, navigation}) => {
       },
     };
     ButtonRef.current.SetActivity(true);
-
+    console.log('edit', body);
     const URL =
       Config.API_URL +
       (val === 0 ? `/update/personal-details` : `/update/career-details`);
@@ -225,10 +225,8 @@ const index = ({route, navigation}) => {
           dispatch({
             type: types.USER_DATA,
             userData: res?.user,
-            //  user: res.data.data,
           });
           alert(res.message);
-
           ButtonRef.current.SetActivity(false);
           navigation.reset({
             index: 0,
@@ -237,7 +235,6 @@ const index = ({route, navigation}) => {
         }
       })
       .catch(e => {
-        console.log(e);
         Alert.alert('Error', 'An error occured, try again');
         ButtonRef.current.SetActivity(false);
       });
@@ -247,7 +244,7 @@ const index = ({route, navigation}) => {
     const {name, value, style} = props;
     return (
       <View style={[styles.InputView, style]}>
-        <Label notAlign darkmuted>
+        <Label marginVertical notAlign darkmuted>
           {name}
         </Label>
         <InputField
@@ -356,18 +353,14 @@ const index = ({route, navigation}) => {
         </>
       );
     };
-
     const GetCountrySection = () => {
       const CountryModalRef = useRef();
-
       const [CountryValue, setCountryValue] = useState(
         OldUser.country === 'null' ? 'N/A' : OldUser.country,
       );
-
       useEffect(() => {
         countryref.current = CountryValue;
       });
-
       return (
         <>
           <CountryModal
@@ -496,16 +489,25 @@ const index = ({route, navigation}) => {
   return (
     <ScrollView>
       <SafeArea>
-        <Background height={0.15} />
-        <Header value={3} />
-        <View style={styles.MainTop}>
-          {userData !== null && (
-            <UserInfo style={styles.header} OwnUser popup status />
-          )}
-        </View>
-        {OldUser && <GetData />}
+        <LinearGradient
+          start={{x: 0, y: 0}}
+          end={{x: 1, y: 0}}
+          colors={['#420E92', '#E7003F']}
+          style={{
+            height: 'auto',
+            borderBottomRightRadius: 20,
+            borderBottomLeftRadius: 20,
+          }}>
+          <Header />
+          <View style={styles.MainTop}>
+            {userData !== null && (
+              <UserInfo style={styles.header} OwnUser popup status />
+            )}
+          </View>
+          {OldUser && <GetData />}
 
-        <View style={styles.Margin} />
+          <View style={styles.Margin} />
+        </LinearGradient>
       </SafeArea>
     </ScrollView>
   );

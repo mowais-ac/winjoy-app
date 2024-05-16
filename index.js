@@ -1,10 +1,23 @@
-/**
- * @format
- */
-
-import {AppRegistry,LogBox} from 'react-native';
+import {AppRegistry, LogBox, Platform} from 'react-native';
 import App from './src/App';
 import {name as appName} from './app.json';
+
+import 'react-native-gesture-handler';
+// PushNotification.configure({
+//   onRegister: function (token) {
+//     console.log('PushToken', token);
+//   },
+//   onNotification: notification => {
+//     console.log('NOTIFICATION:', JSON.stringify(notification));
+//   },
+//   permissions: {
+//     alert: true,
+//     badge: true,
+//     sound: true,
+//   },
+//   popInitialNotification: true,
+//   requestPermissions: true,
+// });
 LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
-LogBox.ignoreAllLogs();//Ignore all log notifications
+LogBox.ignoreAllLogs(); //Ignore all log notifications
 AppRegistry.registerComponent(appName, () => App);

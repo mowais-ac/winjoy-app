@@ -8,8 +8,12 @@ import {
   Alert,
   TouchableWithoutFeedback,
   Keyboard,
+  Platform,
+  Text,
   I18nManager,
 } from 'react-native';
+import {getLandingScreen} from '../../redux/actions';
+import LinearGradient from 'react-native-linear-gradient';
 import {AuthContext} from '../../Components/context';
 import Background from '../../Components/Background';
 import InputField from '../../Components/InputField';
@@ -18,7 +22,6 @@ import Label from '../../Components/Label';
 import LabelButton from '../../Components/LabelButton';
 import LongButton from '../../Components/LongButton';
 import SmallButton from '../../Components/SmallButton';
-import {useDispatch} from 'react-redux';
 import {Images} from '../../Constants/Index';
 import types from '../../redux/types';
 import {
@@ -32,11 +35,11 @@ import Config from 'react-native-config';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import Modals from '../../Components/Modals';
 import SelectLanguageModal from '../../Components/SelectLanguageModal';
-import RNRestart from 'react-native-restart';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 const {width, height} = Dimensions.get('window');
-
+import {URLSearchParams} from '@visto9259/urlsearchparams-react-native';
+import {useDispatch, useSelector} from 'react-redux';
 const index = ({navigation}) => {
+
   const {t, i18n} = useTranslation();
   const dispatch = useDispatch();
   const dispatch2 = useDispatch();
@@ -49,7 +52,40 @@ const index = ({navigation}) => {
   const [lang, setLang] = useState('');
   const tokenForLang = useRef('');
   const activityLang = useRef(false);
-  useEffect(() => {}, []);
+
+  useEffect(() => {
+    // Defining the URL as a constant
+    //let params = {width: 1680};
+
+    // dynamicLinks()
+    //   .getInitialLink()
+    //   .then(async link => {
+    //     const myreferral = link.url.replace('https://winjoy.ae?referral=', '');
+
+    //     try {
+    //       const refer = await EncryptedStorage.setItem(
+    //         'myreferral',
+    //         myreferral,
+    //         //link.url.slice(27),
+    //       );
+    //     } catch (error) {
+    //       console.log(error);
+    //     }
+    //     if (`${link.url}`) {
+    //       {
+    //         console.log('mylink', link.url);
+    //       }
+    //       navigation.navigate('Register', {
+    //         // referral_code: urlParams.get('referral'),
+    //         referral_code: myreferral,
+    //         //link.url.slice(27),
+    //       });
+    //     } else {
+    //       alert(`${link.url}`);
+    //     }
+    //   });
+  }, []);
+
   const LanguageChange = () => {
     LanguagePost();
     i18n.changeLanguage(lang).then(() => {
@@ -95,6 +131,8 @@ const index = ({navigation}) => {
         activityLang.current = false;
       });
   };
+
+
   const HandleLogin = async () => {
     if (
       emailref.current.validatePhone() &&
@@ -103,7 +141,6 @@ const index = ({navigation}) => {
     ) {
       const phone_no = emailref.current.getText();
       const password = passref.current.getText();
-
       if ([phone_no, password].filter(e => e == null || e == '')?.length >= 1)
         return;
       ButtonRef.current.SetActivity(true);
@@ -120,50 +157,50 @@ const index = ({navigation}) => {
         },
         body,
       };
-
       await fetch(`${Config.API_URL}/auth/login`, requestOptions)
         .then(async response => response.json())
         .then(async res => {
-          console.log('res', res);
+          if (res.message === 'Verification required') {
+            navigation.navigate('Verify', {
+              Token1: res.token,
+            });
+          }
+          console.log('loginres', res);
           tokenForLang.current = res?.data?.token;
-          ButtonRef.current.SetActivity(false);
+
           if (res?.data?.token) {
-            if (res?.data?.user?.preferred_language === null) {
+            /* if (res?.data?.user?.preferred_language === null) {
               ModalStateLanguage.current(true);
+            } else  */
+            dispatch({
+              type: types.USER_DATA,
+              userData: res?.data?.user,
+            });
+            dispatch2({
+              type: types.TOTAL_LIVES,
+              totalLives: res?.data?.user?.lives_count,
+            });
+            ButtonRef.current.SetActivity(false);
+            await EncryptedStorage.setItem('Token', res.data.token);
+            signIn(res.data.token);
+
+            if (await IsSuspended(res.data.token))
+              return ModalState.current(true, {
+                heading: 'Account suspended',
+                Error:'Your account has been inactive/suspended. Please contact support for further details.',
+              });
+            if (await IsVerified(res.data.token)) {
+              await EncryptedStorage.setItem('Token', res.data.token);
+              signIn(res.data.token);
             } else {
               dispatch({
                 type: types.USER_DATA,
                 userData: res?.data?.user,
-                //  user: res.data.data,
               });
-              dispatch2({
-                type: types.TOTAL_LIVES,
-                totalLives: res?.data?.user?.lives_count,
+              navigation.replace('Verify', {
+                phone: phone_no,
+                token: res.data.token,
               });
-              await EncryptedStorage.setItem('Token', res.data.token);
-              signIn(res.data.token);
-              // navigation.replace("HomeStack");
-              if (await IsSuspended(res.data.token))
-                return ModalState.current(true, {
-                  heading: 'Account suspended',
-                  Error:
-                    'Your account has been inactive/suspended. Please contact support for further details.',
-                });
-              if (await IsVerified(res.data.token)) {
-                await EncryptedStorage.setItem('Token', res.data.token);
-                signIn(res.data.token);
-                //  navigation.replace("HomeStack");
-              } else {
-                dispatch({
-                  type: types.USER_DATA,
-                  userData: res?.data?.user,
-                  //  user: res.data.data,
-                });
-                navigation.replace('Verify', {
-                  phone: phone_no,
-                  token: res.data.token,
-                });
-              }
             }
           } else if (
             res?.message === 'Enter 6 Digit Code which sent on your mobile'
@@ -183,7 +220,6 @@ const index = ({navigation}) => {
             ModalState.current(true, {
               heading: 'Error',
               Error: res?.message,
-              // array: res.errors ? Object.values(res.errors) : [],
             });
             ButtonRef.current.SetActivity(false);
           }
@@ -197,8 +233,14 @@ const index = ({navigation}) => {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <SafeAreaView>
-        <Background height={1} design />
+      <LinearGradient
+        start={{x: 0, y: 0}}
+        end={{x: 1, y: 0}}
+        colors={['#420E92', '#E7003F']}
+        style={{
+          display: 'flex',
+          flex: 1,
+        }}>
         <View style={styles.MainTop}>
           <Image source={Images.Logo} style={styles.Logo} />
           <Label bold2 headingtype="h2" style={[styles.MarginLarge]}>
@@ -212,14 +254,7 @@ const index = ({navigation}) => {
             keyboardType="number-pad"
             phone
           />
-          {/* <InputField
-            style={styles.MarginLarge}
-            ref={emailref}
-            placeholder="Phone number"
-            Icon="user"
-            maxLength={9}
-            keyboardType="number-pad"
-          /> */}
+
           <InputField
             style={styles.MarginSmall}
             ref={passref}
@@ -232,7 +267,9 @@ const index = ({navigation}) => {
             style={[styles.Margin, {backgroundColor: '#ffffff'}]}
             textstyle={{color: '#E7003F'}}
             text={t('login')}
-            onPress={HandleLogin}
+            onPress={() => {
+              HandleLogin();
+            }}
             ref={ButtonRef}
           />
           <LabelButton
@@ -242,7 +279,7 @@ const index = ({navigation}) => {
             onPress={() => navigation.navigate('ForgotPassword')}
           />
         </View>
-        {/* <SmallButton style={styles.ORButton} text="OR" /> */}
+
         <Label
           bold
           muted
@@ -250,18 +287,21 @@ const index = ({navigation}) => {
           font={15}>
           {t('or')}
         </Label>
-        <View style={{marginTop: height * 0.052}}>
+        <View style={{marginTop: 15}}>
           <LongButton
             text={t('create_account')}
             onPress={() => navigation.navigate('Register')}
             style={[styles.Margin, {backgroundColor: '#ffffff'}]}
             textstyle={{color: '#E7003F'}}
           />
-          {/* <LongButton
-            style={styles.MarginMed}
+          {/*  <LongButton
+            style={{backgroundColor: '#ffffff', marginTop: 15}}
             text="Sign in with Google"
             black
             Icon="google"
+            onPress={() => {
+              onGoogleButtonPress();
+            }}
           /> */}
         </View>
         <SelectLanguageModal
@@ -274,7 +314,7 @@ const index = ({navigation}) => {
           onSelect={LanguageChange}
           activityLang={activityLang.current}
         />
-      </SafeAreaView>
+      </LinearGradient>
     </TouchableWithoutFeedback>
   );
 };
@@ -293,13 +333,9 @@ const styles = StyleSheet.create({
   MarginLarge: {
     marginTop: height * 0.037,
   },
-  Margin: {marginTop: height * 0.027},
+  Margin: {marginTop: height * 0.02},
   MarginMed: {marginTop: height * 0.022},
   MarginSmall: {marginTop: height * 0.015},
-  ORButton: {
-    position: 'absolute',
-    marginTop: height * 0.68,
-  },
 });
 
 export default index;

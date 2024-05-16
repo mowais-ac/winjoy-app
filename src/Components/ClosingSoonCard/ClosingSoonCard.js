@@ -3,32 +3,33 @@ import {View, Image, Dimensions, TouchableOpacity, Text} from 'react-native';
 import styles from './Styles';
 import Label from '../Label';
 import LinearGradient from 'react-native-linear-gradient';
-import {heightConverter, widthPercentageToDP} from '../Helpers/Responsive';
 import LoaderImage from '../LoaderImage';
-import Config from 'react-native-config';
-import ProgressCircle from 'react-native-progress-circle';
+
 const {width, height} = Dimensions.get('window');
+
 function ClosingSoonCard({item, onPress}) {
-  console.log('item.stock', item.stock);
-  let progress = item.updated_stocks
-    ? (item?.updated_stocks / item?.stock) * 100
+  let progress = parseInt(item.updated_stock)
+    ? (parseInt(item.updated_stock) / parseInt(item?.stock)) * 100
     : 0;
 
-  // const ImgUrl = `${Config.PRODUCT_IMG}/${item.id}/${JSON.parse(item.image)[0]
-  //   }`;
   return (
     <View
       style={{
         width: width * 0.38,
-        height: height * 0.24,
+        height: 'auto',
         backgroundColor: '#ffffff',
         marginLeft: 10,
         borderRadius: 10,
+        shadowColor: '#d9dbda',
+        shadowOffset: {width: 0, height: 1},
+        shadowOpacity: 2,
+        shadowRadius: 4,
+        elevation: 3,
+        marginVertical: 5,
       }}>
-      <TouchableOpacity onPress={onPress}>
-        <LoaderImage
+      <TouchableOpacity activeOpacity={0.7} onPress={onPress}>
+        {/*  <LoaderImage
           source={{
-            // uri: ImgUrl.replace("http://", "https://"),
             uri: item?.product?.image,
           }}
           style={{
@@ -38,26 +39,48 @@ function ClosingSoonCard({item, onPress}) {
             borderTopRightRadius: 10,
           }}
           resizeMode="center"
+        /> */}
+        <Image
+          source={{
+            uri: item?.product?.image,
+          }}
+          style={{
+            width: '100%',
+            height: 100,
+            borderTopLeftRadius: 10,
+            borderTopRightRadius: 10,
+          }}
+          resizeMode="contain"
         />
-        <Label primary font={11} dark style={{color: '#000000', marginTop: 7}}>
+
+        <Label
+          primary
+          font={11}
+          dark
+          style={{
+            color: '#000000',
+            marginVertical: 5,
+            lineHeight: Platform.OS === 'android' ? 16 : 20,
+          }}>
           Get a chance to
-          <Label
-            notAlign
-            bold
-            primary
-            font={10}
-            bold
-            style={{color: '#E7003F'}}>
+          <Label notAlign bold primary font={10} style={{color: '#E7003F'}}>
             {' '}
             WIN
           </Label>
         </Label>
-        <Label bold font={10} dark style={{color: '#000000', width: '95%'}}>
+        <Label
+          bold
+          font={10}
+          dark
+          style={{
+            color: '#000000',
+            height: 38,
+            lineHeight: 16.5,
+            width: '85%',
+          }}>
           {item?.prize_title}
         </Label>
-        {/* <Label  bold font={11} dark style={{ color: "#000000", }}>
-      Edition
-      </Label> */}
+
         <View style={styles.containerprogressBarWrap}>
           <View style={styles.containerprogressBar}>
             <LinearGradient
@@ -71,8 +94,8 @@ function ClosingSoonCard({item, onPress}) {
             />
           </View>
           <Label primary font={10} style={{color: '#877C80', top: 4}}>
-            {item?.product?.updated_stocks ? item?.product?.updated_stocks : 0}{' '}
-            sold out of {item?.product?.stock}
+            {parseInt(item?.updated_stock) ? parseInt(item?.updated_stock) : 0}{' '}
+            sold out of {parseInt(item?.stock)}
           </Label>
         </View>
       </TouchableOpacity>

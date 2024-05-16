@@ -1,13 +1,9 @@
-import { StyleSheet } from "react-native";
+import {StyleSheet, Dimensions} from 'react-native';
+const {width, height} = Dimensions.get('window');
 export const styles = StyleSheet.create({
-  safeStyle: {
-    flex: 1,
-    alignItems:'center' 
+  mainView: {
+    height: 'auto',
+    //width: '100%',
+    // position:'absolute',
   },
-  mainView:{
-      height:'100%',
-      width:'100%',
-      position:'absolute',
-  }
- 
 });

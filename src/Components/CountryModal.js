@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from 'react';
 import {
   View,
   StyleSheet,
@@ -8,16 +8,15 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   TouchableWithoutFeedback,
-} from "react-native";
-import Config from "react-native-config";
+} from 'react-native';
+import Config from 'react-native-config';
+import EncryptedStorage from 'react-native-encrypted-storage';
+import {Colors} from '../Constants/Index';
+import InputField from './InputField';
+import Label from './Label';
+const {width, height} = Dimensions.get('window');
 
-import EncryptedStorage from "react-native-encrypted-storage";
-import { Colors } from "../Constants/Index";
-import InputField from "./InputField";
-import Label from "./Label";
-
-const { width, height } = Dimensions.get("window");
-const CountryModal = (props) => {
+const CountryModal = props => {
   const [Data, setData] = useState(null);
   const [IsVisible, setIsVisible] = useState(false);
   const [Filtered, setFiltered] = useState(null);
@@ -29,39 +28,50 @@ const CountryModal = (props) => {
   useEffect(() => {
     let isActive = true;
     if (props.CountryRef) props.CountryRef.current = setIsVisible;
-
     const check = async () => {
-      if (Data === null) {
-        const Token = await EncryptedStorage.getItem("Token");
-        const requestOptions = {
-          method: "GET",
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Accept: "application/json",
-            Authorization: `Bearer ${Token}`,
-          },
-        };
-        await fetch(`${Config.API_URL}/countries/list`, requestOptions)
-          .then(async (response) => response.json())
-          .then(async (res) => {
-            if (!isActive) return;
-            setData(res.sort((a, b) => (a.name > b.name ? 1 : -1)));
-          });
+      try {
+        if (Data === null) {
+          const Token = await EncryptedStorage.getItem('Token');
+          const requestOptions = {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              Accept: 'application/json',
+              Authorization: `Bearer ${Token}`,
+            },
+          };
+          await fetch(`${Config.API_URL}/countries/list`, requestOptions)
+            /*  await fetch(
+            `https://testing.winjoy.ae/public/api/countries/list`,
+            requestOptions,
+          ) */
+            /* await fetch(
+            'https://fortunaze.incubyter.com/public/api/countries/list',
+            requestOptions,
+          ) */
+            .then(async response => response.json())
+            .then(async res => {
+              console.log('res', res);
+              if (!isActive) return;
+              setData(res.countries.sort((a, b) => (a.name > b.name ? 1 : -1)));
+            });
+        }
+      } catch (err) {
+        console.log(err);
       }
     };
     check();
     return () => (isActive = false);
-  });
-
-  const HandleTextChange = (t) => {
-    if (!t || t === "") return setFiltered(null);
+  }, []);
+  const HandleTextChange = t => {
+    if (!t || t === '') return setFiltered(null);
     else
       setFiltered(
-        Data.filter((x) => x.name.toLowerCase().indexOf(t.toLowerCase()) !== -1)
+        Data.filter(x => x.name.toLowerCase().indexOf(t.toLowerCase()) !== -1),
       );
   };
 
-  const renderItem = ({ item }) => {
+  const renderItem = ({item}) => {
     return (
       <TouchableOpacity
         onPress={() => {
@@ -70,10 +80,9 @@ const CountryModal = (props) => {
             CloseModal();
           }
         }}
-        style={[styles.CountryView, props.phone && styles.PhoneView]}
-      >
+        style={[styles.CountryView, props.phone && styles.PhoneView]}>
         <Label
-        dark
+          dark
           text={item.name}
           notAlign={props.phone}
           style={props.phone && styles.ItemName}
@@ -89,8 +98,7 @@ const CountryModal = (props) => {
       transparent={true}
       visible={IsVisible}
       statusBarTranslucent={false}
-      onRequestClose={() => CloseModal()}
-    >
+      onRequestClose={() => CloseModal()}>
       <TouchableWithoutFeedback onPress={() => CloseModal()}>
         <View style={styles.MainView} />
       </TouchableWithoutFeedback>
@@ -109,7 +117,6 @@ const CountryModal = (props) => {
                 fieldstyle={styles.TransactionInputF}
                 shadow
                 NoIcon
-                textAlign={"center"}
                 placeholder="Search Country"
                 placeholderTextColor={Colors.DARK_MUTED}
                 onEdit={HandleTextChange}
@@ -124,7 +131,7 @@ const CountryModal = (props) => {
                     }}
                   />
                 }
-                keyExtractor={(e) => e.id.toString()}
+                keyExtractor={e => e.id.toString()}
                 contentContainerStyle={{
                   paddingBottom: height * 0.2,
                 }}
@@ -148,12 +155,12 @@ const styles = StyleSheet.create({
   },
 
   ChangeConView: {
-    position: "absolute",
+    position: 'absolute',
     width: width * 0.2,
     marginTop: height * 0.052,
     paddingRight: width * 0.05,
     zIndex: 3,
-    alignSelf: "flex-end",
+    alignSelf: 'flex-end',
   },
   ChangeCon: {
     zIndex: 4,
@@ -162,13 +169,13 @@ const styles = StyleSheet.create({
   MainView: {
     height: height,
     width: width,
-    position: "absolute",
+    position: 'absolute',
     backgroundColor: Colors.BG_MUTED,
   },
   ModalView: {
     width: width,
     height: height * 0.71,
-    alignSelf: "center",
+    alignSelf: 'center',
     borderTopLeftRadius: 37,
     borderTopRightRadius: 37,
     backgroundColor: Colors.BENEFICIARY,
@@ -181,13 +188,13 @@ const styles = StyleSheet.create({
   },
   ModalInside: {
     width: width * 0.9,
-    alignSelf: "center",
+    alignSelf: 'center',
   },
   SmallBorder: {
     width: width * 0.35,
     height: 4,
     backgroundColor: Colors.SMALL_LINE,
-    alignSelf: "center",
+    alignSelf: 'center',
     marginTop: height * 0.02,
   },
   ModalHead: {
@@ -196,20 +203,23 @@ const styles = StyleSheet.create({
   TransactionInput: {
     backgroundColor: Colors.WHITE,
     marginTop: height * 0.02,
+    width: '90%',
   },
   TransactionInputF: {
     color: Colors.BLACK,
+    width: '50%',
+    textAlign: 'center',
   },
   CountryView: {
     borderBottomWidth: 1,
     borderBottomColor: Colors.MUTED,
     height: height * 0.05,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   PhoneView: {
-    flexDirection: "row",
-    justifyContent: "flex-start",
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
     paddingLeft: width * 0.1,
   },
   ItemName: {

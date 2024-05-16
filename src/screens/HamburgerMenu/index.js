@@ -13,8 +13,6 @@ import {
 } from 'react-native';
 import Label from '../../Components/Label';
 const {width, height} = Dimensions.get('window');
-import LinearGradient from 'react-native-linear-gradient';
-import DropDownPicker from 'react-native-dropdown-picker';
 import {
   widthPercentageToDP,
   heightPercentageToDP,
@@ -22,94 +20,68 @@ import {
   widthConverter,
 } from '../../Components/Helpers/Responsive';
 import Header from '../../Components/Header';
-import {Avatar} from 'react-native-elements';
-import EncryptedStorage from 'react-native-encrypted-storage';
-import Config from 'react-native-config';
-import axios from 'axios';
 import ProfilePicture from '../../Components/ProfilePicture';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import Feather from 'react-native-vector-icons/Feather';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import LongButton from '../../Components/LongButton';
 import {AuthContext} from '../../Components/context';
-import I18n from 'react-native-i18n';
 import {RFValue} from 'react-native-responsive-fontsize';
 import {useTranslation} from 'react-i18next';
-import RNRestart from 'react-native-restart';
 import {WjBackground} from '../../Components';
 import SelectLanguageModal from '../../Components/SelectLanguageModal';
 import SelectCurrencyModal from '../../Components/SelectCurrencyModal';
-import {connect, useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
+import Info_btn from '../../Components/Info';
+import LinearGradient from 'react-native-linear-gradient';
+import packageJson from '../../../package.json';
+
 const index = ({props, navigation}) => {
+  const ModalStateInfo = useRef();
   const userData = useSelector(state => state.app.userData);
   const {t, i18n} = useTranslation();
   const [headerValue, setHeaderValue] = useState(0);
   const ModalStateLanguage = useRef();
   const ModalStateCurrency = useRef();
-  const [friendData, setFriendData] = useState([]);
   const {signOut} = React.useContext(AuthContext);
 
   let data2 = [
     {
-      name: t('wallet'),
-      icon: require('../../assets/imgs/humburgerIcons/wallet.png'),
-    },
-    {
-      name: t('played_games'),
-      icon: require('../../assets/imgs/humburgerIcons/playedGames.png'),
-    },
-    {
-      name: t('my_order'),
-      icon: require('../../assets/imgs/humburgerIcons/myOrders.png'),
-    },
-    {
-      name: t('leaderboard'),
-      icon: require('../../assets/imgs/humburgerIcons/leaderBoard.png'),
-    },
-    {
-      name: t('Buy Lives'),
-      icon: require('../../assets/imgs/humburgerIcons/buyLives.png'),
-    },
-    {
-      name: t('refer_&_Earn'),
-      icon: require('../../assets/imgs/humburgerIcons/reffer.png'),
-    },
-    {
-      name: t('view_profile'),
+      name: 'View Profile',
       icon: require('../../assets/imgs/humburgerIcons/viewProfile.png'),
     },
     {
-      name: t('friends'),
-      icon: require('../../assets/imgs/humburgerIcons/friends.png'),
+      name: 'Wallet',
+      icon: require('../../assets/imgs/humburgerIcons/wallet.png'),
     },
     {
-      name: t('logout'),
+      name: 'My Purchases',
+      icon: require('../../assets/imgs/humburgerIcons/myOrders.png'),
+    },
+    {
+      name: 'My Tickets',
+      icon: require('../../assets/imgs/humburgerIcons/myOrders.png'),
+    },
+    {
+      name: 'Refer & Earn',
+      icon: require('../../assets/imgs/humburgerIcons/reffer.png'),
+    },
+    {
+      name: 'Buy Lives',
+      icon: require('../../assets/imgs/humburgerIcons/buyLives.png'),
+    },
+    {
+      name: 'Leaderboard',
+      icon: require('../../assets/imgs/humburgerIcons/leaderBoard.png'),
+    },
+
+    {
+      name: 'Played Games',
+      icon: require('../../assets/imgs/humburgerIcons/playedGames.png'),
+    },
+
+    {
+      name: 'Logout',
       icon: require('../../assets/imgs/humburgerIcons/logout.png'),
     },
   ];
-  const MyFriends = async () => {
-    const Token = await EncryptedStorage.getItem('Token');
-    const requestOptions = {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-        Accept: 'application/json',
-        Authorization: `Bearer ${Token}`,
-      },
-    };
-    // alert(13123);
-    await axios
-      .get(`${Config.API_URL}/accepted-connections/list`, requestOptions)
-      .then(response => {
-        let res = response.data;
-        setFriendData(res.data[0]);
-      });
-  };
-  useEffect(() => {
-    MyFriends();
-  }, []);
+
   const OpenWhatsApp = () => {
     Linking.openURL('http://api.whatsapp.com/send?phone=971501235240');
   };
@@ -117,8 +89,9 @@ const index = ({props, navigation}) => {
     Linking.openURL('https://vm.tiktok.com/ZSe7SEt69/');
   };
   const OpenSnapChat = () => {
-    alert('under development');
-    // Linking.openURL('https://vm.tiktok.com/ZSe7SEt69/');
+    Linking.openURL(
+      'https://www.snapchat.com/add/wjwinjoy?share_id=WiY7dKP-QK4&locale=en-GB',
+    );
   };
   const OpenInsta = () => {
     let appUrl = 'https://www.instagram.com/winjoyae?utm_medium=copy_link';
@@ -152,73 +125,59 @@ const index = ({props, navigation}) => {
   return (
     <View style={{backgroundColor: '#ffffff'}}>
       <Header
-        noBell={true}
-        back={true}
         style={{
           position: 'absolute',
           zIndex: 1000,
-          height: height * 0.06,
           backgroundColor: headerValue !== 0 ? 'rgba(0,0,0,0.5)' : null,
           width: '100%',
           borderBottomRightRadius: 10,
           borderBottomLeftRadius: 10,
-          paddingTop: height * 0.017,
+          top: Platform.OS === 'android' ? 0 : height * 0.03,
         }}
       />
       <ScrollView
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
         onScroll={e => {
           setHeaderValue(e.nativeEvent.contentOffset.y);
         }}>
-        <WjBackground
+        <LinearGradient
+          start={{x: 0, y: 0}}
+          end={{x: 1, y: 0}}
+          colors={['#420E92', '#E7003F']}
           style={{
-            height: height * 0.2,
+            height: 'auto',
             borderBottomRightRadius: 20,
             borderBottomLeftRadius: 20,
-          }}
-        />
-        <View style={styles.aView}>
-          <View style={styles.bView}>
-            <View style={[styles.topView]}>
-              <ProfilePicture
-                picture={userData?.profile_image}
-                id={userData?.id}
-                name={
-                  userData?.first_name?.slice(0, 1) +
-                  userData?.last_name?.slice(0, 1)
-                }
-                style={styles.avatarView}
-              />
-
-              <View
-                style={{
-                  width: widthConverter(250),
-                  marginLeft: 20,
-                  justifyContent: 'center',
-                }}>
-                <Label font={14} notAlign bold style={{color: '#FFFFFF'}}>
-                  {userData?.first_name?.charAt(0)?.toUpperCase() +
-                    userData?.first_name?.slice(1)}{' '}
-                  {userData?.last_name?.charAt(0)?.toUpperCase() +
-                    userData?.last_name?.slice(1)}
-                </Label>
-                <Label
-                  primary
-                  notAlign
-                  font={14}
-                  bold
-                  style={{color: '#FFFFFF'}}>
-                  {userData?.designation}
-                  {userData?.company_name ? (
-                    <Label primary font={14} style={{color: '#e2acc7'}}>
-                      {' '}
-                      at
-                    </Label>
-                  ) : null}{' '}
-                  {userData?.company_name}
-                </Label>
-              </View>
+          }}>
+          <View style={[styles.topView]}>
+            <ProfilePicture
+              picture={userData?.profile_image}
+              id={userData?.id}
+              name={
+                userData?.first_name?.slice(0, 1) +
+                userData?.last_name?.slice(0, 1)
+              }
+              style={styles.avatarView}
+            />
+            <View
+              style={{
+                width: widthConverter(250),
+                marginLeft: 20,
+                marginTop: Platform.OS === 'android' ? 0 : 16,
+                justifyContent: 'center',
+              }}>
+              <Label font={14} notAlign bold style={{color: '#FFFFFF'}}>
+                {userData?.first_name?.charAt(0)?.toUpperCase() +
+                  userData?.first_name?.slice(1)}{' '}
+                {userData?.last_name?.charAt(0)?.toUpperCase() +
+                  userData?.last_name?.slice(1)}
+              </Label>
             </View>
           </View>
+        </LinearGradient>
+
+        <View style={styles.aView}>
           <FlatList
             data={data2}
             contentContainerStyle={{
@@ -242,15 +201,9 @@ const index = ({props, navigation}) => {
                 <View
                   style={{
                     width: width,
-                    marginTop: 5,
                   }}>
                   <TouchableOpacity
                     onPress={() => {
-                      if (item.name === 'Friends') {
-                        navigation.navigate('Profile', {
-                          selected: 3,
-                        });
-                      }
                       if (item.name === 'Wallet') {
                         // navigation.navigate("BottomTabStack");
                         navigation.navigate('BottomTabStack', {
@@ -260,18 +213,22 @@ const index = ({props, navigation}) => {
                       if (item.name === 'Leaderboard') {
                         navigation.navigate('LeaderBoard');
                       }
-                      if (item.name === 'View profile') {
+                      if (item.name === 'View Profile') {
                         navigation.navigate('Profile', {
                           selected: 2,
                         });
                       }
-                      if (item.name === 'Played games') {
+                      if (item.name === 'Played Games') {
                         navigation.navigate('Profile', {
                           selected: 1,
                         });
                       }
-                      if (item.name === 'My order') {
+                      if (item.name === 'My Purchases') {
                         navigation.navigate('Orders');
+                        //navigation.navigate('Gsignin');
+                      }
+                      if (item.name === 'My Tickets') {
+                        navigation.navigate('Entries');
                       }
                       if (item.name === 'Logout') {
                         signOut();
@@ -280,24 +237,27 @@ const index = ({props, navigation}) => {
                       if (item.name === 'Buy Lives') {
                         navigation.navigate('BuyLife');
                       }
-                      if (item.name === t('refer_&_Earn')) {
+                      if (item.name === t('Refer & Earn')) {
                         navigation.navigate('RefferAndEarn');
                       }
                     }}>
                     <View
-                      style={{flexDirection: 'row', marginLeft: width * 0.05}}>
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        marginLeft: width * 0.05,
+                        paddingVertical: 4,
+                      }}>
                       <Image
                         style={styles.iconImage}
                         source={item?.icon}
-                        resizeMode="center"
+                        resizeMode="contain"
                       />
                       <Text
                         style={[
                           styles.text,
                           {
                             color: '#0B2142',
-                            height: heightPercentageToDP('5%'),
-                            top: 10,
                           },
                         ]}>
                         {item.name}
@@ -308,59 +268,9 @@ const index = ({props, navigation}) => {
               );
             }}
           />
-          {/* <View
-            style={{
-              height: 1,
-              width: width,
-              backgroundColor: "#E6DFEE",
-            }}
-          /> */}
-          <View style={{width: '95%', alignItems: 'center', marginTop: 10}}>
-            {/* <Text
-              style={[
-                styles.text,
-                {
-                  color: "#E7003F",
-                  height: heightPercentageToDP("5%"),
-                  width: "93%",
-                  fontSize: RFValue(16),
-                  fontFamily: 'Axiforma-SemiBold'
-                },
-              ]}
-            >
-              {t("setting")}
-            </Text> */}
-            {/* 
-            <View style={styles.rowView}>
-
-              <TouchableOpacity
-                onPress={() => { ModalStateLanguage.current(true) }}
-              >
-                <View style={styles.twoBtnView}>
-                  <Text style={[styles.text, { color: '#E9E3F0' }]}>
-                    Language:{' '}
-                    <Text style={styles.text}>
-                      {i18n.language.toUpperCase()}
-                    </Text>
-                  </Text>
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => { ModalStateCurrency.current(true) }}
-              >
-                <View style={styles.twoBtnView}>
-                  <Text style={[styles.text, { color: '#E9E3F0' }]}>
-                    Currency:{' '}
-                    <Text style={styles.text}>
-                      AED
-                    </Text>
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            </View> */}
+          <View style={{width: '95%', alignItems: 'center'}}>
             <View
               style={{
-                // marginTop: height * 0.001,
                 height: 1,
                 width: width,
                 backgroundColor: '#E6DFEE',
@@ -371,42 +281,41 @@ const index = ({props, navigation}) => {
               style={{
                 flexDirection: 'row',
                 justifyContent: 'space-around',
-                width: '100%',
                 marginTop: height * 0.001,
               }}>
               <TouchableOpacity onPress={() => OpenInsta()}>
                 <Image
                   style={styles.bottomImage}
                   source={require('../../assets/imgs/humburgerIcons/insta.png')}
-                  resizeMode="center"
+                  resizeMode="contain"
                 />
               </TouchableOpacity>
               <TouchableOpacity onPress={() => OpenFB()}>
                 <Image
                   style={styles.bottomImage}
                   source={require('../../assets/imgs/humburgerIcons/faceBook.png')}
-                  resizeMode="center"
+                  resizeMode="contain"
                 />
               </TouchableOpacity>
               <TouchableOpacity onPress={() => OpenWhatsApp()}>
                 <Image
                   style={styles.bottomImage}
                   source={require('../../assets/imgs/humburgerIcons/whatsApp.png')}
-                  resizeMode="center"
+                  resizeMode="contain"
                 />
               </TouchableOpacity>
               <TouchableOpacity onPress={() => OpenTikTok()}>
                 <Image
                   style={styles.bottomImage}
                   source={require('../../assets/imgs/humburgerIcons/tiktok.png')}
-                  resizeMode="center"
+                  resizeMode="contain"
                 />
               </TouchableOpacity>
               <TouchableOpacity onPress={() => OpenSnapChat()}>
                 <Image
                   style={styles.bottomImage}
                   source={require('../../assets/imgs/humburgerIcons/snapChat.png')}
-                  resizeMode="center"
+                  resizeMode="contain"
                 />
               </TouchableOpacity>
             </View>
@@ -418,41 +327,57 @@ const index = ({props, navigation}) => {
                 backgroundColor: '#E6DFEE',
               }}
             />
+            <Info_btn ModalRef={ModalStateInfo} />
 
             <View
               style={{
-                justifyContent: 'space-around',
+                flexDirection: 'column',
+                justifyContent: 'space-evenly',
                 alignItems: 'center',
                 width: width,
                 height: height * 0.15,
-                marginTop: 5,
+                marginTop: 20,
+                marginBottom: 15,
               }}>
-              <Text
-                style={[
-                  styles.text,
-                  {
-                    color: '#E7003F',
-                    width: width,
-                    fontSize: RFValue(16),
-                    fontFamily: 'Axiforma-SemiBold',
-                    textAlign: 'center',
-                  },
-                ]}>
-                Need Help?
-              </Text>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate('Contactus');
+                  //navigation.navigate('Gsignin');
+                }}>
+                <View
+                  style={[
+                    styles.bottomBtnView,
+                    {
+                      //backgroundColor: '#E9E3F0',
+                      borderTopRightRadius: height * 0.035,
+                      borderBottomRightRadius: height * 0.035,
+                    },
+                  ]}>
+                  <Text
+                    style={[
+                      styles.text,
+                      {
+                        color: '#E7003F',
+                        fontSize: RFValue(15),
+                        fontFamily: 'Axiforma-SemiBold',
+                        textAlign: 'center',
+                      },
+                    ]}>
+                    Contact Us
+                  </Text>
+                </View>
+              </TouchableOpacity>
               <View
                 style={{
-                  width: width * 0.9,
-                  height: height * 0.058,
+                  width: width * 0.8,
+                  height: height * 0.059,
                   borderWidth: 1,
                   borderColor: '#E9E3F0',
-                  borderRadius: height * 0.07,
+                  borderRadius: height * 0.06,
                   flexDirection: 'row',
-                  justifyContent: 'center',
-                  marginTop: -10,
+                  marginTop: 16,
                 }}>
-                <TouchableOpacity
-                  onPress={() => Linking.openURL(`tel:+971501235240`)}>
+                <TouchableOpacity onPress={() => navigation.navigate('FAQS')}>
                   <View
                     style={[
                       styles.bottomBtnView,
@@ -467,21 +392,25 @@ const index = ({props, navigation}) => {
                         styles.text,
                         {
                           color: '#420E92',
-                          fontSize: RFValue(16),
+                          fontSize: RFValue(14),
                           fontFamily: 'Axiforma-SemiBold',
                           textAlign: 'center',
                         },
                       ]}>
-                      Call Us
+                      FAQ's
                     </Text>
                   </View>
                 </TouchableOpacity>
+                {/* onPress={() => Linking.openURL('mailto:support@winjoy.ae')} */}
                 <TouchableOpacity
-                  onPress={() => Linking.openURL('mailto:support@winjoy.ae')}>
+                  onPress={() => {
+                    navigation.navigate('GamesRules');
+                  }}>
                   <View
                     style={[
                       styles.bottomBtnView,
                       {
+                        //backgroundColor: '#E9E3F0',
                         borderTopRightRadius: height * 0.035,
                         borderBottomRightRadius: height * 0.035,
                       },
@@ -491,68 +420,57 @@ const index = ({props, navigation}) => {
                         styles.text,
                         {
                           color: '#420E92',
-                          fontSize: RFValue(16),
+                          fontSize: RFValue(14),
                           fontFamily: 'Axiforma-SemiBold',
                           textAlign: 'center',
                         },
                       ]}>
-                      Email Us
+                      Game Rules
                     </Text>
                   </View>
                 </TouchableOpacity>
               </View>
-            </View>
-
-            <View
-              style={{
-                dispaly: 'flex',
-                flexDirection: 'row',
-                flexWrap: 'wrap',
-                width: '100%',
-                marginBottom: 10,
-              }}>
               <TouchableOpacity
-                style={{
-                  width: '50%',
-                  paddingHorizontal: 10,
-                  paddingVertical: 3,
-                }}
-                onPress={() => navigation.navigate('UserAgreement')}>
-                <Text style={{color: '#420E92'}}>User Agreement</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={{
-                  width: '50%',
-                  paddingHorizontal: 10,
-                  paddingVertical: 3,
-                }}
-                onPress={() => navigation.navigate('TermsAndConditions')}>
-                <Text style={{color: '#420E92'}}>Terms and Conditions</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={{
-                  width: '50%',
-                  paddingHorizontal: 10,
-                  paddingVertical: 3,
-                }}
-                onPress={() => navigation.navigate('FAQS')}>
-                <Text style={{color: '#420E92'}}>FAQs</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={{
-                  width: '50%',
-                  paddingHorizontal: 10,
-                  paddingVertical: 3,
-                }}
-                onPress={() => navigation.navigate('PrivacyPolicy')}>
-                <Text style={{color: '#420E92'}}>Privacy Policy</Text>
+                onPress={() => {
+                  ModalStateInfo.current(true);
+                }}>
+                <View
+                  style={{
+                    backgroundColor: '#E9E3F0',
+                    width: width * 0.5,
+                    height: height * 0.059,
+                    borderWidth: 1,
+                    borderColor: '#E9E3F0',
+                    borderRadius: height * 0.06,
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    marginTop: 20,
+                  }}>
+                  <Text
+                    style={{
+                      color: '#420E92',
+                      fontSize: RFValue(14),
+                      fontFamily: 'Axiforma-SemiBold',
+                    }}>
+                    Legal
+                  </Text>
+                </View>
               </TouchableOpacity>
             </View>
-
             <SelectLanguageModal ModalRef={ModalStateLanguage} details />
             <SelectCurrencyModal ModalRef={ModalStateCurrency} details />
           </View>
         </View>
+        <Text
+          style={{
+            fontSize: 11,
+            color: '#cccccc',
+            paddingHorizontal: 14,
+            paddingBottom: 10,
+          }}>
+          Version: 0.0.{packageJson.version}
+        </Text>
       </ScrollView>
     </View>
   );
@@ -583,7 +501,7 @@ const styles = StyleSheet.create({
   aView: {
     alignItems: 'center',
     width: widthPercentageToDP('100%'),
-    marginTop: height * 0.05,
+    // marginTop: height * 0.05,
   },
   bView: {
     // backgroundColor: "rgba(0,0,0,0.4)",
@@ -608,18 +526,22 @@ const styles = StyleSheet.create({
   },
   topView: {
     width: widthPercentageToDP('100%'),
-    paddingVertical: 10,
+    marginTop: 50,
+    paddingVertical: 20,
     flexDirection: 'row',
+    display: 'flex',
+    alignItems: 'center',
   },
   avatarView: {
-    width: height * 0.105,
-    height: height * 0.105,
+    marginTop: Platform.OS === 'android' ? 0 : 15,
+    width: height * 0.1,
+    height: height * 0.1,
     borderRadius: heightConverter(65),
     borderWidth: 3,
     alignItems: 'center',
     justifyContent: 'center',
     borderColor: '#ffffff',
-    elevation: 5,
+    elevation: 3,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -630,9 +552,10 @@ const styles = StyleSheet.create({
     marginLeft: 15,
   },
   text: {
-    fontFamily: 'Axiformam Regular',
+    fontFamily: 'Axiforma-Regular',
     color: '#0B2142',
     fontSize: RFValue(13),
+    // textTransform: 'capitalize',
   },
   rowView: {
     width: width * 0.9,
@@ -651,15 +574,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   iconImage: {
-    width: width * 0.06,
-    height: height * 0.04,
-    resizeMode: 'contain',
-    marginTop: 6,
+    width: width * 0.05,
+    height: height * 0.05,
     marginRight: 10,
   },
   bottomImage: {
-    width: width * 0.2,
-    height: height * 0.1,
+    width: 55,
+    height: 55,
+    margin: 10,
+
     resizeMode: 'contain',
   },
   Margin: {
@@ -678,7 +601,7 @@ const styles = StyleSheet.create({
     borderRadius: height * 0.06,
   },
   bottomBtnView: {
-    width: width * 0.45,
+    width: width * 0.4,
     height: height * 0.058,
     justifyContent: 'center',
   },

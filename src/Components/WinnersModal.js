@@ -88,16 +88,14 @@ const WinnersModal = props => {
   useEffect(() => {
     dispatch1(GameShowWinners());
     //   dispatch(getLiveShowPlans);
-    console.log('gameShowWinners', gameShowWinners);
+
     let li = [];
     let idforFirst;
     livePlans?.plan?.forEach(element => {
-      console.log('element', element);
       if (element.type === 'referral') {
         li.push(element);
 
         if (element.required_referrals === 1) {
-          console.log('element', element.id);
           idforFirst = element.id;
         }
       }
@@ -105,7 +103,7 @@ const WinnersModal = props => {
     setRefferalLivePlans(li);
     setId(idforFirst);
   }, []);
-
+  console.log('gameShowWinners', gameShowWinners);
   return (
     <Modal
       animationType="slide"
@@ -140,12 +138,25 @@ const WinnersModal = props => {
         <View style={styles.ModalBody}>
           <FlatList
             data={gameShowWinners?.winners}
-            style={{width: '100%', paddingHorizontal: 15}}
-            scrollEnabled={true}
-            contentContainerStyle={{
+            style={{
+              paddingHorizontal: 15,
               width: '100%',
+              height: height,
             }}
-            // horizontal={true}
+            scrollEnabled={true}
+            ListEmptyComponent={
+              <Text
+                style={{
+                  marginVertical: 20,
+                  fontFamily: 'Axiforma-Regular',
+                  fontSize: 14,
+                  fontWeight: '500',
+                  alignSelf: 'center',
+                  color: '#000000',
+                }}>
+                no winners found
+              </Text>
+            }
             ListHeaderComponent={() => (
               <Text
                 style={[
@@ -171,7 +182,7 @@ const WinnersModal = props => {
                     item?.user?.last_name?.slice(1)
                   }
                   date={dayjs(item.created_at).format('MMMM DD, YYYY')}
-                  ammount={FormatNumber(+item?.price)}
+                  ammount={parseFloat(FormatNumber(+item?.price)).toFixed(2)}
                   profile_image={item?.user?.profile_image}
                 />
               );
@@ -193,18 +204,18 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.BG_MUTED,
   },
   ModalView: {
-    height: height * 0.9,
-    marginTop: height * 0.1,
+    height: height * 0.6,
+    marginTop: height * 0.45,
     borderTopLeftRadius: 37,
     borderTopRightRadius: 37,
     backgroundColor: Colors.WHITE,
   },
   SmallBorder: {
     width: width * 0.35,
-    height: 4,
+    height: 3,
     backgroundColor: Colors.SMALL_LINE,
     alignSelf: 'center',
-    marginTop: height * 0.02,
+    marginTop: 8,
   },
   ModalHead: {
     marginTop: height * 0.01,
@@ -212,7 +223,7 @@ const styles = StyleSheet.create({
 
   ModalBody: {
     marginTop: height * 0.02,
-    height: height * 0.6,
+    height: height * 0.5,
   },
   CheckImage: {
     alignSelf: 'center',

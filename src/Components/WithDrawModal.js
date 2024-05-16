@@ -1,157 +1,248 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, {useState, useEffect, useRef} from 'react';
 import {
+  Platform,
   View,
   StyleSheet,
-  Modal,
   Dimensions,
   Image,
   TouchableWithoutFeedback,
   Alert,
   TouchableOpacity,
   TextInput,
-  ActivityIndicator
-} from "react-native";
-import Label from "./Label";
-import LabelButton from "./LabelButton";
-import { Colors, Images } from "../Constants/Index";
-import LongButton from "./LongButton";
-import { useNavigation } from "@react-navigation/native";
-import EncryptedStorage from "react-native-encrypted-storage";
-import Config from "react-native-config";
-import { GetDate } from "../Constants/Functions";
-import ProfilePicture from "./ProfilePicture";
-import { RFValue } from "react-native-responsive-fontsize";
-import LinearGradient from "react-native-linear-gradient";
-import { heightConverter } from "./Helpers/Responsive";
-import { strings } from "../i18n";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
-import { useTranslation } from 'react-i18next';
-const { width, height } = Dimensions.get("window");
+  ActivityIndicator,
+  Text,
+} from 'react-native';
 
-const WithDrawModal = (props) => {
-  const { t, i18n } = useTranslation();
+import Label from './Label';
+import LabelButton from './LabelButton';
+import {Colors, Images} from '../Constants/Index';
+import LongButton from './LongButton';
+import {useNavigation} from '@react-navigation/native';
+import EncryptedStorage from 'react-native-encrypted-storage';
+import Config from 'react-native-config';
+import {GetDate} from '../Constants/Functions';
+import ProfilePicture from './ProfilePicture';
+import {RFValue} from 'react-native-responsive-fontsize';
+import LinearGradient from 'react-native-linear-gradient';
+import {heightConverter} from './Helpers/Responsive';
+import {strings} from '../i18n';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview';
+import {useTranslation} from 'react-i18next';
+import AddaccountModal from '../Components/AddaccountModal';
+import Modal from 'react-native-modal';
+import Modals from './Modals';
+import {Picker} from '@react-native-picker/picker';
+import Wallet from '../screens/Wallet';
+const {width, height} = Dimensions.get('window');
+
+const WithDrawModal = props => {
+  const {t, i18n} = useTranslation();
   const [ModelState, setModelState] = useState({
     state: false,
     details: null,
   });
-  const ApproveRef = useRef();
-  const DeclineRef = useRef();
-
-  const navigation = useNavigation();
+  const ModalErrorState = useRef();
+  const a = props.yourBalance - props.ammount;
+  const withdrawprocessHandle = () => {
+    if (a <= 50) {
+      alert('Your wallet balance can not be below AED 50');
+    } else {
+      props.onPressWithDrawal(props.accountId);
+    }
+  };
 
   useEffect(() => {
     if (props.ModalRef) props.ModalRef.current = HandleChange;
   });
 
   const HandleChange = (state, details = null, ForceSuccess = false) => {
-    setModelState({ state, details, ForceSuccess });
+    setModelState({state, details, ForceSuccess});
   };
 
+  const tabSwitchHandler = tab => {
+    props.setActiveno(tab);
+  };
+  // console.log('activeno', props.activeno);
   return (
-
-    <Modal
-      animationType="slide"
-      transparent={true}
-      visible={ModelState.state}
-      statusBarTranslucent={false} 
-      onRequestClose={() => {
-        setModelState({
-          ...ModelState,
-          state: !ModelState.state,
-        });
-        if (props.onClose) props.onClose();
-      }}
-    >
-
-      <TouchableWithoutFeedback
-        onPress={() => {
+    <>
+      <Modal
+        animationType="slide"
+        style={{margin: 0}}
+        transparent={true}
+        avoidKeyboard={true}
+        isVisible={ModelState.state}
+        statusBarTranslucent={false}
+        onRequestClose={() => {
+          setModelState({
+            ...ModelState,
+            state: !ModelState.state,
+          });
+          if (props.onClose) props.onClose();
+        }}>
+        
+        <TouchableWithoutFeedback
+          onPress={() => {
             setModelState({
               ...ModelState,
               state: !ModelState.state,
             });
             if (props.onClose) props.onClose();
-          
-        }}
-      >
-        <View style={styles.MainView} />
-      </TouchableWithoutFeedback>
+          }}>
+          <View style={styles.MainView} />
+        </TouchableWithoutFeedback>
 
-      <View style={styles.ModalView}>
-        <View style={styles.SmallBorder} />
-        <KeyboardAwareScrollView keyboardDismissMode="interactive">
-          <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', marginTop: 20 }}>
-            <Label notAlign primary font={16} bold2 style={{ color: "#E7003F", }}>
-              {t("your_wallet")}
-            </Label>
-
-            <Label notAlign primary font={18} dark style={{ color: "#0B2142" }}>
-              <Label notAlign primary font={18} dark style={{ color: "#0B2142" }}>
-                AED
-              </Label>
-              {" "}{props.yourBalance}
-            </Label>
-            <View style={{ width: 20, backgroundColor: '#E7003F', height: 3, alignSelf: 'flex-start', marginTop: 8, marginLeft: 20 }} />
-          </View>
-          <View style={styles.Main1}>
-            <Label notAlign primary font={16} bold2 dark style={{ width: 50, color: "#000000", top: 17, }}>
-              AED
-            </Label>
-            <TextInput
-              placeholderTextColor={Colors.DARK_LABEL}
-              keyboardType={"numeric"}
-              // onBlur={onBlur}
-              onChangeText={props.AmmountHandleChange}
-              style={styles.MarginLarge}
-            />
-
-          </View>
-          <View style={styles.ModalBody}>
-
-            <TouchableOpacity
-              onPress={() => { props.onPressWithDrawal() }}
-              disabled={props?.activity}
+        <View style={styles.ModalView}>
+          <View style={styles.SmallBorder} />
+          <KeyboardAwareScrollView keyboardDismissMode="interactive">
+            <View
               style={{
-                height: heightConverter(20),
-                width: width * 0.9,
-
-                justifyContent: 'center',
                 alignItems: 'center',
-                marginTop: height * 0.03,
-                marginLeft: width * 0.04,
-              }}
-            >
-              <View
-
+                height: 40,
+                justifyContent: 'center',
+              }}>
+              <Text
                 style={{
-                  height: heightConverter(65),
-                  width: width * 0.9,
+                  color: '#420E92',
+                  fontSize: 16.5,
+                  fontFamily: 'Axiforma-Bold',
+                }}>
+                Select your withdrawal amount
+              </Text>
+            </View>
+            <View style={styles.ModalBody}>
+              <View style={[styles.tabBtnRow]}>
+                <TouchableOpacity
+                  disabled={a <= 76 ? true : false}
+                  style={[
+                    styles.tabBtn,
+                    props.activeno === '25' ? styles.tabBtnActive : null,
+                  ]}
+                  onPress={() => tabSwitchHandler('25')}>
+                  <Text style={[styles.tabBtnTxt]}>AED 25</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  disabled={a <= 101 ? true : false}
+                  style={[
+                    styles.tabBtn,
+                    props.activeno === '50' ? styles.tabBtnActive : null,
+                  ]}
+                  onPress={() => tabSwitchHandler('50')}>
+                  <Text style={[styles.tabBtnTxt]}>AED 50</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  disabled={a <= 152 ? true : false}
+                  style={[
+                    styles.tabBtn,
+                    props.activeno === '100' ? styles.tabBtnActive : null,
+                  ]}
+                  onPress={() => tabSwitchHandler('100')}>
+                  <Text style={[styles.tabBtnTxt]}>AED 100</Text>
+                </TouchableOpacity>
+              </View>
+              <View style={[styles.tabBtnRow, {marginTop: -10}]}>
+                <TouchableOpacity
+                  disabled={a <= 202 ? true : false}
+                  style={[
+                    styles.tabBtn,
+                    props.activeno === '150' ? styles.tabBtnActive : null,
+                  ]}
+                  onPress={() => tabSwitchHandler('150')}>
+                  <Text style={[styles.tabBtnTxt]}>AED 150</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  disabled={a <= 252 ? true : false}
+                  style={[
+                    styles.tabBtn,
+                    props.activeno === '200' ? styles.tabBtnActive : null,
+                  ]}
+                  onPress={() => tabSwitchHandler('200')}>
+                  <Text style={[styles.tabBtnTxt]}>AED 200</Text>
+                </TouchableOpacity>
+              </View>
+              <View
+                style={{
+                  flexDirection: 'column',
                   justifyContent: 'center',
                   alignItems: 'center',
-                  backgroundColor: '#420e92',
-                  borderRadius: 40,
-                }}
-
-
-              >
-               {props.activity?(
-                 <ActivityIndicator size="large" color="#ffffff" />
-               ):(
-                  <Label primary font={16} bold style={{ color: "#ffffff" }}>
-                  REQUEST WITHDRAWAL
-                </Label>
-               )}
+                }}>
+                <TouchableOpacity
+                  disabled={props?.activity}
+                  onPress={() => {
+                    withdrawprocessHandle();
+                  }}
+                  style={{
+                    height: 55,
+                    width: width * 0.9,
+                    borderRadius: 100,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    // marginLeft: width * 0.04,
+                  }}>
+                  <LinearGradient
+                    start={{x: 0, y: 0}}
+                    end={{x: 1, y: 0}}
+                    style={{
+                      height: 55,
+                      width: '100%',
+                      borderRadius: 100,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                    colors={['#420E92', '#E7003F']}>
+                    {props.activity ? (
+                      <ActivityIndicator size="small" color="#ffffff" />
+                    ) : (
+                      <Label primary font={16} bold style={{color: '#ffffff'}}>
+                        Request Withdrawal
+                      </Label>
+                    )}
+                  </LinearGradient>
+                </TouchableOpacity>
               </View>
-            </TouchableOpacity>
-            <Label primary notAlign headingtype="h3" bold2 font={16} style={{ marginTop: height * 0.06, color: '#000000', marginLeft: width * 0.04, }}>
-              Your remaining balance will be
-            </Label>
-            <Label primary notAlign headingtype="h3" bold2 font={16} style={{ marginLeft: width * 0.04, }}>
-              AED {props.yourBalance-props.ammount}
-            </Label>
-          </View>
-        </KeyboardAwareScrollView>
-      </View>
-    </Modal>
+              <View
+                style={{
+                  margin: 15,
+                  backgroundColor: '#ebe6f0',
+                  height: 130,
+                  padding: 10,
+                  borderRadius: 8,
+                }}>
+                <Text
+                  style={{
+                    color: '#000000',
+                    fontSize: 16.5,
+                    fontWeight: '700',
+                    fontFamily: 'Axiforma-Regular',
+                  }}>
+                  Note:
+                </Text>
+                <Text
+                  style={{
+                    color: '#000000',
+                    fontSize: 15,
+                    fontFamily: 'Axiforma-Regular',
+                    marginTop: 5,
+                    lineHeight: 20,
+                  }}>
+                  The withdrawal requests will be approved on the 15th and 30th
+                  of every month.
+                </Text>
+                <Text
+                  style={{
+                    color: '#000000',
+                    fontSize: 15,
+                    fontFamily: 'Axiforma-Regular',
+                    marginTop: 5,
+                    lineHeight: 20,
+                  }}>
+                  Contestants can only withdraw a maximum amount of 200 AED.
+                </Text>
+              </View>
+            </View>
+          </KeyboardAwareScrollView>
+        </View>
+      </Modal>
+    </>
   );
 };
 
@@ -161,12 +252,19 @@ const styles = StyleSheet.create({
   MainView: {
     height: height,
     width: width,
-    position: "absolute",
+    position: 'absolute',
     backgroundColor: Colors.BG_MUTED,
   },
+  MLarge: {
+    width: width * 0.65,
+    paddingLeft: width * 0.06,
+    color: Colors.DARK_LABEL,
+    fontSize: 19,
+    fontWeight: '700',
+  },
   ModalView: {
-    height: height * 0.5,
-    marginTop: height * 0.52,
+    height: height * 0.9,
+    marginTop: height * 0.65,
     borderTopLeftRadius: 37,
     borderTopRightRadius: 37,
     backgroundColor: Colors.WHITE,
@@ -175,22 +273,47 @@ const styles = StyleSheet.create({
     width: width * 0.35,
     height: 4,
     backgroundColor: Colors.SMALL_LINE,
-    alignSelf: "center",
+    alignSelf: 'center',
     marginTop: height * 0.02,
   },
   ModalHead: {
     marginTop: height * 0.01,
-
   },
-
+  tabBtnRow: {
+    flexDirection: 'row',
+    padding: 8,
+  },
+  tabBtnCol: {
+    width: '70%',
+    paddingHorizontal: 4,
+  },
+  tabBtn: {
+    marginTop: 5,
+    borderWidth: 2,
+    borderColor: '#E6DFEE',
+    width: '30%',
+    height: 46,
+    margin: 5,
+    borderRadius: 10,
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  tabBtnTxt: {
+    color: '#E6DFEE',
+    textAlign: 'center',
+    fontWeight: '600',
+  },
+  tabBtnActive: {
+    backgroundColor: '#420E92',
+  },
   ModalBody: {
-    marginTop: height * 0.02,
     backgroundColor: Colors.WHITE,
-    height: height * 0.3,
+    height: height * 0.8,
   },
   CheckImage: {
-    alignSelf: "center",
-    resizeMode: "contain",
+    alignSelf: 'center',
+    resizeMode: 'contain',
     height: height * 0.1,
     marginTop: height * 0.09,
   },
@@ -203,7 +326,6 @@ const styles = StyleSheet.create({
     lineHeight: height * 0.03,
   },
 
-
   CloseBtn: {
     marginTop: height * 0.02,
   },
@@ -211,8 +333,8 @@ const styles = StyleSheet.create({
   ConView: {
     height: height * 0.1,
     backgroundColor: Colors.WHITE,
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     borderBottomColor: Colors.MUTED,
     borderBottomWidth: 1,
   },
@@ -221,7 +343,7 @@ const styles = StyleSheet.create({
   },
   ProfileInfo: {
     marginLeft: width * 0.02,
-    justifyContent: "center",
+    justifyContent: 'center',
   },
   ReqMsg: {
     marginTop: height * 0.04,
@@ -255,49 +377,43 @@ const styles = StyleSheet.create({
 
   ErrorTxt: {
     width: width * 0.9,
-    alignSelf: "center",
+    alignSelf: 'center',
   },
   ///new added
+
   Main1: {
     flexDirection: 'row',
-    justifyContent: "center",
+    justifyContent: 'center',
     width: width * 0.9,
     borderRadius: 55,
-    alignSelf: "center",
+    alignSelf: 'center',
     marginTop: height * 0.02,
-    backgroundColor: '#f4edef',
+    backgroundColor: '#ECF1F9',
     height: height * 0.08,
-
   },
   Main2: {
-    justifyContent: "center",
+    justifyContent: 'center',
     backgroundColor: Colors.WHITE,
     width: width * 0.9,
     borderRadius: 55,
-    alignSelf: "center",
+    alignSelf: 'center',
     marginTop: height * 0.011,
     borderWidth: 1,
-    borderColor: Colors.DARK_LABEL
+    borderColor: Colors.DARK_LABEL,
   },
   mView: {
-    justifyContent: "center",
+    justifyContent: 'center',
 
-    alignSelf: "center",
-
+    alignSelf: 'center',
   },
   MarginLargeNumber: {
     paddingLeft: width * 0.02,
     fontSize: RFValue(12),
     color: Colors.PRIMARY_LABEL,
-    letterSpacing: width * 0.03, width: width * 0.2,
+    letterSpacing: width * 0.03,
+    width: width * 0.2,
   },
   titleTxt: {
-    marginTop: height * 0.01
-  },
-  MarginLarge: {
-    width: width * 0.65,
-    paddingLeft: width * 0.06,
-    fontSize: RFValue(14),
-    color: Colors.DARK_LABEL
+    marginTop: height * 0.01,
   },
 });

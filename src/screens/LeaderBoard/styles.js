@@ -1,121 +1,121 @@
-import { RFValue } from 'react-native-responsive-fontsize';
-const { StyleSheet } = require('react-native');
-import {
-    Dimensions,
-} from "react-native";
-const { width, height } = Dimensions.get("window");
+import {RFValue} from 'react-native-responsive-fontsize';
+import {Platform} from 'react-native';
+const {StyleSheet} = require('react-native');
+import {Dimensions} from 'react-native';
+const {width, height} = Dimensions.get('window');
 export default StyleSheet.create({
-    safeStyle: {
-        flex: 1,
-        // backgroundColor:colors.background,
+  safeStyle: {
+    flex: 1,
+    backgroundColor: Platform.OS === 'android' ? null : '#420E92',
+    marginBottom: Platform.OS === 'android' ? 0 : 35,
+  },
+  headerText: {
+    color: '#D9FE51',
+    fontFamily: 'Axiforma-SemiBold',
+    fontSize: RFValue(22),
+  },
+  avatarView: {
+    //position: 'absolute',
+    margin: 5,
+    width: width * 0.32,
+    height: width * 0.32,
+    borderRadius: width * 0.32,
+    //borderWidth: 3,
+    alignItems: 'center',
+    justifyContent: 'center',
+    // borderColor: "#ffffff",
+    // elevation: 5,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 7,
     },
-    headerText: {
-        color: '#ffffff',
-        fontFamily: 'Axiforma-SemiBold',
-        fontSize: RFValue(22)
+    shadowOpacity: 0.43,
+    shadowRadius: 9.51,
+  },
+  leftRightavatarView: {
+    //position: 'absolute',
+    margin: 10,
+    width: width * 0.22,
+    height: width * 0.22,
+    borderRadius: width * 0.22,
+    //borderWidth: 3,
+    alignItems: 'center',
+    justifyContent: 'center',
+    // borderColor: "#ffffff",
+    // elevation: 5,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 7,
     },
-    avatarView: {
-        //position: 'absolute',
+    shadowOpacity: 0.43,
+    shadowRadius: 9.51,
+  },
+  mainView: {
+    alignItems: 'center',
+    width: width * 0.9,
+    height: height * 0.1,
+    marginVertical: 5,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingLeft: 5,
+    paddingRight: 5,
+  },
+  text: {
+    lineHeight: 20,
+    fontFamily: 'Axiforma-Regular',
+    color: '#000000',
+    fontSize: RFValue(12),
+  },
+  text2: {
+    fontFamily: 'Axiforma-SemiBold',
+    color: '#000000',
+    fontSize: RFValue(12),
+  },
+  avatarViewSecondList: {
+    // position: 'absolute',
 
-        width: width * 0.32,
-        height: width * 0.32,
-        borderRadius: width * 0.32,
-        //borderWidth: 3,
-        alignItems: "center",
-        justifyContent: "center",
-        // borderColor: "#ffffff",
-        // elevation: 5,
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 7,
-        },
-        shadowOpacity: 0.43,
-        shadowRadius: 9.51,
+    width: width * 0.15,
+    height: width * 0.15,
+    borderRadius: width * 0.22,
+    //borderWidth: 3,
+    alignItems: 'center',
+    justifyContent: 'center',
+    // borderColor: "#ffffff",
+    // elevation: 5,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 7,
     },
-    leftRightavatarView: {
-        //position: 'absolute',
+    shadowOpacity: 0.43,
+    shadowRadius: 9.51,
+  },
+  subHeaderText: {
+    color: '#FFFFFF',
+    fontFamily: 'Axiforma-Regular',
+  },
+  heading2Text: {
+    color: '#420E92',
+    fontFamily: 'Axiforma-Bold',
+    fontSize: RFValue(15),
+  },
 
-        width: width * 0.22,
-        height: width * 0.22,
-        borderRadius: width * 0.22,
-        //borderWidth: 3,
-        alignItems: "center",
-        justifyContent: "center",
-        // borderColor: "#ffffff",
-        // elevation: 5,
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 7,
-        },
-        shadowOpacity: 0.43,
-        shadowRadius: 9.51,
-    },
-    mainView: {
-        alignItems: 'center',
-        width: width * 0.9,
-        height: height * 0.1,
-        marginVertical: 5,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        paddingLeft: 15,
-        paddingRight: 15,
-
-
-    },
-    text: {
-        fontFamily: "Axiforma-Regular",
-        color: '#000000',
-        fontSize: RFValue(12)
-    },
-    text2: {
-        fontFamily: "Axiforma-SemiBold",
-        color: "#000000",
-        fontSize: RFValue(12)
-    },
-    avatarViewSecondList: {
-        //position: 'absolute',
-
-        width: width * 0.16,
-        height: width * 0.16,
-        borderRadius: width * 0.22,
-        //borderWidth: 3,
-        alignItems: "center",
-        justifyContent: "center",
-        // borderColor: "#ffffff",
-        // elevation: 5,
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 7,
-        },
-        shadowOpacity: 0.43,
-        shadowRadius: 9.51,
-    },
-    subHeaderText: {
-        color: '#FFFFFF',
-        fontFamily: 'Axiforma-Regular'
-    },
-    heading2Text: {
-        color: '#420E92', fontFamily: 'Axiforma-Bold', fontSize: RFValue(15)
-    },
-
-    secondView: {
-        width: width * 0.93,
-        height: height * 0.11,
-        backgroundColor: '#fff',
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 12
-    },
-    topListIcon: {
-        width: 20,
-        height: 20
-    },
-    topListIcon2: {
-        width: 30,
-        height: 30
-    }
-
+  secondView: {
+    width: width * 0.93,
+    height: height * 0.11,
+    backgroundColor: '#fff',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 12,
+  },
+  topListIcon: {
+    width: 20,
+    height: 20,
+  },
+  topListIcon2: {
+    width: 30,
+    height: 30,
+  },
 });

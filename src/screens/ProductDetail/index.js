@@ -8,16 +8,26 @@ import {
   ScrollView,
   SafeAreaView,
   ActivityIndicator,
+  RefreshControl,
+  Platform,
 } from 'react-native';
+
 import Label from '../../Components/Label';
 const {width, height} = Dimensions.get('window');
 import LinearGradient from 'react-native-linear-gradient';
 import {Card} from '../../Components';
 import {
+  GetCartData,
+  RemoveCartData,
+  getLandingScreen,
+} from '../../redux/actions';
+import {
   widthPercentageToDP,
   heightPercentageToDP,
   heightConverter,
 } from '../../Components/Helpers/Responsive';
+import socketIO from 'socket.io-client';
+import {wait} from '../../Constants/Functions';
 import {connect, useDispatch, useSelector} from 'react-redux';
 import Header from '../../Components/Header';
 import EncryptedStorage from 'react-native-encrypted-storage';
@@ -29,119 +39,214 @@ import {JSONtoForm} from '../../Constants/Functions';
 import Counter from 'react-native-counters';
 import BuyLifeCongrats from '../../Components/BuyLifeCongrats';
 import Modals from '../../Components/Modals';
-import {ProductDetails} from '../../redux/actions';
+import {useIsFocused, useFocusEffect} from '@react-navigation/native';
+const MYServer = 'https://node-winjoyserver-deploy.herokuapp.com/';
 const ProductDetail = ({props, navigation, route}) => {
+  const cartData = useSelector(state => state.app.cartData);
+  const isFocused = useIsFocused();
+  //const defaultAppAnalytics = firebase.analytics();
+  const socket = socketIO(MYServer);
   const dispatch = useDispatch();
   const dispatch2 = useDispatch();
+  const dispatch3 = useDispatch();
+  const dispatch6 = useDispatch();
   const SucessModalState = useRef();
   const ModalErrorState = useRef();
   const counterMain = useSelector(state => state.app.counter);
-  const productsDetails = useSelector(state => state.app.productsDetals);
-  const productId = route?.params?.productId;
+  const [refreshing, setRefreshing] = React.useState(false);
+  const [pd, setpd] = useState([]);
+  const {productId} = route?.params;
   const [activity, setActivity] = useState(false);
   const [count, setCount] = useState(1);
-  const loading = useSelector(state => state.app.loading);
-  useEffect(() => {
-    console.log('productId', productId);
-    dispatch2(ProductDetails(productId));
-    console.log('productsDetails', productsDetails);
+  const [Loading, setLoading] = useState(true);
+  const LandingData = useSelector(state => state.app.LandingData);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    _Api(productId);
+    wait(1000).then(() => setRefreshing(false));
+  }, []);
+  const onRefresh2 = React.useCallback(() => {
+    dispatch3(GetCartData());
+    wait(80).then(() => setRefreshing(false));
   }, []);
 
-  const onChange = (number, type) => {
-    setCount(number);
-    console.log(number, type); // 1, + or -
-  };
-  const SaveIdInfo = async () => {
-    console.log(counterMain, count);
-    setActivity(true);
-    var postData = JSON.stringify({
-      is_from_experience: false,
-      product_id: productsDetails?.prpduct?.luckydraw?.product_id,
-      count: count,
+  useEffect(() => {
+    dispatch6(getLandingScreen());
+    _Api(productId);
+    socket.on('sendOnboarding', msg => {
+      console.log('Should navigate from product details');
+      NavigateToQuiz(true);
     });
+    firebase.app();
+    firebase.analytics();
+  }, []);
+  // const addCustomEvent = async () => {
+  //   await defaultAppAnalytics.logAddToCart({
+  //     currency: pd?.product?.price,
+  //     value: count,
+  //   });
+  // };
+  const _Api = async productId => {
+    setLoading(true);
     const Token = await EncryptedStorage.getItem('Token');
-
     const requestOptions = {
-      method: 'POST',
+      method: 'GET',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'multipart/form-data',
         Accept: 'application/json',
         Authorization: `Bearer ${Token}`,
       },
-      body: postData,
     };
-    console.log('requestOptions', requestOptions);
-    await fetch(`${Config.API_URL}/add_to_cart`, requestOptions)
+    await fetch(`${Config.API_URL}/product/show/${productId}`, requestOptions)
       .then(async response => response.json())
-      .then(async res => {
-        console.log('res', res);
-        if (res.status === 'success') {
-          setActivity(false);
-          SucessModalState.current(true);
-          dispatch({
-            type: types.CART_COUNTER,
-            counter: counterMain + count,
-          });
-        } else {
-          setActivity(false);
-          ModalStateError.current(true, {
-            heading: 'Error',
-            Error: res.message,
-            array: res.errors ? Object.values(res.errors) : [],
-          });
-        }
-        setActivity(false);
-      })
-      .catch(e => {
-        console.log('error', e);
-        //  ButtonRef.current.SetActivity(false);
+      .then(res => {
+        setpd(res);
+        setLoading(false);
       });
   };
+  //console.log('pdd', pd);
+  const onChange = (number, type) => {
+    setCount(number);
+  };
+  const SaveIdInfo = async () => {
+    if (!pd?.product?.luckydraw.enable_buy) {
+      alert('Thank you for your interest. This feature is coming soon');
+    } else {
+      setActivity(true);
+      var postData = JSON.stringify({
+        // is_from_experience: false,
+        product_id: pd?.product?.luckydraw?.product_id,
+        quantity: count,
+      });
+      console.log('postData', postData);
+      const Token = await EncryptedStorage.getItem('Token');
+
+      const requestOptions = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          Authorization: `Bearer ${Token}`,
+        },
+        body: postData,
+      };
+      await fetch(`${Config.API_URL}/add_to_cart`, requestOptions)
+        .then(async response => response.json())
+        .then(async res => {
+          if (res.status === 'success') {
+            dispatch3(GetCartData());
+            //console.log({ProductDetails: res});
+            setActivity(false);
+            //SucessModalState.current(true);
+            dispatch({
+              type: types.CART_COUNTER,
+              counter: counterMain + count,
+            });
+          } else {
+            setActivity(false);
+            ModalErrorState.current(true, {
+              heading: 'Error',
+              Error: res.message,
+              array: res.errors ? Object.values(res.errors) : [],
+            });
+          }
+          setActivity(false);
+        })
+        .catch(e => {
+          //  ButtonRef.current.SetActivity(false);
+        });
+    }
+  };
+  const NavigateToQuiz = fromSocket => {
+    if (
+      LandingData?.gameShow?.status === 'on_boarding' ||
+      LandingData?.gameShow?.status === 'started' ||
+      fromSocket
+    ) {
+      {
+        console.log(
+          'LandingData?.gameShow?.status pd',
+          LandingData?.gameShow?.status,
+        );
+      }
+      navigation.navigate('GameStack', {
+        screen: 'Quiz',
+        params: {
+          streamUrl: LandingData.streamUrl,
+          uri: LandingData?.gameShow?.live_stream?.key,
+          gameshow: LandingData?.gameShow,
+          completed_questions: LandingData?.gameShow?.completed_questions,
+        },
+      });
+    }
+  };
+ 
 
   return (
-    <SafeAreaView style={{height: '100%', paddingBottom: 120}}>
-      <ScrollView style={{}}>
+    <SafeAreaView
+      style={{
+        height: '79%',
+        backgroundColor: Platform.OS === 'android' ? null : '#420E92',
+      }}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
+        style={{backgroundColor: '#f6f1f3'}}
+        refreshControl={
+          <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
+        }>
         <LinearGradient style={styles.mainView} colors={['#420E92', '#E7003F']}>
-          <View style={{height: 20}} />
+          <View style={{height: 18}} />
           <Header back={true} />
         </LinearGradient>
-        {loading ? (
+        {Loading ? (
           <ActivityIndicator size="large" color="#000000" />
         ) : (
-          <>
-            <View style={{paddingHorizontal: 15}}>
-              <View style={[styles.upperView]}>
-                <Card
-                  images={productsDetails?.prpduct?.images}
-                  updated_stocks={productsDetails?.prpduct?.updated_stocks}
-                  stock={productsDetails?.prpduct?.stock}
-                />
-              </View>
-              <View style={styles.card}>
-                <Text
-                  style={{
-                    color: '#000000',
-                    fontFamily: 'Axiforma-Regular',
-                    fontSize: 16,
-                    borderBottomWidth: 1,
-                    borderBottomColor: '#E6DFEE',
-                    width: '100%',
-                    textAlign: 'center',
-                    paddingVertical: 10,
-                  }}>
-                  {productsDetails?.prpduct?.title}
-                </Text>
+          <View style={{paddingHorizontal: 15}}>
+            <View style={styles.upperView}>
+              <Card
+                images={pd?.product?.images}
+                updated_stocks={parseInt(pd?.product?.luckydraw?.updated_stock)}
+                stock={parseInt(pd?.product?.luckydraw?.stock)}
+              />
+            </View>
+            <View style={styles.card}>
+              <Text
+                style={{
+                  color: '#000000',
+                  fontFamily: 'Axiforma-Regular',
+                  fontSize: 16,
+                  borderBottomWidth: 1,
+                  borderBottomColor: '#E6DFEE',
+                  width: '100%',
+                  textAlign: 'center',
+                  paddingVertical: 10,
+                }}>
+                {pd?.product?.title}
+              </Text>
 
+              <Label
+                primary
+                font={16}
+                dark
+                style={{color: '#E7003F', marginTop: 10, lineHeight: 20}}>
+                Get a chance to win
+              </Label>
+
+              {pd?.product?.luckydraw?.experience ? (
                 <Label
-                  primary
                   font={16}
                   dark
-                  style={{color: '#E7003F', marginTop: 10}}>
-                  Get a chance to win
+                  style={{color: '#000000', lineHeight: 20}}>
+                  {pd?.product?.luckydraw?.experience?.title}
                 </Label>
+              ) : (
                 <Label font={16} dark style={{color: '#000000'}}>
-                  {productsDetails?.prpduct?.luckydraw?.prize_title}
+                  {pd?.product?.luckydraw?.prize_title}
                 </Label>
+              )}
+              {pd?.product?.luckydraw?.enable_buy ? (
                 <Label
                   font={12}
                   light
@@ -151,35 +256,58 @@ const ProductDetail = ({props, navigation, route}) => {
                     lineHeight: 17,
                   }}>
                   Max draw date{' '}
-                  {dayjs(productsDetails?.prpduct?.luckydraw?.end_date).format(
+                  {dayjs(pd?.product?.luckydraw?.end_date).format(
                     'MMMM DD, YYYY',
-                  )}{' '}
+                  )}
+                  {'  '}
                   or when the campaign is sold out, which is earliest
                 </Label>
-                <Text style={styles.closingTxt}>Closing Soon</Text>
-              </View>
-              <View style={styles.pdView}>
+              ) : (
                 <Label
-                  notAlign
-                  primary
-                  font={16}
-                  bold
-                  style={{color: '#E7003F'}}>
-                  Products Details
+                  font={12}
+                  light
+                  style={{
+                    color: '#000000',
+                    paddingVertical: 10,
+                    lineHeight: 17,
+                  }}>
+                  Draw Date announce to be soon!
                 </Label>
-                <Label
-                  notAlign
-                  font={11}
-                  dark
-                  style={{color: '#000000', lineHeight: 20}}>
-                  {productsDetails?.prpduct?.description}
-                </Label>
+              )}
+              <View style={styles.closingTxt}>
+                <Text
+                  style={{
+                    color: '#ffffff',
+                    fontFamily: 'Axiforma-Regular',
+                    fontWeight: 'bold',
+                    fontSize: 16,
+                    textAlign: 'center',
+                  }}>
+                  Closing Soon
+                </Text>
               </View>
             </View>
-          </>
+            <View style={styles.pdView}>
+              <Label
+                notAlign
+                primary
+                font={16}
+                bold
+                style={{marginTop: 4, color: '#E7003F', lineHeight: 28}}>
+                Product Details
+              </Label>
+              <Label
+                notAlign
+                font={11}
+                dark
+                style={{color: '#000000', lineHeight: 20}}>
+                {pd?.product?.description}
+              </Label>
+            </View>
+          </View>
         )}
       </ScrollView>
-      <View style={styles.card2Wrap}>
+      <View style={{marginHorizontal: 15}}>
         <View style={styles.card2}>
           <View
             style={{
@@ -190,19 +318,27 @@ const ProductDetail = ({props, navigation, route}) => {
               paddingHorizontal: 15,
               paddingVertical: 15,
             }}>
-            <View>
-              <Text style={styles.metaText}>To enter in the lucky draw</Text>
-              <Text style={[styles.metaText, {fontWeight: 'bold'}]}>
-                Buy a {productsDetails?.prpduct?.title}
+            {!Loading ? (
+              <View>
+                <Text style={styles.metaText}>To enter in the lucky draw</Text>
+                <Text style={[styles.metaText, {fontWeight: 'bold'}]}>
+                  Buy a {pd?.product?.title}
+                </Text>
+              </View>
+            ) : null}
+            {Loading ? (
+              <ActivityIndicator size="small" color="#000000" />
+            ) : (
+              <Text
+                style={[
+                  styles.text,
+                  {fontWeight: 'bold', fontSize: RFValue(14)},
+                ]}>
+                AED{' '}
+                {+pd?.product?.price?.toLocaleString() ||
+                  +data?.product?.price?.toLocaleString()}
               </Text>
-            </View>
-            <Text
-              style={[
-                styles.text,
-                {fontWeight: 'bold', fontSize: RFValue(14)},
-              ]}>
-              AED {+productsDetails?.prpduct?.price?.toLocaleString()}
-            </Text>
+            )}
           </View>
           <View
             style={{
@@ -222,15 +358,18 @@ const ProductDetail = ({props, navigation, route}) => {
                   color: '#000000',
                   fontFamily: 'Axiforma-Bold',
                 }}
-                max={parseInt(productsDetails?.product?.stock)}
-                countTextStyle={{color: '#000000', fontFamily: 'Axiforma-Bold'}}
+                max={parseInt(pd?.product?.stock)}
+                countTextStyle={{
+                  color: '#000000',
+                  fontFamily: 'Axiforma-Bold',
+                }}
                 onChange={(number, type) => onChange(number, type)}
               />
             </View>
             <TouchableOpacity
               disabled={activity}
               onPress={() => {
-                SaveIdInfo();
+                !Loading && SaveIdInfo()
               }}>
               <LinearGradient
                 start={{x: 0, y: 0}}
@@ -246,9 +385,19 @@ const ProductDetail = ({props, navigation, route}) => {
                 {activity ? (
                   <ActivityIndicator size="small" color="#ffffff" />
                 ) : (
-                  <Text style={{color: '#ffffff', fontFamily: 'Axiforma-Bold'}}>
-                    Add to Cart
-                  </Text>
+                  <>
+                    {Loading ? (
+                      <ActivityIndicator size="small" color="#ffffff" />
+                    ) : (
+                      <Text
+                        style={{
+                          color: '#ffffff',
+                          fontFamily: 'Axiforma-Bold',
+                        }}>
+                        Add to Cart
+                      </Text>
+                    )}
+                  </>
                 )}
               </LinearGradient>
             </TouchableOpacity>
@@ -306,8 +455,9 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   upperView: {
-    marginTop: -height * 0.13,
-    //  position: 'absolute',
+    // marginTop: Platform.OS === 'android' ? -height * 0.13 : -135,
+    marginTop: -height * 0.142,
+    //position: 'absolute',
     width: '100%',
   },
   card: {
@@ -317,24 +467,34 @@ const styles = StyleSheet.create({
     paddingBottom: 22,
     marginBottom: 30,
     borderRadius: 10,
-
     justifyContent: 'center',
     alignItems: 'center',
+    shadowColor: '#d9dbda',
+    shadowOffset: {width: 0, height: 1},
+    shadowOpacity: 5,
+    shadowRadius: 5,
     elevation: 3,
   },
   card2Wrap: {
-    bottom: 10,
-    left: 0,
-    position: 'absolute',
+    /* top: Platform.OS === 'android' ? '100%' : 600,
+    left: 0, */
+    // position: 'absolute',
+
     paddingHorizontal: 15,
-    width: '100%',
   },
   card2: {
+    top: Platform.OS === 'android' ? '92%' : '94%',
     width: '100%',
     backgroundColor: '#ffffff',
-    marginTop: 10,
+    marginTop: 5,
+    position: 'absolute',
     borderRadius: 10,
     paddingBottom: 10,
+
+    shadowColor: '#d9dbda',
+    shadowOffset: {width: 0, height: 1},
+    shadowOpacity: 5,
+    shadowRadius: 5,
     elevation: 3,
   },
 
@@ -354,9 +514,11 @@ const styles = StyleSheet.create({
     position: 'absolute',
   },
   pdView: {
-    minHeight: 100,
+    height: 'auto',
+    marginBottom: 24,
   },
   metaText: {
+    lineHeight: 20,
     color: '#000000',
     fontFamily: 'Axiforma-Regular',
   },

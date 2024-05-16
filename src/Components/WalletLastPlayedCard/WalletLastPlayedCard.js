@@ -1,67 +1,80 @@
-import React, { useState } from "react";
-import { View, Image, Dimensions, TouchableOpacity } from "react-native";
-import styles from "./Styles";
-import Label from "../Label";
-import { useTranslation } from 'react-i18next';
-import { FormatNumber } from "../../Constants/Functions";
-const { width, height } = Dimensions.get("window");
-function WalletLastPlayedCard({ noOfQuestions, onPress, wonPrize, result, optionDisable, data }) {
-  const { t } = useTranslation();
+import React, {useState} from 'react';
+import {View, Image, Dimensions, TouchableOpacity, Text} from 'react-native';
+import styles from './Styles';
+import Label from '../Label';
+import {useTranslation} from 'react-i18next';
+import {FormatNumber} from '../../Constants/Functions';
+const {width, height} = Dimensions.get('window');
+function WalletLastPlayedCard({
+  noOfQuestions,
+  onPress,
+  wonPrize,
+  result,
+  optionDisable,
+  data,
+}) {
+  const {t} = useTranslation();
   return (
-    // <TouchableOpacity
-    //   style={{
-    //     width: width - 25,
-    //     height: height * 0.28,
-    //     backgroundColor: "#ffffff",
-    //     marginLeft: 10,
-    //     borderRadius: 10,
-    //     padding: 10,
-    //     top: 15,
-    //     left: 2,
-    //     justifyContent: "center",
-    //     alignItems: "center",
-    //     elevation: 3,
-    //     marginBottom: 15,
-    //   }}
-    //   onPress={onPress}
-    // >
     <TouchableOpacity
       style={{
-        width: width - 25,
-        height: height * 0.19,
-        backgroundColor: "#ffffff",
-        marginLeft: 10,
+        width: 'auto',
+        height: height * 0.145,
+        backgroundColor: '#ffffff',
+        marginHorizontal: 14,
         borderRadius: 10,
-        padding: 10,
-        top: height * 0.06,
-        left: 2,
-        justifyContent: "center",
-        alignItems: "center", 
+        justifyContent: 'center',
         elevation: 3,
-        marginBottom: 15,
+        marginBottom: 11,
+        shadowColor: '#d9dbda',
+        shadowOffset: {width: 0, height: 1},
+        shadowOpacity: 6,
+        shadowRadius: 2,
+        elevation: 3,
       }}
-      onPress={onPress}
-    >
-
-      <View style={{ marginLeft: 30 }}>
-        <Label notAlign primary font={16} bold style={{ color: "#E7003F",  }}>
-        {t("last_played_game")}
-        </Label>
-
-        <Label notAlign primary font={14} dark style={{ color: "#000000",marginTop:20,fontFamily: "Axiforma-SemiBold",width:width*0.8, }}>
+      onPress={onPress}>
+      <View style={{marginHorizontal: 20}}>
+        <Text
+          style={{
+            fontWeight: 'bold',
+            color: '#E7003F',
+            lineHeight: 30,
+            fontFamily: 'Axiforma-Regular',
+            fontSize: 15.5,
+          }}>
+          Last Played Game
+        </Text>
+        <Text
+          style={{
+            fontWeight: 'bold',
+            color: '#000000',
+            lineHeight: 18,
+            fontFamily: 'Axiforma-Regular',
+            fontSize: 15,
+          }}>
           Answer {noOfQuestions} simple questions and WIN amazing prizes
-        </Label>
-        <Label notAlign primary font={14} bold style={{ color: "#E7003F", marginTop:7}}>
-        {t("won_prize")}
-         <Label notAlign primary font={14} dark style={{ color: "#000000" }}>
-         {" "}AED {FormatNumber(+(wonPrize)?.toLocaleString())}
-        </Label>
-        </Label>
-      </View>
-     
+        </Text>
 
+        <Text
+          style={{
+            fontWeight: 'bold',
+            color: '#E7003F',
+            lineHeight: 30,
+            fontFamily: 'Axiforma-Regular',
+            fontSize: 15.5,
+          }}>
+          Prizes won{' '}
+          <Text
+            style={{
+              color: '#000000',
+              fontFamily: 'Axiforma-Bold',
+              fontSize: 15,
+            }}>
+            AED {FormatNumber(+wonPrize?.toLocaleString())}
+          </Text>
+        </Text>
+      </View>
     </TouchableOpacity>
   );
 }
 
-export { WalletLastPlayedCard };
+export {WalletLastPlayedCard};

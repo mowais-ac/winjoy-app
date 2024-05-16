@@ -1,12 +1,4 @@
-import {
-  widthPercentageToDP,
-  heightPercentageToDP,
-  heightConverter,
-  widthConverter,
-} from '../Helpers/Responsive';
-import { RFValue } from 'react-native-responsive-fontsize';
-
-const { StyleSheet } = require('react-native');
+const {StyleSheet} = require('react-native');
 
 export default StyleSheet.create({
   bgView: {
@@ -15,7 +7,7 @@ export default StyleSheet.create({
     borderRadius: 15,
     justifyContent: 'flex-end',
     alignItems: 'center',
-    paddingBottom:10
+    paddingBottom: 10,
   },
   bgImage: {
     width: 170,
@@ -24,5 +16,5 @@ export default StyleSheet.create({
   },
   text: {
     color: '#fff',
-  }
+  },
 });

@@ -8,17 +8,6 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
-   
-    // case EVENT_LOG:
-    //   return {
-    //     ...state,
-    //     eventData: action.payload,
-    //   };
-    // case EVENT_FAILURE:
-    //   return {
-    //     ...state,
-    //     eventError: action.payload,
-    //   };
     case types.SHOW_LOADER:
       return {
         ...state,

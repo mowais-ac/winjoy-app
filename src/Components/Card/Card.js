@@ -1,10 +1,9 @@
-import React from 'react';
-import {View, Dimensions, Text} from 'react-native';
-import Config from 'react-native-config';
-import LoaderImage from '../LoaderImage';
+import React, {useEffect} from 'react';
+import {View, Dimensions, Text, Image} from 'react-native';
+
 const {width, height} = Dimensions.get('window');
-import ProgressCircle from 'react-native-progress-circle';
-import {SliderBox} from 'react-native-image-slider-box';
+
+
 function Card({
   options,
   onPress,
@@ -16,116 +15,115 @@ function Card({
   stock,
   removeProgressCircle,
 }) {
-  console.log('images', images);
   let progress = updated_stocks ? (updated_stocks / stock) * 100 : 0;
-  let arr = [];
-  images?.map(ele => {
-    console.log('ele', ele.image);
-    arr.push(ele.image);
-  });
-  console.log('arr', arr);
+  useEffect(() => {}, [images]);
+
   return (
     <View
       style={{
         width: '100%',
+        height: 230,
         backgroundColor: '#ffffff',
-
         borderRadius: 10,
-
         justifyContent: 'center',
         alignItems: 'center',
+        shadowColor: '#d9dbda',
+        shadowOffset: {width: 0, height: 1},
+        shadowOpacity: 5,
+        shadowRadius: 5,
         elevation: 3,
       }}>
       <View style={{position: 'absolute', top: 10, zIndex: 1000, left: 10}}>
         {!removeProgressCircle ? (
-          <ProgressCircle
-            percent={progress}
-            radius={35}
-            borderWidth={6}
-            color="#e7003f"
-            shadowColor="#d3d9dd"
-            bgColor="#fff">
-            <View style={{justifyContent: 'center', alignItems: 'center'}}>
-              <Text
-                style={{
-                  fontFamily: 'Axiforma-SemiBold',
-                  fontSize: 12,
-                  color: '#E7003F',
-                  lineHeight: 12,
-                }}>
-                {updated_stocks || 0}
-              </Text>
-              <Text
-                style={{
-                  fontFamily: 'Axiforma-SemiBold',
-                  fontSize: 12,
-                  color: '#E7003F',
-                  lineHeight: 12,
-                }}>
-                sold
-              </Text>
-              <Text
-                style={{
-                  fontFamily: 'Axiforma-SemiBold',
-                  fontSize: 12,
-                  color: '#E7003F',
-                  lineHeight: 12,
-                }}>
-                out of
-              </Text>
-              <Text
-                style={{
-                  fontFamily: 'Axiforma-SemiBold',
-                  fontSize: 12,
-                  color: '#E7003F',
-                  lineHeight: 14,
-                }}>
-                {stock}
-              </Text>
-            </View>
-          </ProgressCircle>
+          <></>
+          // <ProgressCircle
+          //   percent={progress}
+          //   radius={35}
+          //   borderWidth={6}
+          //   color="#e7003f"
+          //   shadowColor="#d3d9dd"
+          //   bgColor="#fff">
+          //   <View style={{justifyContent: 'center'}}>
+          //     <Text
+          //       style={{
+          //         fontFamily: 'Axiforma-SemiBold',
+          //         fontSize: 12,
+          //         textAlign: 'center',
+          //         color: '#E7003F',
+          //         lineHeight: 12,
+          //       }}>
+          //       {updated_stocks || 0}
+          //     </Text>
+          //     <Text
+          //       style={{
+          //         textAlign: 'center',
+          //         fontFamily: 'Axiforma-SemiBold',
+          //         fontSize: 12,
+          //         color: '#E7003F',
+          //         lineHeight: 12,
+          //       }}>
+          //       sold
+          //     </Text>
+          //     <Text
+          //       style={{
+          //         textAlign: 'center',
+          //         fontFamily: 'Axiforma-SemiBold',
+          //         fontSize: 12,
+          //         color: '#E7003F',
+          //         lineHeight: 12,
+          //       }}>
+          //       out of
+          //     </Text>
+          //     <Text
+          //       style={{
+          //         textAlign: 'center',
+          //         fontFamily: 'Axiforma-SemiBold',
+          //         fontSize: 12,
+          //         color: '#E7003F',
+          //         lineHeight: 14,
+          //       }}>
+          //       {stock}
+          //     </Text>
+          //   </View>
+          // </ProgressCircle>
         ) : null}
       </View>
-      {/* <LoaderImage
-        source={
-          {
-            //    uri: images[0].image,
-          }
-        }
-        style={{
-          width: '100%',
-          height: 200,
-          borderRadius: 10,
-        }}
-        resizeMode="center"
-      /> */}
+
       <View
         style={{
           flex: 1,
-          marginTop: 8,
+          // marginTop: 8,
           flexDirection: 'row',
         }}>
-        <SliderBox
-          images={arr}
-          sliderBoxHeight={160}
-          resizeMode={'center'}
-          ImageComponentStyle={{
-            width: '100%',
-            height: 160,
-            borderRadius: 10,
+        {console.log({'images::': images})}
+        {/* <Carousel
+          layout={'default'}
+          resizeMode={'contain'}
+          autoplayInterval={3000}
+          data={images}
+          sliderWidth={width}
+          itemWidth={width}
+          renderItem={({item, index}) => {
+            return (
+              <Image
+                source={{uri: item?.image}}
+                resizeMode={'contain'}
+                style={{
+                  width: '80%',
+                  height: height * 0.27,
+                  //marginTop: height * 0.015,
+                  alignSelf: 'center',
+                }}
+              />
+            );
           }}
-          dotColor="#FFEE58"
-          inactiveDotColor="#90A4AE"
-          // dotStyle={{top: 5}}
-          autoplay={false}
-          circleLoop={true}
-          onCurrentImagePressed={index =>
-            console.warn(`image ${index} pressed`)
-          }
-          currentImageEmitter={index =>
-            console.warn(`current pos is: ${index}`)
-          }
-        />
+          style={{
+            width: width,
+            height: height * 0.27,
+            // marginTop: height * 0.015,
+            alignSelf: 'center',
+          }}
+        /> */}
       </View>
     </View>
   );

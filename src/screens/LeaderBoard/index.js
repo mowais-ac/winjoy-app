@@ -25,7 +25,6 @@ import {
 import styles from './styles';
 import LinearGradient from 'react-native-linear-gradient';
 import EncryptedStorage from 'react-native-encrypted-storage';
-import I18n from 'react-native-i18n';
 import axios from 'axios';
 import {RFValue} from 'react-native-responsive-fontsize';
 import BuyLifeLineModal from '../../Components/BuyLifeLineModal';

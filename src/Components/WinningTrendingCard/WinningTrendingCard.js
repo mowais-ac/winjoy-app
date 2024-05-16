@@ -5,9 +5,6 @@ import Label from "../Label";
 import LinearGradient from "react-native-linear-gradient";
 import { heightConverter, widthPercentageToDP } from "../Helpers/Responsive";
 import LoaderImage from "../LoaderImage";
-import Config from "react-native-config";
-import ProgressCircle from 'react-native-progress-circle'
-import { RFValue } from "react-native-responsive-fontsize";
 import * as Progress from 'react-native-progress';
 import { FormatNumber } from "../../Constants/Functions"; 
 const { width, height } = Dimensions.get("window");

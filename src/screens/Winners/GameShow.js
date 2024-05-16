@@ -35,7 +35,7 @@ const GameShow = props => {
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'space-between',
-            paddingHorizontal: 15,
+            paddingHorizontal: 10,
             marginBottom: 6,
           }}>
           <Text
@@ -61,7 +61,7 @@ const GameShow = props => {
         </View>
         <FlatList
           horizontal={true}
-          style={{marginTop: 10}}
+          style={{marginTop: 5}}
           ItemSeparatorComponent={() => <View style={{width: 16}} />}
           scrollEnabled={true}
           contentContainerStyle={{
@@ -69,9 +69,10 @@ const GameShow = props => {
             alignSelf: 'flex-start',
           }}
           ListEmptyComponent={() => (
-            <View style={{}}>
+            <View>
               <Text
                 style={{
+                  paddingLeft: 10,
                   color: '#000000',
                   fontFamily: 'Axiforma-Regular',
                   fontSize: RFValue(13),
@@ -84,13 +85,17 @@ const GameShow = props => {
           showsHorizontalScrollIndicator={false}
           data={props?.lastWinners}
           renderItem={({item}) => (
-            <View style={{width: width / 3 - 16, justifyContent: 'center'}}>
+            <View
+              style={{
+                width: width / 3 - 16,
+                justifyContent: 'center',
+
+                position: 'relative',
+              }}>
               <View style={{flexDirection: 'row', justifyContent: 'center'}}>
                 <ProfilePicture
                   picture={item?.user?.profile_image}
-                  // id={userInfo?.id || userData?.id}
                   name={item?.user?.first_name?.charAt(0).toUpperCase()}
-                  // name={userInfo?.first_name?.charAt(0).toUpperCase()}
                   style={styles.avatarViewTop}
                 />
               </View>
@@ -108,7 +113,9 @@ const GameShow = props => {
                 />
               </View>
               <View style={{justifyContent: 'center', marginTop: 5}}>
-                <Text style={[styles.text2, {textAlign: 'center'}]}>
+                <Text
+                  numberOfLines={1}
+                  style={[styles.text2, {textAlign: 'center'}]}>
                   {item?.user?.first_name?.charAt(0)?.toUpperCase() +
                     item?.user?.first_name?.slice(1) +
                     ' ' +
@@ -121,23 +128,38 @@ const GameShow = props => {
                     styles.text2,
                     {color: '#420E92', textAlign: 'center'},
                   ]}>
-                  AED {FormatNumber(+item?.price?.toLocaleString())}
+                  AED {parseFloat(FormatNumber(+item?.price)).toFixed(2)}
                 </Text>
               </View>
             </View>
           )}
-          //   keyExtractor={(item) => item.id}
+          keyExtractor={item => item}
         />
       </View>
 
       <FlatList
         data={props?.pastWinners}
-        style={{width: '100%', paddingHorizontal: 10}}
+        style={{
+          width: '100%',
+          paddingHorizontal: 10,
+        }}
         scrollEnabled={false}
         contentContainerStyle={{
           width: '100%',
         }}
-        // horizontal={true}
+        ListEmptyComponent={() => (
+          <View style={{}}>
+            <Text
+              style={{
+                marginTop: 15,
+                color: '#000000',
+                fontFamily: 'Axiforma-Regular',
+                fontSize: RFValue(13),
+              }}>
+              No PastWinners Found
+            </Text>
+          </View>
+        )}
         ListHeaderComponent={() => (
           <Text
             style={[styles.text2, {fontSize: RFValue(14), color: '#420E92'}]}>
@@ -155,9 +177,8 @@ const GameShow = props => {
                 item?.user?.last_name?.slice(1)
               }
               date={dayjs(item.created_at).format('MMMM DD, YYYY')}
-              ammount={FormatNumber(+item?.price)}
+              ammount={parseFloat(FormatNumber(+item?.price)).toFixed(2)}
               profile_image={item?.user?.profile_image}
-              // onPress={()=>navigation.navigate("LastGameWinnerDetail")}
             />
           );
         }}
@@ -168,9 +189,9 @@ const GameShow = props => {
 
 const styles = StyleSheet.create({
   mainView: {
-    height: height * 0.7,
     width: width,
     alignItems: 'center',
+    paddingBottom: 10,
   },
   avatarViewTop: {
     width: 80,
@@ -197,6 +218,7 @@ const styles = StyleSheet.create({
     fontSize: RFValue(12),
   },
   text2: {
+    lineHeight: 19,
     fontFamily: 'Axiforma-SemiBold',
     color: '#000000',
     fontSize: RFValue(12),

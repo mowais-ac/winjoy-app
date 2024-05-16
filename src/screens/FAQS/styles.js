@@ -47,6 +47,7 @@ export default StyleSheet.create({
   paragraph: {
     color: '#000000',
     paddingBottom: 10,
+    textAlign: 'justify',
   },
   listeItem: {},
 });

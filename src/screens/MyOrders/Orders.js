@@ -1,5 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {
+  SafeAreaView,
+  ScrollView,
   View,
   StyleSheet,
   Dimensions,
@@ -10,12 +12,11 @@ import {
   Text,
   ImageBackground,
 } from 'react-native';
-
+import NotFoundPurchase from '../../Components/NotFoundPurchase';
 import Background from '../../Components/Background';
-import SafeArea from '../../Components/SafeArea';
 import Label from '../../Components/Label';
 import Header from '../../Components/Header';
-
+import LinearGradient from 'react-native-linear-gradient';
 import {Colors, Images} from '../../Constants/Index';
 import Section from '../../Components/Section';
 import UserInfo from '../../Components/UserInfo';
@@ -71,11 +72,15 @@ const Orders = ({navigation}) => {
         onPress={() => navigation.navigate('OrderDetails', {item})}>
         <View
           style={{
-            backgroundColor: '#fff',
+            backgroundColor: '#ffffff',
             overflow: 'hidden',
-            borderRAdius: 10,
+            borderRadius: 10,
             padding: 10,
             marginVertical: 6,
+            shadowOffset: {width: 0, height: 1},
+            shadowOpacity: 0.5,
+            shadowRadius: 3,
+            elevation: 4,
           }}>
           <View
             style={{
@@ -171,51 +176,69 @@ const Orders = ({navigation}) => {
   };
 
   return (
-    <SafeArea>
-      <Background height={0.14} />
-      <Header value={3} />
-      <View style={styles.MainTop}>
-        <UserInfo style={styles.header} OwnUser popup status />
-      </View>
-      {Data === null ? (
-        <ActivityIndicator size="large" color={Colors.BLACK} />
-      ) : (
-        <>
-          <FlatList
-            data={Data}
-            ListHeaderComponent={
-              <>
-                {Data?.length >= 1 && (
-                  <Label primary bold headingtype="h4">
-                    Orders
-                  </Label>
-                )}
-              </>
-            }
-            renderItem={renderItem}
-            keyExtractor={e => e.id}
-            ListEmptyComponent={<NotFound text="Orders" />}
-            refreshControl={
-              <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
-            }
-            contentContainerStyle={{
-              paddingHorizontal: 10,
-            }}
-          />
-        </>
-      )}
-    </SafeArea>
+    <SafeAreaView style={{backgroundColor: '#420E92'}}>
+      <ScrollView style={{backgroundColor: '#f6f1f3'}}>
+        <LinearGradient
+          start={{x: 0, y: 0}}
+          end={{x: 1, y: 0}}
+          colors={['#420E92', '#E7003F']}
+          style={{
+            height: 'auto',
+            borderBottomRightRadius: 20,
+            borderBottomLeftRadius: 20,
+          }}>
+          <Header />
+          {/*  <View style={styles.MainTop}>
+            <UserInfo style={styles.header} OwnUser popup status />
+          </View> */}
+          <View>
+            <Label
+              white
+              bold
+              headingtype="h3"
+              style={{marginVertical: 10, color: '#D9FE51'}}>
+              Purchases
+            </Label>
+          </View>
+        </LinearGradient>
+
+        {Data === null ? (
+          <ActivityIndicator size="large" color={Colors.BLACK} />
+        ) : (
+          <>
+            <FlatList
+              data={Data}
+              renderItem={renderItem}
+              keyExtractor={i => i}
+              ListEmptyComponent={
+                <NotFoundPurchase
+                  text="Cart"
+                  onPress={() => navigation.navigate('DealsJoy')}
+                />
+              }
+              refreshControl={
+                <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
+              }
+              contentContainerStyle={{
+                paddingHorizontal: 11,
+                marginTop: 5,
+              }}
+            />
+          </>
+        )}
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   MainTop: {
-    height: height * 0.15,
+    // height: height * 0.15,
+    marginVertical: 10,
   },
   header: {
     flexDirection: 'row',
-    marginTop: height * 0.03,
-    marginLeft: width * 0.034,
+    marginHorizontal: 10,
   },
   Section: {
     marginTop: 10,
@@ -249,6 +272,16 @@ const styles = StyleSheet.create({
   Image: {
     height: height * 0.1,
     resizeMode: 'contain',
+  },
+  Heading: {
+    marginTop: height * 0.02,
+    color: 'black',
+  },
+  Info: {
+    marginTop: height * 0.01,
+    width: width * 0.8,
+    lineHeight: height * 0.025,
+    color: 'black',
   },
   TextView: {},
   LessMargin: {

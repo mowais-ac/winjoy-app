@@ -1,30 +1,52 @@
-import React, { useState } from "react";
-import { View, Text, TextInput, TouchableWithoutFeedback, StyleSheet, Image, } from "react-native";
-import { widthConverter } from "../Helpers/Responsive";
-import styles from "./Styles";
+import React, {useState} from 'react';
+import {
+  Platform,
+  View,
+  Text,
+  TextInput,
+  TouchableWithoutFeedback,
+  StyleSheet,
+  Image,
+} from 'react-native';
+import {widthConverter, heightConverter} from '../Helpers/Responsive';
+import styles from './Styles';
 import CountDown from 'react-native-countdown-component';
-import LongButton from "../LongButton";
-function LuckyDrawCard({ style, onPress, finish, time, image }) {
+import LongButton from '../LongButton';
+function LuckyDrawCard({style, onPress, finish, time, image}) {
   const [renderBtn, setRenderBtn] = useState(false);
   return (
-      <View style={[styles.mainView, style]}>
-        <Image
-          style={[styles.mainView, { position: 'absolute' }]}
-          source={{uri:image}}
-          
-        />
-            <LongButton
-                style={[
-                  styles.Margin,
-                  { backgroundColor: "#ffffff", position: 'absolute', bottom: 10, left: 15, },
-                ]}
-                textstyle={{ color: "#000000", fontFamily: "Axiforma-SemiBold", fontSize: 10 }}
-                text="Refer Now"
-                font={10}
-                shadowless
-                onPress={onPress}
-              />
-        {/* <View style={styles.textView}>
+    <View style={[styles.mainView, style]}>
+      <Image
+        style={{
+          position: 'absolute',
+          resizeMode: 'contain',
+          height: 140,
+          width: '100%',
+          borderRadius: 12,
+        }}
+        source={{uri: image}}
+      />
+      <LongButton
+        style={[
+          styles.Margin,
+          {
+            backgroundColor: '#ffffff',
+            position: 'absolute',
+            bottom: 10,
+            left: 15,
+          },
+        ]}
+        textstyle={{
+          color: '#000000',
+          fontFamily: 'Axiforma-SemiBold',
+          fontSize: 10,
+        }}
+        text="Refer Now"
+        font={10}
+        shadowless
+        onPress={onPress}
+      />
+      {/* <View style={styles.textView}>
         <Text
             style={[styles.commingSoonTxt, { color: '#D9FE51' }]} >
            LUCKY DRAW
@@ -35,10 +57,8 @@ function LuckyDrawCard({ style, onPress, finish, time, image }) {
             RESULTS
           </Text>
         </View> */}
-      </View>
-
-  
+    </View>
   );
 }
 
-export { LuckyDrawCard };
+export {LuckyDrawCard};

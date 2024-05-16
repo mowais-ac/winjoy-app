@@ -1,12 +1,6 @@
 import React, {useState} from 'react';
 import {View, Image, Dimensions, TouchableOpacity, Text} from 'react-native';
 import styles from './Styles';
-import Label from '../Label';
-import LinearGradient from 'react-native-linear-gradient';
-import {heightConverter, widthPercentageToDP} from '../Helpers/Responsive';
-import LoaderImage from '../LoaderImage';
-import Config from 'react-native-config';
-import ProgressCircle from 'react-native-progress-circle';
 import {RFValue} from 'react-native-responsive-fontsize';
 const {width, height} = Dimensions.get('window');
 function CreatorExperienceCard({
@@ -23,7 +17,7 @@ function CreatorExperienceCard({
         style={{
           backgroundColor: '#ffffff',
           borderRadius: 15,
-
+          height: height * 0.28,
           width: width * 0.45,
           marginLeft: 10,
         }}>
@@ -36,22 +30,27 @@ function CreatorExperienceCard({
         />
         <View style={styles.bgView}>
           <Text
+            numberOfLines={2}
             style={{
               color: '#420E92',
               fontFamily: 'Axiforma-SemiBold',
-              fontSize: RFValue(13),
+              fontSize: RFValue(11),
+              width: '94%',
 
-              width: '100%',
               paddingTop: 10,
+              paddingBottom: 6,
             }}>
             {title}
           </Text>
           <Text
+            numberOfLines={2}
             style={{
               color: '#0B2142',
               fontFamily: 'Axiforma-Regular',
-              width: width * 0.4,
-              fontSize: RFValue(12),
+              width: '94%',
+              fontSize: RFValue(11),
+              lineHeight: 15,
+              height: 15,
             }}>
             {description}
           </Text>
@@ -59,7 +58,7 @@ function CreatorExperienceCard({
             style={{
               color: '#420E92',
               fontFamily: 'Axiforma-SemiBold',
-              fontSize: RFValue(13),
+              fontSize: RFValue(11),
               paddingVertical: 10,
             }}>
             AED {price}

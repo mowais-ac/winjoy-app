@@ -1,6 +1,6 @@
 import EncryptedStorage from 'react-native-encrypted-storage';
 import Config from 'react-native-config';
-
+import {Winjoy} from './Winjoy';
 import types from './types';
 const API_URL = 'https://mocki.io/v1/48419bdb-1d76-45a1-89cb-3ac3fcc7f6ca';
 
@@ -33,7 +33,6 @@ export const getWalletData = () => {
           payload: json,
         });
       } else {
-        console.log('Unable to fetch!', json);
       }
     };
   } catch (error) {
@@ -54,21 +53,25 @@ export const getLandingScreen = () => {
         },
       });
       const json = await result.json();
+      console.log('landingdata', json);
       if (json && json.status === 'success') {
+        dispatch({
+          type: types.IS_LOADING,
+          payload: false,
+        });
         dispatch({
           type: types.GET_LANDING_DATA,
           payload: json,
         });
       } else {
-        console.log('Unable to fetch!');
       }
     };
   } catch (error) {
     alert(error);
   }
 };
+
 export const getProducts = link => {
-  console.log('link', link);
   try {
     return async dispatch => {
       dispatch({type: types.SHOW_LOADER});
@@ -81,9 +84,9 @@ export const getProducts = link => {
           Authorization: `Bearer ${Token}`,
         },
       });
-      console.log('result', result);
+
       const json = await result.json();
-      console.log('json', json);
+
       dispatch({type: types.HIDE_LOADER});
       if (json && json.status === 'success') {
         dispatch({
@@ -91,12 +94,9 @@ export const getProducts = link => {
           payload: json,
         });
       } else {
-        console.log('Unable to fetch!');
       }
     };
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };
 export const getLiveShowPlans = () => {
   try {
@@ -111,18 +111,16 @@ export const getLiveShowPlans = () => {
         },
       });
       const json = await result.json();
+
       if (json && json.status === 'success') {
         dispatch({
           type: types.GET_LIVE_PLANS,
           payload: json,
         });
       } else {
-        console.log('Unable to fetch!');
       }
     };
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };
 export const getAllCreator = () => {
   try {
@@ -144,7 +142,76 @@ export const getAllCreator = () => {
           payload: json,
         });
       } else {
-        console.log('Unable to fetch fanjoyAPI!');
+      }
+    };
+  } catch (error) {}
+};
+
+export const Fanjoyalldata = () => {
+  try {
+    return async dispatch => {
+      const Token = await EncryptedStorage.getItem('Token');
+      const result = await fetch(`${Config.API_URL}/web/fanjoy/index`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Accept: 'application/json',
+          Authorization: `Bearer ${Token}`,
+        },
+      });
+      const json = await result.json();
+
+      if (json && json.status === 'success') {
+        dispatch({
+          type: types.FANJOY_ALL_DATA,
+          payload: {loading: false, data: json},
+        });
+      } else {
+      }
+    };
+  } catch (error) {}
+};
+export const Fanjoy_dataList = () => {
+  try {
+    return async dispatch => {
+      const Token = await EncryptedStorage.getItem('Token');
+      const result = await fetch(`${Config.API_URL}/web/products/list`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Accept: 'application/json',
+          Authorization: `Bearer ${Token}`,
+        },
+      });
+      const json = await result.json();
+      if (json) {
+        dispatch({
+          type: types.FANJOY_DATA_LIST,
+          payload: {loading: false, data: json},
+        });
+      } else {
+      }
+    };
+  } catch (error) {}
+};
+export const Slug_Details = slug => {
+  try {
+    return async dispatch => {
+      const Token = await EncryptedStorage.getItem('Token');
+      const result = await fetch(`${Config.API_URL}/web/product/${slug}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Accept: 'application/json',
+          Authorization: `Bearer ${Token}`,
+        },
+      });
+      const json = await result.json();
+      if (json) {
+        dispatch({
+          type: types.SLUG_DETAILS,
+          payload: {loading: false, data: json},
+        });
       }
     };
   } catch (error) {
@@ -173,16 +240,14 @@ export const GetGalleryData = id => {
           payload: json,
         });
       } else {
-        console.log('Unable to fetch!');
       }
     };
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };
 export const GetCreatorPageData = id => {
   try {
     return async dispatch => {
+      alert(id);
       const Token = await EncryptedStorage.getItem('Token');
       const result = await fetch(`${Config.API_URL}/celebrity/detail/${id}`, {
         method: 'GET',
@@ -200,15 +265,11 @@ export const GetCreatorPageData = id => {
           payload: json,
         });
       } else {
-        console.log('Unable to fetch!', json);
       }
     };
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };
 export const ExperienceProductData = id => {
-  console.log('idd', id);
   try {
     return async dispatch => {
       const Token = await EncryptedStorage.getItem('Token');
@@ -224,19 +285,21 @@ export const ExperienceProductData = id => {
         },
       );
       const json = await result.json();
-      console.log('jsonP', json);
+
       if (json && json.status === 'success') {
         dispatch({
           type: types.WIN_EXPERIENCE_PRODUCT_DATA,
           payload: json,
         });
+        /*  dispatch({
+          type: types.WIN_EXPERIENCE_PRODUCT_DATA,
+           payload: json,
+          l: false,
+        }); */
       } else {
-        console.log('Unable to fetch!');
       }
     };
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };
 export const ExperienceProductDetal = (expId, productId) => {
   try {
@@ -261,15 +324,11 @@ export const ExperienceProductDetal = (expId, productId) => {
           payload: json,
         });
       } else {
-        console.log('Unable to fetch!');
       }
     };
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };
 export const ExperienceDetals = (experience_id, celebrity_id) => {
-  console.log(experience_id, celebrity_id);
   try {
     return async dispatch => {
       const Token = await EncryptedStorage.getItem('Token');
@@ -292,12 +351,9 @@ export const ExperienceDetals = (experience_id, celebrity_id) => {
           payload: json,
         });
       } else {
-        console.log('Unable to fetch!');
       }
     };
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };
 export const GameShowWinners = () => {
   try {
@@ -320,12 +376,9 @@ export const GameShowWinners = () => {
           payload: json,
         });
       } else {
-        console.log('Unable to fetch!');
       }
     };
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };
 export const LuckyDrawWinnersAPI = () => {
   try {
@@ -346,13 +399,11 @@ export const LuckyDrawWinnersAPI = () => {
           payload: json,
         });
       } else {
-        console.log('Unable to fetch!');
       }
     };
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };
+
 export const LeaderBoardWinners = () => {
   try {
     return async dispatch => {
@@ -366,18 +417,17 @@ export const LeaderBoardWinners = () => {
         },
       });
       const json = await result.json();
-
+      console.log('new', json);
       if (json) {
         dispatch({
           type: types.LEADER_BOARD_WINNERS,
           payload: json,
         });
       } else {
-        console.log('Unable to fetch!');
       }
     };
   } catch (error) {
-    console.log(error);
+    alert(error);
   }
 };
 export const DealsJoyAPI = () => {
@@ -393,19 +443,16 @@ export const DealsJoyAPI = () => {
         },
       });
       const json = await result.json();
-
+      console.log(json);
       if (json) {
         dispatch({
           type: types.DEALS_JOY,
           payload: json,
         });
       } else {
-        console.log('Unable to fetch!');
       }
     };
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };
 export const TriviaJoyAPI = () => {
   try {
@@ -420,18 +467,16 @@ export const TriviaJoyAPI = () => {
         },
       });
       const json = await result.json();
+      console.log('trivia', json);
       if (json) {
         dispatch({
           type: types.TRIVIA_JOY,
           payload: json,
         });
       } else {
-        console.log('Unable to fetch!');
       }
     };
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };
 export const CheckGameEnterStatus = () => {
   try {
@@ -452,12 +497,9 @@ export const CheckGameEnterStatus = () => {
           payload: json,
         });
       } else {
-        console.log('Unable to fetch!');
       }
     };
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };
 export const AllCreatorsList = () => {
   try {
@@ -467,6 +509,7 @@ export const AllCreatorsList = () => {
         method: 'GET',
         headers: {
           'Content-Type': 'multipart/form-data',
+
           Accept: 'application/json',
           Authorization: `Bearer ${Token}`,
         },
@@ -478,12 +521,9 @@ export const AllCreatorsList = () => {
           payload: json,
         });
       } else {
-        console.log('Unable to fetch!');
       }
     };
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };
 export const GetCartData = () => {
   try {
@@ -506,12 +546,9 @@ export const GetCartData = () => {
           payload: json,
         });
       } else {
-        console.log('Unable to fetch!');
       }
     };
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };
 export const RemoveCartData = id => {
   try {
@@ -530,7 +567,7 @@ export const RemoveCartData = id => {
         },
       );
       const json = await result.json();
-      console.log('rrr', json);
+
       dispatch({type: types.HIDE_LOADER});
       if (json) {
         dispatch({
@@ -538,18 +575,17 @@ export const RemoveCartData = id => {
           payload: json,
         });
       } else {
-        console.log('Unable to fetch!');
       }
     };
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };
 export const ProductDetails = id => {
+  // console.log({Product_id: id});
   try {
     return async dispatch => {
       dispatch({type: types.SHOW_LOADER});
       const Token = await EncryptedStorage.getItem('Token');
+      console.log('Token:', Token);
       const result = await fetch(`${Config.API_URL}/product/show/${id}`, {
         method: 'GET',
         headers: {
@@ -566,13 +602,11 @@ export const ProductDetails = id => {
           type: types.PRODUCTS_DETAILS,
           payload: json,
         });
+        setLoading(false);
       } else {
-        console.log('Unable to fetch!');
       }
     };
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };
 export const CreatorExperienceList = id => {
   try {
@@ -598,8 +632,84 @@ export const CreatorExperienceList = id => {
           type: types.CREATORS_EXPERIENCE_LIST,
           payload: json,
         });
+        //setLoading(false);
       } else {
-        console.log('Unable to fetch!');
+      }
+    };
+  } catch (error) {}
+};
+export const Live_Luckydraw = data => {
+  try {
+    return async dispatch => {
+      const Token = await EncryptedStorage.getItem('Token');
+      return await Winjoy.post('enter/liveluckydraw', data, {
+        headers: {
+          Authorization: `Bearer ${Token}`,
+        },
+      }).then(res => {
+        if (res.data) {
+          dispatch({
+            type: types.POST_LIVELUCKY_DRAW,
+            payload: {data: res.data, loading: false},
+          });
+        }
+      });
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const Home_Details = () => {
+  try {
+    return async dispatch => {
+      const Token = await EncryptedStorage.getItem('Token');
+      //  const result = await fetch(`${Config.API_URL}/liveluckydraw`, {
+
+      const result = await fetch(`${Config.API_URL}/liveluckydraw`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Accept: 'application/json',
+          Authorization: `Bearer ${Token}`,
+        },
+      });
+      const json = await result.json();
+      if (json) {
+        dispatch({
+          type: types.HOME_DETAILS,
+          payload: {loading: false, data: json},
+        });
+      }
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const Winner = e => {
+  try {
+    return async dispatch => {
+      const Token = await EncryptedStorage.getItem('Token');
+      const result = await fetch(
+        `${Config.API_URL}/web/liveluckydraw/winner/${e}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Accept: 'application/json',
+            Authorization: `Bearer ${Token}`,
+          },
+        },
+      );
+      const json = await result.json();
+
+      console.log(json);
+
+      if (json) {
+        dispatch({
+          type: types.WINNER,
+          payload: {loading: false, data: json},
+        });
       }
     };
   } catch (error) {

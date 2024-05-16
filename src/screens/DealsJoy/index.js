@@ -8,31 +8,20 @@ import {
   RefreshControl,
   ActivityIndicator,
   FlatList,
-  ImageBackground,
   Image,
+  Text,
 } from 'react-native';
 import {wait} from '../../Constants/Functions';
-import LoaderImage from '../../Components/LoaderImage';
 import Label from '../../Components/Label';
-import {Colors} from '../../Constants/Index';
-import {useFocusEffect} from '@react-navigation/native';
-import EncryptedStorage from 'react-native-encrypted-storage';
-import Config from 'react-native-config';
 const {width, height} = Dimensions.get('window');
-import axios from 'axios';
 import LinearGradient from 'react-native-linear-gradient';
 import HomeBottomList from '../../Components/HomeBottomList';
-import {
-  heightConverter,
-  heightPercentageToDP,
-  widthConverter,
-} from '../../Components/Helpers/Responsive';
+import {widthConverter} from '../../Components/Helpers/Responsive';
 import Header from '../../Components/Header';
 import {DealsJoyAPI} from '../../redux/actions';
-import {connect, useDispatch, useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import Video from 'react-native-video';
-import Carousel from 'react-native-snap-carousel';
-import {ButtonWithRightIcon, ClosingSoonCard} from '../../Components';
+import {ClosingSoonCard} from '../../Components';
 import HowItWorkModal from '../../Components/HowItWorkModal';
 import {RFValue} from 'react-native-responsive-fontsize';
 
@@ -45,13 +34,15 @@ const index = ({props, navigation}) => {
   const [activeSlide, setActiveSlide] = useState();
   const [refreshing, setRefreshing] = useState(false);
   const AddModalState = useRef();
+
+  //console.log({props: dealsJoyData});
+
   useEffect(() => {
     dispatch(DealsJoyAPI());
-    console.log('dealsJoyData', dealsJoyData);
   }, []);
   const onRefresh = React.useCallback(() => {
     dispatch(DealsJoyAPI());
-    wait(2000).then(() => setRefreshing(false));
+    wait(1000).then(() => setRefreshing(false));
   }, []);
   function _renderItem({item, index}) {
     if (item.type === 'image') {
@@ -94,6 +85,8 @@ const index = ({props, navigation}) => {
       );
     }
   }
+
+  // console.log('dealjoy', dealsJoyData?.products);
   return (
     <ScrollView
       style={{backgroundColor: '#ffffff'}}
@@ -101,25 +94,47 @@ const index = ({props, navigation}) => {
         <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
       }>
       <LinearGradient colors={['#5B0C86', '#E7003F']} style={styles.mainView}>
-        <Header style={{top: 5, position: 'absolute', zIndex: 1000, left: 0}} />
+        <Header
+          style={{
+            top: Platform.OS === 'android' ? 5 : height * 0.028,
+            position: 'absolute',
+            zIndex: 1000,
+            left: 0,
+          }}
+        />
+        {/*  <View style={{marginTop: 65, alignItems: 'center'}}>
+          <Text style={[styles.headerText]}>DEALSJOY</Text>
+          <Text style={styles.subHeaderText}>
+            Dont Miss YOUR chance to WIN Great DEALS!
+          </Text>
+          <View
+            style={{
+              height: 1,
+              width: width * 1,
+              backgroundColor: 'rgba(178, 190, 181,0.5)',
+              marginTop: height * 0.02,
+            }}
+          />
+        </View> */}
         <View style={styles.wrap}>
           {loader ? (
             <ActivityIndicator size="large" color="#fff" />
           ) : (
-            <Carousel
-              layout={'default'}
-              resizeMode={'cover'}
-              loop={videoAction}
-              autoplay={videoAction}
-              autoplayInterval={3000}
-              // ref={ref => this.carousel = ref}
-              data={dealsJoyData?.banners}
-              sliderWidth={width}
-              itemWidth={width}
-              renderItem={_renderItem}
-              style={styles.ShoppingBanner}
-              onSnapToItem={index => setActiveSlide(index)}
-            />
+            <></>
+            // <Carousel
+            //   layout={'default'}
+            //   resizeMode={'cover'}
+            //   loop={videoAction}
+            //   autoplay={videoAction}
+            //   autoplayInterval={3000}
+            //   // ref={ref => this.carousel = ref}
+            //   data={dealsJoyData?.banners}
+            //   sliderWidth={width}
+            //   itemWidth={width}
+            //   renderItem={_renderItem}
+            //   style={styles.ShoppingBanner}
+            //   onSnapToItem={index => setActiveSlide(index)}
+            // />
           )}
         </View>
 
@@ -167,7 +182,7 @@ const index = ({props, navigation}) => {
             marginTop: 10,
             marginBottom: 10,
           }}>
-          Closing Soon
+          LATEST OFFER
         </Label>
         <View>
           <FlatList
@@ -181,24 +196,18 @@ const index = ({props, navigation}) => {
             showsHorizontalScrollIndicator={false}
             data={dealsJoyData?.products}
             renderItem={({item}) => (
-              <TouchableOpacity
+              <ClosingSoonCard
                 onPress={() => {
-                  navigation.navigate('BottomTabStack', {
-                    screen: 'PRODUCTS',
-                    params: {
-                      screen: 'ProductDetail',
-                      params: {
-                        data: item,
-                      },
-                    },
-                  });
-                }}>
-                <ClosingSoonCard props={props} index={item.index} item={item} />
-              </TouchableOpacity>
-              // , { data: item }
+                  navigation.navigate('ProductDetail', {
+                    productId: item?.product?.id,
+                  })
+                }}
+                props={props}
+                index={item.index}
+                item={item}
+              />
             )}
-            keyExtractor={item => item.id}
-            //   ListEmptyComponent={this.RenderEmptyContainerOnGoing()}
+            keyExtractor={index => index}
           />
         </View>
 
@@ -232,6 +241,24 @@ const index = ({props, navigation}) => {
         </TouchableOpacity>
         <View style={{marginBottom: height * 0.01}} />
       </LinearGradient>
+      <ScrollView horizontal={true}>
+        {dealsJoyData?.lower_banners?.map((element, i) => {
+          return (
+            <View key={i} style={{margin: 10, flexDirection: 'row'}}>
+              <Image
+                source={{uri: element.url}}
+                resizeMode={'cover'}
+                style={{
+                  height: height * 0.13,
+                  width: width * 0.95,
+                  borderRadius: 12,
+                  marginRight: 10,
+                }}
+              />
+            </View>
+          );
+        })}
+      </ScrollView>
 
       <HomeBottomList data={dealsJoyData?.winners_collection} />
       <View style={{height: 20}} />
@@ -239,9 +266,9 @@ const index = ({props, navigation}) => {
         ModalRef={AddModalState}
         details
         cross={true}
-        video={'https://winjoy-assets.s3.amazonaws.com/banners/banner-3.mp4'}
-        // id={idVideoAdd}
-        // onPressContinue={onPressContinue}
+        video={
+          'https://winjoy-assets.s3.amazonaws.com/how_it_work/Mostafa_dealsjoy-wj+(1).mp4'
+        }
       />
     </ScrollView>
   );
@@ -270,6 +297,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: 9,
     height: 9,
+  },
+  headerText: {
+    color: '#D9FE51',
+    fontFamily: 'Axiforma-SemiBold',
+    fontSize: RFValue(22),
+    lineHeight: 30,
   },
   GreybarWidth: {
     width: widthConverter(120),
@@ -302,6 +335,20 @@ const styles = StyleSheet.create({
     height: height * 0.3,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  subHeaderText: {
+    color: '#FFFFFF',
+    fontFamily: 'Axiforma-Regular',
+    //lineHeight: 20,
+    alignItems: 'center',
+  },
+  textHeading: {
+    textAlign: 'center',
+    fontFamily: 'Axiforma-Bold',
+    color: '#eb3d6e',
+    fontSize: RFValue(13),
+    fontWeight: '400',
+    marginLeft: 20,
   },
 });
 

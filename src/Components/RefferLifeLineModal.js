@@ -8,12 +8,12 @@ import {
   TouchableWithoutFeedback,
   FlatList,
   TouchableOpacity,
-  TextInput,
-  ScrollView,
+  Share,
   ActivityIndicator,
   KeyboardAvoidingView,
 } from 'react-native';
 import Label from './Label';
+
 import LabelButton from './LabelButton';
 import {Colors, Images} from '../Constants/Index';
 import LongButton from './LongButton';
@@ -33,8 +33,8 @@ import Modals from '../Components/Modals';
 import BuyLifeCongrats from './BuyLifeCongrats';
 import Clipboard from '@react-native-clipboard/clipboard';
 import types from '../redux/types';
+//ReferralModal here
 const {width, height} = Dimensions.get('window');
-
 let li = [
   {
     sr: 1,
@@ -63,12 +63,75 @@ const RefferLifeLineModal = props => {
   const [selected, setSelected] = useState(0);
   const [id, setId] = useState(0);
   const [validatorIndex, setValidatorIndex] = useState(false);
-  //const validatorIndex=[];
+  const [mg, setMg] = useState('');
   const [updateData, setUpdateData] = useState(false);
   const [refferalLivePlans, setRefferalLivePlans] = useState([]);
   const [totalRef, setTotalRef] = useState([]);
-
   const [loader, setLoader] = useState(false);
+  const [Link, setLink] = useState('');
+  useEffect(() => {
+    dispatch(getLiveShowPlans());
+    let li = [];
+    let idforFirst;
+    livePlans?.plan?.forEach(element => {
+      if (element.type === 'referral') {
+        li.push(element);
+
+        if (element.required_referrals === 1) {
+          idforFirst = element.id;
+        }
+      }
+    });
+    setRefferalLivePlans(li);
+    setId(idforFirst);
+   // buildLink();
+  }, []);
+  // const buildLink = async () => {
+  //   const link = await firebase.dynamicLinks().buildLink({
+  //     link: 'https://winjoy.ae',
+  //     domainUriPrefix: 'https://winjoyae.page.link/7Yoh',
+  //     analytics: {
+  //       campaign: 'refferal link',
+  //       content: 'Click Me',
+  //     },
+  //     /*  social: {
+  //       title: 'Winjoy',
+  //       descriptionText: 'Reffer a friends and family to win prizes',
+  //       imageUrl:
+  //         'https://lh3.googleusercontent.com/geougc/AF1QipMMFxFa5U5IOkxLkFJEYtiXZPwOOkArwEHiF_4x=w573-h573-p-no',
+  //     }, */
+  //     android: {
+  //       packageName: 'com.winjoy',
+  //       minimumVersion: '35',
+  //     },
+  //   });
+
+  //   setLink(link);
+  //   console.log('buildLink', link);
+  //   return link;
+  // };
+  // share btn
+  //const link = `https://winjoy.ae/invite/token?${livePlans?.refer_code}`;
+  const onShare = async () => {
+    try {
+      const result = await Share.share({
+        title: 'Refferal link',
+        message: Link,
+        url: Link,
+      });
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          // shared with activity type of result.activityType
+        } else {
+          // shared
+        }
+      } else if (result.action === Share.dismissedAction) {
+        // dismissed
+      }
+    } catch (error) {
+      alert(error.message);
+    }
+  };
 
   const ApproveRef = useRef();
   const DeclineRef = useRef();
@@ -83,28 +146,7 @@ const RefferLifeLineModal = props => {
   const HandleChange = (state, details = null, ForceSuccess = false) => {
     setModelState({state, details, ForceSuccess});
   };
-  useEffect(() => {
-    dispatch(getLiveShowPlans());
-    console.log('livePlansModal', livePlans.plan);
-    let li = [];
-    let idforFirst;
-    livePlans?.plan?.forEach(element => {
-      console.log('element', element);
-      if (element.type === 'referral') {
-        li.push(element);
 
-        if (element.required_referrals === 1) {
-          console.log('element', element.id);
-          idforFirst = element.id;
-        }
-      }
-    });
-    setRefferalLivePlans(li);
-    setId(idforFirst);
-  }, []);
-  const copyToClipboard = () => {
-    Clipboard.setString('https:/ /winjoy.ae/invite/token?aaasd');
-  };
   const onPressRefTab = (index, item) => {
     li = [];
     reff = [];
@@ -124,25 +166,14 @@ const RefferLifeLineModal = props => {
     }
   };
   const SettingName = (name, index) => {
-    // if (name === "" || name === undefined || name === null) {
-    //   li[index].status = true;
-    // } else {
-    //   li[index].status = false
-    // }
     reff[index].name = name;
   };
   const SettingNumber = (number, index) => {
     reff[index].phone_no = number;
   };
   const SettingCountryCode = (text, index) => {
-    // if (name === "" || name === undefined || name === null) {
-    //   li[index].status = true;
-    // } else {
-    //   li[index].status = false
-    // }
-
     reff[index].countrycode = text;
-    console.log('reff', reff);
+
     setUpdateData(!updateData);
   };
 
@@ -181,8 +212,6 @@ const RefferLifeLineModal = props => {
     setUpdateData(!updateData);
     let fData = [];
     reff.forEach((element, index) => {
-      console.log('element', element);
-
       fData.push({
         name: element.name,
         phone_no:
@@ -190,7 +219,7 @@ const RefferLifeLineModal = props => {
           element.phone_no,
       });
     });
-    console.log('fData', fData);
+
     if (validToPost) {
       postData = {
         referrals: fData,
@@ -198,42 +227,9 @@ const RefferLifeLineModal = props => {
 
       PostData(postData);
     }
-
-    // if (dataCheck === true) {
-    //   setUpdateData(!updateData)
-    // }
-    // else {
-    //   var postData = "";
-    //   postData = {
-    //     "referrals": reff
-    //   };
-    //   PostData(postData)
-
-    // if (selected === 4) {
-    //   referrals.push({
-    //     name: nameRef1,
-    //     phone_no: numberRef1,
-    //   });
-    // }
-    // else if (selected === 5) {
-    //   var postData = "";
-    //   postData = {
-    //     "referrals": reff
-    //   };
-    //   PostData(postData)
-    // }
-    // else if (selected === 6) {
-    //   var postData = "";
-    //   postData = {
-    //     "referrals": reff
-    //   };
-    //   PostData(postData)
-    // }
   };
   const PostData = async postData => {
     setLoader(true);
-    console.log('postData', postData);
-    console.log('id', id);
 
     var Token = await EncryptedStorage.getItem('Token');
     const requestOptions = {
@@ -250,20 +246,22 @@ const RefferLifeLineModal = props => {
       .then(async res => {
         setLoader(false);
         if (res.status === 'success') {
+          setMg(res.message);
           dispatch(getLiveShowPlans());
           totalLives.current = res?.lives;
           SucessModalState.current(true);
         } else {
           ModalStateError.current(true, {
             heading: 'Error',
-            Error: res.message,
-            // array: res.errors ? Object.values(res.errors) : [],
+            Error:
+              res.message.substring(0, 16) === 'SQLSTATE[23000]:'
+                ? "We're sorry, one or more referrals are already exist in our system. Please try the different."
+                : res.message,
           });
         }
       })
       .catch(e => {
         setLoader(false);
-        console.log('error', e);
       });
   };
   return (
@@ -321,7 +319,7 @@ const RefferLifeLineModal = props => {
                 ]}>
                 https:/ /winjoy.ae/invite/token?aaasd
               </Text>
-              <TouchableOpacity onPress={copyToClipboard}>
+              <TouchableOpacity onPress={onShare}>
                 <View
                   style={{
                     width: width * 0.2,
@@ -331,12 +329,8 @@ const RefferLifeLineModal = props => {
                     justifyContent: 'center',
                     alignItems: 'center',
                   }}>
-                  <Text
-                    style={[
-                      styles.mainTextHeading,
-                      {color: '#420E92', fontFamily: 'Axiforma-Bold'},
-                    ]}>
-                    Copy
+                  <Text style={{color: '#420E92', fontFamily: 'Axiforma-Bold'}}>
+                    Share
                   </Text>
                 </View>
               </TouchableOpacity>
@@ -567,10 +561,8 @@ const RefferLifeLineModal = props => {
             <BuyLifeCongrats
               ModalRef={SucessModalState}
               heading={'Congratulations'}
-              description={
-                totalLives.current +
-                ' lives are ready to use. Feel free to play more games & win amazin prizes.'
-              }
+              total_lives={totalLives.current}
+              description={mg}
               requestOnPress={() => {
                 SucessModalState.current(false);
               }}

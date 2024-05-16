@@ -17,14 +17,17 @@ import Header from '../../Components/Header';
 import Label from '../../Components/Label';
 import LongButton from '../../Components/LongButton';
 import {ChanceCard} from '../../Components';
+import socketIO from 'socket.io-client';
 import {wait} from '../../Constants/Functions';
 import {getProducts} from '../../redux/actions';
 import {useDispatch, useSelector} from 'react-redux';
 import {useTranslation} from 'react-i18next';
-import {RFValue} from 'react-native-responsive-fontsize';
 const {width, height} = Dimensions.get('window');
+const MYServer = 'https://node-winjoyserver-deploy.herokuapp.com/';
 const index = ({props, navigation}) => {
+  const LandingData = useSelector(state => state.app.LandingData);
   const {t} = useTranslation();
+  const socket = socketIO(MYServer);
   const [refreshing, setRefreshing] = useState(false);
   const [isClosing, setIsClosing] = useState(true);
   const productsData = useSelector(state => state?.app?.productsData);
@@ -34,9 +37,17 @@ const index = ({props, navigation}) => {
   const [link, setLink] = useState('');
   const loading = useSelector(state => state.event.loading);
   const dispatch = useDispatch();
+  console.log('productsData', productsData?.data);
+  const [productlength, setProductlength] = useState('');
   useEffect(() => {
+    socket.on('sendOnboarding', msg => {
+      console.log('Should navigate from product details');
+      NavigateToQuiz(true);
+    });
     dispatch(getProducts('?is_closing_soon=0'));
-    console.log('productsData', productsData);
+    setProductlength(
+      productsData?.data?.length ? productsData?.data?.length : '',
+    );
     setIsClosing(false);
   }, []);
   const onRefresh = React.useCallback(() => {
@@ -47,10 +58,32 @@ const index = ({props, navigation}) => {
   const CategoryFunc = (index, id) => {
     let link = `?is_closing_soon=${isClosing ? 1 : 0}&category=${id}`;
     setSelected(index);
-    console.log('linkkk', link);
+
     dispatch(getProducts(link));
     setUpdateData(!updateData);
   };
+  const NavigateToQuiz = fromSocket => {
+    if (
+      LandingData?.gameShow?.status === 'on_boarding' ||
+      LandingData?.gameShow?.status === 'started' ||
+      fromSocket
+    ) {
+      {
+        console.log(
+          'LandingData?.gameShow?.status pd',
+          LandingData?.gameShow?.status,
+        );
+      }
+      navigation.navigate('GameStack', {
+        screen: 'Quiz',
+        params: {
+          uri: LandingData?.gameShow?.live_stream?.key,
+          gameshowStatus: LandingData?.gameShow?.status,
+        },
+      });
+    }
+  };
+
   return (
     <SafeAreaView>
       <BackgroundRound height={0.3} />
@@ -66,6 +99,8 @@ const index = ({props, navigation}) => {
         }}
       />
       <ScrollView
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
         refreshControl={
           <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
         }
@@ -107,7 +142,11 @@ const index = ({props, navigation}) => {
             textstyle={{color: isClosing ? '#fff' : '#000000'}}
             text={
               'All ' +
-              (!isClosing ? '(' + productsData?.data?.length + ')' : '')
+              (!isClosing
+                ? productsData?.data?.length
+                  ? '(' + productsData?.data?.length + ')'
+                  : ''
+                : ' ')
             }
             font={16}
             shadowless
@@ -133,7 +172,7 @@ const index = ({props, navigation}) => {
             shadowless
           />
         </View>
-        <View>
+        {/* <View>
           <FlatList
             data={productsData?.categories_collection}
             scrollEnabled={true}
@@ -169,7 +208,7 @@ const index = ({props, navigation}) => {
             }}
             ItemSeparatorComponent={() => <View style={{width: 15}} />}
           />
-        </View>
+        </View> */}
         <View>
           {/* onPress={()=>navigation.navigate("SimpeStackScreen",{screen:"ProductDetail"})}> */}
 
@@ -183,8 +222,8 @@ const index = ({props, navigation}) => {
               renderItem={({item}) => (
                 <ChanceCard
                   title={item?.product?.title}
-                  updated_stocks={item?.product?.updated_stocks}
-                  stock={item?.product?.stock}
+                  updated_stocks={item?.updated_stock}
+                  stock={item?.stock}
                   image={item?.product?.image}
                   description={item?.description}
                   price={item?.product?.price}
@@ -194,7 +233,7 @@ const index = ({props, navigation}) => {
                   onPress={() => {
                     navigation.navigate('ProductDetail', {
                       productId: item?.product?.id,
-                    });
+                    })
                   }}
                 />
               )}
@@ -210,7 +249,7 @@ const index = ({props, navigation}) => {
                         top: 300,
                         textAlign: 'center',
                         width: width,
-                        height: 300,
+                        height: 350,
                       }}>
                       The list is empty
                     </Text>

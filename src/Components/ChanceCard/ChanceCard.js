@@ -3,12 +3,9 @@ import {View, Image, Dimensions, TouchableOpacity, Text} from 'react-native';
 import styles from './Styles';
 import Label from '../Label';
 import LinearGradient from 'react-native-linear-gradient';
-import {heightConverter, widthPercentageToDP} from '../Helpers/Responsive';
-import LoaderImage from '../LoaderImage';
-import Config from 'react-native-config';
-import ProgressCircle from 'react-native-progress-circle';
 import {FormatNumber} from '../../Constants/Functions';
 import dayjs from 'dayjs';
+import {useDispatch, useSelector} from 'react-redux';
 const {width, height} = Dimensions.get('window');
 function ChanceCard({
   onPress,
@@ -19,19 +16,19 @@ function ChanceCard({
   image,
   price,
   prize_title,
+  data,
 }) {
   let progress = updated_stocks ? (updated_stocks / stock) * 100 : 0;
 
   return (
-    <View
+    <TouchableOpacity
+      activeOpacity={0.85}
+      onPress={onPress}
       style={{
         width: '100%',
         //  height: height * 0.53,
-
         backgroundColor: '#ffffff',
-
         borderRadius: 10,
-
         // justifyContent: "center",
         alignItems: 'center',
         elevation: 3,
@@ -44,7 +41,7 @@ function ChanceCard({
           borderRadius: 10,
           marginTop: height * 0.02,
         }}>
-        <LoaderImage
+        <Image
           source={{
             uri: image,
           }}
@@ -55,6 +52,17 @@ function ChanceCard({
           }}
           resizeMode="contain"
         />
+        {/*  <LoaderImage
+          source={{
+            uri: image,
+          }}
+          style={{
+            width: '100%',
+            height: height * 0.25,
+            borderRadius: 10,
+          }}
+          resizeMode="contain"
+        /> */}
       </View>
       <View
         style={{
@@ -66,14 +74,18 @@ function ChanceCard({
           justifyContent: 'space-between',
         }}>
         <Text
-          style={{fontFamily: 'Axiforma-Regular', fontSize: 14, color: 'grey'}}>
+          style={{
+            fontFamily: 'Axiforma-Bold',
+            fontSize: 16,
+            color: '#000000',
+          }}>
           {title}
         </Text>
         <Text
           style={{
-            fontFamily: 'Axiforma-SemiBold',
-            fontSize: 14,
-            color: '#E7003F',
+            fontFamily: 'Axiforma-Bold',
+            fontSize: 16,
+            color: '#420E92',
           }}>
           AED {FormatNumber(price)}
         </Text>
@@ -93,13 +105,22 @@ function ChanceCard({
             style={{
               fontFamily: 'Axiforma-Regular',
               fontSize: 14,
-              color: '#E7003F',
+              color: '#420E92',
             }}>
-            Get a chance to win
+            Get a chance to{' '}
+            <Text
+              style={{
+                fontFamily: 'Axiforma-Bold',
+
+                color: '#E7003F',
+              }}>
+              WIN
+            </Text>
           </Text>
           <Text
+            numberOfLines={3}
             style={{
-              fontFamily: 'Axiforma-Regular',
+              fontFamily: 'Axiforma-Bold',
               fontSize: 12,
               color: '#000000',
               lineHeight: 17,
@@ -109,7 +130,7 @@ function ChanceCard({
           </Text>
         </View>
         <View>
-          <ProgressCircle
+          {/* <ProgressCircle
             percent={progress}
             radius={35}
             borderWidth={6}
@@ -154,7 +175,7 @@ function ChanceCard({
                 {stock}
               </Text>
             </View>
-          </ProgressCircle>
+          </ProgressCircle> */}
         </View>
       </View>
       <View
@@ -169,32 +190,7 @@ function ChanceCard({
           style={{
             justifyContent: 'center',
             alignItems: 'center',
-          }}>
-          <View
-            style={{
-              paddingHorizontal: 20,
-              paddingVertical: 8,
-
-              borderWidth: 1,
-              borderColor: '#E7003F',
-              borderRadius: 35,
-              marginRight: 12,
-            }}>
-            <Text
-              style={{
-                fontFamily: 'Axiforma-Regular',
-                fontSize: 16,
-                color: '#E7003F',
-              }}>
-              Prize Details
-            </Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={onPress}
-          style={{
-            justifyContent: 'center',
-            alignItems: 'center',
+            width: '100%',
           }}>
           <LinearGradient
             start={{x: 0, y: 0}}
@@ -203,6 +199,8 @@ function ChanceCard({
               paddingHorizontal: 40,
               paddingVertical: 10,
               borderRadius: 35,
+              width: 250,
+              alignItems: 'center',
             }}
             colors={['#E7003F', '#420E92']}>
             <Text
@@ -216,14 +214,31 @@ function ChanceCard({
           </LinearGradient>
         </TouchableOpacity>
       </View>
-      <Label
-        font={12}
-        light
-        style={{color: '#000000', paddingVertical: 10, lineHeight: 17}}>
-        Max draw date {dayjs(draw_description).format('MMMM DD, YYYY')} or when
-        the campaign is sold out, which is earliest
-      </Label>
-    </View>
+      {data.enable_buy ? (
+        <Label
+          font={12}
+          light
+          style={{
+            color: '#000000',
+            paddingVertical: 10,
+            lineHeight: 17,
+          }}>
+          Max draw date {dayjs(draw_description).format('MMMM DD, YYYY')} or
+          when the campaign is sold out, which is earliest
+        </Label>
+      ) : (
+        <Label
+          font={12}
+          light
+          style={{
+            color: '#000000',
+            paddingVertical: 10,
+            lineHeight: 17,
+          }}>
+          Draw Date announce to be soon!
+        </Label>
+      )}
+    </TouchableOpacity>
   );
 }
 
