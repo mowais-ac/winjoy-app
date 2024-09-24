@@ -21,6 +21,7 @@ import NotFound from "./NotFound";
 import LongButton from "./LongButton";
 import AddConnectionModal from "./AddConnectionModal";
 import LabelButton from "./LabelButton";
+import { apiBaseUrl } from "../../env";
 const { width, height } = Dimensions.get("window");
 
 const Connection = (props) => {
@@ -160,7 +161,7 @@ const Connection = (props) => {
             },
           };
           await fetch(
-            `${Config.API_URL}/accepted-connections/list`,
+            `${apiBaseUrl}/accepted-connections/list`,
             requestOptions
           )
             .then(async (response) => response.json())
@@ -325,7 +326,7 @@ const Connection = (props) => {
           },
         };
         const URL =
-          `${Config.API_URL}/` +
+          `${apiBaseUrl}/` +
           (type === 0
             ? `accept/connection-request/`
             : `cancel/connection-request/`) +

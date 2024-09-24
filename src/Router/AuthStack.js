@@ -1,5 +1,5 @@
 import React from 'react';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {createStackNavigator} from '@react-navigation/stack';
 import Login from '../screens/Login';
 import ForgotPassword from '../screens/ForgotPassword';
 import Register from '../screens/Register';
@@ -11,13 +11,12 @@ import MenuStack from '../Router/MenuStack';
 import GameStack from './GameStack';
 import WebView from '../screens/WebView';
 import Googleregister from '../screens/Googleregister';
-const Stack = createNativeStackNavigator();
+const Stack = createStackNavigator();
 export default AuthStack = () => (
   <Stack.Navigator
     screenOptions={{
       headerShown: false,
-    }}
-    initialRouteName="Login">
+    }}>
     <Stack.Screen name="Login" component={Login} />
     <Stack.Screen name="Register" component={Register} />
     <Stack.Screen name="ForgotPassword" component={ForgotPassword} />

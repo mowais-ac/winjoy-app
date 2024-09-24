@@ -12,10 +12,12 @@ export default StyleSheet.create({
   bgView: {
     borderRadius: 15,
     paddingLeft: 10,
+    backgroundColor:'#f05b31'
   },
   bgImage: {
     width: '100%',
     height: 120,
+    backgroundColor:'#f05b31',
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15,
   },

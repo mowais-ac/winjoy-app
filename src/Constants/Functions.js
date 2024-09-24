@@ -1,6 +1,7 @@
 import Config from 'react-native-config';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import DeviceInfo from 'react-native-device-info';
+import { apiBaseUrl } from '../../env';
 export const JSONtoForm = data => {
   var newData = new FormData();
   for (const [key, value] of Object.entries(data)) {
@@ -10,7 +11,7 @@ export const JSONtoForm = data => {
 };
 
 export const FormatNumber = n =>
-  n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  n.toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
 export const RemoveFormat = n => +n.toString().replace(/[,]+/g, '');
 
@@ -24,7 +25,7 @@ export const IsSuspended = async Token => {
     },
   };
   let value = false;
-  await fetch(`${Config.API_URL}/user/status`, requestOptions)
+  await fetch(`${apiBaseUrl}/user/status`, requestOptions)
     .then(async response => response.json())
     .then(async res => {
       if (res.data && res.data[0] === 'Suspend') {
@@ -44,7 +45,7 @@ export const IsVerified = async Token => {
     },
   };
   let value = false;
-  await fetch(`${Config.API_URL}/user`, requestOptions)
+  await fetch(`${apiBaseUrl}/user`, requestOptions)
     .then(async response => response.json())
     .then(async res => {
       if (res.status === 403) {
@@ -87,7 +88,7 @@ export const GetPictureBody = async (name, data) => {
 };
 export const GetUserDeviceDetails = async () => {
   const device = await DeviceInfo.getDeviceName();
-  return {device_name: device, device_code: DeviceInfo.getUniqueId()};
+  return {device_name: device, device_code: '123456'};
 };
 
 export const GetDeviceCode = () => DeviceInfo.getUniqueId();
@@ -108,3 +109,15 @@ export const HexToRgba = hex => {
   }
   throw new Error('Bad Hex');
 };
+
+export const DEFAULT_NAV_OPTIONS = {
+  headerShown: false,
+  headerBackTitleVisible: false,
+};
+
+// export const getUser = async () => {
+//   try {
+//     const {data} = await AXIOS.get(`${profileList}`);
+//     store?.dispatch?.(setUserDataOTP(data));
+//   } catch (error) {}
+// };

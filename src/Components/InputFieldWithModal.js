@@ -20,6 +20,7 @@ import LabelButton from './LabelButton';
 import Config from 'react-native-config';
 import {JSONtoForm} from '../Constants/Functions';
 import CountryModal from './CountryModal';
+import { apiBaseUrl } from '../../env';
 
 const {width, height} = Dimensions.get('window');
 
@@ -257,7 +258,7 @@ const InputField = React.forwardRef((props, ref) => {
           body,
         };
 
-        await fetch(`${Config.API_URL}/auth/username`, requestOptions)
+        await fetch(`${apiBaseUrl}/auth/username`, requestOptions)
           .then(response => response.ok && response.json())
           .then(async res => {
             if (res.message == 'valid username') {

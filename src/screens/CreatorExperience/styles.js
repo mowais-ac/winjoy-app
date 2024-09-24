@@ -29,6 +29,7 @@ export default StyleSheet.create({
     alignItems: 'center',
     borderBottomRightRadius: 14,
     borderBottomLeftRadius: 14,
+    backgroundColor:'#f05b31'
   },
   textHeading: {
     textAlign: 'center',

@@ -15,6 +15,7 @@ import EncryptedStorage from "react-native-encrypted-storage";
 import { Colors } from "../Constants/Index";
 import InputField from "./InputField";
 import Label from "./Label";
+import { apiBaseUrl } from "../../env";
 
 const { width, height } = Dimensions.get("window");
 const CountryModal = (props) => {
@@ -42,7 +43,7 @@ const CountryModal = (props) => {
           },
         };
         await fetch(
-          `${Config.API_URL}/cities/listByCountry/${props.countryid}`,
+          `${apiBaseUrl}/cities/listByCountry/${props.countryid}`,
           requestOptions
         )
           .then(async (response) => response.json())

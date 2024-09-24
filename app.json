@@ -1,4 +1,8 @@
 {
   "name": "winjoy",
-  "displayName": "winjoy"
+  "displayName": "winjoy",
+  "react-native-google-mobile-ads": {
+    "android_app_id": "ca-app-pub-6197023613008935~5730986981",
+    "ios_app_id": "ca-app-pub-6197023613008935~1954128151"
+  }
 }

@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {
+  Platform,
   View,
   StyleSheet,
   Modal,
@@ -11,11 +12,12 @@ import {
   TextInput,
   KeyboardAvoidingView,
   ActivityIndicator,
+  Text,
 } from 'react-native';
 import Label from './Label';
 import LabelButton from './LabelButton';
 import {Colors, Images} from '../Constants/Index';
-import LongButton from './LongButton';
+//import LongButton from '../Components/LongButton';
 import {useNavigation} from '@react-navigation/native';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import Config from 'react-native-config';
@@ -25,14 +27,16 @@ import {RFValue} from 'react-native-responsive-fontsize';
 import LinearGradient from 'react-native-linear-gradient';
 import {heightConverter} from './Helpers/Responsive';
 import {ScrollView} from 'react-native-gesture-handler';
-import BuyLifeCongrats from '../Components/BuyLifeCongrats';
-import Modals from '../Components/Modals';
+import BuyLifeCongrats from './BuyLifeCongrats';
+import Modals from './Modals';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import types from '../redux/types';
 import {useDispatch} from 'react-redux';
+import { apiBaseUrl } from '../../env';
 const {width, height} = Dimensions.get('window');
 
 const PaymentModals = props => {
+  const [Topupamount, settopupammount] = useState('10');
   const ref_input2 = useRef();
   const ref_input3 = useRef();
   const [ModelState, setModelState] = useState({
@@ -115,7 +119,7 @@ const PaymentModals = props => {
     let month = expiryDate.split('/')[0];
     let year = expiryDate.split('/')[1];
 
-    if (!number) {
+    if (!number2) {
       ModalErrorState.current(true, {
         heading: 'Error',
         Error: 'Card Number Required',
@@ -136,27 +140,16 @@ const PaymentModals = props => {
       let dat = [];
       let postData = {};
       expData1.map(element => {});
-
       postData = {
         products: expData1,
       };
 
-      // const body = {
-      //   card_number: number,
-      //   exp_month: month,
-      //   exp_year: year,
-      //   cvc: cvc,
-      //   type: "products",
-      //   products:  JSON.stringify(dat)
-      // };
-
       var data = new FormData();
-      data.append('card_number', number);
+      data.append('card_number', number2);
       data.append('exp_month', month);
       data.append('exp_year', year);
       data.append('cvc', cvc);
-      data.append('type', 'products');
-      data.append('products', JSON.stringify(expData1));
+      data.append('topup_amount', parseInt(Topupamount));
 
       const requestOptions = {
         method: 'POST',
@@ -167,7 +160,7 @@ const PaymentModals = props => {
         },
         body: data,
       };
-      await fetch(`${Config.API_URL}/paynow`, requestOptions)
+      await fetch(`${apiBaseUrl}/topup_balance`, requestOptions)
         .then(async response => response.json())
         .then(async res => {
           setActivity(true);
@@ -179,6 +172,7 @@ const PaymentModals = props => {
               type: types.CART_COUNTER,
               counter: '',
             });
+            setActivity(false);
             SucessModalState.current(true);
           } else if (res.status === 'action_required') {
             navigation.navigate('WebView', {
@@ -194,6 +188,14 @@ const PaymentModals = props => {
         });
     }
   };
+
+  const modalCloseHandle = () => {
+    setModelState({
+      ...ModelState,
+      state: !ModelState.state,
+    });
+    if (props.onClose) props.onClose();
+  };
   return (
     <Modal
       animationType="slide"
@@ -201,222 +203,201 @@ const PaymentModals = props => {
       visible={ModelState.state}
       statusBarTranslucent={false}
       onRequestClose={() => {
-        setModelState({
-          ...ModelState,
-          state: !ModelState.state,
-        });
-        if (props.onClose) props.onClose();
+        modalCloseHandle();
       }}>
-      <ScrollView>
-        <KeyboardAvoidingView>
-          <TouchableWithoutFeedback
-            onPress={() => {
-              setModelState({
-                ...ModelState,
-                state: !ModelState.state,
-              });
-              if (props.onClose) props.onClose();
-            }}>
-            <View style={styles.MainView} />
-          </TouchableWithoutFeedback>
-          <View style={styles.ModalView}>
-            <View style={styles.SmallBorder} />
-            <Label primary headingtype="h3" bold2 style={styles.ModalHead}>
-              Payment Details
-            </Label>
-            <View style={styles.ModalBody}>
-              <View style={styles.mView}>
-                <Label notAlign darkmuted style={styles.titleTxt}>
-                  Name on Card
+      <KeyboardAvoidingView>
+        <TouchableWithoutFeedback
+          onPress={() => {
+            setModelState({
+              ...ModelState,
+              state: !ModelState.state,
+            });
+            if (props.onClose) props.onClose();
+          }}>
+          <View style={styles.MainView} />
+        </TouchableWithoutFeedback>
+        <View style={styles.ModalView}>
+          <View style={styles.SmallBorder} />
+          <Label primary headingtype="h3" bold2 style={styles.ModalHead}>
+            Payment Details
+          </Label>
+          <View style={styles.ModalBody}>
+            <View style={styles.mView}>
+              <View
+                style={{
+                  justifyContent: 'space-between',
+                  flexDirection: 'row',
+                  paddingTop: 15,
+                }}>
+                <Text style={{color: Colors.DARK_LABEL}}>
+                  Enter your topup amount
+                </Text>
+                <Text style={{color: Colors.DARK_LABEL}}>Min. AED 5</Text>
+              </View>
+              <View style={styles.main1}>
+                <Label
+                  notAlign
+                  primary
+                  font={16}
+                  bold2
+                  dark
+                  style={{
+                    width: 50,
+                    color: '#000000',
+                    top: Platform.OS === 'android' ? 17 : 25,
+                  }}>
+                  AED
                 </Label>
-                <View style={styles.Main2}>
+                <TextInput
+                  keyboardType={'numeric'}
+                  onChangeText={text => settopupammount(text)}
+                  value={Topupamount.toString()}
+                  defaultValue={Topupamount.toString()}
+                  style={styles.marginLarge}
+                />
+              </View>
+            </View>
+            <View style={styles.mView}>
+              <Label notAlign dark style={styles.titleTxt}>
+                Name on Card
+              </Label>
+              <View style={styles.Main2}>
+                <TextInput
+                  placeholder="Name on card"
+                  placeholderTextColor={Colors.DARK_LABEL}
+                  keyboardType={'default'}
+                  style={styles.MarginLarge}
+                />
+              </View>
+            </View>
+            <View style={styles.mView}>
+              <Label notAlign dark style={styles.titleTxt}>
+                Card number
+              </Label>
+              <View style={[styles.Main2, {flexDirection: 'row'}]}>
+                <TextInput
+                  placeholder="•••• •••• •••• ••••"
+                  placeholderTextColor={Colors.DARK_LABEL}
+                  keyboardType={'numeric'}
+                  maxLength={16}
+                  ref={ref_input2}
+                  onChangeText={text => {
+                    setNumber2(text);
+                  }}
+                  style={styles.MarginLargeNumber}
+                />
+              </View>
+            </View>
+            <View
+              style={{
+                flexDirection: 'row',
+                width: width * 0.9,
+                justifyContent: 'space-between',
+                alignSelf: 'center',
+              }}>
+              <View style={[styles.mView, {width: width * 0.4}]}>
+                <Label notAlign dark style={styles.titleTxt}>
+                  Expiry date
+                </Label>
+                <View style={styles.Main1}>
                   <TextInput
-                    placeholder="Name on Card"
+                    placeholder="MM/YY "
                     placeholderTextColor={Colors.DARK_LABEL}
-                    keyboardType={'default'}
-                    // onBlur={onBlur}
-
-                    // onChangeText={HandleChange}
+                    keyboardType={'numeric'}
+                    maxLength={5}
+                    onChangeText={text => formatFunction(text)}
+                    value={expiryDate}
                     style={styles.MarginLarge}
                   />
                 </View>
               </View>
-              <View style={styles.mView}>
-                <Label notAlign darkmuted style={styles.titleTxt}>
-                  Card Number
+              <View style={[styles.mView, {width: width * 0.4}]}>
+                <Label notAlign dark style={styles.titleTxt}>
+                  CVV
                 </Label>
-                <View style={[styles.Main2, {flexDirection: 'row'}]}>
+                <View style={styles.Main1}>
                   <TextInput
-                    placeholder="••••"
+                    placeholder="CVV"
                     placeholderTextColor={Colors.DARK_LABEL}
                     keyboardType={'numeric'}
-                    maxLength={4}
-                    returnKeyType={'next'}
-                    onSubmitEditing={() => ref_input2.current.focus()}
-                    // onBlur={onBlur}
-
-                    onChangeText={text => {
-                      setNumber1(text);
-                    }}
-                    style={styles.MarginLargeNumber}
-                  />
-                  <TextInput
-                    placeholder="••••"
-                    placeholderTextColor={Colors.DARK_LABEL}
-                    keyboardType={'numeric'}
-                    maxLength={4}
-                    onSubmitEditing={() => ref_input3.current.focus()}
-                    ref={ref_input2}
-                    // onBlur={onBlur}
-
-                    onChangeText={text => {
-                      setNumber2(text);
-                    }}
-                    style={styles.MarginLargeNumber}
-                  />
-                  <TextInput
-                    placeholder="••••"
-                    placeholderTextColor={Colors.DARK_LABEL}
-                    keyboardType={'numeric'}
-                    maxLength={4}
-                    // onBlur={onBlur}
-
-                    onChangeText={text => {
-                      setNumber3(text);
-                    }}
-                    style={styles.MarginLargeNumber}
-                  />
-                  <TextInput
-                    placeholder="••••"
-                    placeholderTextColor={Colors.DARK_LABEL}
-                    keyboardType={'numeric'}
-                    maxLength={4}
-                    // onBlur={onBlur}
-
-                    onChangeText={text => {
-                      setNumber4(text);
-                    }}
-                    style={styles.MarginLargeNumber}
+                    maxLength={3}
+                    onChangeText={text => setCvc(text)}
+                    style={styles.MarginLarge}
                   />
                 </View>
               </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  width: width * 0.9,
-                  justifyContent: 'space-between',
-                  alignSelf: 'center',
-                }}>
-                <View style={[styles.mView, {width: width * 0.4}]}>
-                  <Label notAlign darkmuted style={styles.titleTxt}>
-                    Expiry date
-                  </Label>
-                  <View style={styles.Main1}>
-                    <TextInput
-                      placeholder="MM/YY "
-                      placeholderTextColor={Colors.DARK_LABEL}
-                      keyboardType={'numeric'}
-                      maxLength={5}
-                      // onBlur={onBlur}
-                      //value={formatFunction(cardExpiry)}
-                      // onChangeText={(text) => HandleExpiryDate(text)}
-                      // value={formatFunction(expiryDate)}
-                      onChangeText={text => formatFunction(text)}
-                      value={expiryDate}
-                      style={styles.MarginLarge}
-                    />
-                  </View>
-                </View>
-                <View style={[styles.mView, {width: width * 0.4}]}>
-                  <Label notAlign darkmuted style={styles.titleTxt}>
-                    CVV
-                  </Label>
-                  <View style={styles.Main1}>
-                    <TextInput
-                      placeholder="CVV"
-                      placeholderTextColor={Colors.DARK_LABEL}
-                      keyboardType={'numeric'}
-                      maxLength={3}
-                      // onBlur={onBlur}
+            </View>
 
-                      onChangeText={text => setCvc(text)}
-                      style={styles.MarginLarge}
-                    />
-                  </View>
-                </View>
-              </View>
-
-              <TouchableOpacity
-                disabled={activity}
-                onPress={() => {
-                  PostCreditCardInfo();
-                }}
+            <TouchableOpacity
+              disabled={activity}
+              onPress={() => {
+                PostCreditCardInfo();
+              }}
+              style={{
+                height: heightConverter(20),
+                width: width * 0.9,
+                borderRadius: 10,
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginTop: height * 0.06,
+                marginLeft: width * 0.04,
+              }}>
+              <LinearGradient
+                start={{x: 0, y: 0}}
+                end={{x: 1, y: 0}}
                 style={{
-                  height: heightConverter(20),
+                  height: heightConverter(55),
                   width: width * 0.9,
-                  borderRadius: 10,
+                  borderRadius: 20,
                   justifyContent: 'center',
                   alignItems: 'center',
-                  marginTop: height * 0.06,
-                  marginLeft: width * 0.04,
-                }}>
-                <LinearGradient
-                  start={{x: 0, y: 0}}
-                  end={{x: 1, y: 0}}
-                  style={{
-                    height: heightConverter(55),
-                    width: width * 0.9,
-                    borderRadius: 20,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                  colors={['#420E92', '#E7003F']}>
-                  {activity ? (
-                    <ActivityIndicator size="small" color="#ffffff" />
-                  ) : (
-                    <Label primary font={16} bold style={{color: '#ffffff'}}>
-                      Pay AED {props?.total?.toLocaleString()}
-                    </Label>
-                  )}
-                </LinearGradient>
-              </TouchableOpacity>
-              <LabelButton
-                primary
-                headingtype="h3"
-                bold
-                style={styles.CloseBtn}
-                onPress={() => {
-                  setModelState({
-                    ...ModelState,
-                    state: !ModelState.state,
-                  });
-                  if (props.BothClose) {
-                    navigation.goBack();
-                  }
-                  if (props.onClose) props.onClose();
-                }}>
-                Close
-              </LabelButton>
-            </View>
+                }}
+                colors={['#420E92', '#E7003F']}>
+                {activity ? (
+                  <ActivityIndicator size="small" color="#ffffff" />
+                ) : (
+                  <Label primary font={16} bold style={{color: '#ffffff'}}>
+                    Pay AED {Topupamount.toLocaleString()}
+                  </Label>
+                )}
+              </LinearGradient>
+            </TouchableOpacity>
+            <LabelButton
+              primary
+              headingtype="h3"
+              bold
+              style={styles.CloseBtn}
+              onPress={() => {
+                setModelState({
+                  ...ModelState,
+                  state: !ModelState.state,
+                });
+                if (props.BothClose) {
+                  navigation.goBack();
+                }
+                if (props.onClose) props.onClose();
+              }}>
+              Close
+            </LabelButton>
           </View>
-          <BuyLifeCongrats
-            ModalRef={SucessModalState}
-            heading={'Congratulations'}
-            description={'Products Bought'}
-            requestOnPress={() => {
-              SucessModalState.current(false);
-            }}
-            closeOnPress={() => {
-              SucessModalState.current(false);
-              setModelState({
-                ...ModelState,
-                state: !ModelState.state,
-              });
-            }}
-          />
-          <Modals ModalRef={ModalErrorState} Error />
-        </KeyboardAvoidingView>
-      </ScrollView>
+        </View>
+        <BuyLifeCongrats
+          ModalRef={SucessModalState}
+          heading={'Congratulations'}
+          //description={'Products Bought'}
+          requestOnPress={() => {
+            SucessModalState.current(false);
+          }}
+          closeOnPress={() => {
+            SucessModalState.current(false);
+            setModelState({
+              ...ModelState,
+              state: !ModelState.state,
+            });
+          }}
+        />
+        <Modals ModalRef={ModalErrorState} Error />
+      </KeyboardAvoidingView>
     </Modal>
   );
 };
@@ -431,8 +412,8 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.BG_MUTED,
   },
   ModalView: {
-    height: height * 0.65,
-    marginTop: height * 0.35,
+    height: height * 0.8,
+    marginTop: height * 0.25,
     borderTopLeftRadius: 37,
     borderTopRightRadius: 37,
     backgroundColor: Colors.BENEFICIARY,
@@ -522,6 +503,23 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   ///new added
+  main1: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    width: width * 0.9,
+    borderRadius: 55,
+    alignSelf: 'center',
+    marginVertical: 6,
+    backgroundColor: '#ECF1F9',
+    height: height * 0.075,
+  },
+  marginLarge: {
+    width: width * 0.65,
+    paddingLeft: width * 0.06,
+    fontSize: 19,
+    fontWeight: '700',
+    color: 'black',
+  },
   Main1: {
     justifyContent: 'center',
     backgroundColor: Colors.WHITE,
@@ -544,20 +542,21 @@ const styles = StyleSheet.create({
   },
   mView: {
     justifyContent: 'center',
-
     alignSelf: 'center',
   },
   MarginLarge: {
-    paddingLeft: width * 0.06,
-    fontSize: RFValue(12),
-    color: Colors.PRIMARY_LABEL,
+    paddingLeft: 15,
+    fontSize: RFValue(14),
+    color: Colors.DARK_LABEL,
+    height: 45,
   },
   MarginLargeNumber: {
-    paddingLeft: width * 0.01,
-    fontSize: RFValue(12),
-    color: Colors.PRIMARY_LABEL,
-    letterSpacing: width * 0.03,
-    width: width * 0.2,
+    paddingLeft: 15,
+    fontSize: RFValue(14),
+    color: Colors.DARK_LABEL,
+    letterSpacing: 5,
+    width: '100%',
+    height: 45,
   },
   titleTxt: {
     marginTop: height * 0.01,

@@ -17,26 +17,28 @@ const {width, height} = Dimensions.get('window');
 const GoBack = props => {
   const navigation = useNavigation();
   return (
-    // <LongButton
-    //   text="Go back"
-    //   shadowless
-    //   font={12}
-    //   MutedBtn
-    //   onPress={() => navigation.goBack()}
-    //   {...props}
-    //   style={[styles.Main, props.style]}
-    // />
-    <TouchableOpacity onPress={() => props?.nav?.goBack()}>
-      <View style={styles.container}>
-        <BackIcon
-          name="arrow-back"
-          size={20}
-          color="#FFFFFF"
-          style={{top: height * 0.001}}
-        />
-        <Text style={styles.text}>Back</Text>
-      </View>
-    </TouchableOpacity>
+    <>
+      {/* <LongButton
+        text="Go back"
+        shadowless
+        font={12}
+        MutedBtn
+        onPress={() => props.navigation.goBack()}
+        {...props}
+        style={[styles.Main, props.style]}
+      /> */}
+      <TouchableOpacity onPress={() => props?.nav?.goBack()}>
+        <View style={styles.container}>
+          <BackIcon
+            name="arrow-back"
+            size={20}
+            color="#FFFFFF"
+            style={{top: height * 0.001}}
+          />
+          <Text style={styles.text}>Back</Text>
+        </View>
+      </TouchableOpacity>
+    </>
   );
 };
 const styles = StyleSheet.create({

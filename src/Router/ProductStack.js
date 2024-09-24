@@ -1,9 +1,9 @@
 import React from 'react';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {createStackNavigator} from '@react-navigation/stack';
 import PrizeList from '../screens/PrizeList';
 import ProductDetail from '../screens/ProductDetail';
 import Cart from '../screens/Cart';
-const Stack = createNativeStackNavigator();
+const Stack = createStackNavigator();
 export default index = () => (
   <Stack.Navigator
     screenOptions={{

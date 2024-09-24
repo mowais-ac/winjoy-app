@@ -20,6 +20,7 @@ import Modals from '../../Components/Modals';
 import {JSONtoForm} from '../../Constants/Functions';
 import {Images} from '../../Constants/Index';
 import GoBack from '../../Components/GoBack';
+import { apiBaseUrl } from '../../../env';
 const {width, height} = Dimensions.get('window');
 
 const index = ({navigation}) => {
@@ -43,7 +44,7 @@ const index = ({navigation}) => {
         body,
       };
 
-      await fetch(`${Config.API_URL}/auth/forget-password`, requestOptions)
+      await fetch(`${apiBaseUrl}/auth/forget-password`, requestOptions)
         .then(response => response.json())
         .then(async res => {
           if (res.message == 'We have emailed your password reset link!') {
@@ -92,7 +93,7 @@ const index = ({navigation}) => {
               </Label>
               <InputField
                 style={styles.Margin}
-                placeholder="test@domain.com"
+                placeholder="jhon@domain.com"
                 ref={emailref}
                 Icon="user"
                 autoCapitalize="none"
@@ -118,7 +119,7 @@ const index = ({navigation}) => {
 
 const styles = StyleSheet.create({
   MainTop: {
-    height: height * 0.85,
+    height: height,
     alignItems: 'center',
   },
 

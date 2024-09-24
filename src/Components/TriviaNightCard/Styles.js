@@ -11,7 +11,7 @@ import {StyleSheet, Dimensions} from 'react-native';
 export default StyleSheet.create({
   mainView: {
     alignItems: 'center',
-    //  backgroundColor: '#f05b31',
+    backgroundColor: '#f05b31',
     borderRadius: 13,
     height: heightPercentageToDP('16%'),
     width: width / 3.36,
@@ -22,7 +22,7 @@ export default StyleSheet.create({
     shadowOffset: {width: 0, height: 1},
     shadowOpacity: 5,
     shadowRadius: 3,
-
+    marginBottom:6
     //   paddingRight: widthConverter(20),
   },
   textView: {

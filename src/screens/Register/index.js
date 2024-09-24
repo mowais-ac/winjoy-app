@@ -6,9 +6,8 @@ import {
   Dimensions,
   ScrollView,
   TouchableOpacity,
-  Text
+  Text,
 } from 'react-native';
-
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import Config from 'react-native-config';
@@ -31,10 +30,10 @@ import Modals from '../../Components/Modals';
 import GoBack from '../../Components/GoBack';
 import {useDispatch} from 'react-redux';
 import types from '../../redux/types';
+import { apiBaseUrl } from '../../../env';
 const {width, height} = Dimensions.get('window');
-import {useNavigation} from '@react-navigation/native';
-const index = ({navigation,route}) => {
-  const referral_code = route.params;
+const index = ({navigation}) => {
+  //const referral_code = route.params;
   const {t} = useTranslation();
   const [referral, setReferral] = useState(null);
   const fnameref = useRef();
@@ -50,9 +49,12 @@ const index = ({navigation,route}) => {
   const [userInfo, setUserInfo] = useState(null);
   const [gettingLoginStatus, setGettingLoginStatus] = useState(true);
 
-
-  useEffect(async () => {
+  const getReferral = async () => {
     setReferral(await EncryptedStorage.getItem('myreferral'));
+  };
+
+  useEffect(() => {
+    getReferral();
   }, []);
 
   const HandleClick = async () => {
@@ -138,7 +140,7 @@ const index = ({navigation,route}) => {
         body,
       };
       //console.log('bodyreg', body);
-      await fetch(`${Config.API_URL}/auth/new_register`, requestOptions)
+      await fetch(`${apiBaseUrl}/auth/new_register`, requestOptions)
         .then(response => response.json())
         .then(async res => {
           console.log('register_res', res);
@@ -269,17 +271,17 @@ const index = ({navigation,route}) => {
       <ScrollView>
         <KeyboardAwareScrollView keyboardDismissMode="interactive">
           <View style={styles.MainTop}>
-          <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-      <View style={styles.container}>
-        <BackIcon
-          name="arrow-back"
-          size={20}
-          color="#FFFFFF"
-          style={{top: height * 0.001}}
-        />
-        <Text style={styles.text}>Back</Text>
-      </View>
-    </TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+              <View style={styles.container}>
+                <BackIcon
+                  name="arrow-back"
+                  size={20}
+                  color="#FFFFFF"
+                  style={{top: height * 0.001}}
+                />
+                <Text style={styles.text}>Back</Text>
+              </View>
+            </TouchableOpacity>
             <Image source={Images.Logo} style={styles.Logo} />
             <Label bold headingtype="h1" style={styles.Margin}>
               {t('create_account')}
@@ -417,14 +419,13 @@ const styles = StyleSheet.create({
   container: {
     width: width * 0.95,
     height: Platform.OS === 'android' ? height * 0.08 : height * 0.14,
-
     flexDirection: 'row',
     alignItems: 'center',
   },
   text: {
     fontFamily: 'Axiforma-Regular',
     fontSize: RFValue(12),
-    color: "#fff",
+    color: '#fff',
   },
 });
 

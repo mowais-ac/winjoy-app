@@ -29,6 +29,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Config from 'react-native-config';
+import { apiBaseUrl } from '../../../env';
 const {width, height} = Dimensions.get('window');
 
 const index = ({route, navigation}) => {
@@ -65,7 +66,7 @@ const index = ({route, navigation}) => {
       body: JSONtoForm(data),
     };
     console.log('paymentbodyC', requestOptions);
-    await fetch(`${Config.API_URL}/order/paynow`, requestOptions)
+    await fetch(`${apiBaseUrl}/order/paynow`, requestOptions)
       .then(async response => response.json())
       .then(async res => {
         try {

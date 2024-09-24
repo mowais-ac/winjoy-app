@@ -33,7 +33,7 @@ const {width, height} = Dimensions.get('window');
 const ModalCelebrityProducts = props => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const experienceID = useSelector(state => state.app.experienceID);
+ // const experienceID = useSelector(state => state.app.experienceID);
   const [ModelState, setModelState] = useState({
     state: false,
     details: null,

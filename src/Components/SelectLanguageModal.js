@@ -40,8 +40,6 @@ const SelectLanguageModal = (props) => {
     if (props.ModalRef) props.ModalRef.current = HandleChange;
   });
 
-
-
   const HandleChange = (state, details = null, ForceSuccess = false) => {
     setModelState({ state, details, ForceSuccess });
   };

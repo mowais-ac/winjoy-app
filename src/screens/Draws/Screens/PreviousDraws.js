@@ -26,6 +26,7 @@ import {
   heightPercentageToDP,
   widthConverter,
 } from "../../../Components/Helpers/Responsive";
+import { apiBaseUrl } from "../../../../env";
 
 function ClosingSoon({ item }) {
   let progress = item.updated_stocks
@@ -120,7 +121,7 @@ const PreviousDraws = (props) => {
       };
       // alert(13123);
       await axios
-        .get(`${Config.API_URL}/banners`, requestOptions)
+        .get(`${apiBaseUrl}/banners`, requestOptions)
         .then((response) => {
           let res = response.data;
           if (res.status && res.status.toLowerCase() === "success") {
@@ -142,7 +143,7 @@ const PreviousDraws = (props) => {
     };
     // alert(13123);
     await axios
-      .get(`${Config.API_URL}/products/list`, requestOptions)
+      .get(`${apiBaseUrl}/products/list`, requestOptions)
       .then((response) => {
         let res = response.data;
         let arr = [];
@@ -168,7 +169,7 @@ const PreviousDraws = (props) => {
     }; 
     // alert(13123);
     
-    await axios.get(`${Config.API_URL}/luckydraw/winner`, requestOptions).then(response => {
+    await axios.get(`${apiBaseUrl}/luckydraw/winner`, requestOptions).then(response => {
       let res = response;
       setWinnerData(res?.data[0])
     });

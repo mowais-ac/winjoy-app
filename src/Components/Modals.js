@@ -17,6 +17,7 @@ import EncryptedStorage from 'react-native-encrypted-storage';
 import Config from 'react-native-config';
 import {GetDate} from '../Constants/Functions';
 import ProfilePicture from './ProfilePicture';
+import { apiBaseUrl } from '../../env';
 const {width, height} = Dimensions.get('window');
 
 const Modals = props => {
@@ -56,7 +57,7 @@ const Modals = props => {
         if (ibool === true) ApproveRef.current.SetActivity(true, 'WHITE');
         else DeclineRef.current.SetActivity(true);
         const URL =
-          `${Config.API_URL}/requests/` +
+          `${apiBaseUrl}/requests/` +
           (ibool === true ? 'approved/' : 'decline/') +
           details.id;
         await fetch(URL, requestOptions)
@@ -65,7 +66,7 @@ const Modals = props => {
             if (res.status && res.status.toLowerCase() === 'success') {
               if (ibool === true) {
                 await fetch(
-                  `${Config.API_URL}/user/current-balance`,
+                  `${apiBaseUrl}/user/current-balance`,
                   requestOptions,
                 )
                   .then(async response => response.json())
@@ -76,7 +77,7 @@ const Modals = props => {
                         date: GetDate(),
                       };
                       await fetch(
-                        `${Config.API_URL}/credit/balance`,
+                        `${apiBaseUrl}/credit/balance`,
                         requestOptions,
                       )
                         .then(async response => response.json())

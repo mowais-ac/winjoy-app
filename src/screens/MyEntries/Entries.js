@@ -30,6 +30,7 @@ import {FormatNumber, wait} from '../../Constants/Functions';
 import LinearGradient from 'react-native-linear-gradient';
 import dayjs from 'dayjs';
 import {ScrollView} from 'react-native-gesture-handler';
+import { apiBaseUrl } from '../../../env';
 
 const {width, height} = Dimensions.get('window');
 
@@ -54,7 +55,7 @@ const Entries = ({navigation}) => {
           Authorization: `Bearer ${Token}`,
         },
       };
-      await fetch(`${Config.API_URL}/luckydraw_winner_list`, requestOptions)
+      await fetch(`${apiBaseUrl}/luckydraw_winner_list`, requestOptions)
         .then(async response => response.json())
         .then(res => {
           {

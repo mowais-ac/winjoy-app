@@ -1,9 +1,9 @@
 import React from 'react';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {createStackNavigator} from '@react-navigation/stack';
 import LiveProducts from '../screens/LiveProducts.js';
 import Webmodallive from '../screens/Webmodallive/Webmodallive.js';
 import Landing from '../screens/Landing';
-const Stack = createNativeStackNavigator();
+const Stack = createStackNavigator();
 export default index = () => (
   <Stack.Navigator
     screenOptions={{

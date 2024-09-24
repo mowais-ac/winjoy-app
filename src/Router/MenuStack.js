@@ -1,5 +1,5 @@
 import React from 'react';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {createStackNavigator} from '@react-navigation/stack';
 import HamburgerMenu from '../screens/HamburgerMenu';
 import Profile from '../screens/Profile';
 import EditProfile from '../screens/EditProfile';
@@ -19,7 +19,7 @@ import GamesRules from '../screens/GamesRules';
 import Landing from '../screens/Landing';
 import Gsignin from '../screens/Gsignin';
 import Cart from '../screens/Cart';
-const Stack = createNativeStackNavigator();
+const Stack = createStackNavigator();
 export default index = () => (
   <Stack.Navigator
     screenOptions={{

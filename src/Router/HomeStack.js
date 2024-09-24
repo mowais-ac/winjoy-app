@@ -1,5 +1,5 @@
 import React from 'react';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {createStackNavigator} from '@react-navigation/stack';
 import Landing from '../screens/Landing';
 import TriviaJoy from '../screens/TriviaJoy';
 import DealsJoy from '../screens/DealsJoy';
@@ -21,7 +21,7 @@ import GoldenTulip from '../screens/Fanjoy/GoldenTulip';
 import Fanjoy from '../screens/Fanjoy/Fanjoy';
 import Prizes from '../screens/Fanjoy/Prizes';
 //import Webrtc from '../screens/Webtrc';
-const Stack = createNativeStackNavigator();
+const Stack = createStackNavigator();
 export default index = () => (
   <Stack.Navigator
     initialRouteName="Landing"

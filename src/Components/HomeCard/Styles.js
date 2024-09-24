@@ -12,7 +12,7 @@ export default StyleSheet.create({
   mainViewWrapa: {
     width: '100%',
     paddingHorizontal: 10,
-    marginTop: 16,
+    marginTop: 15,
   },
 
   mainViewa: {

@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, Linking, Alert} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {createStackNavigator} from '@react-navigation/stack';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import AuthStack from './AuthStack';
 import HomeStack from './HomeStack';
@@ -26,20 +26,22 @@ import Webmodal from '../screens/WebModal/Webmodal';
 import BuyLife from '../screens/BuyLife';
 import Landing from '../screens/Landing';
 import Webmodallive from '../screens/Webmodallive/Webmodallive';
-const Stack = createNativeStackNavigator();
+import {countryData} from '../reduxToolkit/actions/user.actions';
+const Stack = createStackNavigator();
 
 function index(props) {
   // const navigation = useNavigation();
-  const [isLogedin, setIsLogedin] = useState(false);
-  const livePlans = useSelector(state => state.app.livePlans);
-  const mytoken = EncryptedStorage.getItem('Token').then(data => {
-    if (data != null) setIsLogedin(true);
-    else setIsLogedin(false);
-  });
-
-  const dispatch2 = useDispatch();
-  useEffect(() => {
-    dispatch2(getLiveShowPlans());
+  // const [isLogedin, setIsLogedin] = useState(false);
+  // const livePlans = useSelector(state => state.app.livePlans);
+  // const mytoken = EncryptedStorage.getItem('Token').then(data => {
+  //   if (data != null) setIsLogedin(true);
+  //   else setIsLogedin(false);
+  // });
+  const countryDispatch = useDispatch();
+  // const dispatch2 = useDispatch();
+ useEffect(() => {
+  //   dispatch2(getLiveShowPlans());
+  countryDispatch(countryData());
   }, []);
 
   const [state, dispatch] = React.useReducer(
@@ -72,6 +74,14 @@ function index(props) {
     },
   );
 
+  const bootstrapAsync = async () => {
+    let userToken;
+    try {
+      userToken = await EncryptedStorage.getItem('Token');
+    } catch (e) {
+    }
+    dispatch({type: 'RESTORE_TOKEN', token: userToken});
+  };
   useEffect(() => {
     // OneSignal.init('f38f3a1b-7188-444f-9180-6db72c75dc4d', {
     //   kOSSettingsKeyAutoPrompt: false,
@@ -79,29 +89,12 @@ function index(props) {
     //   kOSSettingsKeyInFocusDisplayOption: 2,
     // });
     // OneSignal.inFocusDisplaying(2);
-
-    const bootstrapAsync = async () => {
-      let userToken;
-      try {
-        userToken = await EncryptedStorage.getItem('Token');
-      } catch (e) {
-        // Restoring token failed
-      }
-      // After restoring token, we may need to validate it in production apps
-      // This will switch to the App screen or Auth screen and this loading
-      // screen will be unmounted and thrown away.
-      dispatch({type: 'RESTORE_TOKEN', token: userToken});
-    };
     bootstrapAsync();
   }, []);
 
   const authContext = React.useMemo(
     () => ({
       signIn: async data => {
-        // In a production app, we need to send some data (usually username, password) to server and get a token
-        // We will also need to handle errors if sign in failed
-        // After getting token, we need to persist the token using `SecureStore`
-        // In the example, we'll use a dummy token
         console.log('signin', data);
         dispatch({type: 'SIGN_IN', token: data});
       },
@@ -110,10 +103,6 @@ function index(props) {
         EncryptedStorage.clear('root');
       },
       signUp: async data => {
-        // In a production app, we need to send user data to server and get a token
-        // We will also need to handle errors if sign up failed
-        // After getting token, we need to persist the token using `SecureStore`
-        // In the example, we'll use a dummy token
         dispatch({type: 'SIGN_IN', token: data});
       },
     }),
@@ -135,7 +124,6 @@ function index(props) {
             headerShown: false,
           }}>
           {state.isLoading ? (
-            // We haven't finished checking for the token yet
             <Stack.Screen name="Splash" component={Splash} />
           ) : state.userToken == null ? (
             <Stack.Screen name="AuthStack" component={AuthStack} />

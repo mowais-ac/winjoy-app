@@ -44,6 +44,7 @@ export const getLandingScreen = () => {
   try {
     return async dispatch => {
       const Token = await EncryptedStorage.getItem('Token');
+      console.log("🚀 ~ getLandingScreen ~ Token:", Token)
       const result = await fetch(`${Config.API_URL}/home`, {
         method: 'GET',
         headers: {

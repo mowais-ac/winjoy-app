@@ -6,6 +6,7 @@ import Label from "../Components/Label";
 import { GetDeviceCode } from "../Constants/Functions";
 
 import { Colors } from "../Constants/Index";
+import { apiBaseUrl } from "../../env";
 const { width, height } = Dimensions.get("window");
 
 const SmallPopup = (props) => {
@@ -27,7 +28,7 @@ const SmallPopup = (props) => {
           },
         };
         await fetch(
-          `${Config.API_URL}/user/status?device_code=${GetDeviceCode()}`,
+          `${apiBaseUrl}/user/status?device_code=${GetDeviceCode()}`,
           requestOptions
         )
           .then(async (response) => response.json())

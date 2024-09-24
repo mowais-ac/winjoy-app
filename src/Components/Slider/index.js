@@ -62,7 +62,7 @@ const Slider = () => {
           <View
             key={index}
             style={{
-              backgroundColor: 'white',
+              backgroundColor: '#f05b31',
               height: 5,
               width: 5,
               borderRadius: 5,

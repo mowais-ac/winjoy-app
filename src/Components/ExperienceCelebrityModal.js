@@ -31,6 +31,7 @@ import {Avatar} from 'react-native-elements';
 import Modals from '../Components/Modals';
 import BuyLifeCongrats from '../Components/BuyLifeCongrats';
 import PaymentModalExperience from '../Components/PaymentModalExperience';
+import { apiBaseUrl } from '../../env';
 const {width, height} = Dimensions.get('window');
 
 const ExperienceCelebrityModal = props => {
@@ -72,7 +73,7 @@ const ExperienceCelebrityModal = props => {
       body,
     };
 
-    await fetch(`${Config.API_URL}/buy/experience`, requestOptions)
+    await fetch(`${apiBaseUrl}/buy/experience`, requestOptions)
       .then(async response => response.json())
       .then(async res => {
         setActivity(false);

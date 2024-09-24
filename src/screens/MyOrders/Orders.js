@@ -26,6 +26,7 @@ import NotFound from '../../Components/NotFound';
 import {FormatNumber, wait} from '../../Constants/Functions';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import dayjs from 'dayjs';
+import { apiBaseUrl } from '../../../env';
 
 const {width, height} = Dimensions.get('window');
 
@@ -52,7 +53,7 @@ const Orders = ({navigation}) => {
             Authorization: `Bearer ${Token}`,
           },
         };
-        await fetch(`${Config.API_URL}/my/orders`, requestOptions)
+        await fetch(`${apiBaseUrl}/my/orders`, requestOptions)
           .then(async response => response.json())
           .then(res => {
             if (!isActive) return;

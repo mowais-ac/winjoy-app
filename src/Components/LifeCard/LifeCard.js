@@ -12,11 +12,12 @@ import LinearGradient from 'react-native-linear-gradient';
 import {RFValue} from 'react-native-responsive-fontsize';
 const {width, height} = Dimensions.get('window');
 import styles from './Styles';
+import { apiBaseUrl } from '../../../env';
 function LifeCard({onPress, amount, lives, id}) {
   const getData = async () => {
     try {
       const Token = await EncryptedStorage.getItem('Token');
-      const result = await fetch(`${Config.API_URL}/buy_lives_plan/${id}`, {
+      const result = await fetch(`${apiBaseUrl}/buy_lives_plan/${id}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'multipart/form-data',

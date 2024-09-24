@@ -16,6 +16,7 @@ import Modals from "./Modals";
 import EncryptedStorage from "react-native-encrypted-storage";
 import { JSONtoForm } from "../Constants/Functions";
 import Config from "react-native-config";
+import { apiBaseUrl } from "../../env";
 const { width, height } = Dimensions.get("window");
 
 const ValidateModal = (props) => {
@@ -76,7 +77,7 @@ const ValidateModal = (props) => {
         body,
       };
       await fetch(
-        `${Config.API_URL}/user/get-OTP/account/changes`,
+        `${apiBaseUrl}/user/get-OTP/account/changes`,
         requestOptions
       )
         .then(async (response) => response.json())
@@ -126,7 +127,7 @@ const ValidateModal = (props) => {
         },
         body,
       };
-      await fetch(`${Config.API_URL}/verify/otp/email/phone`, requestOptions)
+      await fetch(`${apiBaseUrl}/verify/otp/email/phone`, requestOptions)
         .then(async (response) => response.json())
         .then((res) => {
           Buttonref.current.SetActivity(false);

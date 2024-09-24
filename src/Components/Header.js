@@ -29,10 +29,10 @@ const Header = props => {
     <View style={props.style}>
       <View style={[styles.Container, {height: props.height}]}>
         {props.back ? (
-          <TouchableOpacity onPress={() => navigation.goBack()}>
+          <TouchableOpacity onPress={() => navigation?.goBack()}>
             <View style={styles.containerBack}>
               <BackIcon
-                name="ios-chevron-back"
+                name="arrow-back"
                 size={20}
                 color="#FFFFFF"
                 style={{left: 5}}
@@ -66,7 +66,7 @@ const Header = props => {
         <TouchableOpacity
           style={styles.Lines}
           onPress={() =>
-            navigation.navigate('MenuStack', {
+            navigation?.navigate('MenuStack', {
               screen: 'HamburgerMenu',
             })
           }>

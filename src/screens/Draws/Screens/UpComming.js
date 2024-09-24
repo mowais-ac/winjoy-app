@@ -25,6 +25,7 @@ import Config from 'react-native-config';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import socketIO from 'socket.io-client';
+import { apiBaseUrl } from '../../../../env';
 const MYServer = 'https://node-winjoyserver-deploy.herokuapp.com/';
 const UpComming = ({props, navigation}) => {
   const socket = socketIO(MYServer);
@@ -68,7 +69,7 @@ const UpComming = ({props, navigation}) => {
     // alert(13123);
 
     await axios
-      .get(`${Config.API_URL}/livegameshow/all/winners/list`, requestOptions)
+      .get(`${apiBaseUrl}/livegameshow/all/winners/list`, requestOptions)
       .then(response => {
         let res = response;
         setWinnerData(res?.data);
@@ -87,7 +88,7 @@ const UpComming = ({props, navigation}) => {
     // alert(13123);
 
     await axios
-      .get(`${Config.API_URL}/livegameshow`, requestOptions)
+      .get(`${apiBaseUrl}/livegameshow`, requestOptions)
       .then(response => {
         let res = response.data;
 
@@ -116,7 +117,7 @@ const UpComming = ({props, navigation}) => {
     // alert(13123);
 
     await axios
-      .get(`${Config.API_URL}/livestream/available`, requestOptions)
+      .get(`${apiBaseUrl}/livestream/available`, requestOptions)
       .then(response => {
         let res = response.data;
 
@@ -138,7 +139,7 @@ const UpComming = ({props, navigation}) => {
 
     await axios
       .get(
-        `${Config.API_URL}/lets/begin?live_gameshow_id=${Lid}`,
+        `${apiBaseUrl}/lets/begin?live_gameshow_id=${Lid}`,
         requestOptions,
       )
       .then(response => {
@@ -171,7 +172,7 @@ const UpComming = ({props, navigation}) => {
     // alert(13123);
 
     await axios
-      .get(`${Config.API_URL}/user/game/status`, requestOptions)
+      .get(`${apiBaseUrl}/user/game/status`, requestOptions)
       .then(response => {
         let res = response.data;
 

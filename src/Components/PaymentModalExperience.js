@@ -27,6 +27,7 @@ import {heightConverter} from './Helpers/Responsive';
 import {ScrollView} from 'react-native-gesture-handler';
 import BuyLifeCongrats from '../Components/BuyLifeCongrats';
 import Modals from '../Components/Modals';
+import { apiBaseUrl } from '../../env';
 const {width, height} = Dimensions.get('window');
 
 const PaymentModals = props => {
@@ -145,7 +146,7 @@ const PaymentModals = props => {
         body,
       };
 
-      await fetch(`${Config.API_URL}/paynow`, requestOptions)
+      await fetch(`${apiBaseUrl}/paynow`, requestOptions)
         .then(async response => response.json())
         .then(async res => {
           setActivity(false);

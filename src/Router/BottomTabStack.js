@@ -23,8 +23,9 @@ export default function index() {
         tabBarInactiveTintColor: Colors.BLACK,
         labelStyle: {fontFamily: 'ProximaNova Regular'},
         tabStyle: {borderLeftColor: Colors.LIGHT_MUTED, borderLeftWidth: 3},
-        style: {height: height * 0.08},
+        tabBarStyle: {height: height * 0.07},
         keyboardHidesTabBar: true,
+        tabBarItemStyle:{padding:5}
       }}>
       <Tab.Screen
         name={'bottom_tabs.home'}
@@ -73,8 +74,8 @@ const styles = StyleSheet.create({
   iconView: {
     borderRadius: 30,
     width: width * 0.1,
+    alignItems: 'center',
     height: height * 0.05,
     justifyContent: 'center',
-    alignItems: 'center',
   },
 });

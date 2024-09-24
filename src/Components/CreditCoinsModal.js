@@ -17,6 +17,7 @@ import { GetDate, wait } from "../Constants/Functions";
 import { Colors } from "../Constants/Index";
 import Label from "./Label";
 import NotFound from "./NotFound";
+import { apiBaseUrl } from "../../env";
 
 const { width, height } = Dimensions.get("window");
 
@@ -46,7 +47,7 @@ const CreditCoinsModal = (props) => {
             Authorization: `Bearer ${Token}`,
           },
         };
-        await fetch(`${Config.API_URL}/credit/transaction/list`, requestOptions)
+        await fetch(`${apiBaseUrl}/credit/transaction/list`, requestOptions)
           .then(async (response) => response.json())
           .then((res) => {
             if (!isActive) return;

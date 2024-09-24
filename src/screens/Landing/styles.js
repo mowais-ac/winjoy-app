@@ -61,7 +61,6 @@ export default StyleSheet.create({
     fontFamily: 'Axiforma-SemiBold',
   },
   sliderbody: {
- 
     marginTop: 5,
 
   },

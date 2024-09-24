@@ -19,6 +19,7 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import {GetDate} from '../Constants/Functions';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import Config from 'react-native-config';
+import { apiBaseUrl } from '../../env';
 
 const {width, height} = Dimensions.get('window');
 
@@ -77,7 +78,7 @@ const DateModal = props => {
 
   const HandleClick = async () => {
     const fileUrl = `${
-      Config.API_URL
+      apiBaseUrl
     }/user/credit/statement/download/?from_date=${new Date(
       StartDate,
     ).toISOString()}&to_date=${new Date(EndDate).toISOString()}`;

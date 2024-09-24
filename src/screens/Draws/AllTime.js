@@ -13,6 +13,7 @@ import { heightPercentageToDP } from "../../../Components/Helpers/Responsive";
 import EncryptedStorage from "react-native-encrypted-storage"; 
 import Config from "react-native-config";
 import axios from 'axios';
+import { apiBaseUrl } from "../../../env";
 
 const AllTime = ({ props, navigation }) => {
   const [winnerData, setWinnerData] = useState([]);
@@ -30,7 +31,7 @@ const AllTime = ({ props, navigation }) => {
       },
     }; 
     
-    await axios.get(`${Config.API_URL}/luckydraw/winner`, requestOptions).then(response => {
+    await axios.get(`${apiBaseUrl}/luckydraw/winner`, requestOptions).then(response => {
       let res = response;
       setWinnerData(res?.data[0])
     });

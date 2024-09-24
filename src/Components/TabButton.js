@@ -24,8 +24,8 @@ const TabButton = props => {
       source={GetImage(props.name)}
       style={[
         {
-          width: width * 0.06,
-          height: height * 0.04,
+          width: width * 0.05,
+          height: height * 0.05,
           resizeMode: 'contain',
         },
         // props.name === "Trophy" ? {

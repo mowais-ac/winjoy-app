@@ -87,7 +87,7 @@ function ChanceCard({
             fontSize: 16,
             color: '#420E92',
           }}>
-          AED {FormatNumber(price)}
+          AED {FormatNumber(price?price:0)}
         </Text>
       </View>
       <View

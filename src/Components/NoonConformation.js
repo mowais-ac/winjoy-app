@@ -32,6 +32,7 @@ import BuyLifeCongrats from './BuyLifeCongrats';
 import Modals from './Modals';
 import types from '../redux/types';
 import {useDispatch} from 'react-redux';
+import { apiBaseUrl } from '../../env';
 const {width, height} = Dimensions.get('window');
 
 const NoonConformation = props => {
@@ -93,7 +94,7 @@ const NoonConformation = props => {
       body: JSONtoForm(data),
     };
     console.log('paymentbodyC', requestOptions);
-    await fetch(`${Config.API_URL}/order/paynow`, requestOptions)
+    await fetch(`${apiBaseUrl}/order/paynow`, requestOptions)
       .then(async response => response.json())
       .then(async res => {
         setActivity(false);
